@@ -6,7 +6,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-  windowManager.waitUntilReadyToShow().then((_) async {
+  WindowOptions windowOptions = WindowOptions(minimumSize: Size(800, 600));
+
+  windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
     await windowManager.setTitle('TileSet Editor');
   });
 
@@ -20,7 +22,6 @@ class TileSetMaterialApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'TileSet Editor',
       theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple)),
       home: TileSetEditorApp(),
     );
