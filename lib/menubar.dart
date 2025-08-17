@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
@@ -53,7 +55,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
             Divider(),
             MenuItemButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Quit!')));
+                exit(0);
               },
               child: const MenuAcceleratorLabel('&Exit'),
             ),
