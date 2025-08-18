@@ -1,12 +1,47 @@
-class TileSetProject {
-  String name;
-  int tileSetWidth;
-  int tileSetHeight;
+import 'package:package_info_plus/package_info_plus.dart';
 
-  TileSetProject({required this.name, required this.tileSetWidth, required this.tileSetHeight});
+class TileSetProject {
+  String? filePath;
+  String name;
+  String? description;
+  int tileWidth;
+  int tileHeight;
+
+  TileSetProject({required this.name, this.description, required this.tileWidth, required this.tileHeight});
 
   @override
   String toString() {
-    return 'Project $name (${tileSetWidth}x$tileSetHeight)';
+    return 'Project $name (${tileWidth}x$tileHeight) in $filePath';
+  }
+
+  static TileSetProject clone(TileSetProject project) {
+    TileSetProject result = TileSetProject(name: project.name, description: project.description, tileWidth: project.tileWidth, tileHeight: project.tileHeight);
+    result.filePath = project.filePath;
+    return result;
+  }
+
+  Map<String, dynamic> toJson(PackageInfo packageInfo) {
+    return {
+      'name': name,
+      'description': description,
+      'tile': {'width': tileWidth, 'height': tileHeight},
+      'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
+    };
+  }
+
+  factory TileSetProject.fromJson(Map<String, dynamic> json) {
+    TileSetProject result = switch (json) {
+      {
+        'name': String name, //
+        'description': String description, //
+        'tile': {
+          'width': int tileWidth, //
+          'height': int tileHeight, //
+        }, //
+      } =>
+        TileSetProject(name: name, description: description, tileWidth: tileWidth, tileHeight: tileHeight),
+      _ => throw const FormatException('Failed to load TileSetProject'),
+    };
+    return result;
   }
 }

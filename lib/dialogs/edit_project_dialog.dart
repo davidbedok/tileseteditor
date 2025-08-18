@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/project_widget.dart';
 
-class NewProjectDialog extends StatefulWidget {
-  const NewProjectDialog({super.key});
+class EditProjectDialog extends StatefulWidget {
+  final TileSetProject project;
+
+  const EditProjectDialog({super.key, required this.project});
 
   @override
-  NewProjectDialogState createState() => NewProjectDialogState();
+  EditProjectDialogState createState() => EditProjectDialogState();
 }
 
-class NewProjectDialogState extends State<NewProjectDialog> {
+class EditProjectDialogState extends State<EditProjectDialog> {
   static final double space = 8.0;
   final _formKey = GlobalKey<FormState>();
-
-  final TileSetProject _project = TileSetProject(name: '', tileWidth: 32, tileHeight: 32);
 
   @override
   Widget build(BuildContext context) {
@@ -45,32 +45,12 @@ class NewProjectDialogState extends State<NewProjectDialog> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text("New project", style: Theme.of(context).textTheme.headlineSmall),
+                              Text("Edit project", style: Theme.of(context).textTheme.headlineSmall),
                               const Align(alignment: Alignment.topRight, child: CloseButton()),
                             ],
                           ),
                           SizedBox(height: space * 2),
-                          ProjectWidget(project: _project, edit: false),
-                          /*
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(child: Text("Tile width", style: Theme.of(context).textTheme.bodyMedium)),
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                                  initialValue: _tileWidth.toString(),
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  onChanged: (String value) {
-                                    _tileWidth = int.tryParse(value);
-                                  },
-                                  validator: (value) => value!.isEmpty ? 'Please define tile width' : null,
-                                ),
-                              ),
-                            ],
-                          ),
-                          */
+                          ProjectWidget(project: widget.project, edit: true),
                           SizedBox(height: space * 2),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -84,10 +64,10 @@ class NewProjectDialogState extends State<NewProjectDialog> {
                               ElevatedButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    Navigator.of(context).pop(_project);
+                                    Navigator.of(context).pop(widget.project);
                                   }
                                 },
-                                child: const Text('Create'),
+                                child: const Text('Modify'),
                               ),
                             ],
                           ),

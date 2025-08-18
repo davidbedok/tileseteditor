@@ -1,14 +1,27 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 
 class TileSetEditorMenuBar extends StatelessWidget {
   final TileSetProject? project;
   final void Function() onNewProject;
+  final void Function() onOpenProject;
+  final void Function() onSaveProject;
+  final void Function() onSaveAsProject;
+  final void Function() onEditProject;
+  final void Function() onCloseProject;
 
-  const TileSetEditorMenuBar({super.key, required this.project, required this.onNewProject});
+  const TileSetEditorMenuBar({
+    super.key,
+    required this.project,
+    required this.onNewProject,
+    required this.onOpenProject,
+    required this.onSaveProject,
+    required this.onSaveAsProject,
+    required this.onEditProject,
+    required this.onCloseProject,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,27 +44,13 @@ class TileSetEditorMenuBar extends StatelessWidget {
               ),
             ),
             */
-            MenuItemButton(
-              onPressed: () {
-                onNewProject.call();
-              },
-              child: const MenuAcceleratorLabel('&New project'),
-            ),
-            MenuItemButton(
-              onPressed: () {
-                print('Open project');
-              },
-              child: const MenuAcceleratorLabel('&Open project'),
-            ),
+            MenuItemButton(onPressed: onNewProject, child: const MenuAcceleratorLabel('&New project')),
+            MenuItemButton(onPressed: onOpenProject, child: const MenuAcceleratorLabel('&Open project')),
             Divider(),
-            MenuItemButton(
-              onPressed: project == null
-                  ? null
-                  : () {
-                      print('Save project');
-                    },
-              child: const MenuAcceleratorLabel('&Save project..'),
-            ),
+            MenuItemButton(onPressed: project == null ? null : onSaveProject, child: const MenuAcceleratorLabel('&Save project')),
+            MenuItemButton(onPressed: project == null ? null : onSaveAsProject, child: const MenuAcceleratorLabel('Save as..')),
+            Divider(),
+            MenuItemButton(onPressed: project == null ? null : onCloseProject, child: const MenuAcceleratorLabel('&Close project')),
             Divider(),
             MenuItemButton(
               onPressed: () {
@@ -61,6 +60,10 @@ class TileSetEditorMenuBar extends StatelessWidget {
             ),
           ],
           child: const MenuAcceleratorLabel('&File'),
+        ),
+        SubmenuButton(
+          menuChildren: <Widget>[MenuItemButton(onPressed: project == null ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project'))],
+          child: const MenuAcceleratorLabel('&Edit'),
         ),
         SubmenuButton(
           menuChildren: <Widget>[
