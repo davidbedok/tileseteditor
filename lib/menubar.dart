@@ -11,6 +11,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
   final void Function() onSaveAsProject;
   final void Function() onEditProject;
   final void Function() onCloseProject;
+  final void Function() onAddTileSet;
 
   const TileSetEditorMenuBar({
     super.key,
@@ -21,6 +22,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
     required this.onSaveAsProject,
     required this.onEditProject,
     required this.onCloseProject,
+    required this.onAddTileSet,
   });
 
   @override
@@ -62,7 +64,11 @@ class TileSetEditorMenuBar extends StatelessWidget {
           child: const MenuAcceleratorLabel('&File'),
         ),
         SubmenuButton(
-          menuChildren: <Widget>[MenuItemButton(onPressed: project == null ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project'))],
+          menuChildren: <Widget>[
+            MenuItemButton(onPressed: project == null ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project')),
+            Divider(),
+            MenuItemButton(onPressed: project == null ? null : onAddTileSet, child: const MenuAcceleratorLabel('&Add tileset')),
+          ],
           child: const MenuAcceleratorLabel('&Edit'),
         ),
         SubmenuButton(

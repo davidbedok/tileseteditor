@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/menubar.dart';
 
 class TileSetEditorApp extends StatefulWidget {
@@ -50,6 +54,7 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                     onSaveAsProject: saveAsProject,
                     onEditProject: editProject,
                     onCloseProject: closeProject,
+                    onAddTileSet: addTileSet,
                   ),
                 ),
               ],
@@ -63,62 +68,19 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                     Row(
                       children: [
                         SizedBox(
-                          width: 300,
-                          height: 200,
-                          child: Container(color: Colors.blue, child: Text('Row 1 | Col 1')),
-                        ),
-                        SizedBox(
-                          width: 300,
-                          height: 200,
-                          child: Container(color: Colors.red, child: Text('Row 1 | Col 2')),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 200,
-                          height: 200,
-                          child: Container(color: Colors.amber, child: Text('Row 2')),
+                          width: 450,
+                          height: MediaQuery.of(context).size.height - 200,
+                          child: Container(
+                            margin: const EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(0),
+                            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                            child: GameWidget(game: EditorGame(400, MediaQuery.of(context).size.height - 250)),
+                          ),
                         ),
                       ],
                     ),
-                    Row(children: [Text('1')]),
                     SizedBox(height: 20),
                     Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
-                    Row(children: [Text('1')]),
-                    SizedBox(height: 20),
-                    Row(children: [Text('2')]),
-                    Row(children: [Text('3')]),
                   ],
                 ),
               ),
@@ -225,5 +187,21 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
     setState(() {
       project = null;
     });
+  }
+
+  void addTileSet() async {
+    if (project != null) {
+      TileSet? dialogResult = await showDialog<TileSet>(
+        context: context,
+        builder: (BuildContext context) {
+          return AddTileSetDialog(project: project!);
+        },
+      );
+      if (dialogResult != null) {
+        setState(() {
+          project!.addTileSet(dialogResult);
+        });
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 
 class TileSetProject {
   String? filePath;
@@ -6,6 +7,8 @@ class TileSetProject {
   String? description;
   int tileWidth;
   int tileHeight;
+
+  List<TileSet> tileSets = [];
 
   TileSetProject({required this.name, this.description, required this.tileWidth, required this.tileHeight});
 
@@ -43,5 +46,9 @@ class TileSetProject {
       _ => throw const FormatException('Failed to load TileSetProject'),
     };
     return result;
+  }
+
+  void addTileSet(TileSet tileSet) {
+    tileSets.add(tileSet);
   }
 }
