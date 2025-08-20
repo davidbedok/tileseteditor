@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:ui' as dui;
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flame/game.dart';
@@ -25,11 +27,14 @@ class TileSetEditorApp extends StatefulWidget {
 class _TileSetEditorAppState extends State<TileSetEditorApp> {
   TileSetProject? project;
   TileSet? tileSet;
+  // late Future<dui.Image> selectedTileSetImage;
+  dui.Image? tileSetImage;
 
   @override
   void initState() {
     super.initState();
     project = null;
+    // selectedTileSetImage = getImage('D:\tilesetprojects\example\magecity.png');
   }
 
   @override
@@ -74,12 +79,13 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 10),
                     Visibility(
                       visible: project != null,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Flexible(child: Text("TileSet(s)", style: Theme.of(context).textTheme.bodyMedium)),
+                          Flexible(child: Text("TileSet", style: Theme.of(context).textTheme.bodyMedium)),
                           SizedBox(width: 10),
                           Expanded(
                             child: InputDecorator(
@@ -106,9 +112,12 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                                         : project!.tileSets.map((TileSet tileSetItem) {
                                             return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
                                           }).toList(),
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
+                                      var image = await getImage(value!.filePath);
                                       setState(() {
                                         tileSet = value;
+                                        // selectedTileSetImage = getImage(tileSet!.filePath);
+                                        tileSetImage = image;
                                       });
                                     },
                                   ),
@@ -119,19 +128,41 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 450,
-                          height: MediaQuery.of(context).size.height - 200,
-                          child: Container(
-                            margin: const EdgeInsets.all(0),
-                            padding: const EdgeInsets.all(0),
-                            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-                            child: GameWidget(game: EditorGame(400, MediaQuery.of(context).size.height - 250)),
+                    SizedBox(height: 10),
+                    Visibility(
+                      visible: tileSetImage != null,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 450,
+                            height: MediaQuery.of(context).size.height - 200,
+                            child: Container(
+                              margin: const EdgeInsets.all(0),
+                              padding: const EdgeInsets.all(0),
+                              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+
+                              /*
+                              child: FutureBuilder<dui.Image>(
+                                future: selectedTileSetImage,
+                                builder: (BuildContext context, AsyncSnapshot<dui.Image> stub) {
+                                  if (stub.connectionState == ConnectionState.done && stub.hasData) {
+                                    return GameWidget(
+                                      game: EditorGame(width: 400, height: MediaQuery.of(context).size.height - 250, tileSetImage: stub.data!),
+                                    );
+                                  } else if (stub.hasError) {
+                                    return Text('No image to load');
+                                  }
+                                  return const CircularProgressIndicator();
+                                },
+                              ),
+                              */
+                              child: GameWidget(
+                                game: EditorGame(width: 400, height: MediaQuery.of(context).size.height - 250, tileSetImage: tileSetImage),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 20),
                     Row(children: [Text('2')]),
@@ -257,5 +288,19 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
         });
       }
     }
+  }
+
+  Future<dui.Image> getImage(String path) async {
+    Completer<ImageInfo> completer = Completer();
+    Image img = Image.file(File(path));
+    img.image
+        .resolve(ImageConfiguration())
+        .addListener(
+          ImageStreamListener((ImageInfo info, bool _) {
+            completer.complete(info);
+          }),
+        );
+    ImageInfo imageInfo = await completer.future;
+    return imageInfo.image;
   }
 }
