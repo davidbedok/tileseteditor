@@ -12,4 +12,12 @@ class TileSet {
   String toString() {
     return 'TileSet $name (${tileWidth}x$tileHeight) in $filePath';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'input': filePath,
+      'tile': {'width': tileWidth, 'height': tileHeight},
+    };
+  }
 }

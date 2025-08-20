@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -9,6 +10,8 @@ class TileSetWidget extends StatelessWidget {
   final bool edit;
 
   final List<int> _tileSizeOptions = List<int>.generate(41, (i) => i + 10);
+
+  final sourceController = TextEditingController();
 
   TileSetWidget({super.key, required this.tileSet, required this.edit});
 
@@ -37,7 +40,22 @@ class TileSetWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Flexible(child: Text("Source", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(child: TextField(style: Theme.of(context).textTheme.bodyMedium, readOnly: true)),
+            Expanded(
+              child: TextFormField(
+                controller: sourceController,
+                style: Theme.of(context).textTheme.bodyMedium,
+                readOnly: true,
+                validator: (value) => value!.isEmpty ? 'Please select a tileset image' : null,
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  browseTileSet();
+                },
+                child: const Text('Browse'),
+              ),
+            ),
           ],
         ),
         SizedBox(height: space),
@@ -126,5 +144,18 @@ class TileSetWidget extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void browseTileSet() async {
+    FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      allowedExtensions: ['png'],
+      dialogTitle: 'Open TileSet',
+      type: FileType.image,
+    );
+    if (filePickerResult != null) {
+      sourceController.text = filePickerResult.files.single.path!;
+      tileSet.filePath = sourceController.text;
+    }
   }
 }

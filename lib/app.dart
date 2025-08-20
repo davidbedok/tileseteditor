@@ -116,7 +116,7 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
     FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
       allowMultiple: false,
       allowedExtensions: ['tsp'],
-      dialogTitle: 'Open Tile Set Project',
+      dialogTitle: 'Open TileSet Project',
       type: FileType.custom,
     );
     if (filePickerResult != null) {

@@ -29,7 +29,16 @@ class TileSetProject {
       'description': description,
       'tile': {'width': tileWidth, 'height': tileHeight},
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
+      'sources': toTileSetJson(),
     };
+  }
+
+  List<Map<String, dynamic>> toTileSetJson() {
+    List<Map<String, dynamic>> result = [];
+    for (var tileSet in tileSets) {
+      result.add(tileSet.toJson());
+    }
+    return result;
   }
 
   factory TileSetProject.fromJson(Map<String, dynamic> json) {
