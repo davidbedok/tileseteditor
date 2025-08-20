@@ -54,6 +54,10 @@ class TileSetProject {
         TileSetProject(name: name, description: description, tileWidth: tileWidth, tileHeight: tileHeight),
       _ => throw const FormatException('Failed to load TileSetProject'),
     };
+    List<Map<String, dynamic>> sources = json['sources'] != null ? (json['sources'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var source in sources) {
+      result.addTileSet(TileSet.fromJson(source));
+    }
     return result;
   }
 

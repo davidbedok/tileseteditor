@@ -17,7 +17,25 @@ class TileSet {
     return {
       'name': name,
       'input': filePath,
-      'tile': {'width': tileWidth, 'height': tileHeight},
+      'tile': {'width': tileWidth, 'height': tileHeight, 'margin': margin, 'spacing': spacing},
     };
+  }
+
+  factory TileSet.fromJson(Map<String, dynamic> json) {
+    TileSet result = switch (json) {
+      {
+        'name': String name, //
+        'input': String filePath, //
+        'tile': {
+          'width': int tileWidth, //
+          'height': int tileHeight, //
+          'margin': int margin,
+          'spacing': int spacing,
+        }, //
+      } =>
+        TileSet(name: name, filePath: filePath, tileWidth: tileWidth, tileHeight: tileHeight, margin: margin, spacing: spacing),
+      _ => throw const FormatException('Failed to load TileSetProject'),
+    };
+    return result;
   }
 }

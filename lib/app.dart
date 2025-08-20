@@ -24,6 +24,7 @@ class TileSetEditorApp extends StatefulWidget {
 
 class _TileSetEditorAppState extends State<TileSetEditorApp> {
   TileSetProject? project;
+  TileSet? tileSet;
 
   @override
   void initState() {
@@ -65,6 +66,59 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                 height: MediaQuery.of(context).size.height - 100,
                 child: ListView(
                   children: [
+                    Row(
+                      children: [
+                        Text(
+                          project == null ? 'Please create or open a TileSet Project.' : '${project!.name} TileSet Project',
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ],
+                    ),
+                    Visibility(
+                      visible: project != null,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Flexible(child: Text("TileSet(s)", style: Theme.of(context).textTheme.bodyMedium)),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: InputDecorator(
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                                contentPadding: EdgeInsets.all(5),
+                              ),
+                              child: Theme(
+                                data: Theme.of(context).copyWith(
+                                  splashColor: Colors.transparent, //
+                                  highlightColor: Colors.transparent, //
+                                  hoverColor: Colors.transparent, //
+                                ),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton<TileSet>(
+                                    value: tileSet,
+                                    hint: Text('Choose a TileSet..'),
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    focusColor: Colors.transparent,
+                                    isDense: true,
+                                    isExpanded: true,
+                                    items: project == null
+                                        ? []
+                                        : project!.tileSets.map((TileSet tileSetItem) {
+                                            return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
+                                          }).toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        tileSet = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     Row(
                       children: [
                         SizedBox(
