@@ -7,12 +7,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/menubar.dart';
 
@@ -146,7 +148,7 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () {
-                              print('Add new slice: $selectedTiles');
+                              addSlice();
                             },
                             child: const Text('Add new slice'),
                           ),
@@ -328,13 +330,28 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
     return imageInfo.image;
   }
 
-  void selectTile(bool selected, int x, int y) {
+  void selectTile(bool selected, TileCoord coord) {
     if (selected) {
-      selectedTiles.add(TileCoord(x, y));
-      print('Tile selected: $x, $y');
+      selectedTiles.add(coord);
     } else {
-      selectedTiles.removeWhere((coord) => coord.x == x && coord.y == y);
-      print('Tile unselected: $x, $y');
+      selectedTiles.removeWhere((c) => c.x == coord.x && c.y == coord.y);
+    }
+  }
+
+  void addSlice() async {
+    if (project != null && tileSet != null) {
+      TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
+        context: context,
+        builder: (BuildContext context) {
+          return AddSliceDialog(tileSet: tileSet!, tiles: selectedTiles);
+        },
+      );
+      if (dialogResult != null) {
+        setState(() {
+          tileSet!.addSlice(dialogResult);
+          selectedTiles.clear();
+        });
+      }
     }
   }
 }

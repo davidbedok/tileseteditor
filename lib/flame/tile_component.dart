@@ -3,6 +3,9 @@ import 'dart:ui' as dui;
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tile_info.dart';
+import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 
 class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, TapCallbacks {
@@ -14,6 +17,7 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
   int atlasY;
 
   bool selected = false;
+  TileInfo info;
 
   TileComponent({
     required this.tileSetImage,
@@ -22,6 +26,7 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     required this.atlasX,
     required this.atlasY,
     required super.position,
+    required this.info,
   });
 
   @override
@@ -34,9 +39,10 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
 
   @override
   void onTapUp(TapUpEvent event) {
-    selected = !selected;
-    game.onSelectTile.call(selected, atlasX, atlasY);
-    print('Tile $atlasX:$atlasY');
+    if (info.type == TileType.free) {
+      selected = !selected;
+      game.onSelectTile.call(selected, TileCoord(atlasX + 1, atlasY + 1));
+    }
   }
 
   static Paint getBorderPaint(Color color, double strokeWidth) {
@@ -49,8 +55,19 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    if (selected) {
-      canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getBorderPaint(Colors.blue, 2.0));
+    switch (info.type) {
+      case TileType.free:
+        if (selected) {
+          canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getBorderPaint(Colors.blue, 2.0));
+        }
+      case TileType.slice:
+        canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getBorderPaint(Colors.yellow, 4.0));
+      case TileType.group:
+        // TODO: Handle this case.
+        throw UnimplementedError();
+      case TileType.garbage:
+        // TODO: Handle this case.
+        throw UnimplementedError();
     }
   }
 }
