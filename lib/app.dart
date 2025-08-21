@@ -10,6 +10,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
+import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
@@ -29,6 +30,8 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
   TileSet? tileSet;
   // late Future<dui.Image> selectedTileSetImage;
   dui.Image? tileSetImage;
+
+  List<TileCoord> selectedTiles = [];
 
   @override
   void initState() {
@@ -132,40 +135,61 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                     Visibility(
                       visible: tileSetImage != null,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            width: 450,
-                            height: MediaQuery.of(context).size.height - 200,
-                            child: Container(
-                              margin: const EdgeInsets.all(0),
-                              padding: const EdgeInsets.all(0),
-                              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-
-                              /*
-                              child: FutureBuilder<dui.Image>(
-                                future: selectedTileSetImage,
-                                builder: (BuildContext context, AsyncSnapshot<dui.Image> stub) {
-                                  if (stub.connectionState == ConnectionState.done && stub.hasData) {
-                                    return GameWidget(
-                                      game: EditorGame(width: 400, height: MediaQuery.of(context).size.height - 250, tileSetImage: stub.data!),
-                                    );
-                                  } else if (stub.hasError) {
-                                    return Text('No image to load');
-                                  }
-                                  return const CircularProgressIndicator();
-                                },
-                              ),
-                              */
-                              child: GameWidget(
-                                game: EditorGame(width: 400, height: MediaQuery.of(context).size.height - 250, tileSetImage: tileSetImage),
-                              ),
-                            ),
+                          ElevatedButton(
+                            onPressed: () {
+                              print('Add new group: $selectedTiles');
+                            },
+                            child: const Text('Add new group'),
+                          ),
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              print('Add new slice: $selectedTiles');
+                            },
+                            child: const Text('Add new slice'),
+                          ),
+                          SizedBox(width: 10),
+                          ElevatedButton(
+                            onPressed: () {
+                              print('Garbage: $selectedTiles');
+                              setState(() {
+                                // refresh Game..
+                                tileSet = tileSet;
+                              });
+                            },
+                            child: const Text('Garbage'),
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(height: 10),
+                    tileSet != null && tileSetImage != null
+                        ? Row(
+                            children: [
+                              SizedBox(
+                                width: 450,
+                                height: MediaQuery.of(context).size.height - 200,
+                                child: Container(
+                                  margin: const EdgeInsets.all(0),
+                                  padding: const EdgeInsets.all(0),
+                                  decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                                  child: GameWidget(
+                                    game: EditorGame(
+                                      tileSet: tileSet!,
+                                      onSelectTile: selectTile,
+                                      width: 400,
+                                      height: MediaQuery.of(context).size.height - 250,
+                                      tileSetImage: tileSetImage,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : SizedBox(height: 0),
                     SizedBox(height: 20),
-                    Row(children: [Text('2')]),
                   ],
                 ),
               ),
@@ -302,5 +326,15 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
         );
     ImageInfo imageInfo = await completer.future;
     return imageInfo.image;
+  }
+
+  void selectTile(bool selected, int x, int y) {
+    if (selected) {
+      selectedTiles.add(TileCoord(x, y));
+      print('Tile selected: $x, $y');
+    } else {
+      selectedTiles.removeWhere((coord) => coord.x == x && coord.y == y);
+      print('Tile unselected: $x, $y');
+    }
   }
 }

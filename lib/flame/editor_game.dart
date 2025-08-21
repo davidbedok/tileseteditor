@@ -4,14 +4,18 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/flame/editor_world.dart';
 
 class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetector {
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
+  TileSet tileSet;
 
-  EditorGame({required double width, required double height, required dui.Image? tileSetImage})
+  final void Function(bool selected, int x, int y) onSelectTile;
+
+  EditorGame({required this.tileSet, required this.onSelectTile, required double width, required double height, required dui.Image? tileSetImage})
     : super(
         world: EditorWorld(image: tileSetImage),
         camera: CameraComponent.withFixedResolution(width: width, height: height),
