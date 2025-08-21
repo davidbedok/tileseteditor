@@ -2,6 +2,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
+import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
+import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
 
 class TileSetWidget extends StatelessWidget {
   static final double space = 8.0;
@@ -19,21 +22,13 @@ class TileSetWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Name", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                initialValue: tileSet.name,
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (value) {
-                  tileSet.name = value;
-                },
-                validator: (value) => value!.isEmpty ? 'Please enter the name of the tileset' : null,
-              ),
-            ),
-          ],
+        AppDialogTextField(
+          name: 'Name',
+          initialValue: tileSet.name,
+          validationMessage: 'Please enter the name of the TileSet.',
+          onChanged: (String value) {
+            tileSet.name = value;
+          },
         ),
         SizedBox(height: space),
         Row(
@@ -59,88 +54,40 @@ class TileSetWidget extends StatelessWidget {
           ],
         ),
         SizedBox(height: space),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Tile width", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                value: tileSet.tileWidth,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: const InputDecoration(border: InputBorder.none),
-                isExpanded: true,
-                items: _tileSizeOptions.map((int size) {
-                  return DropdownMenuItem<int>(value: size, child: Text(size.toString()));
-                }).toList(),
-                onChanged: edit
-                    ? null
-                    : (value) {
-                        tileSet.tileWidth = value!;
-                      },
-                validator: (value) => value == null ? 'Please choose tile width' : null,
-              ),
-            ),
-          ],
+        AppDialogTileSizeField(
+          name: 'Tile width',
+          initialValue: tileSet.tileWidth,
+          validationMessage: 'Please choose tile width',
+          edit: edit,
+          onChanged: (int value) {
+            tileSet.tileWidth = value;
+          },
+        ),
+        AppDialogTileSizeField(
+          name: 'Tile height',
+          initialValue: tileSet.tileHeight,
+          validationMessage: 'Please choose tile height',
+          edit: edit,
+          onChanged: (int value) {
+            tileSet.tileHeight = value;
+          },
         ),
         SizedBox(height: space),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Tile height", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: DropdownButtonFormField<int>(
-                value: tileSet.tileHeight,
-                style: Theme.of(context).textTheme.bodyMedium,
-                decoration: const InputDecoration(border: InputBorder.none),
-                isExpanded: true,
-                items: _tileSizeOptions.map((int size) {
-                  return DropdownMenuItem<int>(value: size, child: Text(size.toString()));
-                }).toList(),
-                onChanged: edit
-                    ? null
-                    : (value) {
-                        tileSet.tileHeight = value!;
-                      },
-                validator: (value) => value == null ? 'Please choose tile height' : null,
-              ),
-            ),
-          ],
+        AppDialogNumberField(
+          name: 'Margin',
+          initialValue: tileSet.margin,
+          validationMessage: 'Please define Margin of the TileSet',
+          onChanged: (int value) {
+            tileSet.margin = value;
+          },
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Margin", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                initialValue: tileSet.margin.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (String value) {
-                  tileSet.margin = int.tryParse(value) ?? 0;
-                },
-                validator: (value) => value!.isEmpty ? 'Please define tileset margin' : null,
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Spacing", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                initialValue: tileSet.spacing.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (String value) {
-                  tileSet.spacing = int.tryParse(value) ?? 0;
-                },
-                validator: (value) => value!.isEmpty ? 'Please define tileset spacing' : null,
-              ),
-            ),
-          ],
+        AppDialogNumberField(
+          name: 'Spacing',
+          initialValue: tileSet.spacing,
+          validationMessage: 'Please define Spacing of the TileSet',
+          onChanged: (int value) {
+            tileSet.spacing = value;
+          },
         ),
       ],
     );

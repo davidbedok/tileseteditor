@@ -1,6 +1,7 @@
-import 'dart:math' as Math;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
@@ -25,79 +26,23 @@ class AddSliceDialogState extends State<AddSliceDialog> {
   @override
   void initState() {
     super.initState();
-    int minX = widget.tiles.map((coord) => coord.x).reduce(Math.min);
-    int minY = widget.tiles.map((coord) => coord.y).reduce(Math.min);
-    int maxX = widget.tiles.map((coord) => coord.x).reduce(Math.max);
-    int maxY = widget.tiles.map((coord) => coord.y).reduce(Math.max);
+    int minX = widget.tiles.map((coord) => coord.x).reduce(min);
+    int minY = widget.tiles.map((coord) => coord.y).reduce(min);
+    int maxX = widget.tiles.map((coord) => coord.x).reduce(max);
+    int maxY = widget.tiles.map((coord) => coord.y).reduce(max);
     _slice = TileSetSlice('', minX, minY, maxX - minX + 1, maxY - minY + 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: Theme(
-        data: Theme.of(context),
-        child: Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: EdgeInsets.all(space),
-            child: SizedBox(
-              width: 800,
-              child: ListView(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      // boxShadow: const [BoxShadow(color: Colors.grey, offset: Offset(3, 3), spreadRadius: 2, blurStyle: BlurStyle.solid)],
-                    ),
-                    padding: EdgeInsets.all(space),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text("Add tileset slice", style: Theme.of(context).textTheme.headlineSmall),
-                              const Align(alignment: Alignment.topRight, child: CloseButton()),
-                            ],
-                          ),
-                          SizedBox(height: space * 2),
-                          SliceWidget(slice: _slice, edit: false),
-                          SizedBox(height: space * 2),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Close'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.of(context).pop(_slice);
-                                  }
-                                },
-                                child: const Text('Add'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    return AppDialogWidget(
+      formKey: _formKey,
+      title: 'Add Slice',
+      actionButton: 'Add',
+      onAction: () {
+        Navigator.of(context).pop(_slice);
+      },
+      children: [SliceWidget(slice: _slice, edit: false)],
     );
   }
 }

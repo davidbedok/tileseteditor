@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/project_widget.dart';
 
 class NewProjectDialog extends StatefulWidget {
@@ -17,90 +18,14 @@ class NewProjectDialogState extends State<NewProjectDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: Theme(
-        data: Theme.of(context),
-        child: Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: EdgeInsets.all(space),
-            child: SizedBox(
-              width: 800,
-              child: ListView(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: const [BoxShadow(color: Colors.black, offset: Offset(6, 6), spreadRadius: 2, blurStyle: BlurStyle.solid)],
-                    ),
-                    padding: EdgeInsets.all(space),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text("New project", style: Theme.of(context).textTheme.headlineSmall),
-                              const Align(alignment: Alignment.topRight, child: CloseButton()),
-                            ],
-                          ),
-                          SizedBox(height: space * 2),
-                          ProjectWidget(project: _project, edit: false),
-                          /*
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(child: Text("Tile width", style: Theme.of(context).textTheme.bodyMedium)),
-                              Expanded(
-                                child: TextFormField(
-                                  keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                                  inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                                  initialValue: _tileWidth.toString(),
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                  onChanged: (String value) {
-                                    _tileWidth = int.tryParse(value);
-                                  },
-                                  validator: (value) => value!.isEmpty ? 'Please define tile width' : null,
-                                ),
-                              ),
-                            ],
-                          ),
-                          */
-                          SizedBox(height: space * 2),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Close'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.of(context).pop(_project);
-                                  }
-                                },
-                                child: const Text('Create'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    return AppDialogWidget(
+      formKey: _formKey,
+      title: 'New Project',
+      actionButton: 'Create',
+      onAction: () {
+        Navigator.of(context).pop(_project);
+      },
+      children: [ProjectWidget(project: _project, edit: false)],
     );
   }
 }

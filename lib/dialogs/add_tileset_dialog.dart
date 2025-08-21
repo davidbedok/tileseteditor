@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/tileset_widget.dart';
 
 class AddTileSetDialog extends StatefulWidget {
@@ -26,70 +27,14 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: Theme(
-        data: Theme.of(context),
-        child: Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: EdgeInsets.all(space),
-            child: SizedBox(
-              width: 800,
-              child: ListView(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(5),
-                      // boxShadow: const [BoxShadow(color: Colors.grey, offset: Offset(3, 3), spreadRadius: 2, blurStyle: BlurStyle.solid)],
-                    ),
-                    padding: EdgeInsets.all(space),
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text("Add tileset", style: Theme.of(context).textTheme.headlineSmall),
-                              const Align(alignment: Alignment.topRight, child: CloseButton()),
-                            ],
-                          ),
-                          SizedBox(height: space * 2),
-                          TileSetWidget(tileSet: _tileSet, edit: false),
-                          SizedBox(height: space * 2),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('Close'),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.of(context).pop(_tileSet);
-                                  }
-                                },
-                                child: const Text('Add'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+    return AppDialogWidget(
+      formKey: _formKey,
+      title: 'Add TileSet',
+      actionButton: 'Add',
+      onAction: () {
+        Navigator.of(context).pop(_tileSet);
+      },
+      children: [TileSetWidget(tileSet: _tileSet, edit: false)],
     );
   }
 }

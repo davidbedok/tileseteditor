@@ -1,8 +1,22 @@
-- Select a tile within Flame
-
 - Create new slice from selected tiles -> selected tiles must be a rectangle shape!
 - Mark selected tiles as garbage -> any tiles can be selected
 - Create new group from selected tiles -> anz tiles can be selected
+
+- Refactor TileSet JSON
+    From:
+            "tile": {
+                "width": 32,
+                "height": 32,
+                "margin": 0,
+                "spacing": 0
+            },
+    To:
+            "tile": {
+                "width": 32,
+                "height": 32
+            },
+            "margin": 0,
+            "spacing": 0
 
 - Get info from running game within flutter widget
     - Get the selected tile's x, y coords

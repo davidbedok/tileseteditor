@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
+import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 
 class SliceWidget extends StatelessWidget {
   static final double space = 8.0;
@@ -14,94 +15,46 @@ class SliceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Name", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                initialValue: slice.name,
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (value) {
-                  slice.name = value;
-                },
-                validator: (value) => value!.isEmpty ? 'Please enter the name of the slice' : null,
-              ),
-            ),
-          ],
+        AppDialogTextField(
+          name: 'Name',
+          initialValue: slice.name,
+          validationMessage: 'Please enter the name of the Slice.',
+          onChanged: (String value) {
+            slice.name = value;
+          },
         ),
         SizedBox(height: space),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Left", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                initialValue: slice.left.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (String value) {
-                  slice.left = int.tryParse(value) ?? 0;
-                },
-                validator: (value) => value!.isEmpty ? 'Please define left' : null,
-              ),
-            ),
-          ],
+        AppDialogNumberField(
+          name: 'Left',
+          initialValue: slice.left,
+          validationMessage: 'Please define Left of the Slice',
+          onChanged: (int value) {
+            slice.left = value;
+          },
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Top", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                initialValue: slice.top.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (String value) {
-                  slice.top = int.tryParse(value) ?? 0;
-                },
-                validator: (value) => value!.isEmpty ? 'Please define top' : null,
-              ),
-            ),
-          ],
+        AppDialogNumberField(
+          name: 'Top',
+          initialValue: slice.top,
+          validationMessage: 'Please define Top of the Slice',
+          onChanged: (int value) {
+            slice.top = value;
+          },
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Width", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                initialValue: slice.width.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (String value) {
-                  slice.width = int.tryParse(value) ?? 0;
-                },
-                validator: (value) => value!.isEmpty ? 'Please define width' : null,
-              ),
-            ),
-          ],
+        AppDialogNumberField(
+          name: 'Width',
+          initialValue: slice.width,
+          validationMessage: 'Please define Width of the Slice',
+          onChanged: (int value) {
+            slice.width = value;
+          },
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Flexible(child: Text("Height", style: Theme.of(context).textTheme.bodyMedium)),
-            Expanded(
-              child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-                initialValue: slice.height.toString(),
-                style: Theme.of(context).textTheme.bodyMedium,
-                onChanged: (String value) {
-                  slice.height = int.tryParse(value) ?? 0;
-                },
-                validator: (value) => value!.isEmpty ? 'Please define height' : null,
-              ),
-            ),
-          ],
+        AppDialogNumberField(
+          name: 'Height',
+          initialValue: slice.height,
+          validationMessage: 'Please define Height of the Slice',
+          onChanged: (int value) {
+            slice.height = value;
+          },
         ),
       ],
     );
