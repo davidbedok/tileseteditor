@@ -1,8 +1,17 @@
-- Create new slice from selected tiles -> selected tiles must be a rectangle shape!
-    - Use random colors from all kind of diff. slice
-
-- Create new group from selected tiles -> any tiles can be selected
 - Mark selected tiles as garbage -> any tiles can be selected
+
+- Select a group/slice
+    --> option to delete it
+    --> option to edit it:
+        - rename
+        - select new tile(s) than modify (if a group/slice is selected, change the buttons..)
+            - + Slice, + Group, + Garbage --> when no group/slice is selected
+            - Edit Slice, Remove Slice --> when slice is selected
+            - Edit Group, Remove Group --> when group is selected
+
+- Do not reload the gamewidget when select a tile.. (check number of selected tiles before open a dialog..)
+
+- DropDown list for the available slices/groups
 
 - Get info from running game within flutter widget
     - Get the selected tile's x, y coords
