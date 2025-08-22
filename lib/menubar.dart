@@ -28,8 +28,14 @@ class TileSetEditorMenuBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MenuBar(
+      style: MenuStyle(
+        backgroundColor: WidgetStatePropertyAll(Colors.amber),
+        // padding: WidgetStatePropertyAll(EdgeInsets.only(left: 10)),
+        maximumSize: WidgetStatePropertyAll(Size(100, 30)),
+      ),
       children: <Widget>[
         SubmenuButton(
+          style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.only(left: 5, right: 5))),
           menuChildren: <Widget>[
             /*
             MenuItemButton(
@@ -46,7 +52,11 @@ class TileSetEditorMenuBar extends StatelessWidget {
               ),
             ),
             */
-            MenuItemButton(onPressed: onNewProject, child: const MenuAcceleratorLabel('&New project')),
+            MenuItemButton(
+              onPressed: onNewProject,
+              // style: MenuItemButton.styleFrom(textStyle: Theme.of(context).textTheme.bodySmall),
+              child: const MenuAcceleratorLabel('&New project'),
+            ),
             MenuItemButton(onPressed: onOpenProject, child: const MenuAcceleratorLabel('&Open project')),
             Divider(),
             MenuItemButton(onPressed: project == null ? null : onSaveProject, child: const MenuAcceleratorLabel('&Save project')),
@@ -64,6 +74,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
           child: const MenuAcceleratorLabel('&File'),
         ),
         SubmenuButton(
+          style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.only(left: 5, right: 5))),
           menuChildren: <Widget>[
             MenuItemButton(onPressed: project == null ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project')),
             Divider(),
@@ -72,6 +83,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
           child: const MenuAcceleratorLabel('&Edit'),
         ),
         SubmenuButton(
+          style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.only(left: 5, right: 5))),
           menuChildren: <Widget>[
             MenuItemButton(
               onPressed: () {

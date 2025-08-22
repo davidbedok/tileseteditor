@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 
 class TileSetSlice {
@@ -7,9 +10,11 @@ class TileSetSlice {
   int width;
   int height;
 
+  Color color = RandomColor.getColorObject(Options());
+
   TileSetSlice(this.name, this.left, this.top, this.width, this.height);
 
-  bool isCoord(TileCoord coord) {
+  bool isInnerCoord(TileCoord coord) {
     return coord.x >= left && coord.x < left + width && coord.y >= top && coord.y < top + height;
   }
 

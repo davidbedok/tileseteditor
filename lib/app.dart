@@ -7,12 +7,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
@@ -80,7 +82,7 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                       children: [
                         Text(
                           project == null ? 'Please create or open a TileSet Project.' : '${project!.name} TileSet Project',
-                          style: Theme.of(context).textTheme.headlineSmall,
+                          style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],
                     ),
@@ -139,29 +141,46 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              print('Add new group: $selectedTiles');
-                            },
-                            child: const Text('Add new group'),
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.add_circle_outline),
+                            label: const Text('Slice'),
+                            onPressed: selectedTiles.isEmpty
+                                ? null
+                                : () {
+                                    addSlice();
+                                  },
                           ),
-                          SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              addSlice();
-                            },
-                            child: const Text('Add new slice'),
+                          SizedBox(width: 5),
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.add_circle_outline),
+                            label: const Text('Group'),
+                            onPressed: selectedTiles.isEmpty
+                                ? null
+                                : () {
+                                    addGroup();
+                                  },
                           ),
-                          SizedBox(width: 10),
-                          ElevatedButton(
+                          SizedBox(width: 5),
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.add_circle_outline),
+                            label: const Text('Garbage'),
+                            onPressed: selectedTiles.isEmpty
+                                ? null
+                                : () {
+                                    print('Garbage: $selectedTiles');
+                                    setState(() {
+                                      // refresh Game..
+                                      tileSet = tileSet;
+                                    });
+                                  },
+                          ),
+                          SizedBox(width: 5),
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.delete),
+                            label: const Text('Delete'),
                             onPressed: () {
-                              print('Garbage: $selectedTiles');
-                              setState(() {
-                                // refresh Game..
-                                tileSet = tileSet;
-                              });
+                              print('Delete');
                             },
-                            child: const Text('Garbage'),
                           ),
                         ],
                       ),
@@ -184,7 +203,57 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                                       width: 400,
                                       height: MediaQuery.of(context).size.height - 250,
                                       tileSetImage: tileSetImage,
+                                      selectedTiles: selectedTiles,
                                     ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width - 500,
+                                height: MediaQuery.of(context).size.height - 200,
+                                child: Container(
+                                  margin: const EdgeInsets.all(0),
+                                  padding: const EdgeInsets.all(0),
+                                  decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                                  child: ListView(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text('Image size:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text('${tileSet!.imageWidth} x ${tileSet!.imageHeight}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Tile size:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text('${tileSet!.tileWidth} x ${tileSet!.tileHeight}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Max tile:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text('${tileSet!.getMaxTileColumn()} x ${tileSet!.getMaxTileRow()}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Number of slices:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text('${tileSet!.slices.length}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Number of groups:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text('${tileSet!.groups.length}'),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
@@ -309,6 +378,9 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
         },
       );
       if (dialogResult != null) {
+        dui.Image image = await getImage(dialogResult.filePath);
+        dialogResult.imageWidth = image.width;
+        dialogResult.imageHeight = image.height;
         setState(() {
           project!.addTileSet(dialogResult);
         });
@@ -331,11 +403,13 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
   }
 
   void selectTile(bool selected, TileCoord coord) {
-    if (selected) {
-      selectedTiles.add(coord);
-    } else {
-      selectedTiles.removeWhere((c) => c.x == coord.x && c.y == coord.y);
-    }
+    setState(() {
+      if (selected) {
+        selectedTiles.add(coord);
+      } else {
+        selectedTiles.removeWhere((c) => c.x == coord.x && c.y == coord.y);
+      }
+    });
   }
 
   void addSlice() async {
@@ -349,6 +423,23 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
       if (dialogResult != null) {
         setState(() {
           tileSet!.addSlice(dialogResult);
+          selectedTiles.clear();
+        });
+      }
+    }
+  }
+
+  void addGroup() async {
+    if (project != null && tileSet != null) {
+      TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
+        context: context,
+        builder: (BuildContext context) {
+          return AddGroupDialog(tileSet: tileSet!, tiles: selectedTiles);
+        },
+      );
+      if (dialogResult != null) {
+        setState(() {
+          tileSet!.addGroup(dialogResult);
           selectedTiles.clear();
         });
       }

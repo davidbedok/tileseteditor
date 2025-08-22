@@ -27,6 +27,7 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     required this.atlasY,
     required super.position,
     required this.info,
+    required this.selected,
   });
 
   @override
@@ -45,7 +46,14 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     }
   }
 
-  static Paint getBorderPaint(Color color, double strokeWidth) {
+  static Paint getSlicePaint(Color color, double strokeWidth) {
+    return Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
+  }
+
+  static Paint getSelectionPaint(Color color, double strokeWidth) {
     return Paint()
       ..color = color
       ..style = PaintingStyle.stroke
@@ -58,13 +66,12 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     switch (info.type) {
       case TileType.free:
         if (selected) {
-          canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getBorderPaint(Colors.blue, 2.0));
+          canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSelectionPaint(Colors.blue, 2.0));
         }
       case TileType.slice:
-        canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getBorderPaint(Colors.yellow, 4.0));
+        canvas.drawRect(Rect.fromLTWH(2, 2, spriteWidth - 4, spriteHeight - 4), getSlicePaint(info.color!, 4.0));
       case TileType.group:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        canvas.drawRect(Rect.fromLTWH(3, 3, spriteWidth - 6, spriteHeight - 6), getSlicePaint(info.color!, 6.0));
       case TileType.garbage:
         // TODO: Handle this case.
         throw UnimplementedError();

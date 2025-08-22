@@ -13,17 +13,28 @@ class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetect
 
   late double startZoom;
   TileSet tileSet;
+  List<TileCoord> selectedTiles;
 
   final void Function(bool selected, TileCoord coord) onSelectTile;
 
-  EditorGame({required this.tileSet, required this.onSelectTile, required double width, required double height, required dui.Image? tileSetImage})
-    : super(
-        world: EditorWorld(image: tileSetImage),
-        camera: CameraComponent.withFixedResolution(width: width, height: height),
-      );
+  EditorGame({
+    required this.tileSet,
+    required this.onSelectTile,
+    required double width,
+    required double height,
+    required dui.Image? tileSetImage,
+    required this.selectedTiles,
+  }) : super(
+         world: EditorWorld(image: tileSetImage),
+         camera: CameraComponent.withFixedResolution(width: width, height: height),
+       );
 
   @override
   Color backgroundColor() => Colors.white;
+
+  bool isSelected(TileCoord coord) {
+    return selectedTiles.where((c) => c.x == coord.x && c.y == coord.y).isNotEmpty;
+  }
 
   @override
   Future<void> onLoad() async {

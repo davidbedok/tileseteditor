@@ -22,7 +22,16 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
   @override
   void initState() {
     super.initState();
-    _tileSet = TileSet(name: '', filePath: '', tileWidth: widget.project.tileWidth, tileHeight: widget.project.tileHeight, margin: 0, spacing: 0);
+    _tileSet = TileSet(
+      name: '',
+      filePath: '',
+      tileWidth: widget.project.tileWidth,
+      tileHeight: widget.project.tileHeight,
+      margin: 0,
+      spacing: 0,
+      imageWidth: 0,
+      imageHeight: 0,
+    );
   }
 
   @override
