@@ -1,13 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/widgets/group_widget.dart';
-import 'package:tileseteditor/widgets/slice_widget.dart';
 
 class AddGroupDialog extends StatefulWidget {
   final TileSet tileSet;

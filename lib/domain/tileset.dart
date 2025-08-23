@@ -20,6 +20,8 @@ class TileSet {
   List<TileSetGroup> groups = [];
   TileSetGarbage garbage = TileSetGarbage();
 
+  void Function(TileSetSlice slice)? onCreateSlice;
+
   int getMaxTileRow() => imageWidth ~/ tileWidth;
   int getMaxTileColumn() => imageHeight ~/ tileHeight;
 
@@ -40,6 +42,9 @@ class TileSet {
 
   void addSlice(TileSetSlice slice) {
     slices.add(slice);
+    if (onCreateSlice != null) {
+      onCreateSlice!.call(slice);
+    }
   }
 
   void addGroup(TileSetGroup group) {

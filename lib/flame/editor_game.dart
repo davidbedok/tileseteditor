@@ -4,40 +4,26 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/flame/editor_world.dart';
+import 'package:tileseteditor/state/editor_state.dart';
 
 class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetector {
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
   TileSet tileSet;
-  List<TileCoord> selectedFreeTiles;
-  TileInfo? selectedTileInfo;
 
-  final void Function(bool selected, TileInfo info) onSelectTile;
+  EditorState editorState;
 
-  EditorGame({
-    required this.tileSet,
-    required this.onSelectTile,
-    required double width,
-    required double height,
-    required dui.Image? tileSetImage,
-    required this.selectedFreeTiles,
-    required this.selectedTileInfo,
-  }) : super(
-         world: EditorWorld(image: tileSetImage),
-         camera: CameraComponent.withFixedResolution(width: width, height: height),
-       );
+  EditorGame({required this.tileSet, required double width, required double height, required dui.Image? tileSetImage, required this.editorState})
+    : super(
+        world: EditorWorld(image: tileSetImage),
+        camera: CameraComponent.withFixedResolution(width: width, height: height),
+      );
 
   @override
   Color backgroundColor() => Colors.white;
-
-  bool isSelected(TileInfo info) {
-    return selectedFreeTiles.where((c) => c.x == info.coord.x && c.y == info.coord.y).isNotEmpty || selectedTileInfo == info;
-  }
 
   @override
   Future<void> onLoad() async {

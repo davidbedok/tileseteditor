@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/state/editor_state.dart';
 
 class TileSetEditorMenuBar extends StatelessWidget {
   final TileSetProject? project;

@@ -21,6 +21,7 @@ import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/menubar.dart';
+import 'package:tileseteditor/state/editor_state.dart';
 
 class TileSetEditorApp extends StatefulWidget {
   final PackageInfo packageInfo;
@@ -34,18 +35,12 @@ class TileSetEditorApp extends StatefulWidget {
 class _TileSetEditorAppState extends State<TileSetEditorApp> {
   TileSetProject? project;
   TileSet? tileSet;
-  // late Future<dui.Image> selectedTileSetImage;
   dui.Image? tileSetImage;
-
-  List<TileCoord> selectedFreeTiles = [];
-  List<TileCoord> selectedGarbageTiles = [];
-  TileInfo? selectedTileInfo;
 
   @override
   void initState() {
     super.initState();
     project = null;
-    // selectedTileSetImage = getImage('D:\tilesetprojects\example\magecity.png');
   }
 
   @override
@@ -55,6 +50,8 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
 
   @override
   Widget build(BuildContext context) {
+    EditorState editorState = EditorState();
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -148,11 +145,11 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           ElevatedButton.icon(
                             icon: Icon(Icons.add_circle_outline),
                             label: const Text('Slice'),
-                            onPressed: selectedTileInfo != null
+                            onPressed: editorState.selectedTileInfo != null
                                 ? null
                                 : () {
-                                    if (selectedFreeTiles.isNotEmpty) {
-                                      addSlice();
+                                    if (editorState.selectedFreeTiles.isNotEmpty) {
+                                      addSlice(editorState);
                                     }
                                   },
                           ),
@@ -160,11 +157,11 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           ElevatedButton.icon(
                             icon: Icon(Icons.add_circle_outline),
                             label: const Text('Group'),
-                            onPressed: selectedTileInfo != null
+                            onPressed: editorState.selectedTileInfo != null
                                 ? null
                                 : () {
-                                    if (selectedFreeTiles.isNotEmpty) {
-                                      addGroup();
+                                    if (editorState.selectedFreeTiles.isNotEmpty) {
+                                      addGroup(editorState);
                                     }
                                   },
                           ),
@@ -172,14 +169,12 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           ElevatedButton.icon(
                             icon: Icon(Icons.cancel),
                             label: const Text('Drop'),
-                            onPressed: selectedTileInfo != null
+                            onPressed: editorState.selectedTileInfo != null
                                 ? null
                                 : () {
-                                    if (selectedFreeTiles.isNotEmpty) {
-                                      setState(() {
-                                        tileSet!.addGarbage(selectedFreeTiles);
-                                        selectedFreeTiles.clear();
-                                      });
+                                    if (editorState.selectedFreeTiles.isNotEmpty) {
+                                      tileSet!.addGarbage(editorState.selectedFreeTiles);
+                                      editorState.selectedFreeTiles.clear();
                                     }
                                   },
                           ),
@@ -187,14 +182,12 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           ElevatedButton.icon(
                             icon: Icon(Icons.cancel_outlined),
                             label: const Text('Undrop'),
-                            onPressed: selectedTileInfo != null
+                            onPressed: editorState.selectedTileInfo != null
                                 ? null
                                 : () {
-                                    if (selectedGarbageTiles.isNotEmpty) {
-                                      setState(() {
-                                        tileSet!.removeGarbage(selectedGarbageTiles);
-                                        selectedGarbageTiles.clear();
-                                      });
+                                    if (editorState.selectedGarbageTiles.isNotEmpty) {
+                                      tileSet!.removeGarbage(editorState.selectedGarbageTiles);
+                                      editorState.selectedGarbageTiles.clear();
                                     }
                                   },
                           ),
@@ -202,13 +195,11 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           ElevatedButton.icon(
                             icon: Icon(Icons.delete),
                             label: const Text('Delete'),
-                            onPressed: selectedTileInfo == null
+                            onPressed: editorState.selectedTileInfo == null
                                 ? null
                                 : () {
-                                    setState(() {
-                                      tileSet!.remove(selectedTileInfo!);
-                                      selectedTileInfo = null;
-                                    });
+                                    tileSet!.remove(editorState.selectedTileInfo!);
+                                    editorState.selectedTileInfo = null;
                                   },
                           ),
                         ],
@@ -228,12 +219,10 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                                   child: GameWidget(
                                     game: EditorGame(
                                       tileSet: tileSet!,
-                                      onSelectTile: selectTile,
                                       width: 400,
                                       height: MediaQuery.of(context).size.height - 250,
                                       tileSetImage: tileSetImage,
-                                      selectedFreeTiles: selectedFreeTiles,
-                                      selectedTileInfo: selectedTileInfo,
+                                      editorState: editorState,
                                     ),
                                   ),
                                 ),
@@ -294,7 +283,11 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                                         children: [
                                           Text('Selected:', style: TextStyle(fontWeight: FontWeight.bold)),
                                           SizedBox(width: 5),
-                                          Text(selectedTileInfo != null ? '${selectedTileInfo!.name} (${selectedTileInfo!.type.name})' : '-'),
+                                          Text(
+                                            editorState.selectedTileInfo != null
+                                                ? '${editorState.selectedTileInfo!.name} (${editorState.selectedTileInfo!.type.name})'
+                                                : '-',
+                                          ),
                                         ],
                                       ),
                                     ],
@@ -412,7 +405,6 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
       project = null;
       tileSet = null;
       tileSetImage = null;
-      selectedFreeTiles.clear();
     });
   }
 
@@ -449,72 +441,34 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
     return imageInfo.image;
   }
 
-  void selectTile(bool selected, TileInfo info) {
-    switch (info.type) {
-      case TileType.free:
-        // setState(() {
-        if (selected) {
-          selectedFreeTiles.add(info.coord);
-        } else {
-          selectedFreeTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
-        }
-      // });
-      case TileType.slice:
-      case TileType.group:
-        if (selectedTileInfo == null) {
-          setState(() {
-            selectedFreeTiles.clear();
-            selectedTileInfo = info;
-          });
-        } else {
-          if (selectedTileInfo == info) {
-            setState(() {
-              selectedFreeTiles.clear();
-              selectedTileInfo = null;
-            });
-          }
-        }
-      case TileType.garbage:
-        if (selected) {
-          print('select garbage');
-          selectedGarbageTiles.add(info.coord);
-        } else {
-          print('unselect garbage');
-          selectedGarbageTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
-        }
-    }
-  }
-
-  void addSlice() async {
+  void addSlice(EditorState editorState) async {
     if (project != null && tileSet != null) {
       TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
         context: context,
         builder: (BuildContext context) {
-          return AddSliceDialog(tileSet: tileSet!, tiles: selectedFreeTiles);
+          return AddSliceDialog(tileSet: tileSet!, tiles: editorState.selectedFreeTiles);
         },
       );
       if (dialogResult != null) {
-        setState(() {
-          tileSet!.addSlice(dialogResult);
-          selectedFreeTiles.clear();
-        });
+        // setState(() {
+        tileSet!.addSlice(dialogResult);
+        // });
+        editorState.selectedFreeTiles.clear();
       }
     }
   }
 
-  void addGroup() async {
+  void addGroup(EditorState editorState) async {
     if (project != null && tileSet != null) {
       TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
         context: context,
         builder: (BuildContext context) {
-          return AddGroupDialog(tileSet: tileSet!, tiles: selectedFreeTiles);
+          return AddGroupDialog(tileSet: tileSet!, tiles: editorState.selectedFreeTiles);
         },
       );
       if (dialogResult != null) {
-        setState(() {
-          tileSet!.addGroup(dialogResult);
-          selectedFreeTiles.clear();
-        });
+        tileSet!.addGroup(dialogResult);
+        editorState.selectedFreeTiles.clear();
       }
     }
   }
