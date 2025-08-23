@@ -2,6 +2,7 @@ import 'dart:ui' as dui;
 
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/current.dart';
 import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -11,28 +12,13 @@ import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/state/editor_state.dart';
 
-class TileSetEditor extends StatefulWidget {
+class TileSetEditor extends StatelessWidget {
   final TileSetProject project;
   final TileSet tileSet;
   final dui.Image tileSetImage;
   final EditorState editorState;
 
   const TileSetEditor({super.key, required this.project, required this.tileSet, required this.tileSetImage, required this.editorState});
-
-  @override
-  State<TileSetEditor> createState() => TileSetEditorState();
-}
-
-class TileSetEditorState extends State<TileSetEditor> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,62 +33,54 @@ class TileSetEditorState extends State<TileSetEditor> {
                   ElevatedButton.icon(
                     icon: Icon(Icons.add_circle_outline),
                     label: const Text('Slice'),
-                    onPressed: widget.editorState.selectedTileInfo != null
-                        ? null
-                        : () {
-                            if (widget.editorState.selectedFreeTiles.isNotEmpty) {
-                              addSlice(widget.editorState);
-                            }
-                          },
+                    onPressed: () {
+                      if (editorState.selectedFreeTiles.isNotEmpty) {
+                        addSlice(context, editorState);
+                      }
+                    },
                   ),
                   SizedBox(width: 5),
                   ElevatedButton.icon(
                     icon: Icon(Icons.add_circle_outline),
                     label: const Text('Group'),
-                    onPressed: widget.editorState.selectedTileInfo != null
-                        ? null
-                        : () {
-                            if (widget.editorState.selectedFreeTiles.isNotEmpty) {
-                              addGroup(widget.editorState);
-                            }
-                          },
+                    onPressed: () {
+                      if (editorState.selectedFreeTiles.isNotEmpty) {
+                        addGroup(context, editorState);
+                      }
+                    },
                   ),
                   SizedBox(width: 5),
                   ElevatedButton.icon(
                     icon: Icon(Icons.cancel),
                     label: const Text('Drop'),
-                    onPressed: widget.editorState.selectedTileInfo != null
-                        ? null
-                        : () {
-                            if (widget.editorState.selectedFreeTiles.isNotEmpty) {
-                              widget.tileSet.addGarbage(widget.editorState.selectedFreeTiles);
-                              widget.editorState.selectedFreeTiles.clear();
-                            }
-                          },
+                    onPressed: () {
+                      if (editorState.selectedFreeTiles.isNotEmpty) {
+                        tileSet.addGarbage(editorState.selectedFreeTiles);
+                        editorState.selectedFreeTiles.clear();
+                      }
+                    },
                   ),
                   SizedBox(width: 5),
                   ElevatedButton.icon(
                     icon: Icon(Icons.cancel_outlined),
                     label: const Text('Undrop'),
-                    onPressed: widget.editorState.selectedTileInfo != null
-                        ? null
-                        : () {
-                            if (widget.editorState.selectedGarbageTiles.isNotEmpty) {
-                              widget.tileSet.removeGarbage(widget.editorState.selectedGarbageTiles);
-                              widget.editorState.selectedGarbageTiles.clear();
-                            }
-                          },
+                    onPressed: () {
+                      if (editorState.selectedGarbageTiles.isNotEmpty) {
+                        tileSet.removeGarbage(editorState.selectedGarbageTiles);
+                        editorState.selectedGarbageTiles.clear();
+                      }
+                    },
                   ),
                   SizedBox(width: 5),
                   ElevatedButton.icon(
                     icon: Icon(Icons.delete),
                     label: const Text('Delete'),
-                    onPressed: widget.editorState.selectedTileInfo == null
-                        ? null
-                        : () {
-                            widget.tileSet!.remove(widget.editorState.selectedTileInfo!);
-                            widget.editorState.selectedTileInfo = null;
-                          },
+                    onPressed: () {
+                      if (editorState.selectedTileInfo != null) {
+                        tileSet!.remove(editorState.selectedTileInfo!);
+                        editorState.selectedTileInfo = null;
+                      }
+                    },
                   ),
                 ],
               ),
@@ -120,11 +98,11 @@ class TileSetEditorState extends State<TileSetEditor> {
                         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                         child: GameWidget(
                           game: EditorGame(
-                            tileSet: widget.tileSet,
+                            tileSet: tileSet,
                             width: 400,
                             height: MediaQuery.of(context).size.height - 200,
-                            tileSetImage: widget.tileSetImage,
-                            editorState: widget.editorState,
+                            tileSetImage: tileSetImage,
+                            editorState: editorState,
                           ),
                         ),
                       ),
@@ -148,55 +126,45 @@ class TileSetEditorState extends State<TileSetEditor> {
                                   children: [
                                     Text('Image size:', style: TextStyle(fontWeight: FontWeight.bold)),
                                     SizedBox(width: 5),
-                                    Text('${widget.tileSet.imageWidth} x ${widget.tileSet.imageHeight}'),
+                                    Text('${tileSet.imageWidth} x ${tileSet.imageHeight}'),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text('Tile size:', style: TextStyle(fontWeight: FontWeight.bold)),
                                     SizedBox(width: 5),
-                                    Text('${widget.tileSet.tileWidth} x ${widget.tileSet.tileHeight}'),
+                                    Text('${tileSet.tileWidth} x ${tileSet.tileHeight}'),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text('Max tile:', style: TextStyle(fontWeight: FontWeight.bold)),
                                     SizedBox(width: 5),
-                                    Text('${widget.tileSet.getMaxTileColumn()} x ${widget.tileSet.getMaxTileRow()}'),
+                                    Text('${tileSet.getMaxTileColumn()} x ${tileSet.getMaxTileRow()}'),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text('Number of slices:', style: TextStyle(fontWeight: FontWeight.bold)),
                                     SizedBox(width: 5),
-                                    Text('${widget.tileSet.slices.length}'),
+                                    Text('${tileSet.slices.length}'),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text('Number of groups:', style: TextStyle(fontWeight: FontWeight.bold)),
                                     SizedBox(width: 5),
-                                    Text('${widget.tileSet.groups.length}'),
+                                    Text('${tileSet.groups.length}'),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Text('Number of garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
                                     SizedBox(width: 5),
-                                    Text('${widget.tileSet.garbage.indices.length}'),
+                                    Text('${tileSet.garbage.indices.length}'),
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    Text('Selected:', style: TextStyle(fontWeight: FontWeight.bold)),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      widget.editorState.selectedTileInfo != null
-                                          ? '${widget.editorState.selectedTileInfo!.name} (${widget.editorState.selectedTileInfo!.type.name})'
-                                          : '-',
-                                    ),
-                                  ],
-                                ),
+                                CurrentSelection(editorState: editorState),
                               ],
                             ),
                           ),
@@ -213,28 +181,28 @@ class TileSetEditorState extends State<TileSetEditor> {
     );
   }
 
-  void addSlice(EditorState editorState) async {
+  void addSlice(BuildContext context, EditorState editorState) async {
     TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
       context: context,
       builder: (BuildContext context) {
-        return AddSliceDialog(tileSet: widget.tileSet, tiles: editorState.selectedFreeTiles);
+        return AddSliceDialog(tileSet: tileSet, tiles: editorState.selectedFreeTiles);
       },
     );
     if (dialogResult != null) {
-      widget.tileSet.addSlice(dialogResult);
+      tileSet.addSlice(dialogResult);
       editorState.selectedFreeTiles.clear();
     }
   }
 
-  void addGroup(EditorState editorState) async {
+  void addGroup(BuildContext context, EditorState editorState) async {
     TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
       context: context,
       builder: (BuildContext context) {
-        return AddGroupDialog(tileSet: widget.tileSet, tiles: editorState.selectedFreeTiles);
+        return AddGroupDialog(tileSet: tileSet, tiles: editorState.selectedFreeTiles);
       },
     );
     if (dialogResult != null) {
-      widget.tileSet.addGroup(dialogResult);
+      tileSet.addGroup(dialogResult);
       editorState.selectedFreeTiles.clear();
     }
   }

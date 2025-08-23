@@ -12,6 +12,6 @@ class TileCoord {
 
   @override
   String toString() {
-    return 'TileCoord $x:$y';
+    return '$x:$y';
   }
 }

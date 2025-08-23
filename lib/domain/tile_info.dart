@@ -25,4 +25,9 @@ class TileInfo {
 
   @override
   int get hashCode => name.hashCode;
+
+  @override
+  String toString() {
+    return '${type.name} (coord: $coord)${name != null ? ' >> $name' : ''}';
+  }
 }

@@ -9,6 +9,8 @@ class EditorState {
   List<TileCoord> selectedGarbageTiles = [];
   TileInfo? selectedTileInfo;
 
+  void Function(TileInfo tileInfo)? onSelected;
+
   EditorState();
 
   bool isSelected(TileInfo info) {
@@ -28,12 +30,9 @@ class EditorState {
   void selectTile(TileInfo info) {
     switch (info.type) {
       case TileType.free:
-        print('free $selectedFreeTiles');
         if (selectedFreeTiles.contains(info.coord)) {
-          print('remove..');
           selectedFreeTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
         } else {
-          print('add..');
           selectedFreeTiles.add(info.coord);
         }
       case TileType.slice:
@@ -49,6 +48,9 @@ class EditorState {
         } else {
           selectedGarbageTiles.add(info.coord);
         }
+    }
+    if (onSelected != null) {
+      onSelected!.call(info);
     }
   }
 }
