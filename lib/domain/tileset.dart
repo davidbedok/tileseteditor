@@ -1,6 +1,7 @@
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
+import 'package:tileseteditor/domain/tileset_garbage.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 
@@ -17,6 +18,7 @@ class TileSet {
 
   List<TileSetSlice> slices = [];
   List<TileSetGroup> groups = [];
+  TileSetGarbage garbage = TileSetGarbage();
 
   int getMaxTileRow() => imageWidth ~/ tileWidth;
   int getMaxTileColumn() => imageHeight ~/ tileHeight;
@@ -44,16 +46,53 @@ class TileSet {
     groups.add(group);
   }
 
+  void addGarbage(List<TileCoord> coords) {
+    for (TileCoord coord in coords) {
+      if (!garbage.indices.contains(getIndex(coord))) {
+        garbage.indices.add(getIndex(coord));
+      }
+    }
+  }
+
+  void removeGarbage(List<TileCoord> coords) {
+    for (TileCoord coord in coords) {
+      if (garbage.indices.contains(getIndex(coord))) {
+        garbage.indices.remove(getIndex(coord));
+      }
+    }
+  }
+
+  void remove(TileInfo info) {
+    switch (info.type) {
+      case TileType.free:
+      //
+      case TileType.slice:
+        TileSetSlice? slice = findSlice(info.coord);
+        if (slice != null) {
+          slices.remove(slice);
+        }
+      case TileType.group:
+        TileSetGroup? group = findGroup(info.coord);
+        if (group != null) {
+          groups.remove(group);
+        }
+      case TileType.garbage:
+      // TODO: Handle this case.
+    }
+  }
+
   TileInfo getTileInfo(TileCoord coord) {
-    TileInfo result = TileInfo(type: TileType.free);
+    TileInfo result = TileInfo(type: TileType.free, coord: coord);
     TileSetSlice? slice = findSlice(coord);
     if (slice != null) {
-      result = TileInfo(type: TileType.slice, name: slice.name, color: slice.color);
+      result = TileInfo(type: TileType.slice, coord: coord, name: slice.name, color: slice.color);
     }
-
     TileSetGroup? group = findGroup(coord);
     if (group != null) {
-      result = TileInfo(type: TileType.group, name: group.name, color: group.color);
+      result = TileInfo(type: TileType.group, coord: coord, name: group.name, color: group.color);
+    }
+    if (garbage.indices.contains(getIndex(coord))) {
+      result = TileInfo(type: TileType.garbage, coord: coord);
     }
     return result;
   }
@@ -96,6 +135,7 @@ class TileSet {
       },
       'slices': toSlicesJson(),
       'groups': toGroupsJson(),
+      'garbage': garbage.toJson(),
     };
   }
 
@@ -152,6 +192,7 @@ class TileSet {
     for (var group in groups) {
       result.addGroup(TileSetGroup.fromJson(group));
     }
+    result.garbage = TileSetGarbage.fromJson(json['garbage']);
 
     return result;
   }

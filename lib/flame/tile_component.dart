@@ -40,10 +40,10 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
 
   @override
   void onTapUp(TapUpEvent event) {
-    if (info.type == TileType.free) {
+    if (info.type == TileType.free || info.type == TileType.garbage) {
       selected = !selected;
-      game.onSelectTile.call(selected, TileCoord(atlasX + 1, atlasY + 1));
     }
+    game.onSelectTile.call(selected, info);
   }
 
   static Paint getSlicePaint(Color color, double strokeWidth) {
@@ -53,10 +53,24 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
       ..strokeWidth = strokeWidth;
   }
 
+  static Paint getSlicePaint2(Color color) {
+    return Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+  }
+
   static Paint getSelectionPaint(Color color, double strokeWidth) {
     return Paint()
       ..color = color
       ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
+  }
+
+  static Paint getGarbagePaint(Color color, double strokeWidth) {
+    return Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
       ..strokeWidth = strokeWidth;
   }
 
@@ -69,12 +83,25 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
           canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSelectionPaint(Colors.blue, 2.0));
         }
       case TileType.slice:
-        canvas.drawRect(Rect.fromLTWH(2, 2, spriteWidth - 4, spriteHeight - 4), getSlicePaint(info.color!, 4.0));
+        canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSlicePaint(info.color!, 2));
+        canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSlicePaint2(info.color!.withAlpha(100)));
+        if (selected) {
+          canvas.drawOval(Rect.fromLTWH(4, 4, spriteWidth - 8, spriteHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
+        }
       case TileType.group:
-        canvas.drawRect(Rect.fromLTWH(3, 3, spriteWidth - 6, spriteHeight - 6), getSlicePaint(info.color!, 6.0));
+        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(2, 2, spriteWidth - 4, spriteHeight - 4), Radius.circular(6)), getSlicePaint(info.color!, 4.0));
+
+        if (selected) {
+          canvas.drawOval(Rect.fromLTWH(4, 4, spriteWidth - 8, spriteHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
+        }
       case TileType.garbage:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        if (selected) {
+          canvas.drawLine(Offset(4, 4), Offset(spriteWidth - 4, spriteHeight - 4), getGarbagePaint(Colors.green, 2));
+          canvas.drawLine(Offset(4, spriteHeight - 4), Offset(spriteWidth - 4, 4), getGarbagePaint(Colors.green, 2));
+        } else {
+          canvas.drawLine(Offset(4, 4), Offset(spriteWidth - 4, spriteHeight - 4), getGarbagePaint(Colors.red, 2));
+          canvas.drawLine(Offset(4, spriteHeight - 4), Offset(spriteWidth - 4, 4), getGarbagePaint(Colors.red, 2));
+        }
     }
   }
 }

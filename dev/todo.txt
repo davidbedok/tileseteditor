@@ -1,15 +1,4 @@
-- Mark selected tiles as garbage -> any tiles can be selected
-
-- Select a group/slice
-    --> option to delete it
-    --> option to edit it:
-        - rename
-        - select new tile(s) than modify (if a group/slice is selected, change the buttons..)
-            - + Slice, + Group, + Garbage --> when no group/slice is selected
-            - Edit Slice, Remove Slice --> when slice is selected
-            - Edit Group, Remove Group --> when group is selected
-
-- Do not reload the gamewidget when select a tile.. (check number of selected tiles before open a dialog..)
+- Group-nak es Slice-nak legyen egy generalt hash-e vagy id-ja. Nev lehessen azonos..
 
 - DropDown list for the available slices/groups
 

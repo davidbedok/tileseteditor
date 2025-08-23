@@ -13,6 +13,8 @@ import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tile_info.dart';
+import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
@@ -35,7 +37,9 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
   // late Future<dui.Image> selectedTileSetImage;
   dui.Image? tileSetImage;
 
-  List<TileCoord> selectedTiles = [];
+  List<TileCoord> selectedFreeTiles = [];
+  List<TileCoord> selectedGarbageTiles = [];
+  TileInfo? selectedTileInfo;
 
   @override
   void initState() {
@@ -144,43 +148,68 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                           ElevatedButton.icon(
                             icon: Icon(Icons.add_circle_outline),
                             label: const Text('Slice'),
-                            onPressed: selectedTiles.isEmpty
+                            onPressed: selectedTileInfo != null
                                 ? null
                                 : () {
-                                    addSlice();
+                                    if (selectedFreeTiles.isNotEmpty) {
+                                      addSlice();
+                                    }
                                   },
                           ),
                           SizedBox(width: 5),
                           ElevatedButton.icon(
                             icon: Icon(Icons.add_circle_outline),
                             label: const Text('Group'),
-                            onPressed: selectedTiles.isEmpty
+                            onPressed: selectedTileInfo != null
                                 ? null
                                 : () {
-                                    addGroup();
+                                    if (selectedFreeTiles.isNotEmpty) {
+                                      addGroup();
+                                    }
                                   },
                           ),
                           SizedBox(width: 5),
                           ElevatedButton.icon(
-                            icon: Icon(Icons.add_circle_outline),
-                            label: const Text('Garbage'),
-                            onPressed: selectedTiles.isEmpty
+                            icon: Icon(Icons.cancel),
+                            label: const Text('Drop'),
+                            onPressed: selectedTileInfo != null
                                 ? null
                                 : () {
-                                    print('Garbage: $selectedTiles');
-                                    setState(() {
-                                      // refresh Game..
-                                      tileSet = tileSet;
-                                    });
+                                    if (selectedFreeTiles.isNotEmpty) {
+                                      setState(() {
+                                        tileSet!.addGarbage(selectedFreeTiles);
+                                        selectedFreeTiles.clear();
+                                      });
+                                    }
+                                  },
+                          ),
+                          SizedBox(width: 5),
+                          ElevatedButton.icon(
+                            icon: Icon(Icons.cancel_outlined),
+                            label: const Text('Undrop'),
+                            onPressed: selectedTileInfo != null
+                                ? null
+                                : () {
+                                    if (selectedGarbageTiles.isNotEmpty) {
+                                      setState(() {
+                                        tileSet!.removeGarbage(selectedGarbageTiles);
+                                        selectedGarbageTiles.clear();
+                                      });
+                                    }
                                   },
                           ),
                           SizedBox(width: 5),
                           ElevatedButton.icon(
                             icon: Icon(Icons.delete),
                             label: const Text('Delete'),
-                            onPressed: () {
-                              print('Delete');
-                            },
+                            onPressed: selectedTileInfo == null
+                                ? null
+                                : () {
+                                    setState(() {
+                                      tileSet!.remove(selectedTileInfo!);
+                                      selectedTileInfo = null;
+                                    });
+                                  },
                           ),
                         ],
                       ),
@@ -203,7 +232,8 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                                       width: 400,
                                       height: MediaQuery.of(context).size.height - 250,
                                       tileSetImage: tileSetImage,
-                                      selectedTiles: selectedTiles,
+                                      selectedFreeTiles: selectedFreeTiles,
+                                      selectedTileInfo: selectedTileInfo,
                                     ),
                                   ),
                                 ),
@@ -253,6 +283,20 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
                                           Text('${tileSet!.groups.length}'),
                                         ],
                                       ),
+                                      Row(
+                                        children: [
+                                          Text('Number of garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text('${tileSet!.garbage.indices.length}'),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text('Selected:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                          SizedBox(width: 5),
+                                          Text(selectedTileInfo != null ? '${selectedTileInfo!.name} (${selectedTileInfo!.type.name})' : '-'),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -295,7 +339,7 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
   void openProject() async {
     FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
       allowMultiple: false,
-      allowedExtensions: ['tsp'],
+      allowedExtensions: ['tsp.json'],
       dialogTitle: 'Open TileSet Project',
       type: FileType.custom,
     );
@@ -330,8 +374,8 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
     if (project != null) {
       project!.filePath = await FilePicker.platform.saveFile(
         dialogTitle: 'Save Tile Set Project',
-        allowedExtensions: ['tsp'],
-        fileName: '${project!.name}.tsp',
+        allowedExtensions: ['tsp.json'],
+        fileName: '${project!.name}.tsp.json',
         type: FileType.custom,
       );
       if (project!.filePath != null) {
@@ -366,6 +410,9 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
   void closeProject() {
     setState(() {
       project = null;
+      tileSet = null;
+      tileSetImage = null;
+      selectedFreeTiles.clear();
     });
   }
 
@@ -402,14 +449,40 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
     return imageInfo.image;
   }
 
-  void selectTile(bool selected, TileCoord coord) {
-    setState(() {
-      if (selected) {
-        selectedTiles.add(coord);
-      } else {
-        selectedTiles.removeWhere((c) => c.x == coord.x && c.y == coord.y);
-      }
-    });
+  void selectTile(bool selected, TileInfo info) {
+    switch (info.type) {
+      case TileType.free:
+        // setState(() {
+        if (selected) {
+          selectedFreeTiles.add(info.coord);
+        } else {
+          selectedFreeTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
+        }
+      // });
+      case TileType.slice:
+      case TileType.group:
+        if (selectedTileInfo == null) {
+          setState(() {
+            selectedFreeTiles.clear();
+            selectedTileInfo = info;
+          });
+        } else {
+          if (selectedTileInfo == info) {
+            setState(() {
+              selectedFreeTiles.clear();
+              selectedTileInfo = null;
+            });
+          }
+        }
+      case TileType.garbage:
+        if (selected) {
+          print('select garbage');
+          selectedGarbageTiles.add(info.coord);
+        } else {
+          print('unselect garbage');
+          selectedGarbageTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
+        }
+    }
   }
 
   void addSlice() async {
@@ -417,13 +490,13 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
       TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
         context: context,
         builder: (BuildContext context) {
-          return AddSliceDialog(tileSet: tileSet!, tiles: selectedTiles);
+          return AddSliceDialog(tileSet: tileSet!, tiles: selectedFreeTiles);
         },
       );
       if (dialogResult != null) {
         setState(() {
           tileSet!.addSlice(dialogResult);
-          selectedTiles.clear();
+          selectedFreeTiles.clear();
         });
       }
     }
@@ -434,13 +507,13 @@ class _TileSetEditorAppState extends State<TileSetEditorApp> {
       TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
         context: context,
         builder: (BuildContext context) {
-          return AddGroupDialog(tileSet: tileSet!, tiles: selectedTiles);
+          return AddGroupDialog(tileSet: tileSet!, tiles: selectedFreeTiles);
         },
       );
       if (dialogResult != null) {
         setState(() {
           tileSet!.addGroup(dialogResult);
-          selectedTiles.clear();
+          selectedFreeTiles.clear();
         });
       }
     }

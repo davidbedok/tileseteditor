@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/flame/example_component.dart';
 import 'package:tileseteditor/flame/tile_component.dart';
@@ -80,6 +81,7 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
       for (int i = 0; i < atlasMaxX; i++) {
         for (int j = 0; j < atlasMaxY; j++) {
           TileCoord coord = TileCoord(i + 1, j + 1);
+          TileInfo info = game.tileSet.getTileInfo(coord);
           add(
             TileComponent(
               tileSetImage: image!,
@@ -88,8 +90,8 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
               atlasX: i,
               atlasY: j,
               position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
-              info: game.tileSet.getTileInfo(coord),
-              selected: game.isSelected(coord),
+              info: info,
+              selected: game.isSelected(info),
             ),
           );
         }
