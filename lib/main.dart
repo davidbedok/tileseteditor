@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tileseteditor/app.dart';
+import 'package:tileseteditor/selector.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
@@ -32,7 +32,7 @@ class TileSetMaterialApp extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      home: TileSetEditorApp(packageInfo: packageInfo),
+      home: TileSetSelector(packageInfo: packageInfo),
     );
   }
 }
