@@ -40,69 +40,72 @@ class TileSetEditorState extends State<TileSetEditor> {
       children: [
         Column(
           children: [
-            Row(
-              children: [
-                ElevatedButton.icon(
-                  icon: Icon(Icons.add_circle_outline),
-                  label: const Text('Slice'),
-                  onPressed: widget.editorState.selectedTileInfo != null
-                      ? null
-                      : () {
-                          if (widget.editorState.selectedFreeTiles.isNotEmpty) {
-                            addSlice(widget.editorState);
-                          }
-                        },
-                ),
-                SizedBox(width: 5),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.add_circle_outline),
-                  label: const Text('Group'),
-                  onPressed: widget.editorState.selectedTileInfo != null
-                      ? null
-                      : () {
-                          if (widget.editorState.selectedFreeTiles.isNotEmpty) {
-                            addGroup(widget.editorState);
-                          }
-                        },
-                ),
-                SizedBox(width: 5),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.cancel),
-                  label: const Text('Drop'),
-                  onPressed: widget.editorState.selectedTileInfo != null
-                      ? null
-                      : () {
-                          if (widget.editorState.selectedFreeTiles.isNotEmpty) {
-                            widget.tileSet.addGarbage(widget.editorState.selectedFreeTiles);
-                            widget.editorState.selectedFreeTiles.clear();
-                          }
-                        },
-                ),
-                SizedBox(width: 5),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.cancel_outlined),
-                  label: const Text('Undrop'),
-                  onPressed: widget.editorState.selectedTileInfo != null
-                      ? null
-                      : () {
-                          if (widget.editorState.selectedGarbageTiles.isNotEmpty) {
-                            widget.tileSet.removeGarbage(widget.editorState.selectedGarbageTiles);
-                            widget.editorState.selectedGarbageTiles.clear();
-                          }
-                        },
-                ),
-                SizedBox(width: 5),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.delete),
-                  label: const Text('Delete'),
-                  onPressed: widget.editorState.selectedTileInfo == null
-                      ? null
-                      : () {
-                          widget.tileSet!.remove(widget.editorState.selectedTileInfo!);
-                          widget.editorState.selectedTileInfo = null;
-                        },
-                ),
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.add_circle_outline),
+                    label: const Text('Slice'),
+                    onPressed: widget.editorState.selectedTileInfo != null
+                        ? null
+                        : () {
+                            if (widget.editorState.selectedFreeTiles.isNotEmpty) {
+                              addSlice(widget.editorState);
+                            }
+                          },
+                  ),
+                  SizedBox(width: 5),
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.add_circle_outline),
+                    label: const Text('Group'),
+                    onPressed: widget.editorState.selectedTileInfo != null
+                        ? null
+                        : () {
+                            if (widget.editorState.selectedFreeTiles.isNotEmpty) {
+                              addGroup(widget.editorState);
+                            }
+                          },
+                  ),
+                  SizedBox(width: 5),
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.cancel),
+                    label: const Text('Drop'),
+                    onPressed: widget.editorState.selectedTileInfo != null
+                        ? null
+                        : () {
+                            if (widget.editorState.selectedFreeTiles.isNotEmpty) {
+                              widget.tileSet.addGarbage(widget.editorState.selectedFreeTiles);
+                              widget.editorState.selectedFreeTiles.clear();
+                            }
+                          },
+                  ),
+                  SizedBox(width: 5),
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.cancel_outlined),
+                    label: const Text('Undrop'),
+                    onPressed: widget.editorState.selectedTileInfo != null
+                        ? null
+                        : () {
+                            if (widget.editorState.selectedGarbageTiles.isNotEmpty) {
+                              widget.tileSet.removeGarbage(widget.editorState.selectedGarbageTiles);
+                              widget.editorState.selectedGarbageTiles.clear();
+                            }
+                          },
+                  ),
+                  SizedBox(width: 5),
+                  ElevatedButton.icon(
+                    icon: Icon(Icons.delete),
+                    label: const Text('Delete'),
+                    onPressed: widget.editorState.selectedTileInfo == null
+                        ? null
+                        : () {
+                            widget.tileSet!.remove(widget.editorState.selectedTileInfo!);
+                            widget.editorState.selectedTileInfo = null;
+                          },
+                  ),
+                ],
+              ),
             ),
             Row(
               children: [

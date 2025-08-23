@@ -6,15 +6,11 @@ import 'dart:ui' as dui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tileseteditor/dialogs/add_group_dialog.dart';
-import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/editor.dart';
 import 'package:tileseteditor/menubar.dart';
 import 'package:tileseteditor/state/editor_state.dart';
@@ -69,64 +65,82 @@ class TileSetSelectorState extends State<TileSetSelector> {
             ),
             Row(
               children: [
-                Text(
-                  project == null ? 'Please create or open a TileSet Project.' : '${project!.name} TileSet Project',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: project == null
+                      ? Text('Please create or open a TileSet Project (*.tsp.json).', style: Theme.of(context).textTheme.bodyMedium)
+                      : RichText(
+                          text: TextSpan(
+                            text: 'TileSet Project: ',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: project!.name,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              TextSpan(text: '. Please create or add a TileSet (*.png).'),
+                            ],
+                          ),
+                        ),
                 ),
               ],
             ),
             Visibility(
               visible: project != null,
-              child: Row(
-                children: [
-                  Flexible(child: Text("TileSet", style: Theme.of(context).textTheme.bodyMedium)),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: InputDecorator(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
-                        contentPadding: EdgeInsets.all(5),
-                      ),
-                      child: Theme(
-                        data: Theme.of(context).copyWith(
-                          splashColor: Colors.transparent, //
-                          highlightColor: Colors.transparent, //
-                          hoverColor: Colors.transparent, //
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: InputDecorator(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                          contentPadding: EdgeInsets.all(5),
                         ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<TileSet>(
-                            value: tileSet,
-                            hint: Text('Choose a TileSet..'),
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            focusColor: Colors.transparent,
-                            isDense: true,
-                            isExpanded: true,
-                            items: project == null
-                                ? []
-                                : project!.tileSets.map((TileSet tileSetItem) {
-                                    return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
-                                  }).toList(),
-                            onChanged: (value) async {
-                              var image = await getImage(value!.filePath);
-                              setState(() {
-                                tileSet = value;
-                                tileSetImage = image;
-                              });
-                            },
+                        child: Theme(
+                          data: Theme.of(context).copyWith(
+                            splashColor: Colors.transparent, //
+                            highlightColor: Colors.transparent, //
+                            hoverColor: Colors.transparent, //
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<TileSet>(
+                              value: tileSet,
+                              hint: Text('Choose a TileSet..'),
+                              style: Theme.of(context).textTheme.bodyMedium,
+                              focusColor: Colors.transparent,
+                              isDense: true,
+                              isExpanded: true,
+                              items: project == null
+                                  ? []
+                                  : project!.tileSets.map((TileSet tileSetItem) {
+                                      return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
+                                    }).toList(),
+                              onChanged: (value) async {
+                                var image = await getImage(value!.filePath);
+                                setState(() {
+                                  tileSet = value;
+                                  tileSetImage = image;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             tileSet != null && tileSetImage != null
-                ? TileSetEditor(
-                    editorState: EditorState(), //
-                    project: project!,
-                    tileSet: tileSet!,
-                    tileSetImage: tileSetImage!,
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TileSetEditor(
+                      editorState: EditorState(), //
+                      project: project!,
+                      tileSet: tileSet!,
+                      tileSetImage: tileSetImage!,
+                    ),
                   )
                 : Row(),
           ],
