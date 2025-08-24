@@ -1,3 +1,5 @@
+import 'dart:math' as Math;
+
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
@@ -35,6 +37,13 @@ class TileSet {
     required this.imageWidth,
     required this.imageHeight,
   });
+
+  int getNextKey() {
+    int result = 0;
+    int maxSliceKey = slices.isNotEmpty ? slices.map((slice) => slice.key).reduce(Math.max) : 0;
+    int maxGroupKey = groups.isNotEmpty ? groups.map((group) => group.key).reduce(Math.max) : 0;
+    return [result, maxSliceKey, maxGroupKey].reduce(Math.max) + 1;
+  }
 
   int getIndex(TileCoord coord) {
     return (coord.y - 1) * getMaxTileRow() + coord.x;
@@ -191,7 +200,7 @@ class TileSet {
 
     List<Map<String, dynamic>> slices = json['slices'] != null ? (json['slices'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
     for (var slice in slices) {
-      result.addSlice(TileSetSlice.fromJson(slice));
+      result.addSlice(TileSetSlice.fromJson(result, slice));
     }
     List<Map<String, dynamic>> groups = json['groups'] != null ? (json['groups'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
     for (var group in groups) {

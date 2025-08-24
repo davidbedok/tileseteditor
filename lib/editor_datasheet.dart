@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
+import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
@@ -16,11 +18,12 @@ class EditorDatasheet extends StatefulWidget {
 }
 
 class EditorDatasheetState extends State<EditorDatasheet> {
-  String? selectedTileDetails;
+  // fixme: editorState can be the state here..
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
   TileSetSlice? selectedSlice;
   TileSetGroup? selectedGroup;
+  TileInfo? lastTile;
 
   @override
   void initState() {
@@ -35,11 +38,16 @@ class EditorDatasheetState extends State<EditorDatasheet> {
 
   void selectTile(EditorState state, TileInfo tileInfo) {
     setState(() {
-      selectedTileDetails = tileInfo.toString();
+      lastTile = tileInfo;
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
-      selectedSlice = widget.tileSet.findSlice(tileInfo.coord); // fixme..
-      selectedGroup = widget.tileSet.findGroup(tileInfo.coord); // fixme..
+      if (state.selectedSliceOrGroup != null) {
+        selectedSlice = widget.tileSet.findSlice(state.selectedSliceOrGroup!.coord); // fixme..
+        selectedGroup = widget.tileSet.findGroup(state.selectedSliceOrGroup!.coord); // fixme..
+      } else {
+        selectedSlice = null;
+        selectedGroup = null;
+      }
     });
   }
 
@@ -72,21 +80,21 @@ class EditorDatasheetState extends State<EditorDatasheet> {
           children: [
             Text('Number of slices:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.slices.length}'),
+            Text('${widget.tileSet.slices.length}'), // fixme: from state..
           ],
         ),
         Row(
           children: [
             Text('Number of groups:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.groups.length}'),
+            Text('${widget.tileSet.groups.length}'), // fixme: from state..
           ],
         ),
         Row(
           children: [
             Text('Number of garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.garbage.indices.length}'),
+            Text('${widget.tileSet.garbage.indices.length}'), // fixme: from state..
           ],
         ),
         Row(
@@ -112,9 +120,16 @@ class EditorDatasheetState extends State<EditorDatasheet> {
         ),
         Row(
           children: [
-            Text('Last:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Last tile type:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text(selectedTileDetails != null ? '$selectedTileDetails' : '-'),
+            Text(lastTile != null ? lastTile!.type.name : '-'),
+          ],
+        ),
+        Row(
+          children: [
+            Text('Last tile index:', style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(width: 5),
+            Text(lastTile != null ? '${widget.tileSet.getIndex(lastTile!.coord)} (${lastTile!.coord.x}:${lastTile!.coord.y})' : '-'),
           ],
         ),
       ],

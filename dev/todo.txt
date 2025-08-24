@@ -1,11 +1,2 @@
-- Group-nak es Slice-nak legyen egy generalt hash-e vagy id-ja. Nev lehessen azonos..
-
-- Slice: save the indices too
-
+- Rename: slice.indices and group.indices to tiles
 - DropDown list for the available slices/groups
-
-- Get info from running game within flutter widget
-    - Get the selected tile's x, y coords
-    
-- Modify game from flutter
-    - e.g. handle the zoom, tile spacing externally

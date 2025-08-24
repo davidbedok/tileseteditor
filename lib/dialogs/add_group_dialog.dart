@@ -24,7 +24,7 @@ class AddGroupDialogState extends State<AddGroupDialog> {
   @override
   void initState() {
     super.initState();
-    _group = TileSetGroup('', widget.tiles.length, 1);
+    _group = TileSetGroup(widget.tileSet.getNextKey(), '', widget.tiles.length, 1);
     for (TileCoord coord in widget.tiles) {
       _group.indices.add(widget.tileSet.getIndex(coord));
     }

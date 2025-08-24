@@ -15,6 +15,14 @@ class SliceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        AppDialogNumberField(
+          name: 'Key',
+          initialValue: slice.key,
+          validationMessage: '',
+          onChanged: (int value) {
+            slice.key = value;
+          },
+        ),
         AppDialogTextField(
           name: 'Name',
           initialValue: slice.name,

@@ -15,6 +15,14 @@ class GroupWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        AppDialogNumberField(
+          name: 'Key',
+          initialValue: group.key,
+          validationMessage: '',
+          onChanged: (int value) {
+            group.key = value;
+          },
+        ),
         AppDialogTextField(
           name: 'Name',
           initialValue: group.name,

@@ -30,7 +30,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     int minY = widget.tiles.map((coord) => coord.y).reduce(min);
     int maxX = widget.tiles.map((coord) => coord.x).reduce(max);
     int maxY = widget.tiles.map((coord) => coord.y).reduce(max);
-    _slice = TileSetSlice('', minX, minY, maxX - minX + 1, maxY - minY + 1);
+    _slice = TileSetSlice(widget.tileSet.getNextKey(), '', minX, minY, maxX - minX + 1, maxY - minY + 1);
   }
 
   @override
