@@ -45,6 +45,6 @@ class TileSetSlice {
 
   @override
   String toString() {
-    return 'Slice $name $left:$top (w:$width h:$height)';
+    return 'Slice $name (l:$left t:$top w:$width h:$height)';
   }
 }

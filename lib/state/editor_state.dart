@@ -7,11 +7,15 @@ class EditorState {
 
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
-  TileInfo? selectedTileInfo;
+  TileInfo? selectedSliceOrGroup;
 
-  void Function(TileInfo tileInfo)? onSelected;
+  List<void Function(EditorState state, TileInfo tileInfo)> onSelectedEventHandlers = [];
 
   EditorState();
+
+  void subscribeOnSelected(void Function(EditorState state, TileInfo tileInfo) eventHandler) {
+    onSelectedEventHandlers.add(eventHandler);
+  }
 
   bool isSelected(TileInfo info) {
     bool result = false;
@@ -22,7 +26,7 @@ class EditorState {
         result = selectedGarbageTiles.where((c) => c.x == info.coord.x && c.y == info.coord.y).isNotEmpty;
       case TileType.slice:
       case TileType.group:
-        result = selectedTileInfo != null && selectedTileInfo == info;
+        result = selectedSliceOrGroup != null && selectedSliceOrGroup == info;
     }
     return result;
   }
@@ -37,10 +41,10 @@ class EditorState {
         }
       case TileType.slice:
       case TileType.group:
-        if (selectedTileInfo == info) {
-          selectedTileInfo = null;
+        if (selectedSliceOrGroup == info) {
+          selectedSliceOrGroup = null;
         } else {
-          selectedTileInfo = info;
+          selectedSliceOrGroup = info;
         }
       case TileType.garbage:
         if (selectedGarbageTiles.contains(info.coord)) {
@@ -49,8 +53,8 @@ class EditorState {
           selectedGarbageTiles.add(info.coord);
         }
     }
-    if (onSelected != null) {
-      onSelected!.call(info);
+    for (var eventHandler in onSelectedEventHandlers) {
+      eventHandler.call(this, info);
     }
   }
 }

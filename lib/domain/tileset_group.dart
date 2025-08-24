@@ -38,6 +38,6 @@ class TileSetGroup {
 
   @override
   String toString() {
-    return 'Slice $name (w:$width h:$height)';
+    return 'Group $name (#:${indices.length} w:$width h:$height)';
   }
 }

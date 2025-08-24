@@ -1,5 +1,7 @@
 - Group-nak es Slice-nak legyen egy generalt hash-e vagy id-ja. Nev lehessen azonos..
 
+- Slice: save the indices too
+
 - DropDown list for the available slices/groups
 
 - Get info from running game within flutter widget
