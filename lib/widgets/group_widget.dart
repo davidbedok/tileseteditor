@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -7,9 +5,6 @@ import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
-
-import 'dart:ui' as dui;
-import 'package:image/image.dart' as imglib;
 
 class GroupWidget extends StatelessWidget {
   static final double space = 8.0;
@@ -24,7 +19,18 @@ class GroupWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        SizedBox(width: 250, child: Column(children: [for (var image in cropTiles(tileSet, group.tileIndices)) image])),
+        SizedBox(
+          width: 250,
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10.0),
+                decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
+                child: GridView.count(shrinkWrap: true, crossAxisCount: 4, children: [for (var image in cropTiles(tileSet, group.tileIndices)) image]),
+              ),
+            ],
+          ),
+        ),
         SizedBox(
           width: 400,
           child: Column(
