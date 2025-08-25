@@ -17,6 +17,8 @@ class EditorActionController extends StatefulWidget {
   State<EditorActionController> createState() => EditorActionControllerState();
 }
 
+class TileSetImage {}
+
 class EditorActionControllerState extends State<EditorActionController> {
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
@@ -30,6 +32,7 @@ class EditorActionControllerState extends State<EditorActionController> {
 
   @override
   void dispose() {
+    widget.editorState.unsubscribeOnSelected(selectTile);
     super.dispose();
   }
 
@@ -47,6 +50,26 @@ class EditorActionControllerState extends State<EditorActionController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
+          IconButton(
+            icon: Icon(Icons.select_all),
+            onPressed: () {
+              widget.editorState.selectAllFree(widget.tileSet);
+              setState(() {
+                numberOfSelectedFreeTiles = widget.editorState.selectedFreeTiles.length;
+              });
+            },
+          ),
+          SizedBox(width: 5),
+          IconButton(
+            icon: Icon(Icons.deselect),
+            onPressed: () {
+              widget.editorState.selectedFreeTiles.clear();
+              setState(() {
+                numberOfSelectedFreeTiles = widget.editorState.selectedFreeTiles.length;
+              });
+            },
+          ),
+          SizedBox(width: 5),
           ElevatedButton.icon(
             icon: Icon(Icons.add_circle_outline),
             label: const Text('Slice'),

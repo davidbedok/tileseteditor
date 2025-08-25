@@ -28,6 +28,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
   TileSetProject? project;
   TileSet? tileSet;
   dui.Image? tileSetImage;
+  EditorState editorState = EditorState();
 
   @override
   void initState() {
@@ -121,6 +122,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                 setState(() {
                                   tileSet = value;
                                   tileSetImage = image;
+                                  editorState = EditorState();
                                 });
                               },
                             ),
@@ -136,7 +138,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TileSetEditor(
-                      editorState: EditorState(), //
+                      key: GlobalKey(),
+                      editorState: editorState, //
                       project: project!,
                       tileSet: tileSet!,
                       tileSetImage: tileSetImage!,
@@ -246,6 +249,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
       project = null;
       tileSet = null;
       tileSetImage = null;
+      editorState = EditorState();
     });
   }
 

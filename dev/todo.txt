@@ -1,4 +1,3 @@
-- Select all/Deselect all button
 - Dialog refactor
 
 - DropDown list for the available slices/groups

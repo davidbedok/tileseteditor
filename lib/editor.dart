@@ -10,6 +10,8 @@ import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/state/editor_state.dart';
 
 class TileSetEditor extends StatelessWidget {
+  static const int topHeight = 210;
+
   final TileSetProject project;
   final TileSet tileSet;
   final dui.Image tileSetImage;
@@ -31,7 +33,7 @@ class TileSetEditor extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: 400,
-                      height: MediaQuery.of(context).size.height - 200,
+                      height: MediaQuery.of(context).size.height - topHeight,
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
@@ -40,7 +42,7 @@ class TileSetEditor extends StatelessWidget {
                           game: EditorGame(
                             tileSet: tileSet,
                             width: 400,
-                            height: MediaQuery.of(context).size.height - 200,
+                            height: MediaQuery.of(context).size.height - topHeight,
                             tileSetImage: tileSetImage,
                             editorState: editorState,
                           ),
@@ -55,7 +57,7 @@ class TileSetEditor extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width - 500,
-                          height: MediaQuery.of(context).size.height - 200,
+                          height: MediaQuery.of(context).size.height - topHeight,
                           child: Container(
                             margin: const EdgeInsets.all(0),
                             padding: const EdgeInsets.all(0),

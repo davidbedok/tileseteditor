@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 class AppDialogTextField extends StatelessWidget {
   final String name;
   final String? initialValue;
-  final String validationMessage; // TODO optional validator for project.description
-  final void Function(String value) onChanged;
+  final bool disabled;
+  final String? validationMessage;
+  final void Function(String value)? onChanged;
 
-  const AppDialogTextField({super.key, required this.name, required this.initialValue, required this.validationMessage, required this.onChanged});
+  const AppDialogTextField({
+    super.key, //
+    required this.name,
+    required this.initialValue,
+    this.validationMessage,
+    this.onChanged,
+    this.disabled = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +26,15 @@ class AppDialogTextField extends StatelessWidget {
           child: TextFormField(
             initialValue: initialValue,
             style: Theme.of(context).textTheme.bodyMedium,
-            onChanged: onChanged,
-            validator: (value) => value!.isEmpty ? validationMessage : null,
+            readOnly: disabled,
+            onChanged: disabled
+                ? null
+                : (value) {
+                    if (onChanged != null) {
+                      onChanged!.call(value.trim());
+                    }
+                  },
+            validator: (value) => value!.isEmpty || value.trim().isEmpty ? validationMessage : null,
           ),
         ),
       ],

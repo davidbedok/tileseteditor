@@ -31,6 +31,11 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     int maxX = widget.tiles.map((coord) => coord.x).reduce(max);
     int maxY = widget.tiles.map((coord) => coord.y).reduce(max);
     _slice = TileSetSlice(widget.tileSet.getNextKey(), '', minX, minY, maxX - minX + 1, maxY - minY + 1);
+    for (int y = minY; y <= maxY; y++) {
+      for (int x = minX; x <= maxX; x++) {
+        _slice.tileIndices.add(widget.tileSet.getIndex(TileCoord(x, y)));
+      }
+    }
   }
 
   @override
@@ -42,7 +47,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
       onAction: () {
         Navigator.of(context).pop(_slice);
       },
-      children: [SliceWidget(slice: _slice, edit: false)],
+      children: [SliceWidget(slice: _slice, tileSet: widget.tileSet, edit: false)],
     );
   }
 }

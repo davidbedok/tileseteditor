@@ -26,6 +26,7 @@ class TileSet {
 
   int getMaxTileRow() => imageWidth ~/ tileWidth;
   int getMaxTileColumn() => imageHeight ~/ tileHeight;
+  int getMaxTileIndex() => getMaxTileRow() * getMaxTileColumn() - 1;
 
   TileSet({
     required this.name,
@@ -45,6 +46,35 @@ class TileSet {
     return [result, maxSliceKey, maxGroupKey].reduce(Math.max) + 1;
   }
 
+  bool isFree(int index) {
+    bool result = true;
+    if (garbage.tileIndices.contains(index)) {
+      result = false;
+    }
+    if (result) {
+      for (var slice in slices) {
+        if (slice.tileIndices.contains(index)) {
+          result = false;
+          break;
+        }
+      }
+    }
+    if (result) {
+      for (var group in groups) {
+        if (group.tileIndices.contains(index)) {
+          result = false;
+          break;
+        }
+      }
+    }
+    return result;
+  }
+
+  TileCoord getTileCoord(int index) {
+    int maxTileRow = getMaxTileRow();
+    return TileCoord(index % maxTileRow + 1, index ~/ maxTileRow + 1);
+  }
+
   int getIndex(TileCoord coord) {
     return (coord.y - 1) * getMaxTileRow() + coord.x - 1;
   }
@@ -62,16 +92,16 @@ class TileSet {
 
   void addGarbage(List<TileCoord> coords) {
     for (TileCoord coord in coords) {
-      if (!garbage.indices.contains(getIndex(coord))) {
-        garbage.indices.add(getIndex(coord));
+      if (!garbage.tileIndices.contains(getIndex(coord))) {
+        garbage.tileIndices.add(getIndex(coord));
       }
     }
   }
 
   void removeGarbage(List<TileCoord> coords) {
     for (TileCoord coord in coords) {
-      if (garbage.indices.contains(getIndex(coord))) {
-        garbage.indices.remove(getIndex(coord));
+      if (garbage.tileIndices.contains(getIndex(coord))) {
+        garbage.tileIndices.remove(getIndex(coord));
       }
     }
   }
@@ -105,7 +135,7 @@ class TileSet {
     if (group != null) {
       result = TileInfo(type: TileType.group, coord: coord, name: group.name, color: group.color);
     }
-    if (garbage.indices.contains(getIndex(coord))) {
+    if (garbage.tileIndices.contains(getIndex(coord))) {
       result = TileInfo(type: TileType.garbage, coord: coord);
     }
     return result;

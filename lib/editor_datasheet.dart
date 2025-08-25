@@ -23,7 +23,6 @@ class EditorDatasheetState extends State<EditorDatasheet> {
   int numberOfSelectedGarbageTiles = 0;
   TileSetSlice? selectedSlice;
   TileSetGroup? selectedGroup;
-  TileInfo? lastTile;
 
   @override
   void initState() {
@@ -33,12 +32,12 @@ class EditorDatasheetState extends State<EditorDatasheet> {
 
   @override
   void dispose() {
+    widget.editorState.unsubscribeOnSelected(selectTile);
     super.dispose();
   }
 
   void selectTile(EditorState state, TileInfo tileInfo) {
     setState(() {
-      lastTile = tileInfo;
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
       if (state.selectedSliceOrGroup != null) {
@@ -94,7 +93,7 @@ class EditorDatasheetState extends State<EditorDatasheet> {
           children: [
             Text('Number of garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.garbage.indices.length}'), // fixme: from state..
+            Text('${widget.tileSet.garbage.tileIndices.length}'), // fixme: from state..
           ],
         ),
         Row(

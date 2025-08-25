@@ -4,10 +4,11 @@ import 'package:flutter/services.dart';
 class AppDialogNumberField extends StatelessWidget {
   final String name;
   final int? initialValue;
-  final String validationMessage;
-  final void Function(int value) onChanged;
+  final bool disabled;
+  final String? validationMessage;
+  final void Function(int value)? onChanged;
 
-  const AppDialogNumberField({super.key, required this.name, required this.initialValue, required this.validationMessage, required this.onChanged});
+  const AppDialogNumberField({super.key, required this.name, required this.initialValue, this.validationMessage, this.onChanged, this.disabled = false});
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +22,16 @@ class AppDialogNumberField extends StatelessWidget {
             inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
             initialValue: initialValue?.toString(),
             style: Theme.of(context).textTheme.bodyMedium,
-            onChanged: (String value) {
-              int parsedValue = int.tryParse(value) ?? 0;
-              onChanged.call(parsedValue);
-            },
-            validator: (value) => value!.isEmpty ? validationMessage : null,
+            readOnly: disabled,
+            onChanged: disabled
+                ? null
+                : (String value) {
+                    if (onChanged != null) {
+                      int parsedValue = int.tryParse(value) ?? 0;
+                      onChanged!.call(parsedValue);
+                    }
+                  },
+            validator: (value) => value!.isEmpty || value.trim().isEmpty ? validationMessage : null,
           ),
         ),
       ],

@@ -1,6 +1,7 @@
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 
 class EditorState {
   // TileSet tileSet;
@@ -15,6 +16,10 @@ class EditorState {
 
   void subscribeOnSelected(void Function(EditorState state, TileInfo tileInfo) eventHandler) {
     onSelectedEventHandlers.add(eventHandler);
+  }
+
+  void unsubscribeOnSelected(void Function(EditorState state, TileInfo tileInfo) eventHandler) {
+    onSelectedEventHandlers.remove(eventHandler);
   }
 
   bool isSelected(TileInfo info) {
@@ -55,6 +60,15 @@ class EditorState {
     }
     for (var eventHandler in onSelectedEventHandlers) {
       eventHandler.call(this, info);
+    }
+  }
+
+  void selectAllFree(TileSet tileSet) {
+    selectedFreeTiles.clear();
+    for (int index = 0; index < tileSet.getMaxTileIndex(); index++) {
+      if (tileSet.isFree(index)) {
+        selectedFreeTiles.add(tileSet.getTileCoord(index));
+      }
     }
   }
 }
