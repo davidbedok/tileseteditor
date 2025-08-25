@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -30,7 +31,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     int minY = widget.tiles.map((coord) => coord.y).reduce(min);
     int maxX = widget.tiles.map((coord) => coord.x).reduce(max);
     int maxY = widget.tiles.map((coord) => coord.y).reduce(max);
-    _slice = TileSetSlice(widget.tileSet.getNextKey(), '', minX, minY, maxX - minX + 1, maxY - minY + 1);
+    _slice = TileSetSlice(widget.tileSet.getNextKey(), '', NamedAreaSize(maxX - minX + 1, maxY - minY + 1), minX, minY);
     for (int y = minY; y <= maxY; y++) {
       for (int x = minX; x <= maxX; x++) {
         _slice.tileIndices.add(widget.tileSet.getIndex(TileCoord(x, y)));

@@ -1,3 +1,4 @@
+import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_named_area.dart';
@@ -5,13 +6,11 @@ import 'package:tileseteditor/domain/tileset_named_area.dart';
 class TileSetSlice extends TileSetNamedArea {
   int left;
   int top;
-  int width;
-  int height;
 
-  TileSetSlice(super.key, super.name, this.left, this.top, this.width, this.height);
+  TileSetSlice(super.key, super.name, super.size, this.left, this.top);
 
   bool isInnerCoord(TileCoord coord) {
-    return coord.x >= left && coord.x < left + width && coord.y >= top && coord.y < top + height;
+    return coord.x >= left && coord.x < left + size.width && coord.y >= top && coord.y < top + size.height;
   }
 
   Map<String, dynamic> toJson() {
@@ -21,8 +20,8 @@ class TileSetSlice extends TileSetNamedArea {
       'tiles': tileIndices,
       'left': left,
       'top': top,
-      'width': width,
-      'height': height,
+      'width': size.width,
+      'height': size.height,
     };
   }
 
@@ -36,7 +35,7 @@ class TileSetSlice extends TileSetNamedArea {
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetSlice(key, name, left, top, width, height),
+        TileSetSlice(key, name, NamedAreaSize(width, height), left, top),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
     List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];
@@ -48,6 +47,6 @@ class TileSetSlice extends TileSetNamedArea {
 
   @override
   String toString() {
-    return 'Slice $name (l:$left t:$top w:$width h:$height)';
+    return 'Slice $name (l:$left t:$top w:${size.width} h:${size.height})';
   }
 }

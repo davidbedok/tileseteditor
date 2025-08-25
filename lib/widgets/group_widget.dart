@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
+import 'package:tileseteditor/widgets/app_dialog_named_area_size_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 
@@ -45,21 +47,14 @@ class GroupWidget extends StatelessWidget {
                 },
               ),
               SizedBox(height: space),
-              AppDialogNumberField(
-                // FIXME: use a drop down list
-                name: 'Width',
-                initialValue: group.width,
+              AppDialogNamedAreaSizeField(
+                name: 'Size (width x height)',
+                edit: true,
+                numberOfTiles: group.tileIndices.length,
+                initialValue: group.size,
                 validationMessage: 'Please define Width of the Group',
-                onChanged: (int value) {
-                  group.width = value;
-                },
-              ),
-              AppDialogNumberField(
-                name: 'Height',
-                initialValue: group.height,
-                validationMessage: 'Please define Height of the Group',
-                onChanged: (int value) {
-                  group.height = value;
+                onChanged: (NamedAreaSize size) {
+                  group.size = size;
                 },
               ),
               SizedBox(height: space),

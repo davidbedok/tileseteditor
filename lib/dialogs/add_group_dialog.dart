@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
@@ -24,7 +25,7 @@ class AddGroupDialogState extends State<AddGroupDialog> {
   @override
   void initState() {
     super.initState();
-    _group = TileSetGroup(widget.tileSet.getNextKey(), '', widget.tiles.length, 1);
+    _group = TileSetGroup(widget.tileSet.getNextKey(), '', NamedAreaSize(1, widget.tiles.length));
     for (TileCoord coord in widget.tiles) {
       _group.tileIndices.add(widget.tileSet.getIndex(coord));
     }

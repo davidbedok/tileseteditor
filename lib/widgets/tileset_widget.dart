@@ -12,8 +12,6 @@ class TileSetWidget extends StatelessWidget {
   final TileSet tileSet;
   final bool edit;
 
-  final List<int> _tileSizeOptions = List<int>.generate(41, (i) => i + 10);
-
   final sourceController = TextEditingController();
 
   TileSetWidget({super.key, required this.tileSet, required this.edit});
