@@ -1,0 +1,1 @@
+magick input/slice.png -crop 32x32 output/slice32x32/slice.png

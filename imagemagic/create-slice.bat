@@ -1,0 +1,1 @@
+magick input/magecity.png -crop 96x64+96+128 +repage input/slice.png

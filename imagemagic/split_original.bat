@@ -1,0 +1,1 @@
+magick input/magecity.png -crop 32x32 output/magecity32x32/magecity.png
