@@ -46,7 +46,7 @@ class TileSet {
   }
 
   int getIndex(TileCoord coord) {
-    return (coord.y - 1) * getMaxTileRow() + coord.x;
+    return (coord.y - 1) * getMaxTileRow() + coord.x - 1;
   }
 
   void addSlice(TileSetSlice slice) {
@@ -125,7 +125,7 @@ class TileSet {
   TileSetGroup? findGroup(TileCoord coord) {
     TileSetGroup? result;
     for (TileSetGroup group in groups) {
-      if (group.indices.contains(getIndex(coord))) {
+      if (group.tileIndices.contains(getIndex(coord))) {
         result = group;
         break;
       }

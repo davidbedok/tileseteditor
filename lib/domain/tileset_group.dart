@@ -10,7 +10,7 @@ class TileSetGroup extends TileSetNamedArea {
     return {
       'key': key, //
       'name': name, //
-      'indices': indices,
+      'tiles': tileIndices,
       'width': width,
       'height': height,
     };
@@ -27,15 +27,15 @@ class TileSetGroup extends TileSetNamedArea {
         TileSetGroup(key, name, width, height),
       _ => throw const FormatException('Failed to load TileSetGroup'),
     };
-    List<int> indices = json['indices'] != null ? (json['indices'] as List).map((index) => index as int).toList() : [];
-    if (indices.isNotEmpty) {
-      result.indices.addAll(indices);
+    List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];
+    if (tileIndices.isNotEmpty) {
+      result.tileIndices.addAll(tileIndices);
     }
     return result;
   }
 
   @override
   String toString() {
-    return 'Group $name (#:${indices.length} w:$width h:$height)';
+    return 'Group $name (#:${tileIndices.length} w:$width h:$height)';
   }
 }

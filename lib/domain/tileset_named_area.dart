@@ -5,7 +5,7 @@ import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 class TileSetNamedArea {
   int key;
   String name;
-  List<int> indices = [];
+  List<int> tileIndices = [];
 
   Color color = RandomColor.getColorObject(Options());
 

@@ -118,20 +118,6 @@ class EditorDatasheetState extends State<EditorDatasheet> {
             Text(selectedSlice != null ? '$selectedSlice' : (selectedGroup != null ? '$selectedGroup' : '-')),
           ],
         ),
-        Row(
-          children: [
-            Text('Last tile type:', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(width: 5),
-            Text(lastTile != null ? lastTile!.type.name : '-'),
-          ],
-        ),
-        Row(
-          children: [
-            Text('Last tile index:', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(width: 5),
-            Text(lastTile != null ? '${widget.tileSet.getIndex(lastTile!.coord)} (${lastTile!.coord.x}:${lastTile!.coord.y})' : '-'),
-          ],
-        ),
       ],
     );
   }

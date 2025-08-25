@@ -8,7 +8,7 @@ import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 
-class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, TapCallbacks {
+class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, TapCallbacks, HoverCallbacks {
   double spriteWidth;
   double spriteHeight;
   dui.Image tileSetImage;
@@ -26,7 +26,9 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     required this.atlasY,
     required super.position,
     // required this.info,
-  });
+  }) {
+    priority = 0;
+  }
 
   bool isSelected() => game.editorState.isSelected(getInfo());
 
@@ -74,22 +76,32 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
   }
 
   @override
+  void update(double dt) {
+    if (isHovered) {
+      priority = 100;
+    } else {
+      priority = 0;
+    }
+  }
+
+  @override
   void render(Canvas canvas) {
     super.render(canvas);
     TileInfo info = getInfo();
     switch (info.type) {
       case TileType.free:
         if (isSelected()) {
-          canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSelectionPaint(Colors.blue, 2.0));
+          canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSelectionPaint(Colors.blue, 2.0));
         }
       case TileType.slice:
-        canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSlicePaint(info.color!, 2));
+        // canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSlicePaint(info.color!, 2));
         canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSlicePaint2(info.color!.withAlpha(100)));
         if (isSelected()) {
           canvas.drawOval(Rect.fromLTWH(4, 4, spriteWidth - 8, spriteHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
         }
       case TileType.group:
-        canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(2, 2, spriteWidth - 4, spriteHeight - 4), Radius.circular(6)), getSlicePaint(info.color!, 4.0));
+        // canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(2, 2, spriteWidth - 4, spriteHeight - 4), Radius.circular(6)), getSlicePaint(info.color!, 4.0));
+        canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSlicePaint(info.color!, 2.0));
 
         if (isSelected()) {
           canvas.drawOval(Rect.fromLTWH(4, 4, spriteWidth - 8, spriteHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
@@ -103,5 +115,31 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
           canvas.drawLine(Offset(4, spriteHeight - 4), Offset(spriteWidth - 4, 4), getGarbagePaint(Colors.red, 2));
         }
     }
+    if (isHovered) {
+      canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
+
+      drawInfo(info, canvas);
+      drawCoord(info, canvas);
+    }
+  }
+
+  void drawInfo(TileInfo info, dui.Canvas canvas) {
+    var textSpan = TextSpan(
+      text: info.getHoverText(),
+      style: TextStyle(color: info.getHoverColor(), fontWeight: FontWeight.bold),
+    );
+    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 0, maxWidth: 200);
+    textPainter.paint(canvas, Offset(0, -20));
+  }
+
+  void drawCoord(TileInfo info, dui.Canvas canvas) {
+    var textSpan = TextSpan(
+      text: '${game.tileSet.getIndex(info.coord)} [${info.coord.toString()}]',
+      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    );
+    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 0, maxWidth: 100);
+    textPainter.paint(canvas, Offset(0, height));
   }
 }

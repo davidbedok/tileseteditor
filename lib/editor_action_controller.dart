@@ -59,7 +59,7 @@ class EditorActionControllerState extends State<EditorActionController> {
           SizedBox(width: 5),
           ElevatedButton.icon(
             icon: Icon(Icons.add_circle_outline),
-            label: const Text('Group'),
+            label: numberOfSelectedFreeTiles > 1 ? Text('Group of $numberOfSelectedFreeTiles tiles') : const Text('Group'),
             onPressed: numberOfSelectedFreeTiles > 1
                 ? () {
                     addGroup(context, widget.editorState);
@@ -67,43 +67,46 @@ class EditorActionControllerState extends State<EditorActionController> {
                 : null,
           ),
           SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.cancel),
-            label: const Text('Drop'),
-            onPressed: numberOfSelectedFreeTiles > 0
-                ? () {
-                    widget.tileSet.addGarbage(widget.editorState.selectedFreeTiles);
-                    widget.editorState.selectedFreeTiles.clear();
-                    setState(() {
-                      numberOfSelectedFreeTiles = 0;
-                    });
-                  }
-                : null,
+          Visibility(
+            visible: numberOfSelectedFreeTiles > 0,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.cancel),
+              label: Text('Drop $numberOfSelectedFreeTiles tiles'),
+              onPressed: () {
+                widget.tileSet.addGarbage(widget.editorState.selectedFreeTiles);
+                widget.editorState.selectedFreeTiles.clear();
+                setState(() {
+                  numberOfSelectedFreeTiles = 0;
+                });
+              },
+            ),
           ),
           SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.cancel_outlined),
-            label: const Text('Undrop'),
-            onPressed: numberOfSelectedGarbageTiles > 0
-                ? () {
-                    widget.tileSet.removeGarbage(widget.editorState.selectedGarbageTiles);
-                    widget.editorState.selectedGarbageTiles.clear();
-                    setState(() {
-                      numberOfSelectedGarbageTiles = 0;
-                    });
-                  }
-                : null,
+          Visibility(
+            visible: numberOfSelectedGarbageTiles > 0,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.cancel_outlined),
+              label: Text('Undrop $numberOfSelectedGarbageTiles tiles'),
+              onPressed: () {
+                widget.tileSet.removeGarbage(widget.editorState.selectedGarbageTiles);
+                widget.editorState.selectedGarbageTiles.clear();
+                setState(() {
+                  numberOfSelectedGarbageTiles = 0;
+                });
+              },
+            ),
           ),
           SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.delete),
-            label: const Text('Delete'),
-            onPressed: selectedSliceOrGroup != null
-                ? () {
-                    widget.tileSet.remove(widget.editorState.selectedSliceOrGroup!);
-                    widget.editorState.selectedSliceOrGroup = null;
-                  }
-                : null,
+          Visibility(
+            visible: selectedSliceOrGroup != null,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.delete),
+              label: Text('Delete ${selectedSliceOrGroup != null ? selectedSliceOrGroup!.name : ''}'),
+              onPressed: () {
+                widget.tileSet.remove(widget.editorState.selectedSliceOrGroup!);
+                widget.editorState.selectedSliceOrGroup = null;
+              },
+            ),
           ),
         ],
       ),

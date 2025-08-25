@@ -34,7 +34,7 @@ class GroupWidget extends StatelessWidget {
         SizedBox(height: space),
         AppDialogTextField(
           name: 'Indices',
-          initialValue: group.indices.join(','),
+          initialValue: group.tileIndices.join(','),
           validationMessage: 'Please all all indices for this Group.',
           onChanged: (String value) {
             // readonly

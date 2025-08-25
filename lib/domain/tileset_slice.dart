@@ -18,7 +18,7 @@ class TileSetSlice extends TileSetNamedArea {
     return {
       'key': key, //
       'name': name, //
-      'indices': indices,
+      'tiles': tileIndices,
       'left': left,
       'top': top,
       'width': width,
@@ -39,19 +39,10 @@ class TileSetSlice extends TileSetNamedArea {
         TileSetSlice(key, name, left, top, width, height),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
-    List<int> indices = json['indices'] != null ? (json['indices'] as List).map((index) => index as int).toList() : [];
-    if (indices.isNotEmpty) {
-      result.indices.addAll(indices);
+    List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];
+    if (tileIndices.isNotEmpty) {
+      result.tileIndices.addAll(tileIndices);
     }
-    /*
-    List<int> indices = [];
-    for (int x = result.left; x < result.left + result.width; x++) {
-      for (int y = result.top; y < result.top + result.height; y++) {
-        indices.add(tileSet.getIndex(TileCoord(x, y)));
-      }
-    }
-    result.indices.addAll(indices);
-    */
     return result;
   }
 
