@@ -39,7 +39,7 @@ class AddGroupDialogState extends State<AddGroupDialog> {
       onAction: () {
         Navigator.of(context).pop(_group);
       },
-      children: [GroupWidget(group: _group, edit: false)],
+      children: [GroupWidget(group: _group, tileSet: widget.tileSet)],
     );
   }
 }

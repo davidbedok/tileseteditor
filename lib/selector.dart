@@ -14,6 +14,7 @@ import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/editor.dart';
 import 'package:tileseteditor/menubar.dart';
 import 'package:tileseteditor/state/editor_state.dart';
+import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSetSelector extends StatefulWidget {
   final PackageInfo packageInfo;
@@ -118,7 +119,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                       return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
                                     }).toList(),
                               onChanged: (value) async {
-                                var image = await getImage(value!.filePath);
+                                var image = await ImageUtils.getImage(value!.filePath);
                                 setState(() {
                                   tileSet = value;
                                   tileSetImage = image;
@@ -262,7 +263,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
         },
       );
       if (dialogResult != null) {
-        dui.Image image = await getImage(dialogResult.filePath);
+        dui.Image image = await ImageUtils.getImage(dialogResult.filePath);
         dialogResult.imageWidth = image.width;
         dialogResult.imageHeight = image.height;
         setState(() {
@@ -270,19 +271,5 @@ class TileSetSelectorState extends State<TileSetSelector> {
         });
       }
     }
-  }
-
-  Future<dui.Image> getImage(String path) async {
-    Completer<ImageInfo> completer = Completer();
-    Image img = Image.file(File(path));
-    img.image
-        .resolve(ImageConfiguration())
-        .addListener(
-          ImageStreamListener((ImageInfo info, bool _) {
-            completer.complete(info);
-          }),
-        );
-    ImageInfo imageInfo = await completer.future;
-    return imageInfo.image;
   }
 }

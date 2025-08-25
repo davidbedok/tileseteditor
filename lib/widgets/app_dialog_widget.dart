@@ -38,7 +38,7 @@ class AppDialogWidget extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(5),
-                      // boxShadow: const [BoxShadow(color: Colors.grey, offset: Offset(3, 3), spreadRadius: 2, blurStyle: BlurStyle.solid)],
+                      boxShadow: const [BoxShadow(color: Colors.grey, offset: Offset(8, 8), spreadRadius: 2, blurStyle: BlurStyle.solid)],
                     ),
                     padding: EdgeInsets.all(space),
                     child: Form(

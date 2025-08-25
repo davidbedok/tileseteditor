@@ -47,7 +47,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
       onAction: () {
         Navigator.of(context).pop(_slice);
       },
-      children: [SliceWidget(slice: _slice, tileSet: widget.tileSet, edit: false)],
+      children: [SliceWidget(slice: _slice, tileSet: widget.tileSet)],
     );
   }
 }
