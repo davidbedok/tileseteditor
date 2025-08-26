@@ -4,7 +4,8 @@ import 'dart:ui' as dui;
 import 'package:image/image.dart' as imglib;
 
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tile_indexed_coord.dart';
+import 'package:tileseteditor/widgets/group_image_widget.dart';
 
 class ImageUtils {
   static Future<dui.Image> getImage(String path) async {
@@ -27,12 +28,28 @@ class ImageUtils {
     return Image.memory(imglib.encodeJpg(croppedImage), width: 200);
   }
 
-  static List<Image> cropTiles(String path, List<TileCoord> coords, int tileWidth, int tileHeight) {
-    List<Image> result = [];
+  static List<GroupImageWidget> cropTiles(
+    String path,
+    List<TileIndexedCoord> coords,
+    int tileWidth,
+    int tileHeight,
+    void Function(bool selected, int tileIndex) onSelection,
+    List<int> selectedTiles,
+  ) {
+    List<GroupImageWidget> result = [];
     imglib.Image? image = imglib.decodePng(File(path).readAsBytesSync());
-    for (TileCoord coord in coords) {
+    for (TileIndexedCoord coord in coords) {
       imglib.Image croppedImage = imglib.copyCrop(image!, x: (coord.x - 1) * tileWidth, y: (coord.y - 1) * tileHeight, width: tileWidth, height: tileHeight);
-      result.add(Image.memory(imglib.encodeJpg(croppedImage), width: tileWidth.toDouble(), height: tileHeight.toDouble()));
+      result.add(
+        GroupImageWidget(
+          tileIndex: coord.index,
+          imageBytes: imglib.encodeJpg(croppedImage),
+          width: tileWidth.toDouble(),
+          height: tileHeight.toDouble(),
+          onSelection: onSelection,
+          selected: selectedTiles.contains(coord.index),
+        ),
+      );
     }
     return result;
   }

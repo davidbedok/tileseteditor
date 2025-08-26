@@ -1,6 +1,7 @@
 import 'dart:math' as Math;
 
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset_garbage.dart';
@@ -73,6 +74,11 @@ class TileSet {
   TileCoord getTileCoord(int index) {
     int maxTileRow = getMaxTileRow();
     return TileCoord(index % maxTileRow + 1, index ~/ maxTileRow + 1);
+  }
+
+  TileIndexedCoord getTileIndexedCoord(int index) {
+    int maxTileRow = getMaxTileRow();
+    return TileIndexedCoord(index, index % maxTileRow + 1, index ~/ maxTileRow + 1);
   }
 
   int getIndex(TileCoord coord) {

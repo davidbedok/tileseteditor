@@ -18,9 +18,6 @@ class EditorDatasheet extends StatefulWidget {
 }
 
 class EditorDatasheetState extends State<EditorDatasheet> {
-  // fixme: editorState can be the state here..
-  int numberOfSelectedFreeTiles = 0;
-  int numberOfSelectedGarbageTiles = 0;
   TileSetSlice? selectedSlice;
   TileSetGroup? selectedGroup;
 
@@ -38,8 +35,6 @@ class EditorDatasheetState extends State<EditorDatasheet> {
 
   void selectTile(EditorState state, TileInfo tileInfo) {
     setState(() {
-      numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
-      numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
       if (state.selectedSliceOrGroup != null) {
         selectedSlice = widget.tileSet.findSlice(state.selectedSliceOrGroup!.coord); // fixme..
         selectedGroup = widget.tileSet.findGroup(state.selectedSliceOrGroup!.coord); // fixme..
@@ -70,51 +65,37 @@ class EditorDatasheetState extends State<EditorDatasheet> {
         ),
         Row(
           children: [
-            Text('Max tile:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Tiles:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.getMaxTileColumn()} x ${widget.tileSet.getMaxTileRow()}'),
+            Text('${widget.tileSet.getMaxTileColumn()} x ${widget.tileSet.getMaxTileRow()} (0..${widget.tileSet.getMaxTileIndex()})'),
           ],
         ),
         Row(
           children: [
-            Text('Number of slices:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Slices:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
             Text('${widget.tileSet.slices.length}'), // fixme: from state..
           ],
         ),
         Row(
           children: [
-            Text('Number of groups:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Groups:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
             Text('${widget.tileSet.groups.length}'), // fixme: from state..
           ],
         ),
         Row(
           children: [
-            Text('Number of garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
             Text('${widget.tileSet.garbage.tileIndices.length}'), // fixme: from state..
           ],
         ),
         Row(
           children: [
-            Text('Number of selected free tile(s):', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(width: 5),
-            Text('$numberOfSelectedFreeTiles'),
-          ],
-        ),
-        Row(
-          children: [
-            Text('Number of selected garbage tile(s):', style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(width: 5),
-            Text('$numberOfSelectedGarbageTiles'),
-          ],
-        ),
-        Row(
-          children: [
             Text('Selected named area:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text(selectedSlice != null ? '$selectedSlice' : (selectedGroup != null ? '$selectedGroup' : '-')),
+            Expanded(child: Text(selectedSlice != null ? '$selectedSlice' : (selectedGroup != null ? '$selectedGroup' : '-'))),
           ],
         ),
       ],
