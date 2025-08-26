@@ -80,7 +80,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                 text: project!.name,
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              TextSpan(text: '. Please create or add a TileSet (*.png).'),
+                              TextSpan(text: '. Please select or add a TileSet (*.png).'),
                             ],
                           ),
                         ),

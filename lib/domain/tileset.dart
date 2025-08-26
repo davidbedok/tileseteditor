@@ -29,6 +29,20 @@ class TileSet {
   int getMaxTileColumn() => imageHeight ~/ tileHeight;
   int getMaxTileIndex() => getMaxTileRow() * getMaxTileColumn() - 1;
 
+  List<TileSetGroup> getGroupsWithNone() {
+    List<TileSetGroup> result = [];
+    result.add(TileSetGroup.none);
+    result.addAll(groups);
+    return result;
+  }
+
+  List<TileSetSlice> getSlicesWithNone() {
+    List<TileSetSlice> result = [];
+    result.add(TileSetSlice.none);
+    result.addAll(slices);
+    return result;
+  }
+
   TileSet({
     required this.name,
     required this.filePath,
@@ -113,21 +127,22 @@ class TileSet {
   }
 
   void remove(TileInfo info) {
-    switch (info.type) {
-      case TileType.free:
-      //
-      case TileType.slice:
-        TileSetSlice? slice = findSlice(info.coord);
-        if (slice != null) {
-          slices.remove(slice);
-        }
-      case TileType.group:
-        TileSetGroup? group = findGroup(info.coord);
-        if (group != null) {
-          groups.remove(group);
-        }
-      case TileType.garbage:
-      // TODO: Handle this case.
+    if (info.key != null) {
+      switch (info.type) {
+        case TileType.slice:
+          TileSetSlice? slice = findSliceByKey(info.key!);
+          if (slice != null) {
+            slices.remove(slice);
+          }
+        case TileType.group:
+          TileSetGroup? group = findGroupByKey(info.key!);
+          if (group != null) {
+            groups.remove(group);
+          }
+        case TileType.free:
+        case TileType.garbage:
+        //
+      }
     }
   }
 
@@ -135,11 +150,11 @@ class TileSet {
     TileInfo result = TileInfo(type: TileType.free, coord: coord);
     TileSetSlice? slice = findSlice(coord);
     if (slice != null) {
-      result = TileInfo(type: TileType.slice, coord: coord, name: slice.name, color: slice.color);
+      result = TileInfo(type: TileType.slice, coord: coord, key: slice.key, name: slice.name, color: slice.color);
     }
     TileSetGroup? group = findGroup(coord);
     if (group != null) {
-      result = TileInfo(type: TileType.group, coord: coord, name: group.name, color: group.color);
+      result = TileInfo(type: TileType.group, coord: coord, key: group.key, name: group.name, color: group.color);
     }
     if (garbage.tileIndices.contains(getIndex(coord))) {
       result = TileInfo(type: TileType.garbage, coord: coord);
@@ -158,6 +173,10 @@ class TileSet {
     return result;
   }
 
+  TileSetSlice? findSliceByKey(int key) {
+    return slices.where((slice) => slice.key == key).first;
+  }
+
   TileSetGroup? findGroup(TileCoord coord) {
     TileSetGroup? result;
     for (TileSetGroup group in groups) {
@@ -167,6 +186,10 @@ class TileSet {
       }
     }
     return result;
+  }
+
+  TileSetGroup? findGroupByKey(int key) {
+    return groups.where((group) => group.key == key).first;
   }
 
   Map<String, dynamic> toJson() {

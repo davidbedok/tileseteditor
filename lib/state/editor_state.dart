@@ -4,11 +4,10 @@ import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 
 class EditorState {
-  // TileSet tileSet;
-
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
-  TileInfo? selectedSliceOrGroup;
+  TileInfo? selectedSlice;
+  TileInfo? selectedGroup;
 
   List<void Function(EditorState state, TileInfo tileInfo)> onSelectedEventHandlers = [];
 
@@ -30,8 +29,9 @@ class EditorState {
       case TileType.garbage:
         result = selectedGarbageTiles.where((c) => c.x == info.coord.x && c.y == info.coord.y).isNotEmpty;
       case TileType.slice:
+        result = selectedSlice != null && selectedSlice == info;
       case TileType.group:
-        result = selectedSliceOrGroup != null && selectedSliceOrGroup == info;
+        result = selectedGroup != null && selectedGroup == info;
     }
     return result;
   }
@@ -45,11 +45,18 @@ class EditorState {
           selectedFreeTiles.add(info.coord);
         }
       case TileType.slice:
-      case TileType.group:
-        if (selectedSliceOrGroup == info) {
-          selectedSliceOrGroup = null;
+        if (selectedSlice == info) {
+          selectedSlice = null;
         } else {
-          selectedSliceOrGroup = info;
+          selectedSlice = info;
+          selectedGroup = null;
+        }
+      case TileType.group:
+        if (selectedGroup == info) {
+          selectedGroup = null;
+        } else {
+          selectedGroup = info;
+          selectedSlice = null;
         }
       case TileType.garbage:
         if (selectedGarbageTiles.contains(info.coord)) {

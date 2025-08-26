@@ -2,6 +2,8 @@ import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tileset_named_area.dart';
 
 class TileSetGroup extends TileSetNamedArea {
+  static final TileSetGroup none = TileSetGroup(-1, '-', NamedAreaSize(0, 0));
+
   TileSetGroup(super.key, super.name, super.size);
 
   Map<String, dynamic> toJson() {

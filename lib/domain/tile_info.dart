@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
@@ -7,10 +5,11 @@ import 'package:tileseteditor/domain/tile_type.dart';
 class TileInfo {
   TileType type;
   TileCoord coord;
+  int? key;
   String? name;
   Color? color;
 
-  TileInfo({required this.type, required this.coord, this.name, this.color});
+  TileInfo({required this.type, required this.coord, this.key, this.name, this.color});
 
   String getHoverText() {
     String result = '';

@@ -4,6 +4,8 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_named_area.dart';
 
 class TileSetSlice extends TileSetNamedArea {
+  static final TileSetSlice none = TileSetSlice(-1, '-', NamedAreaSize(0, 0), 0, 0);
+
   int left;
   int top;
 

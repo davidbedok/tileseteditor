@@ -1,1 +1,3 @@
 - DropDown list for the available slices/groups
+
+- One tile cannot be part of two named area, or garbage

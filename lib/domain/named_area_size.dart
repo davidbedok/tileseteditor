@@ -14,6 +14,10 @@ class NamedAreaSize {
     return result;
   }
 
+  String toDropDownValue() {
+    return '${width}x$height';
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) || (other is NamedAreaSize && runtimeType == other.runtimeType && width == other.width && height == other.height);
@@ -23,6 +27,6 @@ class NamedAreaSize {
 
   @override
   String toString() {
-    return '$width:$height';
+    return '${width}x:$height';
   }
 }

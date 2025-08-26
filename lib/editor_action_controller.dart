@@ -22,7 +22,8 @@ class TileSetImage {}
 class EditorActionControllerState extends State<EditorActionController> {
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
-  TileInfo? selectedSliceOrGroup;
+  TileInfo? selectedSlice;
+  TileInfo? selectedGroup;
 
   @override
   void initState() {
@@ -40,7 +41,8 @@ class EditorActionControllerState extends State<EditorActionController> {
     setState(() {
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
-      selectedSliceOrGroup = state.selectedSliceOrGroup;
+      selectedSlice = state.selectedSlice;
+      selectedGroup = state.selectedGroup;
     });
   }
 
@@ -121,13 +123,13 @@ class EditorActionControllerState extends State<EditorActionController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: selectedSliceOrGroup != null,
+            visible: selectedSlice != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.delete),
-              label: Text('Delete ${selectedSliceOrGroup != null ? selectedSliceOrGroup!.name : ''}'),
+              label: Text('Delete ${selectedSlice != null ? selectedSlice!.name : ''}'),
               onPressed: () {
-                widget.tileSet.remove(widget.editorState.selectedSliceOrGroup!);
-                widget.editorState.selectedSliceOrGroup = null;
+                widget.tileSet.remove(widget.editorState.selectedSlice!);
+                widget.editorState.selectedSlice = null;
               },
             ),
           ),
