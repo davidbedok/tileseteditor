@@ -4,6 +4,7 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
+import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset_garbage.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
@@ -23,7 +24,8 @@ class TileSet {
   List<TileSetGroup> groups = [];
   TileSetGarbage garbage = TileSetGarbage();
 
-  void Function(TileSetSlice slice)? onCreateSlice;
+  // void Function(TileSetSlice slice)? onCreateSlice;
+  List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
   int getMaxTileRow() => imageWidth ~/ tileWidth;
   int getMaxTileColumn() => imageHeight ~/ tileHeight;
@@ -53,6 +55,20 @@ class TileSet {
     required this.imageWidth,
     required this.imageHeight,
   });
+
+  void subscribeOnChanged(void Function(TileSet tileSet, TileSetChangeType type) eventHandler) {
+    onChangedEventHandlers.add(eventHandler);
+  }
+
+  void unsubscribeOnChanged(void Function(TileSet tileSet, TileSetChangeType type) eventHandler) {
+    onChangedEventHandlers.remove(eventHandler);
+  }
+
+  void callEventHandlers(TileSetChangeType type) {
+    for (var eventHandler in onChangedEventHandlers) {
+      eventHandler.call(this, type);
+    }
+  }
 
   int getNextKey() {
     int result = 0;
@@ -101,19 +117,23 @@ class TileSet {
 
   void addSlice(TileSetSlice slice) {
     slices.add(slice);
+    /* 
     if (onCreateSlice != null) {
       onCreateSlice!.call(slice);
-    }
+    }*/
+    callEventHandlers(TileSetChangeType.sliceCreated);
   }
 
   void addGroup(TileSetGroup group) {
     groups.add(group);
+    callEventHandlers(TileSetChangeType.groupCreated);
   }
 
   void addGarbage(List<TileCoord> coords) {
     for (TileCoord coord in coords) {
       if (!garbage.tileIndices.contains(getIndex(coord))) {
         garbage.tileIndices.add(getIndex(coord));
+        callEventHandlers(TileSetChangeType.tileDropped);
       }
     }
   }
@@ -122,6 +142,7 @@ class TileSet {
     for (TileCoord coord in coords) {
       if (garbage.tileIndices.contains(getIndex(coord))) {
         garbage.tileIndices.remove(getIndex(coord));
+        callEventHandlers(TileSetChangeType.garbageDropped);
       }
     }
   }
@@ -133,11 +154,13 @@ class TileSet {
           TileSetSlice? slice = findSliceByKey(info.key!);
           if (slice != null) {
             slices.remove(slice);
+            callEventHandlers(TileSetChangeType.sliceRemoved);
           }
         case TileType.group:
           TileSetGroup? group = findGroupByKey(info.key!);
           if (group != null) {
             groups.remove(group);
+            callEventHandlers(TileSetChangeType.groupRemoved);
           }
         case TileType.free:
         case TileType.garbage:

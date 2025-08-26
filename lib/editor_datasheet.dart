@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/state/editor_state.dart';
@@ -18,6 +17,7 @@ class EditorDatasheet extends StatefulWidget {
 }
 
 class EditorDatasheetState extends State<EditorDatasheet> {
+  late TileSet tileSet;
   TileSetSlice? selectedSlice;
   TileSetGroup? selectedGroup;
 
@@ -27,19 +27,30 @@ class EditorDatasheetState extends State<EditorDatasheet> {
   @override
   void initState() {
     super.initState();
+    tileSet = widget.tileSet;
     widget.editorState.subscribeOnSelected(selectTile);
+    widget.tileSet.subscribeOnChanged(changeTileSet);
   }
 
   @override
   void dispose() {
     widget.editorState.unsubscribeOnSelected(selectTile);
+    widget.tileSet.unsubscribeOnChanged(changeTileSet);
     super.dispose();
+  }
+
+  void changeTileSet(TileSet tileSet, TileSetChangeType type) {
+    setState(() {
+      this.tileSet = tileSet;
+      currentSlice = TileSetSlice.none;
+      currentGroup = TileSetGroup.none;
+    });
   }
 
   void selectTile(EditorState state, TileInfo tileInfo) {
     if (tileInfo.key != null) {
-      if (state.selectedSlice != null) {
-        TileSetSlice? slice = widget.tileSet.findSliceByKey(tileInfo.key!);
+      if (state.selectedSliceInfo != null) {
+        TileSetSlice? slice = tileSet.findSliceByKey(tileInfo.key!);
         setState(() {
           if (slice != null) {
             currentSlice = slice;
@@ -53,8 +64,8 @@ class EditorDatasheetState extends State<EditorDatasheet> {
           currentSlice = TileSetSlice.none;
         });
       }
-      if (state.selectedGroup != null) {
-        TileSetGroup? group = widget.tileSet.findGroupByKey(tileInfo.key!);
+      if (state.selectedGroupInfo != null) {
+        TileSetGroup? group = tileSet.findGroupByKey(tileInfo.key!);
         setState(() {
           if (group != null) {
             currentGroup = group;
@@ -79,33 +90,33 @@ class EditorDatasheetState extends State<EditorDatasheet> {
           children: [
             Text('Image size:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.imageWidth} x ${widget.tileSet.imageHeight}'),
+            Text('${tileSet.imageWidth} x ${tileSet.imageHeight}'),
           ],
         ),
         Row(
           children: [
             Text('Tile size:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.tileWidth} x ${widget.tileSet.tileHeight}'),
+            Text('${tileSet.tileWidth} x ${tileSet.tileHeight}'),
           ],
         ),
         Row(
           children: [
             Text('Tiles:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.getMaxTileColumn()} x ${widget.tileSet.getMaxTileRow()} (${widget.tileSet.getMaxTileIndex() + 1} tiles)'),
+            Text('${tileSet.getMaxTileColumn()} x ${tileSet.getMaxTileRow()} (${tileSet.getMaxTileIndex() + 1} tiles)'),
           ],
         ),
         Row(
           children: [
             Text('Garbages:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${widget.tileSet.garbage.tileIndices.length} tile(s)'), // fixme: from state..
+            Text('${tileSet.garbage.tileIndices.length} tile(s)'), // fixme: from state..
           ],
         ),
         Row(
           children: [
-            Text('Slices (${widget.tileSet.slices.length}):', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Slices (${tileSet.slices.length}):', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
             Expanded(
               child: Theme(
@@ -113,20 +124,21 @@ class EditorDatasheetState extends State<EditorDatasheet> {
                   canvasColor: const Color.fromARGB(255, 203, 216, 227),
                   scaffoldBackgroundColor: null,
                   hoverColor: Colors.transparent,
-                  focusColor: Colors.transparent,
+                  focusColor: Theme.of(context).canvasColor,
                 ),
                 child: DropdownButton<TileSetSlice>(
                   value: currentSlice,
                   style: Theme.of(context).textTheme.bodyMedium,
                   isExpanded: true,
-                  items: widget.tileSet.getSlicesWithNone().map((TileSetSlice slice) {
+                  items: tileSet.getSlicesWithNone().map((TileSetSlice slice) {
                     return DropdownMenuItem<TileSetSlice>(value: slice, child: Text(slice.toDropDownValue()));
                   }).toList(),
                   onChanged: (value) {
-                    if (value != null) {
+                    if (value != null && currentSlice.key != value.key) {
                       setState(() {
                         currentSlice = value;
                       });
+                      widget.editorState.selectSlice(currentSlice);
                     }
                   },
                 ),
@@ -137,7 +149,7 @@ class EditorDatasheetState extends State<EditorDatasheet> {
         ),
         Row(
           children: [
-            Text('Groups (${widget.tileSet.groups.length}):', style: TextStyle(fontWeight: FontWeight.bold)),
+            Text('Groups (${tileSet.groups.length}):', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
             Expanded(
               child: Theme(
@@ -151,14 +163,15 @@ class EditorDatasheetState extends State<EditorDatasheet> {
                   value: currentGroup,
                   style: Theme.of(context).textTheme.bodyMedium,
                   isExpanded: true,
-                  items: widget.tileSet.getGroupsWithNone().map((TileSetGroup group) {
+                  items: tileSet.getGroupsWithNone().map((TileSetGroup group) {
                     return DropdownMenuItem<TileSetGroup>(value: group, child: Text(group.toDropDownValue()));
                   }).toList(),
                   onChanged: (value) {
-                    if (value != null) {
+                    if (value != null && currentGroup.key != value.key) {
                       setState(() {
                         currentGroup = value;
                       });
+                      widget.editorState.selectGroup(tileSet, currentGroup);
                     }
                   },
                 ),

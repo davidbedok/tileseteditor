@@ -3,9 +3,6 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
-import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/flame/editor_game.dart';
 import 'package:tileseteditor/flame/example_component.dart';
 import 'package:tileseteditor/flame/tile_component.dart';
@@ -99,11 +96,12 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
       game.camera.viewfinder.anchor = Anchor.topLeft;
       game.camera.viewfinder.position = Vector2(0, 0);
 
-      game.tileSet.onCreateSlice = onCreateSlice;
+      // game.tileSet.onCreateSlice = onCreateSlice;
     }
   }
 
+  /*
   void onCreateSlice(TileSetSlice slice) {
     print('Slice is created.. $slice');
-  }
+  }*/
 }

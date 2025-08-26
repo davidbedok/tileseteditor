@@ -2,12 +2,14 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tileset_slice.dart';
 
 class EditorState {
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
-  TileInfo? selectedSlice;
-  TileInfo? selectedGroup;
+  TileInfo? selectedSliceInfo;
+  TileInfo? selectedGroupInfo;
 
   List<void Function(EditorState state, TileInfo tileInfo)> onSelectedEventHandlers = [];
 
@@ -29,11 +31,30 @@ class EditorState {
       case TileType.garbage:
         result = selectedGarbageTiles.where((c) => c.x == info.coord.x && c.y == info.coord.y).isNotEmpty;
       case TileType.slice:
-        result = selectedSlice != null && selectedSlice == info;
+        result = selectedSliceInfo != null && selectedSliceInfo == info;
       case TileType.group:
-        result = selectedGroup != null && selectedGroup == info;
+        result = selectedGroupInfo != null && selectedGroupInfo == info;
     }
     return result;
+  }
+
+  void selectSlice(TileSetSlice slice) {
+    if (slice != TileSetSlice.none) {
+      selectTile(TileInfo(type: TileType.slice, name: slice.name, key: slice.key, coord: TileCoord(slice.left, slice.top), color: slice.color));
+    } else {
+      selectedSliceInfo = null;
+    }
+  }
+
+  void selectGroup(TileSet tileSet, TileSetGroup group) {
+    if (group != TileSetGroup.none) {
+      if (group.tileIndices.isNotEmpty) {
+        TileCoord coord = tileSet.getTileCoord(group.tileIndices.first);
+        selectTile(TileInfo(type: TileType.group, name: group.name, key: group.key, coord: coord, color: group.color));
+      }
+    } else {
+      selectedGroupInfo = null;
+    }
   }
 
   void selectTile(TileInfo info) {
@@ -45,18 +66,18 @@ class EditorState {
           selectedFreeTiles.add(info.coord);
         }
       case TileType.slice:
-        if (selectedSlice == info) {
-          selectedSlice = null;
+        if (selectedSliceInfo == info) {
+          selectedSliceInfo = null;
         } else {
-          selectedSlice = info;
-          selectedGroup = null;
+          selectedSliceInfo = info;
+          selectedGroupInfo = null;
         }
       case TileType.group:
-        if (selectedGroup == info) {
-          selectedGroup = null;
+        if (selectedGroupInfo == info) {
+          selectedGroupInfo = null;
         } else {
-          selectedGroup = info;
-          selectedSlice = null;
+          selectedGroupInfo = info;
+          selectedSliceInfo = null;
         }
       case TileType.garbage:
         if (selectedGarbageTiles.contains(info.coord)) {

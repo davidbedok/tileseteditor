@@ -41,8 +41,8 @@ class EditorActionControllerState extends State<EditorActionController> {
     setState(() {
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
-      selectedSlice = state.selectedSlice;
-      selectedGroup = state.selectedGroup;
+      selectedSlice = state.selectedSliceInfo;
+      selectedGroup = state.selectedGroupInfo;
     });
   }
 
@@ -128,8 +128,20 @@ class EditorActionControllerState extends State<EditorActionController> {
               icon: Icon(Icons.delete),
               label: Text('Delete ${selectedSlice != null ? selectedSlice!.name : ''}'),
               onPressed: () {
-                widget.tileSet.remove(widget.editorState.selectedSlice!);
-                widget.editorState.selectedSlice = null;
+                widget.tileSet.remove(widget.editorState.selectedSliceInfo!);
+                widget.editorState.selectedSliceInfo = null;
+              },
+            ),
+          ),
+          SizedBox(width: 5),
+          Visibility(
+            visible: selectedGroup != null,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.delete),
+              label: Text('Delete ${selectedGroup != null ? selectedGroup!.name : ''}'),
+              onPressed: () {
+                widget.tileSet.remove(widget.editorState.selectedGroupInfo!);
+                widget.editorState.selectedGroupInfo = null;
               },
             ),
           ),
