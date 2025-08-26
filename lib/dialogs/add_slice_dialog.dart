@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/named_area_size.dart';
+import 'package:tileseteditor/domain/tile_info.dart';
+import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -23,6 +25,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
   final _formKey = GlobalKey<FormState>();
 
   late TileSetSlice _slice;
+  int numberOfNonFreeTiles = 0;
 
   @override
   void initState() {
@@ -34,7 +37,12 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     _slice = TileSetSlice(widget.tileSet.getNextKey(), '', NamedAreaSize(maxX - minX + 1, maxY - minY + 1), minX, minY);
     for (int y = minY; y <= maxY; y++) {
       for (int x = minX; x <= maxX; x++) {
-        _slice.tileIndices.add(widget.tileSet.getIndex(TileCoord(x, y)));
+        TileCoord coord = TileCoord(x, y);
+        TileInfo tileInfo = widget.tileSet.getTileInfo(coord);
+        if (tileInfo.type != TileType.free) {
+          numberOfNonFreeTiles++;
+        }
+        _slice.tileIndices.add(widget.tileSet.getIndex(coord));
       }
     }
   }
@@ -44,11 +52,18 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     return AppDialogWidget(
       formKey: _formKey,
       title: 'Add Slice',
+      enabled: numberOfNonFreeTiles == 0,
       actionButton: 'Add',
       onAction: () {
         Navigator.of(context).pop(_slice);
       },
-      children: [SliceWidget(slice: _slice, tileSet: widget.tileSet)],
+      children: [
+        SliceWidget(
+          slice: _slice, //
+          tileSet: widget.tileSet,
+          numberOfNonFreeTiles: numberOfNonFreeTiles,
+        ),
+      ],
     );
   }
 }

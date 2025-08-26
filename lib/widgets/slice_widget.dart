@@ -10,8 +10,9 @@ class SliceWidget extends StatelessWidget {
 
   final TileSet tileSet;
   final TileSetSlice slice;
+  final int numberOfNonFreeTiles;
 
-  const SliceWidget({super.key, required this.slice, required this.tileSet});
+  const SliceWidget({super.key, required this.slice, required this.tileSet, required this.numberOfNonFreeTiles});
 
   @override
   Widget build(BuildContext context) {
@@ -38,24 +39,47 @@ class SliceWidget extends StatelessWidget {
         ),
         SizedBox(
           width: 400,
-          child: Column(
-            children: [
-              AppDialogNumberField(name: 'Key', initialValue: slice.key, disabled: true),
-              AppDialogTextField(
-                name: 'Name',
-                initialValue: slice.name,
-                validationMessage: 'Please enter the name of the Slice.',
-                onChanged: (String value) {
-                  slice.name = value;
-                },
-              ),
-              SizedBox(height: space),
-              AppDialogTextField(name: 'Left x Top', initialValue: '${slice.left} x ${slice.top}', disabled: true),
-              AppDialogTextField(name: 'Size (width x height)', initialValue: '${slice.size.width} x ${slice.size.height}', disabled: true),
-              SizedBox(height: space),
-              AppDialogTextField(name: 'Tiles (indices)', initialValue: slice.tileIndices.join(','), disabled: true),
-            ],
-          ),
+          child: numberOfNonFreeTiles > 0
+              ? Column(
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Container(
+                            padding: EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 220, 200, 200),
+                              border: BoxBorder.all(color: const Color.fromARGB(255, 104, 14, 14), strokeAlign: 1.0),
+                              borderRadius: BorderRadius.all(Radius.circular(3.0)),
+                            ),
+                            child: Text(
+                              'The slice cannot be created because it contains tiles that are already part of other named area or have already been discarded.\nNumber of non-free tile(s): $numberOfNonFreeTiles',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              : Column(
+                  children: [
+                    AppDialogNumberField(name: 'Key', initialValue: slice.key, disabled: true),
+                    AppDialogTextField(
+                      name: 'Name',
+                      initialValue: slice.name,
+                      validationMessage: 'Please enter the name of the Slice.',
+                      onChanged: (String value) {
+                        slice.name = value;
+                      },
+                    ),
+                    SizedBox(height: space),
+                    AppDialogTextField(name: 'Left x Top', initialValue: '${slice.left} x ${slice.top}', disabled: true),
+                    AppDialogTextField(name: 'Size (width x height)', initialValue: '${slice.size.width} x ${slice.size.height}', disabled: true),
+                    SizedBox(height: space),
+                    AppDialogTextField(name: 'Tiles (indices)', initialValue: slice.tileIndices.join(','), disabled: true),
+                  ],
+                ),
         ),
       ],
     );

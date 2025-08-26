@@ -5,6 +5,7 @@ class AppDialogWidget extends StatelessWidget {
   static final double space = 8.0;
 
   final String title;
+  final bool enabled;
   final List<Widget> children;
   final String actionButton;
   final void Function() onAction;
@@ -16,6 +17,7 @@ class AppDialogWidget extends StatelessWidget {
     required this.children,
     required this.actionButton,
     required this.onAction,
+    this.enabled = true,
   }) : _formKey = formKey;
 
   final GlobalKey<FormState> _formKey;
@@ -59,13 +61,16 @@ class AppDialogWidget extends StatelessWidget {
                                 },
                                 child: const Text('Close'),
                               ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    onAction.call();
-                                  }
-                                },
-                                child: Text(actionButton),
+                              Visibility(
+                                visible: enabled,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      onAction.call();
+                                    }
+                                  },
+                                  child: Text(actionButton),
+                                ),
                               ),
                             ],
                           ),

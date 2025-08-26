@@ -7,7 +7,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = WindowOptions(minimumSize: Size(800, 600));
+  WindowOptions windowOptions = WindowOptions(minimumSize: Size(1024, 768));
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 

@@ -32,7 +32,7 @@ class TileSetEditor extends StatelessWidget {
                 Column(
                   children: [
                     SizedBox(
-                      width: 400,
+                      width: MediaQuery.of(context).size.width - 400,
                       height: MediaQuery.of(context).size.height - topHeight,
                       child: Container(
                         margin: const EdgeInsets.all(0),
@@ -41,7 +41,7 @@ class TileSetEditor extends StatelessWidget {
                         child: GameWidget(
                           game: EditorGame(
                             tileSet: tileSet,
-                            width: 400,
+                            width: MediaQuery.of(context).size.width - 400,
                             height: MediaQuery.of(context).size.height - topHeight,
                             tileSetImage: tileSetImage,
                             editorState: editorState,
@@ -56,11 +56,11 @@ class TileSetEditor extends StatelessWidget {
                     Row(
                       children: [
                         SizedBox(
-                          width: MediaQuery.of(context).size.width - 500,
+                          width: 300,
                           height: MediaQuery.of(context).size.height - topHeight,
                           child: Container(
                             margin: const EdgeInsets.all(0),
-                            padding: const EdgeInsets.all(0),
+                            padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                             child: EditorDatasheet(editorState: editorState, tileSet: tileSet),
                           ),
