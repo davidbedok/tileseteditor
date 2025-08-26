@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/widgets/group_widget.dart';
 
 class AddGroupDialog extends StatefulWidget {
+  final TileSetProject project;
   final TileSet tileSet;
   final List<TileCoord> tiles;
 
-  const AddGroupDialog({super.key, required this.tileSet, required this.tiles});
+  const AddGroupDialog({super.key, required this.project, required this.tileSet, required this.tiles});
 
   @override
   AddGroupDialogState createState() => AddGroupDialogState();
@@ -40,7 +42,7 @@ class AddGroupDialogState extends State<AddGroupDialog> {
       onAction: () {
         Navigator.of(context).pop(_group);
       },
-      children: [GroupWidget(group: _group, tileSet: widget.tileSet)],
+      children: [GroupWidget(group: _group, project: widget.project, tileSet: widget.tileSet)],
     );
   }
 }

@@ -26,7 +26,7 @@ class TileSetEditor extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            EditorActionController(editorState: editorState, tileSet: tileSet),
+            EditorActionController(project: project, editorState: editorState, tileSet: tileSet),
             Row(
               children: [
                 Column(

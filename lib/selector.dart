@@ -119,7 +119,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                       return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
                                     }).toList(),
                               onChanged: (value) async {
-                                var image = await ImageUtils.getImage(value!.filePath);
+                                var image = await ImageUtils.getImage(project!.getTileSetFilePath(value!));
                                 setState(() {
                                   tileSet = value;
                                   tileSetImage = image;
@@ -263,7 +263,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
         },
       );
       if (dialogResult != null) {
-        dui.Image image = await ImageUtils.getImage(dialogResult.filePath);
+        dui.Image image = await ImageUtils.getImage(project!.getTileSetFilePath(dialogResult));
         dialogResult.imageWidth = image.width;
         dialogResult.imageHeight = image.height;
         setState(() {

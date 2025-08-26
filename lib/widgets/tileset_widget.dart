@@ -1,20 +1,22 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
+import 'package:path/path.dart' as path;
 
 class TileSetWidget extends StatelessWidget {
   static final double space = 8.0;
 
+  final TileSetProject project;
   final TileSet tileSet;
   final bool edit;
 
   final sourceController = TextEditingController();
 
-  TileSetWidget({super.key, required this.tileSet, required this.edit});
+  TileSetWidget({super.key, required this.project, required this.tileSet, required this.edit});
 
   @override
   Widget build(BuildContext context) {
@@ -32,21 +34,24 @@ class TileSetWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(child: Text("Source", style: Theme.of(context).textTheme.bodyMedium)),
+            // Flexible(child: Text("Source", style: Theme.of(context).textTheme.bodyMedium)),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    browseTileSet();
+                  },
+                  child: const Text('Choose TileSet image (*.png)'),
+                ),
+              ),
+            ),
             Expanded(
               child: TextFormField(
                 controller: sourceController,
                 style: Theme.of(context).textTheme.bodyMedium,
                 readOnly: true,
                 validator: (value) => value!.isEmpty ? 'Please select a tileset image' : null,
-              ),
-            ),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  browseTileSet();
-                },
-                child: const Text('Browse'),
               ),
             ),
           ],
@@ -72,16 +77,18 @@ class TileSetWidget extends StatelessWidget {
         ),
         SizedBox(height: space),
         AppDialogNumberField(
-          name: 'Margin',
+          name: 'Margin (not yet supported)',
           initialValue: tileSet.margin,
+          disabled: true,
           validationMessage: 'Please define Margin of the TileSet',
           onChanged: (int value) {
             tileSet.margin = value;
           },
         ),
         AppDialogNumberField(
-          name: 'Spacing',
+          name: 'Spacing (not yet supported)',
           initialValue: tileSet.spacing,
+          disabled: true,
           validationMessage: 'Please define Spacing of the TileSet',
           onChanged: (int value) {
             tileSet.spacing = value;
@@ -100,7 +107,7 @@ class TileSetWidget extends StatelessWidget {
     );
     if (filePickerResult != null) {
       sourceController.text = filePickerResult.files.single.path!;
-      tileSet.filePath = sourceController.text;
+      tileSet.filePath = path.relative(sourceController.text, from: project.getDirectory());
     }
   }
 }

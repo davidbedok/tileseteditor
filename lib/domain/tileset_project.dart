@@ -1,5 +1,6 @@
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:path/path.dart' as path;
 
 class TileSetProject {
   String? filePath;
@@ -9,6 +10,8 @@ class TileSetProject {
   int tileHeight;
 
   List<TileSet> tileSets = [];
+
+  String getDirectory() => path.dirname(filePath!);
 
   TileSetProject({required this.name, this.description, required this.tileWidth, required this.tileHeight});
 
@@ -29,7 +32,7 @@ class TileSetProject {
       'description': description,
       'tile': {'width': tileWidth, 'height': tileHeight},
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
-      'sources': toTileSetJson(),
+      'tilesets': toTileSetJson(),
     };
   }
 
@@ -54,14 +57,22 @@ class TileSetProject {
         TileSetProject(name: name, description: description, tileWidth: tileWidth, tileHeight: tileHeight),
       _ => throw const FormatException('Failed to load TileSetProject'),
     };
-    List<Map<String, dynamic>> sources = json['sources'] != null ? (json['sources'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var source in sources) {
-      result.addTileSet(TileSet.fromJson(source));
+    List<Map<String, dynamic>> tileSets = json['tilesets'] != null ? (json['tilesets'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var tileSet in tileSets) {
+      result.addTileSet(TileSet.fromJson(tileSet));
     }
     return result;
   }
 
   void addTileSet(TileSet tileSet) {
     tileSets.add(tileSet);
+  }
+
+  String getTileSetFilePathByName(String name) {
+    return getTileSetFilePath(tileSets.where((tileSet) => tileSet.name == name).first);
+  }
+
+  String getTileSetFilePath(TileSet tileSet) {
+    return path.join(getDirectory(), tileSet.filePath);
   }
 }

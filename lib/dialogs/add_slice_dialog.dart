@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -11,10 +12,11 @@ import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/widgets/slice_widget.dart';
 
 class AddSliceDialog extends StatefulWidget {
+  final TileSetProject project;
   final TileSet tileSet;
   final List<TileCoord> tiles;
 
-  const AddSliceDialog({super.key, required this.tileSet, required this.tiles});
+  const AddSliceDialog({super.key, required this.project, required this.tileSet, required this.tiles});
 
   @override
   AddSliceDialogState createState() => AddSliceDialogState();
@@ -60,6 +62,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
       children: [
         SliceWidget(
           slice: _slice, //
+          project: widget.project,
           tileSet: widget.tileSet,
           numberOfNonFreeTiles: numberOfNonFreeTiles,
         ),

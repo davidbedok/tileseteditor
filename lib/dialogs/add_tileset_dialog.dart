@@ -43,7 +43,7 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
       onAction: () {
         Navigator.of(context).pop(_tileSet);
       },
-      children: [TileSetWidget(tileSet: _tileSet, edit: false)],
+      children: [TileSetWidget(project: widget.project, tileSet: _tileSet, edit: false)],
     );
   }
 }

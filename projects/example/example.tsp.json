@@ -1,0 +1,989 @@
+{
+    "name": "Example",
+    "description": "This is the example TileSet Project",
+    "tile": {
+        "width": 32,
+        "height": 32
+    },
+    "editor": {
+        "name": "tileseteditor",
+        "version": "1.0.0",
+        "build": "1"
+    },
+    "tilesets": [
+        {
+            "name": "magecity",
+            "input": "tilesets\\magecity.png",
+            "margin": 0,
+            "spacing": 0,
+            "tile": {
+                "width": 32,
+                "height": 32
+            },
+            "size": {
+                "width": 256,
+                "height": 1450
+            },
+            "slices": [
+                {
+                    "key": 0,
+                    "name": "table1",
+                    "tiles": [
+                        5,
+                        13,
+                        6,
+                        14
+                    ],
+                    "left": 6,
+                    "top": 1,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 1,
+                    "name": "decoration1",
+                    "tiles": [
+                        16,
+                        24
+                    ],
+                    "left": 1,
+                    "top": 3,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 2,
+                    "name": "decoration2",
+                    "tiles": [
+                        17,
+                        25,
+                        18,
+                        26
+                    ],
+                    "left": 2,
+                    "top": 3,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 3,
+                    "name": "decoration3",
+                    "tiles": [
+                        19,
+                        27
+                    ],
+                    "left": 4,
+                    "top": 3,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 4,
+                    "name": "barrel1",
+                    "tiles": [
+                        20,
+                        28
+                    ],
+                    "left": 5,
+                    "top": 3,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 5,
+                    "name": "decoration4",
+                    "tiles": [
+                        21,
+                        29
+                    ],
+                    "left": 6,
+                    "top": 3,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 6,
+                    "name": "fountain1",
+                    "tiles": [
+                        22,
+                        30,
+                        23,
+                        31
+                    ],
+                    "left": 7,
+                    "top": 3,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 7,
+                    "name": "wall1",
+                    "tiles": [
+                        32,
+                        40,
+                        33,
+                        41,
+                        34,
+                        42
+                    ],
+                    "left": 1,
+                    "top": 5,
+                    "width": 3,
+                    "height": 2
+                },
+                {
+                    "key": 8,
+                    "name": "wall2",
+                    "tiles": [
+                        35,
+                        36,
+                        37
+                    ],
+                    "left": 4,
+                    "top": 5,
+                    "width": 3,
+                    "height": 1
+                },
+                {
+                    "key": 9,
+                    "name": "wall3",
+                    "tiles": [
+                        38,
+                        46
+                    ],
+                    "left": 7,
+                    "top": 5,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 10,
+                    "name": "wall4",
+                    "tiles": [
+                        39,
+                        47
+                    ],
+                    "left": 8,
+                    "top": 5,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 11,
+                    "name": "water1",
+                    "tiles": [
+                        48,
+                        56,
+                        49,
+                        57,
+                        50,
+                        58
+                    ],
+                    "left": 1,
+                    "top": 7,
+                    "width": 3,
+                    "height": 2
+                },
+                {
+                    "key": 12,
+                    "name": "water2",
+                    "tiles": [
+                        51,
+                        59
+                    ],
+                    "left": 4,
+                    "top": 7,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 13,
+                    "name": "staircase1",
+                    "tiles": [
+                        60,
+                        68,
+                        61,
+                        69,
+                        62,
+                        70
+                    ],
+                    "left": 5,
+                    "top": 8,
+                    "width": 3,
+                    "height": 2
+                },
+                {
+                    "key": 14,
+                    "name": "staircase2",
+                    "tiles": [
+                        63,
+                        71
+                    ],
+                    "left": 8,
+                    "top": 8,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 15,
+                    "name": "floor1",
+                    "tiles": [
+                        72,
+                        80,
+                        88,
+                        73,
+                        81,
+                        89,
+                        74,
+                        82,
+                        90
+                    ],
+                    "left": 1,
+                    "top": 10,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 16,
+                    "name": "floor2",
+                    "tiles": [
+                        75,
+                        83,
+                        76,
+                        84
+                    ],
+                    "left": 4,
+                    "top": 10,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 17,
+                    "name": "decoration5",
+                    "tiles": [
+                        96,
+                        104,
+                        112
+                    ],
+                    "left": 1,
+                    "top": 13,
+                    "width": 1,
+                    "height": 3
+                },
+                {
+                    "key": 18,
+                    "name": "decoration6",
+                    "tiles": [
+                        105,
+                        113
+                    ],
+                    "left": 2,
+                    "top": 14,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 19,
+                    "name": "decoration7",
+                    "tiles": [
+                        98,
+                        106,
+                        114
+                    ],
+                    "left": 3,
+                    "top": 13,
+                    "width": 1,
+                    "height": 3
+                },
+                {
+                    "key": 20,
+                    "name": "decoration8",
+                    "tiles": [
+                        318,
+                        319
+                    ],
+                    "left": 7,
+                    "top": 40,
+                    "width": 2,
+                    "height": 1
+                },
+                {
+                    "key": 21,
+                    "name": "bench1",
+                    "tiles": [
+                        120,
+                        128,
+                        121,
+                        129
+                    ],
+                    "left": 1,
+                    "top": 16,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 22,
+                    "name": "tree1",
+                    "tiles": [
+                        122,
+                        130,
+                        138,
+                        146,
+                        123,
+                        131,
+                        139,
+                        147
+                    ],
+                    "left": 3,
+                    "top": 16,
+                    "width": 2,
+                    "height": 4
+                },
+                {
+                    "key": 23,
+                    "name": "tree2",
+                    "tiles": [
+                        116,
+                        124,
+                        132,
+                        140,
+                        148,
+                        117,
+                        125,
+                        133,
+                        141,
+                        149,
+                        118,
+                        126,
+                        134,
+                        142,
+                        150,
+                        119,
+                        127,
+                        135,
+                        143,
+                        151
+                    ],
+                    "left": 5,
+                    "top": 15,
+                    "width": 4,
+                    "height": 5
+                },
+                {
+                    "key": 24,
+                    "name": "window1",
+                    "tiles": [
+                        153,
+                        161
+                    ],
+                    "left": 2,
+                    "top": 20,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 25,
+                    "name": "window2",
+                    "tiles": [
+                        154,
+                        162
+                    ],
+                    "left": 3,
+                    "top": 20,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 26,
+                    "name": "window3",
+                    "tiles": [
+                        155,
+                        163
+                    ],
+                    "left": 4,
+                    "top": 20,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 27,
+                    "name": "chimney1",
+                    "tiles": [
+                        159,
+                        167
+                    ],
+                    "left": 8,
+                    "top": 20,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 28,
+                    "name": "window4",
+                    "tiles": [
+                        168,
+                        176,
+                        169,
+                        177
+                    ],
+                    "left": 1,
+                    "top": 22,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 29,
+                    "name": "window5",
+                    "tiles": [
+                        170,
+                        178
+                    ],
+                    "left": 3,
+                    "top": 22,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 30,
+                    "name": "window6",
+                    "tiles": [
+                        171,
+                        179
+                    ],
+                    "left": 4,
+                    "top": 22,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 31,
+                    "name": "window7",
+                    "tiles": [
+                        172,
+                        180,
+                        173,
+                        181
+                    ],
+                    "left": 5,
+                    "top": 22,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 32,
+                    "name": "window8",
+                    "tiles": [
+                        174,
+                        182
+                    ],
+                    "left": 7,
+                    "top": 22,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 33,
+                    "name": "window9",
+                    "tiles": [
+                        175,
+                        183
+                    ],
+                    "left": 8,
+                    "top": 22,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 34,
+                    "name": "roof1",
+                    "tiles": [
+                        184,
+                        192,
+                        200,
+                        185,
+                        193,
+                        201,
+                        186,
+                        194,
+                        202
+                    ],
+                    "left": 1,
+                    "top": 24,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 35,
+                    "name": "roof2",
+                    "tiles": [
+                        189,
+                        197,
+                        205,
+                        190,
+                        198,
+                        206,
+                        191,
+                        199,
+                        207
+                    ],
+                    "left": 6,
+                    "top": 24,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 36,
+                    "name": "wall5",
+                    "tiles": [
+                        212,
+                        220,
+                        228,
+                        213,
+                        221,
+                        229,
+                        214,
+                        222,
+                        230
+                    ],
+                    "left": 5,
+                    "top": 27,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 37,
+                    "name": "grass1",
+                    "tiles": [
+                        211,
+                        219,
+                        227,
+                        235
+                    ],
+                    "left": 4,
+                    "top": 27,
+                    "width": 1,
+                    "height": 4
+                },
+                {
+                    "key": 38,
+                    "name": "grass2",
+                    "tiles": [
+                        236,
+                        237,
+                        238,
+                        239
+                    ],
+                    "left": 5,
+                    "top": 30,
+                    "width": 4,
+                    "height": 1
+                },
+                {
+                    "key": 39,
+                    "name": "grass3",
+                    "tiles": [
+                        215,
+                        223,
+                        231
+                    ],
+                    "left": 8,
+                    "top": 27,
+                    "width": 1,
+                    "height": 3
+                },
+                {
+                    "key": 40,
+                    "name": "leaves1",
+                    "tiles": [
+                        240,
+                        248,
+                        256,
+                        241,
+                        249,
+                        257,
+                        242,
+                        250,
+                        258
+                    ],
+                    "left": 1,
+                    "top": 31,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 41,
+                    "name": "leaves2",
+                    "tiles": [
+                        243,
+                        251,
+                        259,
+                        244,
+                        252,
+                        260,
+                        245,
+                        253,
+                        261
+                    ],
+                    "left": 4,
+                    "top": 31,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 42,
+                    "name": "grass4",
+                    "tiles": [
+                        264,
+                        272,
+                        265,
+                        273
+                    ],
+                    "left": 1,
+                    "top": 34,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 43,
+                    "name": "grass5",
+                    "tiles": [
+                        266,
+                        274,
+                        282,
+                        267,
+                        275,
+                        283,
+                        268,
+                        276,
+                        284,
+                        269,
+                        277,
+                        285
+                    ],
+                    "left": 3,
+                    "top": 34,
+                    "width": 4,
+                    "height": 3
+                },
+                {
+                    "key": 44,
+                    "name": "wall6",
+                    "tiles": [
+                        280,
+                        288,
+                        296,
+                        281,
+                        289,
+                        297
+                    ],
+                    "left": 1,
+                    "top": 36,
+                    "width": 2,
+                    "height": 3
+                },
+                {
+                    "key": 45,
+                    "name": "wall7",
+                    "tiles": [
+                        298,
+                        306,
+                        299,
+                        307
+                    ],
+                    "left": 3,
+                    "top": 38,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 46,
+                    "name": "wall8",
+                    "tiles": [
+                        304,
+                        312,
+                        320,
+                        305,
+                        313,
+                        321
+                    ],
+                    "left": 1,
+                    "top": 39,
+                    "width": 2,
+                    "height": 3
+                },
+                {
+                    "key": 47,
+                    "name": "fence1",
+                    "tiles": [
+                        314,
+                        322,
+                        315,
+                        323
+                    ],
+                    "left": 3,
+                    "top": 40,
+                    "width": 2,
+                    "height": 2
+                },
+                {
+                    "key": 48,
+                    "name": "door1",
+                    "tiles": [
+                        326,
+                        334
+                    ],
+                    "left": 7,
+                    "top": 41,
+                    "width": 1,
+                    "height": 2
+                },
+                {
+                    "key": 49,
+                    "name": "garden1",
+                    "tiles": [
+                        339,
+                        340
+                    ],
+                    "left": 4,
+                    "top": 43,
+                    "width": 2,
+                    "height": 1
+                }
+            ],
+            "groups": [
+                {
+                    "key": 53,
+                    "name": "floor1",
+                    "tiles": [
+                        0,
+                        1,
+                        8,
+                        9,
+                        290,
+                        291,
+                        292,
+                        293,
+                        330,
+                        332
+                    ],
+                    "width": 5,
+                    "height": 2
+                }
+            ],
+            "garbage": {
+                "tiles": [
+                    64,
+                    65,
+                    66,
+                    67,
+                    86,
+                    87,
+                    91,
+                    99,
+                    107,
+                    115,
+                    108,
+                    100,
+                    93,
+                    92,
+                    101,
+                    109,
+                    110,
+                    102,
+                    94,
+                    103,
+                    95,
+                    111,
+                    97,
+                    156,
+                    164,
+                    157,
+                    165,
+                    166,
+                    158,
+                    208,
+                    216,
+                    224,
+                    232,
+                    225,
+                    217,
+                    209,
+                    210,
+                    218,
+                    234,
+                    226,
+                    233,
+                    246,
+                    255,
+                    247,
+                    254,
+                    348,
+                    349,
+                    347,
+                    353,
+                    354,
+                    352,
+                    355,
+                    356,
+                    357,
+                    358,
+                    359
+                ]
+            }
+        },
+        {
+            "name": "interior",
+            "input": "tilesets\\interior.png",
+            "margin": 0,
+            "spacing": 0,
+            "tile": {
+                "width": 32,
+                "height": 32
+            },
+            "size": {
+                "width": 512,
+                "height": 512
+            },
+            "slices": [
+                {
+                    "key": 1,
+                    "name": "wall",
+                    "tiles": [
+                        2,
+                        3,
+                        4,
+                        18,
+                        19,
+                        20,
+                        34,
+                        35,
+                        36
+                    ],
+                    "left": 3,
+                    "top": 1,
+                    "width": 3,
+                    "height": 3
+                }
+            ],
+            "groups": [],
+            "garbage": {
+                "tiles": []
+            }
+        },
+        {
+            "name": "floors",
+            "input": "tilesets\\floors.png",
+            "margin": 0,
+            "spacing": 0,
+            "tile": {
+                "width": 32,
+                "height": 32
+            },
+            "size": {
+                "width": 1024,
+                "height": 2048
+            },
+            "slices": [
+                {
+                    "key": 1,
+                    "name": "floor1",
+                    "tiles": [
+                        64,
+                        65,
+                        66,
+                        96,
+                        97,
+                        98,
+                        128,
+                        129,
+                        130
+                    ],
+                    "left": 1,
+                    "top": 3,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 2,
+                    "name": "floor2",
+                    "tiles": [
+                        73,
+                        74,
+                        75,
+                        105,
+                        106,
+                        107,
+                        137,
+                        138,
+                        139
+                    ],
+                    "left": 10,
+                    "top": 3,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 3,
+                    "name": "floor3",
+                    "tiles": [
+                        390,
+                        391,
+                        392,
+                        422,
+                        423,
+                        424,
+                        454,
+                        455,
+                        456
+                    ],
+                    "left": 7,
+                    "top": 13,
+                    "width": 3,
+                    "height": 3
+                },
+                {
+                    "key": 4,
+                    "name": "rug1",
+                    "tiles": [
+                        842,
+                        843,
+                        874,
+                        875,
+                        906,
+                        907
+                    ],
+                    "left": 11,
+                    "top": 27,
+                    "width": 2,
+                    "height": 3
+                },
+                {
+                    "key": 5,
+                    "name": "rug2",
+                    "tiles": [
+                        980,
+                        981,
+                        982,
+                        983,
+                        1012,
+                        1013,
+                        1014,
+                        1015,
+                        1044,
+                        1045,
+                        1046,
+                        1047
+                    ],
+                    "left": 21,
+                    "top": 31,
+                    "width": 4,
+                    "height": 3
+                }
+            ],
+            "groups": [],
+            "garbage": {
+                "tiles": []
+            }
+        }
+    ]
+}

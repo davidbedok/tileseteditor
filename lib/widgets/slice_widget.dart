@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
@@ -8,11 +9,12 @@ import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 class SliceWidget extends StatelessWidget {
   static final double space = 8.0;
 
+  final TileSetProject project;
   final TileSet tileSet;
   final TileSetSlice slice;
   final int numberOfNonFreeTiles;
 
-  const SliceWidget({super.key, required this.slice, required this.tileSet, required this.numberOfNonFreeTiles});
+  const SliceWidget({super.key, required this.slice, required this.project, required this.tileSet, required this.numberOfNonFreeTiles});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class SliceWidget extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
                 child: ImageUtils.cropImage(
-                  tileSet.filePath,
+                  project.getTileSetFilePath(tileSet),
                   x: (slice.left - 1) * tileSet.tileWidth,
                   y: (slice.top - 1) * tileSet.tileHeight,
                   width: slice.size.width * tileSet.tileWidth,

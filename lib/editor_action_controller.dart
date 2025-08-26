@@ -4,14 +4,16 @@ import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/state/editor_state.dart';
 
 class EditorActionController extends StatefulWidget {
-  final EditorState editorState;
+  final TileSetProject project;
   final TileSet tileSet;
+  final EditorState editorState;
 
-  const EditorActionController({super.key, required this.editorState, required this.tileSet});
+  const EditorActionController({super.key, required this.project, required this.editorState, required this.tileSet});
 
   @override
   State<EditorActionController> createState() => EditorActionControllerState();
@@ -154,7 +156,7 @@ class EditorActionControllerState extends State<EditorActionController> {
     TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
       context: context,
       builder: (BuildContext context) {
-        return AddSliceDialog(tileSet: widget.tileSet, tiles: editorState.selectedFreeTiles);
+        return AddSliceDialog(project: widget.project, tileSet: widget.tileSet, tiles: editorState.selectedFreeTiles);
       },
     );
     if (dialogResult != null) {
@@ -170,7 +172,7 @@ class EditorActionControllerState extends State<EditorActionController> {
     TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
       context: context,
       builder: (BuildContext context) {
-        return AddGroupDialog(tileSet: widget.tileSet, tiles: editorState.selectedFreeTiles);
+        return AddGroupDialog(project: widget.project, tileSet: widget.tileSet, tiles: editorState.selectedFreeTiles);
       },
     );
     if (dialogResult != null) {

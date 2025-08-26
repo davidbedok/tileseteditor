@@ -3,6 +3,7 @@ import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/utils/tile_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_named_area_size_field.dart';
@@ -13,10 +14,11 @@ import 'package:tileseteditor/widgets/group_image_widget.dart';
 class GroupWidget extends StatefulWidget {
   static final double space = 8.0;
 
+  final TileSetProject project;
   final TileSet tileSet;
   final TileSetGroup group;
 
-  const GroupWidget({super.key, required this.tileSet, required this.group});
+  const GroupWidget({super.key, required this.project, required this.tileSet, required this.group});
 
   @override
   State<GroupWidget> createState() => _GroupWidgetState();
@@ -114,7 +116,7 @@ class _GroupWidgetState extends State<GroupWidget> {
     for (int index in tileIndices) {
       coords.add(tileSet.getTileIndexedCoord(index));
     }
-    return ImageUtils.cropTiles(tileSet.filePath, coords, tileSet.tileWidth, tileSet.tileHeight, selectTile, selectedTiles);
+    return ImageUtils.cropTiles(widget.project.getTileSetFilePath(tileSet), coords, tileSet.tileWidth, tileSet.tileHeight, selectTile, selectedTiles);
   }
 
   void selectTile(bool selected, int tileIndex) {
