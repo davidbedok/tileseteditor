@@ -13,6 +13,7 @@
     "tilesets": [
         {
             "name": "magecity",
+            "active": true,
             "input": "tilesets\\magecity.png",
             "margin": 0,
             "spacing": 0,
@@ -833,6 +834,7 @@
         },
         {
             "name": "interior",
+            "active": false,
             "input": "tilesets\\interior.png",
             "margin": 0,
             "spacing": 0,
@@ -872,6 +874,7 @@
         },
         {
             "name": "floors",
+            "active": false,
             "input": "tilesets\\floors.png",
             "margin": 0,
             "spacing": 0,
