@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
-import 'package:tileseteditor/flame/editor_game.dart';
+import 'package:tileseteditor/splitter/flame/editor_game.dart';
 
 class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, TapCallbacks, HoverCallbacks {
   double spriteWidth;

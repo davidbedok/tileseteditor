@@ -6,14 +6,21 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
-import 'package:tileseteditor/state/editor_state.dart';
+import 'package:tileseteditor/splitter/state/editor_state.dart';
 
 class EditorActionController extends StatefulWidget {
   final TileSetProject project;
   final TileSet tileSet;
   final EditorState editorState;
+  final void Function() onOutputPressed;
 
-  const EditorActionController({super.key, required this.project, required this.editorState, required this.tileSet});
+  const EditorActionController({
+    super.key, //
+    required this.project,
+    required this.editorState,
+    required this.tileSet,
+    required this.onOutputPressed,
+  });
 
   @override
   State<EditorActionController> createState() => EditorActionControllerState();
@@ -147,6 +154,8 @@ class EditorActionControllerState extends State<EditorActionController> {
               },
             ),
           ),
+          SizedBox(width: 5),
+          ElevatedButton.icon(icon: Icon(Icons.edit), label: Text('Output'), onPressed: widget.onOutputPressed),
         ],
       ),
     );

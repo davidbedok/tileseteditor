@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:tileseteditor/flame/editor_game.dart';
+import 'package:tileseteditor/splitter/flame/editor_game.dart';
 
 class ExampleComponent extends SpriteComponent with HasGameReference<EditorGame> {
   static const int closenessLimit = 1;

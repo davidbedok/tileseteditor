@@ -3,16 +3,16 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
-import 'package:tileseteditor/flame/editor_game.dart';
-import 'package:tileseteditor/flame/example_component.dart';
-import 'package:tileseteditor/flame/tile_component.dart';
+import 'package:tileseteditor/output/flame/output_editor_game.dart';
+import 'package:tileseteditor/output/flame/output_tile_component.dart';
+import 'package:tileseteditor/splitter/flame/example_component.dart';
 
-class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionDetection {
+class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
   Image? image;
 
   static final Size ruler = Size(20, 20);
 
-  EditorWorld({required this.image});
+  OutputEditorWorld({required this.image});
 
   TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
 
@@ -35,14 +35,6 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
       int atlasMaxY = image!.height ~/ tileHeight;
 
       for (int column = 1; column <= atlasMaxX; column++) {
-        /*
-        add(
-          RectangleComponent(
-            paint: getBorderPaint(BasicPalette.black.color, 2),
-            position: Vector2(ruler.width + (column - 1) * tileWidth, 0),
-            size: Vector2(tileWidth.toDouble(), ruler.height),
-          ),
-        );*/
         add(
           TextComponent(
             textRenderer: rulerPaint,
@@ -55,15 +47,6 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
         );
       }
       for (int row = 1; row <= atlasMaxY; row++) {
-        /*
-        add(
-          RectangleComponent(
-            paint: getBorderPaint(BasicPalette.black.color, 2),
-            position: Vector2(0, ruler.height + (row - 1) * tileHeight),
-            size: Vector2(ruler.width, tileHeight.toDouble()),
-          ),
-        );
-        */
         add(
           TextComponent(
             textRenderer: rulerPaint,
@@ -78,16 +61,14 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
 
       for (int i = 0; i < atlasMaxX; i++) {
         for (int j = 0; j < atlasMaxY; j++) {
-          // TileInfo info = game.tileSet.getTileInfo(TileCoord(i + 1, j + 1));
           add(
-            TileComponent(
+            OutputTileComponent(
               tileSetImage: image!,
               spriteWidth: tileWidth.toDouble(),
               spriteHeight: tileHeight.toDouble(),
               atlasX: i,
               atlasY: j,
               position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
-              // info: info,
             ),
           );
         }
@@ -95,13 +76,6 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
 
       game.camera.viewfinder.anchor = Anchor.topLeft;
       game.camera.viewfinder.position = Vector2(0, 0);
-
-      // game.tileSet.onCreateSlice = onCreateSlice;
     }
   }
-
-  /*
-  void onCreateSlice(TileSetSlice slice) {
-    print('Slice is created.. $slice');
-  }*/
 }

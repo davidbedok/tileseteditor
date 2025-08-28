@@ -13,7 +13,7 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/editor.dart';
 import 'package:tileseteditor/menubar.dart';
-import 'package:tileseteditor/state/editor_state.dart';
+import 'package:tileseteditor/splitter/state/editor_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSetSelector extends StatefulWidget {
