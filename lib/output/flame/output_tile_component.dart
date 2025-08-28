@@ -26,7 +26,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     priority = 0;
   }
 
-  bool canAcceptCard(SingleTileComponent tile) {
+  bool canAcceptCard(PositionComponent tile) {
     return true;
   }
 

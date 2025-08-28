@@ -1,12 +1,12 @@
 import 'package:flame/effects.dart';
-import 'package:tileseteditor/output/flame/single_tile_component.dart';
+import 'package:tileseteditor/output/flame/output_editor_world.dart';
 
 class TileMoveEffect extends MoveToEffect {
   TileMoveEffect(
     super.destination,
     super.controller, {
     super.onComplete,
-    this.transitPriority = SingleTileComponent.movePriority,
+    this.transitPriority = OutputEditorWorld.movePriority,
     this.additionalPriority = 0,
     this.keepPriority = false,
   });
@@ -17,7 +17,7 @@ class TileMoveEffect extends MoveToEffect {
 
   @override
   void onStart() {
-    super.onStart(); // Flame connects MoveToEffect to EffectController.
+    super.onStart();
     if (!keepPriority) {
       parent?.priority = transitPriority + additionalPriority;
     }

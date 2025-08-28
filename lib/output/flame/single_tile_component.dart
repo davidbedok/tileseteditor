@@ -6,14 +6,11 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
+import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
 class SingleTileComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
-  static const int movePriority = 1000;
-
-  final double dragTolarance = 5;
-
   double tileWidth;
   double tileHeight;
   dui.Image tileSetImage;
@@ -95,7 +92,6 @@ class SingleTileComponent extends SpriteComponent with HasGameReference<OutputEd
     Curve curve = Curves.easeOutQuad,
     VoidCallback? onComplete,
   }) {
-    assert(speed > 0.0, 'Speed must be > 0 widths per second');
     final dt = (to - position).length / (speed * size.x);
     if (dt > 0) {
       add(
@@ -121,7 +117,7 @@ class SingleTileComponent extends SpriteComponent with HasGameReference<OutputEd
       dragWhereStarted = position.clone();
 
       isDragging = true;
-      priority = movePriority;
+      priority = OutputEditorWorld.movePriority;
     }
   }
 
@@ -146,7 +142,7 @@ class SingleTileComponent extends SpriteComponent with HasGameReference<OutputEd
       }
       isDragging = false;
 
-      final shortDrag = (position - dragWhereStarted).length < dragTolarance;
+      final shortDrag = (position - dragWhereStarted).length < OutputEditorWorld.dragTolarance;
       if (shortDrag) {
         doMove(
           dragWhereStarted,

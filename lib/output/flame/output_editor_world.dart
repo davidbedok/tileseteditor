@@ -14,6 +14,9 @@ import 'package:tileseteditor/output/flame/slice_component.dart';
 import 'package:tileseteditor/splitter/flame/example_component.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
+  static const int movePriority = 1000;
+  static const double dragTolarance = 5;
+
   Image? image;
 
   int _actionKey = -1;

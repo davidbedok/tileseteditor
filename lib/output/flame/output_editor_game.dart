@@ -60,19 +60,23 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
 
   @override
   void onScaleStart(_) {
-    startZoom = camera.viewfinder.zoom;
+    if (world.actionKey == -1) {
+      startZoom = camera.viewfinder.zoom;
+    }
   }
 
   @override
   void onScaleUpdate(ScaleUpdateInfo info) {
-    final currentScale = info.scale.global;
-    if (!currentScale.isIdentity()) {
-      camera.viewfinder.zoom = startZoom * currentScale.y;
-      clampZoom();
-    } else {
-      final zoom = camera.viewfinder.zoom;
-      final delta = (info.delta.global..negate()) / zoom;
-      camera.moveBy(delta);
+    if (world.actionKey == -1) {
+      final currentScale = info.scale.global;
+      if (!currentScale.isIdentity()) {
+        camera.viewfinder.zoom = startZoom * currentScale.y;
+        clampZoom();
+      } else {
+        final zoom = camera.viewfinder.zoom;
+        final delta = (info.delta.global..negate()) / zoom;
+        camera.moveBy(delta);
+      }
     }
   }
 }
