@@ -5,8 +5,9 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
+import 'package:tileseteditor/output/flame/single_tile_component.dart';
 
-class OutputTileComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, TapCallbacks, HoverCallbacks {
+class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, TapCallbacks, HoverCallbacks {
   double tileWidth;
   double tileHeight;
   dui.Image tileSetImage;
@@ -25,10 +26,14 @@ class OutputTileComponent extends SpriteComponent with HasGameReference<OutputEd
     priority = 0;
   }
 
+  bool canAcceptCard(SingleTileComponent tile) {
+    return true;
+  }
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = Sprite(tileSetImage, srcPosition: Vector2(atlasX * tileWidth, atlasY * tileHeight), srcSize: Vector2(tileWidth, tileHeight));
+    // sprite = Sprite(tileSetImage, srcPosition: Vector2(0, 0), srcSize: Vector2(tileWidth, tileHeight));
     size = Vector2(tileWidth, tileHeight);
     // debugMode = true;
   }
@@ -36,6 +41,13 @@ class OutputTileComponent extends SpriteComponent with HasGameReference<OutputEd
   @override
   void onTapUp(TapUpEvent event) {
     //
+  }
+
+  static Paint getStandardPaint(Color color, double strokeWidth) {
+    return Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth;
   }
 
   static Paint getSelectionPaint(Color color, double strokeWidth) {
@@ -57,6 +69,7 @@ class OutputTileComponent extends SpriteComponent with HasGameReference<OutputEd
   @override
   void render(Canvas canvas) {
     super.render(canvas);
+    canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getStandardPaint(const dui.Color.fromARGB(255, 182, 182, 193), 1.0));
 
     if (isHovered) {
       canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));

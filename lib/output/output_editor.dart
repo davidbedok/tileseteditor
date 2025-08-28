@@ -38,6 +38,7 @@ class OutputEditor extends StatelessWidget {
                     decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: GameWidget(
                       game: OutputEditorGame(
+                        project: widget.project,
                         tileSet: widget.tileSet,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,

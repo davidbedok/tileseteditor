@@ -5,6 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/splitter/state/editor_state.dart';
 
@@ -12,15 +13,22 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
+  TileSetProject project;
   TileSet tileSet;
 
   EditorState editorState;
 
-  OutputEditorGame({required this.tileSet, required double width, required double height, required dui.Image? tileSetImage, required this.editorState})
-    : super(
-        world: OutputEditorWorld(image: tileSetImage),
-        camera: CameraComponent.withFixedResolution(width: width, height: height),
-      );
+  OutputEditorGame({
+    required this.project, //
+    required this.tileSet,
+    required double width,
+    required double height,
+    required dui.Image? tileSetImage,
+    required this.editorState,
+  }) : super(
+         world: OutputEditorWorld(image: tileSetImage),
+         camera: CameraComponent.withFixedResolution(width: width, height: height),
+       );
 
   @override
   Color backgroundColor() => Colors.white;

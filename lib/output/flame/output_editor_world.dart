@@ -9,17 +9,26 @@ import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/output/flame/group_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
+import 'package:tileseteditor/output/flame/single_tile_component.dart';
 import 'package:tileseteditor/output/flame/slice_component.dart';
 import 'package:tileseteditor/splitter/flame/example_component.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
   Image? image;
 
+  int _actionKey = -1;
+
   static final Size ruler = Size(20, 20);
 
   OutputEditorWorld({required this.image});
 
+  int get actionKey => _actionKey;
+
   TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
+
+  void setAction(int actionKey) {
+    _actionKey = actionKey;
+  }
 
   static Paint getBorderPaint(Color color, double strokeWidth) {
     return Paint()
@@ -76,8 +85,13 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         );
       }
 
+      int maxGroupWidth = 0;
       int groupTopIndex = 0;
       for (TileSetGroup group in game.tileSet.groups) {
+        if (group.size.width > maxGroupWidth) {
+          maxGroupWidth = group.size.width;
+        }
+
         add(
           GroupComponent(
             tileSetImage: image!,
@@ -94,7 +108,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         for (int j = 0; j < atlasMaxY; j++) {
           if (game.tileSet.isFree(game.tileSet.getIndex(TileCoord(i + 1, j + 1)))) {
             add(
-              OutputTileComponent(
+              SingleTileComponent(
                 tileSetImage: image!,
                 tileWidth: tileWidth.toDouble(),
                 tileHeight: tileHeight.toDouble(),
@@ -104,6 +118,53 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
               ),
             );
           }
+        }
+      }
+
+      double outputShiftX = (atlasMaxX + maxGroupWidth + 1) * tileWidth + 50;
+
+      int outputTileWidth = game.project.output.tileWidth;
+      int outputTileHeight = game.project.output.tileHeight;
+      int outputWidth = game.project.output.width;
+      int outputHeight = game.project.output.height;
+
+      for (int column = 1; column <= outputWidth; column++) {
+        add(
+          TextComponent(
+            textRenderer: rulerPaint,
+            text: '$column',
+            position: Vector2(outputShiftX + ruler.width + (column - 1) * outputTileWidth + 12, 0),
+            size: Vector2(outputTileWidth.toDouble(), ruler.height),
+            anchor: Anchor.topLeft,
+            priority: 20,
+          ),
+        );
+      }
+      for (int row = 1; row <= outputHeight; row++) {
+        add(
+          TextComponent(
+            textRenderer: rulerPaint,
+            text: '$row',
+            position: Vector2(outputShiftX, ruler.height + (row - 1) * outputTileHeight + 6),
+            size: Vector2(ruler.width, outputTileHeight.toDouble()),
+            anchor: Anchor.topLeft,
+            priority: 20,
+          ),
+        );
+      }
+
+      for (int i = 0; i < outputWidth; i++) {
+        for (int j = 0; j < outputHeight; j++) {
+          add(
+            OutputTileComponent(
+              tileSetImage: image!,
+              tileWidth: outputTileWidth.toDouble(),
+              tileHeight: outputTileHeight.toDouble(),
+              atlasX: i,
+              atlasY: j,
+              position: Vector2(outputShiftX + ruler.width + i * outputTileWidth, ruler.height + j * outputTileHeight),
+            ),
+          );
         }
       }
 
