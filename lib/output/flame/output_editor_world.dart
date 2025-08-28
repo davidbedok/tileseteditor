@@ -3,8 +3,13 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
+import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/output/flame/group_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
+import 'package:tileseteditor/output/flame/slice_component.dart';
 import 'package:tileseteditor/splitter/flame/example_component.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
@@ -59,18 +64,46 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         );
       }
 
+      for (TileSetSlice slice in game.tileSet.slices) {
+        add(
+          SliceComponent(
+            tileSetImage: image!,
+            slice: slice,
+            tileWidth: tileWidth.toDouble(),
+            tileHeight: tileHeight.toDouble(),
+            position: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
+          ),
+        );
+      }
+
+      int groupTopIndex = 0;
+      for (TileSetGroup group in game.tileSet.groups) {
+        add(
+          GroupComponent(
+            tileSetImage: image!,
+            group: group,
+            tileWidth: tileWidth.toDouble(),
+            tileHeight: tileHeight.toDouble(),
+            position: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
+          ),
+        );
+        groupTopIndex += group.size.height + 1;
+      }
+
       for (int i = 0; i < atlasMaxX; i++) {
         for (int j = 0; j < atlasMaxY; j++) {
-          add(
-            OutputTileComponent(
-              tileSetImage: image!,
-              spriteWidth: tileWidth.toDouble(),
-              spriteHeight: tileHeight.toDouble(),
-              atlasX: i,
-              atlasY: j,
-              position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
-            ),
-          );
+          if (game.tileSet.isFree(game.tileSet.getIndex(TileCoord(i + 1, j + 1)))) {
+            add(
+              OutputTileComponent(
+                tileSetImage: image!,
+                tileWidth: tileWidth.toDouble(),
+                tileHeight: tileHeight.toDouble(),
+                atlasX: i,
+                atlasY: j,
+                position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
+              ),
+            );
+          }
         }
       }
 

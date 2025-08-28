@@ -9,8 +9,8 @@ import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
 
 class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, TapCallbacks, HoverCallbacks {
-  double spriteWidth;
-  double spriteHeight;
+  double tileWidth;
+  double tileHeight;
   dui.Image tileSetImage;
 
   int atlasX;
@@ -20,8 +20,8 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
 
   TileComponent({
     required this.tileSetImage,
-    required this.spriteWidth,
-    required this.spriteHeight,
+    required this.tileWidth,
+    required this.tileHeight,
     required this.atlasX,
     required this.atlasY,
     required super.position,
@@ -37,8 +37,8 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = Sprite(tileSetImage, srcPosition: Vector2(atlasX * spriteWidth, atlasY * spriteHeight), srcSize: Vector2(spriteWidth, spriteHeight));
-    size = Vector2(spriteWidth, spriteHeight);
+    sprite = Sprite(tileSetImage, srcPosition: Vector2(atlasX * tileWidth, atlasY * tileHeight), srcSize: Vector2(tileWidth, tileHeight));
+    size = Vector2(tileWidth, tileHeight);
     // debugMode = true;
   }
 
@@ -91,32 +91,32 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     switch (info.type) {
       case TileType.free:
         if (isSelected()) {
-          canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSelectionPaint(Colors.blue, 2.0));
+          canvas.drawRect(Rect.fromLTWH(1, 1, tileWidth - 2, tileHeight - 2), getSelectionPaint(Colors.blue, 2.0));
         }
       case TileType.slice:
         // canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSlicePaint(info.color!, 2));
-        canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSlicePaint2(info.color!.withAlpha(100)));
+        canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getSlicePaint2(info.color!.withAlpha(100)));
         if (isSelected()) {
-          canvas.drawOval(Rect.fromLTWH(4, 4, spriteWidth - 8, spriteHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
+          canvas.drawOval(Rect.fromLTWH(4, 4, tileWidth - 8, tileHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
         }
       case TileType.group:
         // canvas.drawRRect(RRect.fromRectAndRadius(Rect.fromLTWH(2, 2, spriteWidth - 4, spriteHeight - 4), Radius.circular(6)), getSlicePaint(info.color!, 4.0));
-        canvas.drawRect(Rect.fromLTWH(1, 1, spriteWidth - 2, spriteHeight - 2), getSlicePaint(info.color!, 2.0));
+        canvas.drawRect(Rect.fromLTWH(1, 1, tileWidth - 2, tileHeight - 2), getSlicePaint(info.color!, 2.0));
 
         if (isSelected()) {
-          canvas.drawOval(Rect.fromLTWH(4, 4, spriteWidth - 8, spriteHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
+          canvas.drawOval(Rect.fromLTWH(4, 4, tileWidth - 8, tileHeight - 8), getSlicePaint2(info.color!.withAlpha(150)));
         }
       case TileType.garbage:
         if (isSelected()) {
-          canvas.drawLine(Offset(4, 4), Offset(spriteWidth - 4, spriteHeight - 4), getGarbagePaint(Colors.green, 2));
-          canvas.drawLine(Offset(4, spriteHeight - 4), Offset(spriteWidth - 4, 4), getGarbagePaint(Colors.green, 2));
+          canvas.drawLine(Offset(4, 4), Offset(tileWidth - 4, tileHeight - 4), getGarbagePaint(Colors.green, 2));
+          canvas.drawLine(Offset(4, tileHeight - 4), Offset(tileWidth - 4, 4), getGarbagePaint(Colors.green, 2));
         } else {
-          canvas.drawLine(Offset(4, 4), Offset(spriteWidth - 4, spriteHeight - 4), getGarbagePaint(Colors.red, 2));
-          canvas.drawLine(Offset(4, spriteHeight - 4), Offset(spriteWidth - 4, 4), getGarbagePaint(Colors.red, 2));
+          canvas.drawLine(Offset(4, 4), Offset(tileWidth - 4, tileHeight - 4), getGarbagePaint(Colors.red, 2));
+          canvas.drawLine(Offset(4, tileHeight - 4), Offset(tileWidth - 4, 4), getGarbagePaint(Colors.red, 2));
         }
     }
     if (isHovered) {
-      canvas.drawRect(Rect.fromLTWH(0, 0, spriteWidth, spriteHeight), getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
+      canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
 
       drawInfo(info, canvas);
       drawCoord(info, canvas);

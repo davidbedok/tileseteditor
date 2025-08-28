@@ -82,8 +82,8 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
           add(
             TileComponent(
               tileSetImage: image!,
-              spriteWidth: tileWidth.toDouble(),
-              spriteHeight: tileHeight.toDouble(),
+              tileWidth: tileWidth.toDouble(),
+              tileHeight: tileHeight.toDouble(),
               atlasX: i,
               atlasY: j,
               position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
