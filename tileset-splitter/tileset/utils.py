@@ -50,10 +50,12 @@ def buildTiles( projectFile: str, outputDirectory: str, json ):
             print(f'Tile of \'{name}\' were built into: {tilesDirectory}')
 
             buildSlices(tileset['slices'], name, tilesDirectory, slicesDirectory, tileWidth, tileHeight, tileSetFilePath)
+            buildGroups(tileset['groups'], name, tilesDirectory, groupsDirectory, tileWidth, tileHeight, tileSetFilePath)
+            dropGarbages(tileset['garbage'], name, tilesDirectory)
         else:
             print(f'Skip \'{name}\' TileSet')
 
-def buildSlices( json, tileSetName, tilesDirectory: str, slicesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
+def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
     for slice in json:
         key = slice['key']
         name = slice['name']
@@ -68,9 +70,30 @@ def buildSlices( json, tileSetName, tilesDirectory: str, slicesDirectory: str, t
         # magick input/magecity.png -crop 96x64+96+128 +repage input/slice.png
         subprocess.run(["magick", tileSetFilePath, "-crop", f'{width}x{height}+{left}+{top}', "+repage", sliceFile])
         deletedIndices = removeTilesByIndices(slice['tiles'], tilesDirectory, tileSetName)
-        print(f'Related tiles were deleted: ${deletedIndices}')
+        print(f'Related slice tiles were deleted: {deletedIndices}')
 
+def buildGroups( json, tileSetName: str, tilesDirectory: str, groupsDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
+    for group in json:
+        key = group['key']
+        name = group['name']
+        width = group['width']
+        
+        groupFile = f'{groupsDirectory}\\{name}.png'
+        print(f'Create \'{name}\' Group image (key: {key}) into: {groupFile}')
 
+        # magick montage -mode concatenate -background none -geometry 32x32+0+0 -tile 3x input/group/floor-0.png input/group/floor-1.png input/group/floor-2.png input/group/floor-3.png input/group/floor-4.png input/group/floor-5.png output/floor.png
+        commandData = ["magick", "montage", "-mode", "concatenate", "-background", "none", "-geometry", f'{tileWidth}x{tileHeight}+0+0', "-tile", f'{width}x']
+        for tileIndex in group['tiles']:
+            commandData.append(f'{tilesDirectory}\\{tileSetName}-{tileIndex}.png')
+        commandData.append(groupFile)
+        subprocess.run(commandData)
+        deletedIndices = removeTilesByIndices(group['tiles'], tilesDirectory, tileSetName)
+        print(f'Related group tiles were deleted: {deletedIndices}')
+                
+def dropGarbages( json, tileSetName:str , tilesDirectory:str ):
+    indices = removeTilesByIndices(json['tiles'], tilesDirectory, tileSetName)
+    print(f'Garbage | Related tiles were deleted: {indices}')
+    
 def removeTilesByIndices( indices, tilesDirectory: str, tileSetName: str):
     result = []
     for index in indices:
