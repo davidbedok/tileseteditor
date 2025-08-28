@@ -1,27 +1,33 @@
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:path/path.dart' as path;
+import 'package:tileseteditor/domain/tileset_output.dart';
 
 class TileSetProject {
   String? filePath;
   String name;
   String? description;
-  int tileWidth;
-  int tileHeight;
+  TileSetOutput output;
 
   List<TileSet> tileSets = [];
 
   String getDirectory() => path.dirname(filePath!);
 
-  TileSetProject({required this.name, this.description, required this.tileWidth, required this.tileHeight});
+  TileSetProject({required this.name, this.description, required this.output});
 
   @override
   String toString() {
-    return 'Project $name (${tileWidth}x$tileHeight) in $filePath';
+    return 'Project $name ($output) in $filePath';
   }
 
   static TileSetProject clone(TileSetProject project) {
-    TileSetProject result = TileSetProject(name: project.name, description: project.description, tileWidth: project.tileWidth, tileHeight: project.tileHeight);
+    TileSetOutput output = TileSetOutput(
+      tileWidth: project.output.tileWidth,
+      tileHeight: project.output.tileHeight,
+      width: project.output.width,
+      height: project.output.height,
+    );
+    TileSetProject result = TileSetProject(name: project.name, description: project.description, output: output);
     result.filePath = project.filePath;
     return result;
   }
@@ -30,8 +36,8 @@ class TileSetProject {
     return {
       'name': name,
       'description': description,
-      'tile': {'width': tileWidth, 'height': tileHeight},
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
+      'output': output.toJson(),
       'tilesets': toTileSetJson(),
     };
   }
@@ -49,14 +55,25 @@ class TileSetProject {
       {
         'name': String name, //
         'description': String description, //
-        'tile': {
-          'width': int tileWidth, //
-          'height': int tileHeight, //
-        }, //
+        'output': {
+          'tile': {
+            'width': int tileWidth, //
+            'height': int tileHeight, //
+          }, //
+          'size': {
+            'width': int width, //
+            'height': int height, //
+          }, //
+        },
       } =>
-        TileSetProject(name: name, description: description, tileWidth: tileWidth, tileHeight: tileHeight),
+        TileSetProject(
+          name: name,
+          description: description,
+          output: TileSetOutput(tileWidth: tileWidth, tileHeight: tileHeight, width: width, height: height),
+        ),
       _ => throw const FormatException('Failed to load TileSetProject'),
     };
+
     List<Map<String, dynamic>> tileSets = json['tilesets'] != null ? (json['tilesets'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
     for (var tileSet in tileSets) {
       result.addTileSet(TileSet.fromJson(tileSet));

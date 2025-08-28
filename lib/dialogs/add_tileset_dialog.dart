@@ -25,8 +25,8 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
     _tileSet = TileSet(
       name: '',
       filePath: '',
-      tileWidth: widget.project.tileWidth,
-      tileHeight: widget.project.tileHeight,
+      tileWidth: widget.project.output.tileWidth,
+      tileHeight: widget.project.output.tileHeight,
       margin: 0,
       spacing: 0,
       imageWidth: 0,
