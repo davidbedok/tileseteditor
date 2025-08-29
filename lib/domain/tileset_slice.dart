@@ -1,10 +1,10 @@
-import 'package:tileseteditor/domain/named_area_size.dart';
+import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_named_area.dart';
 
 class TileSetSlice extends TileSetNamedArea {
-  static final TileSetSlice none = TileSetSlice(-1, '-', NamedAreaSize(0, 0), 0, 0);
+  static final TileSetSlice none = TileSetSlice(-1, '-', TileSetAreaSize(0, 0), 0, 0);
 
   int left;
   int top;
@@ -37,7 +37,7 @@ class TileSetSlice extends TileSetNamedArea {
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetSlice(key, name, NamedAreaSize(width, height), left, top),
+        TileSetSlice(key, name, TileSetAreaSize(width, height), left, top),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
     List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];

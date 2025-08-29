@@ -3,9 +3,9 @@ import 'dart:ui' as dui;
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
-import 'package:tileseteditor/output/flame/tileset/output_component.dart';
+import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
-class SliceComponent extends OutputComponent {
+class SliceComponent extends TileSetComponent {
   TileSetSlice slice;
   dui.Image tileSetImage;
 
@@ -36,7 +36,7 @@ class SliceComponent extends OutputComponent {
     if (isHovered) {
       canvas.drawRect(
         Rect.fromLTWH(0, 0, slice.size.width * tileWidth, slice.size.height * tileHeight),
-        OutputComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0),
+        TileSetComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0),
       );
       drawInfo(canvas);
     }

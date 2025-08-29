@@ -5,7 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/flame/tileset/output_component.dart';
+import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, TapCallbacks, HoverCallbacks {
   double tileWidth;
@@ -15,7 +15,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   int atlasX;
   int atlasY;
 
-  bool free = true;
+  TileSetComponent? storedTile;
 
   OutputTileComponent({
     required this.tileSetImage,
@@ -28,10 +28,18 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     priority = 0;
   }
 
-  bool isFree() => free;
+  bool canAccept(TileSetComponent tile) => isFree() || tile == storedTile;
 
-  void setFree(bool value) {
-    free = value;
+  bool isFree() => storedTile == null;
+  bool isUsed() => storedTile != null;
+
+  void store(TileSetComponent tile) {
+    storedTile = tile;
+    tile.reservedTiles.add(this);
+  }
+
+  void empty() {
+    storedTile = null;
   }
 
   @override
@@ -73,10 +81,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, tileWidth, tileHeight),
-      getStandardPaint(free ? const dui.Color.fromARGB(255, 182, 182, 193) : const dui.Color.fromARGB(255, 156, 77, 25), 1.0),
-    );
+    canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getStandardPaint(const dui.Color.fromARGB(255, 182, 182, 193), 1.0));
 
     if (isHovered) {
       canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));

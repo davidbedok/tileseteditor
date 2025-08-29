@@ -2,14 +2,16 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/named_area_size.dart';
+import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
-class OutputComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
-  NamedAreaSize areaSize;
+class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+  TileSetAreaSize areaSize;
+
+  List<OutputTileComponent> reservedTiles = [];
 
   double tileWidth;
   double tileHeight;
@@ -17,13 +19,26 @@ class OutputComponent extends SpriteComponent with HasGameReference<OutputEditor
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
-  OutputComponent({required super.position, required this.tileWidth, required this.tileHeight, required this.areaSize}) {
+  TileSetComponent({required super.position, required this.tileWidth, required this.tileHeight, required this.areaSize}) {
     priority = 0;
   }
 
   @override
   void onTapUp(TapUpEvent event) {
     //
+  }
+
+  void place(OutputTileComponent outputTile) {
+    if (reservedTiles.contains(outputTile)) {
+      reservedTiles.add(outputTile);
+    }
+  }
+
+  void release() {
+    for (OutputTileComponent outputTile in reservedTiles) {
+      outputTile.empty();
+    }
+    reservedTiles.clear();
   }
 
   static Paint getSelectionPaint(Color color, double strokeWidth) {
@@ -114,8 +129,7 @@ class OutputComponent extends SpriteComponent with HasGameReference<OutputEditor
             dropPosition,
             speed: 15,
             onComplete: () {
-              // FIXME: free the original outputTile if the comp was already within the output
-              game.world.setOutput(dropOutputTile.first, this);
+              game.world.place(dropOutputTile.first, this);
               game.world.setAction(-1);
             },
           );

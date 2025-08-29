@@ -1,14 +1,14 @@
-class NamedAreaSize {
+class TileSetAreaSize {
   int width;
   int height;
 
-  NamedAreaSize(this.width, this.height);
+  TileSetAreaSize(this.width, this.height);
 
-  static List<NamedAreaSize> options(int numberOfTiles) {
-    List<NamedAreaSize> result = [];
+  static List<TileSetAreaSize> options(int numberOfTiles) {
+    List<TileSetAreaSize> result = [];
     for (int i = 1; i <= numberOfTiles; i++) {
       if (numberOfTiles % i == 0) {
-        result.add(NamedAreaSize(i, numberOfTiles ~/ i));
+        result.add(TileSetAreaSize(i, numberOfTiles ~/ i));
       }
     }
     return result;
@@ -20,7 +20,7 @@ class NamedAreaSize {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is NamedAreaSize && runtimeType == other.runtimeType && width == other.width && height == other.height);
+      identical(this, other) || (other is TileSetAreaSize && runtimeType == other.runtimeType && width == other.width && height == other.height);
 
   @override
   int get hashCode => width.hashCode;

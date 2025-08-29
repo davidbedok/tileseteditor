@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/named_area_size.dart';
+import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
@@ -82,7 +82,7 @@ class _GroupWidgetState extends State<GroupWidget> {
                 numberOfTiles: tileIndices.length,
                 initialValue: widget.group.size,
                 validationMessage: 'Please define Width of the Group',
-                onChanged: (NamedAreaSize size) {
+                onChanged: (TileSetAreaSize size) {
                   widget.group.size = size;
                   setState(() {
                     groupWidth = size.width;

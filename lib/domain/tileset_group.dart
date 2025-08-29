@@ -1,8 +1,8 @@
-import 'package:tileseteditor/domain/named_area_size.dart';
+import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tileset_named_area.dart';
 
 class TileSetGroup extends TileSetNamedArea {
-  static final TileSetGroup none = TileSetGroup(-1, '-', NamedAreaSize(0, 0));
+  static final TileSetGroup none = TileSetGroup(-1, '-', TileSetAreaSize(0, 0));
 
   TileSetGroup(super.key, super.name, super.size);
 
@@ -24,7 +24,7 @@ class TileSetGroup extends TileSetNamedArea {
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetGroup(key, name, NamedAreaSize(width, height)),
+        TileSetGroup(key, name, TileSetAreaSize(width, height)),
       _ => throw const FormatException('Failed to load TileSetGroup'),
     };
     List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];

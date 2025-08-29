@@ -9,7 +9,7 @@ import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/output/flame/tileset/group_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/flame/tileset/output_component.dart';
+import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
 import 'package:tileseteditor/splitter/flame/example_component.dart';
@@ -30,12 +30,12 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   int get actionKey => _actionKey;
 
-  bool canAccept(OutputTileComponent topLeftTile, OutputComponent component) {
+  bool canAccept(OutputTileComponent topLeftTile, TileSetComponent component) {
     bool result = true;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
         OutputTileComponent? tile = getOutputTileComponent(i, j);
-        if (tile == null || !tile.isFree()) {
+        if (tile == null || !tile.canAccept(component)) {
           result = false;
         }
       }
@@ -43,12 +43,13 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     return result;
   }
 
-  void setOutput(OutputTileComponent topLeftTile, OutputComponent component) {
+  void place(OutputTileComponent topLeftTile, TileSetComponent component) {
+    component.release();
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
         OutputTileComponent? tile = getOutputTileComponent(i, j);
-        if (tile != null && tile.isFree()) {
-          tile.setFree(false);
+        if (tile != null && tile.canAccept(component)) {
+          tile.store(component);
         }
       }
     }

@@ -2,11 +2,11 @@ import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/named_area_size.dart';
+import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/output/flame/tileset/output_component.dart';
+import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
-class SingleTileComponent extends OutputComponent {
+class SingleTileComponent extends TileSetComponent {
   dui.Image tileSetImage;
 
   int atlasX;
@@ -19,7 +19,7 @@ class SingleTileComponent extends OutputComponent {
     required this.atlasX,
     required this.atlasY,
     required super.position,
-  }) : super(areaSize: NamedAreaSize(1, 1));
+  }) : super(areaSize: TileSetAreaSize(1, 1));
 
   @override
   Future<void> onLoad() async {
@@ -34,7 +34,7 @@ class SingleTileComponent extends OutputComponent {
     super.render(canvas);
 
     if (isHovered) {
-      canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), OutputComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
+      canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), TileSetComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
       drawInfo(canvas);
     }
   }

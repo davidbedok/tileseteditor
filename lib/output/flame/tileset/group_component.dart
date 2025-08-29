@@ -5,9 +5,9 @@ import 'package:flame/image_composition.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
-import 'package:tileseteditor/output/flame/tileset/output_component.dart';
+import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
-class GroupComponent extends OutputComponent {
+class GroupComponent extends TileSetComponent {
   TileSetGroup group;
   dui.Image tileSetImage;
 
@@ -64,7 +64,7 @@ class GroupComponent extends OutputComponent {
     if (isHovered) {
       canvas.drawRect(
         Rect.fromLTWH(0, 0, group.size.width * tileWidth, group.size.height * tileHeight),
-        OutputComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0),
+        TileSetComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0),
       );
       drawInfo(canvas);
     }
