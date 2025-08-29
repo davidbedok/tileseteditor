@@ -6,11 +6,11 @@ import 'package:flame/text.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
-import 'package:tileseteditor/output/flame/group_component.dart';
+import 'package:tileseteditor/output/flame/tileset/group_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/flame/single_tile_component.dart';
-import 'package:tileseteditor/output/flame/slice_component.dart';
+import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
+import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
 import 'package:tileseteditor/splitter/flame/example_component.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {

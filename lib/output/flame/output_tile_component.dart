@@ -5,7 +5,7 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/flame/single_tile_component.dart';
+import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
 
 class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, TapCallbacks, HoverCallbacks {
   double tileWidth;
