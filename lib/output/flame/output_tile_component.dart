@@ -7,7 +7,7 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
-class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, TapCallbacks, HoverCallbacks {
+class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, HoverCallbacks {
   double tileWidth;
   double tileHeight;
   dui.Image tileSetImage;
@@ -48,11 +48,6 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     // sprite = Sprite(tileSetImage, srcPosition: Vector2(0, 0), srcSize: Vector2(tileWidth, tileHeight));
     size = Vector2(tileWidth, tileHeight);
     // debugMode = true;
-  }
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    //
   }
 
   static Paint getStandardPaint(Color color, double strokeWidth) {

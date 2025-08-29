@@ -8,7 +8,7 @@ import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
-class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+abstract class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
   TileSetAreaSize areaSize;
 
   List<OutputTileComponent> reservedTiles = [];
@@ -19,13 +19,17 @@ class TileSetComponent extends SpriteComponent with HasGameReference<OutputEdito
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
+  bool isPlaced() => reservedTiles.isNotEmpty;
+
   TileSetComponent({required super.position, required this.tileWidth, required this.tileHeight, required this.areaSize}) {
     priority = 0;
   }
 
+  OutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+
   @override
   void onTapUp(TapUpEvent event) {
-    //
+    game.world.select(this);
   }
 
   void place(OutputTileComponent outputTile) {
@@ -41,11 +45,17 @@ class TileSetComponent extends SpriteComponent with HasGameReference<OutputEdito
     reservedTiles.clear();
   }
 
-  static Paint getSelectionPaint(Color color, double strokeWidth) {
+  static Paint getBorderPaint(Color color, double strokeWidth) {
     return Paint()
       ..color = color
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
+  }
+
+  static Paint getFillPaint(Color color, int alpha) {
+    return Paint()
+      ..color = color.withAlpha(alpha)
+      ..style = PaintingStyle.fill;
   }
 
   @override
@@ -91,6 +101,7 @@ class TileSetComponent extends SpriteComponent with HasGameReference<OutputEdito
 
       isDragging = true;
       priority = OutputEditorWorld.movePriority;
+      game.world.select(this, force: true);
     }
   }
 
@@ -155,4 +166,20 @@ class TileSetComponent extends SpriteComponent with HasGameReference<OutputEdito
       },
     );
   }
+
+  @override
+  void render(Canvas canvas) {
+    super.render(canvas);
+    if (game.world.isSelected(this)) {
+      canvas.drawRect(getRect(), TileSetComponent.getFillPaint(const Color.fromARGB(255, 202, 215, 16), 100));
+    }
+    if (isHovered) {
+      canvas.drawRect(getRect(), TileSetComponent.getBorderPaint(const Color.fromARGB(255, 29, 16, 215), 2.0));
+      drawInfo(canvas);
+    }
+  }
+
+  Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
+
+  void drawInfo(Canvas canvas);
 }

@@ -53,23 +53,10 @@ class GroupComponent extends TileSetComponent {
       srcSize: Vector2(group.size.width * tileWidth, group.size.height * tileHeight),
     );
     size = Vector2(group.size.width * tileWidth, group.size.height * tileHeight);
-
     // debugMode = true;
   }
 
   @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    if (isHovered) {
-      canvas.drawRect(
-        Rect.fromLTWH(0, 0, group.size.width * tileWidth, group.size.height * tileHeight),
-        TileSetComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0),
-      );
-      drawInfo(canvas);
-    }
-  }
-
   void drawInfo(dui.Canvas canvas) {
     var textSpan = TextSpan(
       text: group.name,

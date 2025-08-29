@@ -30,15 +30,6 @@ class SingleTileComponent extends TileSetComponent {
   }
 
   @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    if (isHovered) {
-      canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), TileSetComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
-      drawInfo(canvas);
-    }
-  }
-
   void drawInfo(dui.Canvas canvas) {
     TileCoord coord = TileCoord(atlasX + 1, atlasY + 1);
     var textSpan = TextSpan(

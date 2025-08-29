@@ -4,12 +4,15 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
+import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/splitter/state/editor_state.dart';
 
-class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector, ScaleDetector {
+class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector, KeyboardEvents {
+  static const scrollUnit = 50.0;
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
@@ -59,24 +62,59 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   }
 
   @override
-  void onScaleStart(_) {
-    if (world.actionKey == -1) {
-      startZoom = camera.viewfinder.zoom;
+  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    KeyEventResult result = KeyEventResult.ignored;
+    if (keysPressed.contains(LogicalKeyboardKey.keyA)) {
+      camera.moveBy(Vector2(-1 * scrollUnit * 2, 0));
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyD)) {
+      camera.moveBy(Vector2(scrollUnit * 2, 0));
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyW)) {
+      camera.moveBy(Vector2(0, -1 * scrollUnit * 2));
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyS)) {
+      camera.moveBy(Vector2(0, scrollUnit * 2));
+      result = KeyEventResult.handled;
     }
-  }
-
-  @override
-  void onScaleUpdate(ScaleUpdateInfo info) {
-    if (world.actionKey == -1) {
-      final currentScale = info.scale.global;
-      if (!currentScale.isIdentity()) {
-        camera.viewfinder.zoom = startZoom * currentScale.y;
-        clampZoom();
-      } else {
-        final zoom = camera.viewfinder.zoom;
-        final delta = (info.delta.global..negate()) / zoom;
-        camera.moveBy(delta);
+    if (world.selected != null && world.selected!.isPlaced()) {
+      OutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
+      if (topLeftOutputTile != null) {
+        if (event is KeyDownEvent || event is KeyRepeatEvent) {
+          if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
+            if (world.moveByKey(topLeftOutputTile.atlasX - 1, topLeftOutputTile.atlasY)) {
+              result = KeyEventResult.handled;
+            }
+          } else if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+            if (world.moveByKey(topLeftOutputTile.atlasX + 1, topLeftOutputTile.atlasY)) {
+              result = KeyEventResult.handled;
+            }
+          } else if (keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
+            if (world.moveByKey(topLeftOutputTile.atlasX, topLeftOutputTile.atlasY - 1)) {
+              result = KeyEventResult.handled;
+            }
+          } else if (keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
+            if (world.moveByKey(topLeftOutputTile.atlasX, topLeftOutputTile.atlasY + 1)) {
+              result = KeyEventResult.handled;
+            }
+          }
+        }
+      }
+    } else {
+      if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
+        camera.moveBy(Vector2(-1 * scrollUnit, 0));
+        result = KeyEventResult.handled;
+      } else if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+        camera.moveBy(Vector2(scrollUnit, 0));
+        result = KeyEventResult.handled;
+      } else if (keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
+        camera.moveBy(Vector2(0, -1 * scrollUnit));
+        result = KeyEventResult.handled;
+      } else if (keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
+        camera.moveBy(Vector2(0, scrollUnit));
+        result = KeyEventResult.handled;
       }
     }
+    return result;
   }
 }

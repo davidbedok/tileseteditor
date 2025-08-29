@@ -30,18 +30,6 @@ class SliceComponent extends TileSetComponent {
   }
 
   @override
-  void render(Canvas canvas) {
-    super.render(canvas);
-
-    if (isHovered) {
-      canvas.drawRect(
-        Rect.fromLTWH(0, 0, slice.size.width * tileWidth, slice.size.height * tileHeight),
-        TileSetComponent.getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0),
-      );
-      drawInfo(canvas);
-    }
-  }
-
   void drawInfo(dui.Canvas canvas) {
     var textSpan = TextSpan(
       text: slice.name,
