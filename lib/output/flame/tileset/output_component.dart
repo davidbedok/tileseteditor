@@ -2,17 +2,22 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
 class OutputComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+  NamedAreaSize areaSize;
+
+  double tileWidth;
+  double tileHeight;
+
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
-  Vector2 dragLocalPosition = Vector2(0, 0);
 
-  OutputComponent({required super.position}) {
+  OutputComponent({required super.position, required this.tileWidth, required this.tileHeight, required this.areaSize}) {
     priority = 0;
   }
 
@@ -67,7 +72,6 @@ class OutputComponent extends SpriteComponent with HasGameReference<OutputEditor
     if (game.world.actionKey < 0) {
       super.onDragStart(event);
       game.world.setAction(event.pointerId);
-      dragLocalPosition = event.localPosition;
       dragWhereStarted = position.clone();
 
       isDragging = true;
@@ -98,44 +102,43 @@ class OutputComponent extends SpriteComponent with HasGameReference<OutputEditor
 
       final shortDrag = (position - dragWhereStarted).length < OutputEditorWorld.dragTolarance;
       if (shortDrag) {
-        doMove(
-          dragWhereStarted,
-          speed: 15.0,
-          onComplete: () {
-            priority = 0;
-            game.world.setAction(-1);
-          },
-        );
+        moveToPlace(dragWhereStarted);
         return;
       }
 
-      var dropOutputTile = parent!.componentsAtPoint(position + dragLocalPosition).whereType<OutputTileComponent>().toList();
-      if (dropOutputTile.isEmpty || !dropOutputTile.first.canAcceptCard(this)) {
-        dropOutputTile = parent!.componentsAtPoint(position + size / 2).whereType<OutputTileComponent>().toList();
-      }
+      var dropOutputTile = parent!.componentsAtPoint(position).whereType<OutputTileComponent>().toList();
       if (dropOutputTile.isNotEmpty) {
-        if (dropOutputTile.first.canAcceptCard(this)) {
+        if (game.world.canAccept(dropOutputTile.first, this)) {
           final dropPosition = dropOutputTile.first.position;
           doMove(
             dropPosition,
             speed: 15,
             onComplete: () {
+              // FIXME: free the original outputTile if the comp was already within the output
+              game.world.setOutput(dropOutputTile.first, this);
               game.world.setAction(-1);
             },
           );
+        } else {
+          moveToPlace(dragWhereStarted);
+          return;
         }
         game.world.setAction(-1);
         return;
       }
 
-      doMove(
-        dragWhereStarted,
-        speed: 15,
-        onComplete: () {
-          priority = 0;
-          game.world.setAction(-1);
-        },
-      );
+      moveToPlace(dragWhereStarted);
     }
+  }
+
+  void moveToPlace(Vector2 place) {
+    doMove(
+      place,
+      speed: 15.0,
+      onComplete: () {
+        priority = 0;
+        game.world.setAction(-1);
+      },
+    );
   }
 }

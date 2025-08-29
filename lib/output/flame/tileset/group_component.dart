@@ -9,11 +9,15 @@ import 'package:tileseteditor/output/flame/tileset/output_component.dart';
 
 class GroupComponent extends OutputComponent {
   TileSetGroup group;
-  double tileWidth;
-  double tileHeight;
   dui.Image tileSetImage;
 
-  GroupComponent({required this.tileSetImage, required this.group, required this.tileWidth, required this.tileHeight, required super.position});
+  GroupComponent({
+    required this.tileSetImage, //
+    required this.group,
+    required super.tileWidth,
+    required super.tileHeight,
+    required super.position,
+  }) : super(areaSize: group.size);
 
   @override
   Future<void> onLoad() async {

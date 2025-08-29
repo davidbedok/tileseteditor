@@ -1,23 +1,21 @@
 import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
-import 'package:flame/effects.dart';
-import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/output/flame/tileset/output_component.dart';
-import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/flame/output_editor_world.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
 class SliceComponent extends OutputComponent {
   TileSetSlice slice;
-  double tileWidth;
-  double tileHeight;
   dui.Image tileSetImage;
 
-  SliceComponent({required this.tileSetImage, required this.slice, required this.tileWidth, required this.tileHeight, required super.position});
+  SliceComponent({
+    required this.tileSetImage, //
+    required this.slice,
+    required super.tileWidth,
+    required super.tileHeight,
+    required super.position,
+  }) : super(areaSize: slice.size);
 
   @override
   Future<void> onLoad() async {

@@ -9,6 +9,7 @@ import 'package:tileseteditor/domain/tileset_slice.dart';
 import 'package:tileseteditor/output/flame/tileset/group_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
+import 'package:tileseteditor/output/flame/tileset/output_component.dart';
 import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
 import 'package:tileseteditor/splitter/flame/example_component.dart';
@@ -16,6 +17,8 @@ import 'package:tileseteditor/splitter/flame/example_component.dart';
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
+
+  List<OutputTileComponent> outputTiles = [];
 
   Image? image;
 
@@ -26,6 +29,38 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   OutputEditorWorld({required this.image});
 
   int get actionKey => _actionKey;
+
+  bool canAccept(OutputTileComponent topLeftTile, OutputComponent component) {
+    bool result = true;
+    for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
+      for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
+        OutputTileComponent? tile = getOutputTileComponent(i, j);
+        if (tile == null || !tile.isFree()) {
+          result = false;
+        }
+      }
+    }
+    return result;
+  }
+
+  void setOutput(OutputTileComponent topLeftTile, OutputComponent component) {
+    for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
+      for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
+        OutputTileComponent? tile = getOutputTileComponent(i, j);
+        if (tile != null && tile.isFree()) {
+          tile.setFree(false);
+        }
+      }
+    }
+  }
+
+  OutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
+    OutputTileComponent? result;
+    if (atlasX < game.project.output.width && atlasY < game.project.output.height) {
+      result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
+    }
+    return result;
+  }
 
   TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
 
@@ -158,16 +193,16 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
       for (int i = 0; i < outputWidth; i++) {
         for (int j = 0; j < outputHeight; j++) {
-          add(
-            OutputTileComponent(
-              tileSetImage: image!,
-              tileWidth: outputTileWidth.toDouble(),
-              tileHeight: outputTileHeight.toDouble(),
-              atlasX: i,
-              atlasY: j,
-              position: Vector2(outputShiftX + ruler.width + i * outputTileWidth, ruler.height + j * outputTileHeight),
-            ),
+          OutputTileComponent outputTile = OutputTileComponent(
+            tileSetImage: image!,
+            tileWidth: outputTileWidth.toDouble(),
+            tileHeight: outputTileHeight.toDouble(),
+            atlasX: i,
+            atlasY: j,
+            position: Vector2(outputShiftX + ruler.width + i * outputTileWidth, ruler.height + j * outputTileHeight),
           );
+          add(outputTile);
+          outputTiles.add(outputTile);
         }
       }
 

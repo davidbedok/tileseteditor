@@ -2,12 +2,11 @@ import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/named_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/tileset/output_component.dart';
 
 class SingleTileComponent extends OutputComponent {
-  double tileWidth;
-  double tileHeight;
   dui.Image tileSetImage;
 
   int atlasX;
@@ -15,12 +14,12 @@ class SingleTileComponent extends OutputComponent {
 
   SingleTileComponent({
     required this.tileSetImage,
-    required this.tileWidth,
-    required this.tileHeight,
+    required super.tileWidth,
+    required super.tileHeight,
     required this.atlasX,
     required this.atlasY,
     required super.position,
-  });
+  }) : super(areaSize: NamedAreaSize(1, 1));
 
   @override
   Future<void> onLoad() async {
