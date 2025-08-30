@@ -5,21 +5,21 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 
-class EditorState {
+class SplitterEditorState {
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
   TileInfo? selectedSliceInfo;
   TileInfo? selectedGroupInfo;
 
-  List<void Function(EditorState state, TileInfo tileInfo)> onSelectedEventHandlers = [];
+  List<void Function(SplitterEditorState state, TileInfo tileInfo)> onSelectedEventHandlers = [];
 
-  EditorState();
+  SplitterEditorState();
 
-  void subscribeOnSelected(void Function(EditorState state, TileInfo tileInfo) eventHandler) {
+  void subscribeOnSelected(void Function(SplitterEditorState state, TileInfo tileInfo) eventHandler) {
     onSelectedEventHandlers.add(eventHandler);
   }
 
-  void unsubscribeOnSelected(void Function(EditorState state, TileInfo tileInfo) eventHandler) {
+  void unsubscribeOnSelected(void Function(SplitterEditorState state, TileInfo tileInfo) eventHandler) {
     onSelectedEventHandlers.remove(eventHandler);
   }
 

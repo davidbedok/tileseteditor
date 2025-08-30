@@ -30,7 +30,7 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     priority = 0;
   }
 
-  bool isSelected() => game.editorState.isSelected(getInfo());
+  bool isSelected() => game.splitterState.isSelected(getInfo());
 
   TileInfo getInfo() => game.tileSet.getTileInfo(TileCoord(atlasX + 1, atlasY + 1));
 
@@ -44,7 +44,7 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
 
   @override
   void onTapUp(TapUpEvent event) {
-    game.editorState.selectTile(getInfo());
+    game.splitterState.selectTile(getInfo());
   }
 
   static Paint getSlicePaint(Color color, double strokeWidth) {

@@ -9,7 +9,7 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/splitter/state/editor_state.dart';
+import 'package:tileseteditor/output/state/output_editor_state.dart';
 
 class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
@@ -19,7 +19,7 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   TileSetProject project;
   TileSet tileSet;
 
-  EditorState editorState;
+  OutputEditorState outputState;
 
   OutputEditorGame({
     required this.project, //
@@ -27,7 +27,7 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
     required double width,
     required double height,
     required dui.Image? tileSetImage,
-    required this.editorState,
+    required this.outputState,
   }) : super(
          world: OutputEditorWorld(image: tileSetImage),
          camera: CameraComponent.withFixedResolution(width: width, height: height),

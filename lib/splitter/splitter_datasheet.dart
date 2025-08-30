@@ -4,19 +4,19 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/splitter/state/editor_state.dart';
+import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 
-class EditorDatasheet extends StatefulWidget {
-  final EditorState editorState;
+class SplitterDatasheet extends StatefulWidget {
+  final SplitterEditorState editorState;
   final TileSet tileSet;
 
-  const EditorDatasheet({super.key, required this.editorState, required this.tileSet});
+  const SplitterDatasheet({super.key, required this.editorState, required this.tileSet});
 
   @override
-  State<EditorDatasheet> createState() => EditorDatasheetState();
+  State<SplitterDatasheet> createState() => SplitterDatasheetState();
 }
 
-class EditorDatasheetState extends State<EditorDatasheet> {
+class SplitterDatasheetState extends State<SplitterDatasheet> {
   late TileSet tileSet;
   TileSetSlice? selectedSlice;
   TileSetGroup? selectedGroup;
@@ -47,7 +47,7 @@ class EditorDatasheetState extends State<EditorDatasheet> {
     });
   }
 
-  void selectTile(EditorState state, TileInfo tileInfo) {
+  void selectTile(SplitterEditorState state, TileInfo tileInfo) {
     if (tileInfo.key != null) {
       if (state.selectedSliceInfo != null) {
         TileSetSlice? slice = tileSet.findSliceByKey(tileInfo.key!);

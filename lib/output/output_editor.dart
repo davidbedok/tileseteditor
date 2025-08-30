@@ -1,19 +1,29 @@
+import 'dart:ui' as dui;
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/editor.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/output_action_controller.dart';
+import 'package:tileseteditor/output/state/output_editor_state.dart';
 
 class OutputEditor extends StatelessWidget {
+  final TileSetProject project;
+  final TileSet tileSet;
+  final dui.Image tileSetImage;
+  final OutputEditorState outputState;
   final void Function() onSplitterPressed;
 
   const OutputEditor({
     super.key, //
-    required this.widget,
+    required this.project,
+    required this.tileSet,
+    required this.tileSetImage,
+    required this.outputState,
     required this.onSplitterPressed,
   });
-
-  final TileSetEditor widget;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +33,8 @@ class OutputEditor extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             OutputActionController(
-              project: widget.project, //
-              tileSet: widget.tileSet,
+              project: project, //
+              tileSet: tileSet,
               onSplitterPressed: onSplitterPressed,
             ),
             Row(
@@ -38,12 +48,12 @@ class OutputEditor extends StatelessWidget {
                     decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: GameWidget(
                       game: OutputEditorGame(
-                        project: widget.project,
-                        tileSet: widget.tileSet,
+                        project: project,
+                        tileSet: tileSet,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
-                        tileSetImage: widget.tileSetImage,
-                        editorState: widget.editorState,
+                        tileSetImage: tileSetImage,
+                        outputState: outputState,
                       ),
                     ),
                   ),

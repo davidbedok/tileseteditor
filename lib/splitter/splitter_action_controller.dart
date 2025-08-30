@@ -6,29 +6,29 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/splitter/state/editor_state.dart';
+import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 
-class EditorActionController extends StatefulWidget {
+class SplitterActionController extends StatefulWidget {
   final TileSetProject project;
   final TileSet tileSet;
-  final EditorState editorState;
+  final SplitterEditorState splitterState;
   final void Function() onOutputPressed;
 
-  const EditorActionController({
+  const SplitterActionController({
     super.key, //
     required this.project,
-    required this.editorState,
+    required this.splitterState,
     required this.tileSet,
     required this.onOutputPressed,
   });
 
   @override
-  State<EditorActionController> createState() => EditorActionControllerState();
+  State<SplitterActionController> createState() => SplitterActionControllerState();
 }
 
 class TileSetImage {}
 
-class EditorActionControllerState extends State<EditorActionController> {
+class SplitterActionControllerState extends State<SplitterActionController> {
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
   TileInfo? selectedSlice;
@@ -37,16 +37,16 @@ class EditorActionControllerState extends State<EditorActionController> {
   @override
   void initState() {
     super.initState();
-    widget.editorState.subscribeOnSelected(selectTile);
+    widget.splitterState.subscribeOnSelected(selectTile);
   }
 
   @override
   void dispose() {
-    widget.editorState.unsubscribeOnSelected(selectTile);
+    widget.splitterState.unsubscribeOnSelected(selectTile);
     super.dispose();
   }
 
-  void selectTile(EditorState state, TileInfo tileInfo) {
+  void selectTile(SplitterEditorState state, TileInfo tileInfo) {
     setState(() {
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
@@ -64,9 +64,9 @@ class EditorActionControllerState extends State<EditorActionController> {
           IconButton(
             icon: Icon(Icons.select_all),
             onPressed: () {
-              widget.editorState.selectAllFree(widget.tileSet);
+              widget.splitterState.selectAllFree(widget.tileSet);
               setState(() {
-                numberOfSelectedFreeTiles = widget.editorState.selectedFreeTiles.length;
+                numberOfSelectedFreeTiles = widget.splitterState.selectedFreeTiles.length;
               });
             },
           ),
@@ -74,9 +74,9 @@ class EditorActionControllerState extends State<EditorActionController> {
           IconButton(
             icon: Icon(Icons.deselect),
             onPressed: () {
-              widget.editorState.selectedFreeTiles.clear();
+              widget.splitterState.selectedFreeTiles.clear();
               setState(() {
-                numberOfSelectedFreeTiles = widget.editorState.selectedFreeTiles.length;
+                numberOfSelectedFreeTiles = widget.splitterState.selectedFreeTiles.length;
               });
             },
           ),
@@ -86,7 +86,7 @@ class EditorActionControllerState extends State<EditorActionController> {
             label: const Text('Slice'),
             onPressed: numberOfSelectedFreeTiles > 1
                 ? () {
-                    addSlice(context, widget.editorState);
+                    addSlice(context, widget.splitterState);
                   }
                 : null,
           ),
@@ -96,7 +96,7 @@ class EditorActionControllerState extends State<EditorActionController> {
             label: numberOfSelectedFreeTiles > 1 ? Text('Group of $numberOfSelectedFreeTiles tiles') : const Text('Group'),
             onPressed: numberOfSelectedFreeTiles > 1
                 ? () {
-                    addGroup(context, widget.editorState);
+                    addGroup(context, widget.splitterState);
                   }
                 : null,
           ),
@@ -107,8 +107,8 @@ class EditorActionControllerState extends State<EditorActionController> {
               icon: Icon(Icons.cancel),
               label: Text('Drop $numberOfSelectedFreeTiles tiles'),
               onPressed: () {
-                widget.tileSet.addGarbage(widget.editorState.selectedFreeTiles);
-                widget.editorState.selectedFreeTiles.clear();
+                widget.tileSet.addGarbage(widget.splitterState.selectedFreeTiles);
+                widget.splitterState.selectedFreeTiles.clear();
                 setState(() {
                   numberOfSelectedFreeTiles = 0;
                 });
@@ -122,8 +122,8 @@ class EditorActionControllerState extends State<EditorActionController> {
               icon: Icon(Icons.cancel_outlined),
               label: Text('Undrop $numberOfSelectedGarbageTiles tiles'),
               onPressed: () {
-                widget.tileSet.removeGarbage(widget.editorState.selectedGarbageTiles);
-                widget.editorState.selectedGarbageTiles.clear();
+                widget.tileSet.removeGarbage(widget.splitterState.selectedGarbageTiles);
+                widget.splitterState.selectedGarbageTiles.clear();
                 setState(() {
                   numberOfSelectedGarbageTiles = 0;
                 });
@@ -137,8 +137,8 @@ class EditorActionControllerState extends State<EditorActionController> {
               icon: Icon(Icons.delete),
               label: Text('Delete ${selectedSlice != null ? selectedSlice!.name : ''}'),
               onPressed: () {
-                widget.tileSet.remove(widget.editorState.selectedSliceInfo!);
-                widget.editorState.selectedSliceInfo = null;
+                widget.tileSet.remove(widget.splitterState.selectedSliceInfo!);
+                widget.splitterState.selectedSliceInfo = null;
               },
             ),
           ),
@@ -149,8 +149,8 @@ class EditorActionControllerState extends State<EditorActionController> {
               icon: Icon(Icons.delete),
               label: Text('Delete ${selectedGroup != null ? selectedGroup!.name : ''}'),
               onPressed: () {
-                widget.tileSet.remove(widget.editorState.selectedGroupInfo!);
-                widget.editorState.selectedGroupInfo = null;
+                widget.tileSet.remove(widget.splitterState.selectedGroupInfo!);
+                widget.splitterState.selectedGroupInfo = null;
               },
             ),
           ),
@@ -161,7 +161,7 @@ class EditorActionControllerState extends State<EditorActionController> {
     );
   }
 
-  void addSlice(BuildContext context, EditorState editorState) async {
+  void addSlice(BuildContext context, SplitterEditorState editorState) async {
     TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
       context: context,
       builder: (BuildContext context) {
@@ -177,7 +177,7 @@ class EditorActionControllerState extends State<EditorActionController> {
     }
   }
 
-  void addGroup(BuildContext context, EditorState editorState) async {
+  void addGroup(BuildContext context, SplitterEditorState editorState) async {
     TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
       context: context,
       builder: (BuildContext context) {

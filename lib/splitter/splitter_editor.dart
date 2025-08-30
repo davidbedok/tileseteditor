@@ -1,20 +1,30 @@
+import 'dart:ui' as dui;
+
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/editor.dart';
-import 'package:tileseteditor/splitter/editor_action_controller.dart';
-import 'package:tileseteditor/splitter/editor_datasheet.dart';
+import 'package:tileseteditor/splitter/splitter_action_controller.dart';
+import 'package:tileseteditor/splitter/splitter_datasheet.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
+import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 
 class SplitterEditor extends StatelessWidget {
+  final TileSetProject project;
+  final TileSet tileSet;
+  final dui.Image tileSetImage;
+  final SplitterEditorState splitterState;
   final void Function() onOutputPressed;
 
   const SplitterEditor({
     super.key, //
-    required this.widget,
+    required this.project,
+    required this.tileSet,
+    required this.tileSetImage,
+    required this.splitterState,
     required this.onOutputPressed,
   });
-
-  final TileSetEditor widget;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +33,10 @@ class SplitterEditor extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            EditorActionController(
-              project: widget.project, //
-              editorState: widget.editorState,
-              tileSet: widget.tileSet,
+            SplitterActionController(
+              project: project, //
+              splitterState: splitterState,
+              tileSet: tileSet,
               onOutputPressed: onOutputPressed,
             ),
             Row(
@@ -42,11 +52,11 @@ class SplitterEditor extends StatelessWidget {
                         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                         child: GameWidget(
                           game: EditorGame(
-                            tileSet: widget.tileSet,
+                            tileSet: tileSet,
                             width: MediaQuery.of(context).size.width - 400,
                             height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
-                            tileSetImage: widget.tileSetImage,
-                            editorState: widget.editorState,
+                            tileSetImage: tileSetImage,
+                            splitterState: splitterState,
                           ),
                         ),
                       ),
@@ -64,7 +74,10 @@ class SplitterEditor extends StatelessWidget {
                             margin: const EdgeInsets.all(0),
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-                            child: EditorDatasheet(editorState: widget.editorState, tileSet: widget.tileSet),
+                            child: SplitterDatasheet(
+                              editorState: splitterState, //
+                              tileSet: tileSet,
+                            ),
                           ),
                         ), //
                       ],

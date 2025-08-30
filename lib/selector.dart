@@ -12,7 +12,8 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/editor.dart';
 import 'package:tileseteditor/menubar.dart';
-import 'package:tileseteditor/splitter/state/editor_state.dart';
+import 'package:tileseteditor/output/state/output_editor_state.dart';
+import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSetSelector extends StatefulWidget {
@@ -28,7 +29,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
   TileSetProject? project;
   TileSet? tileSet;
   dui.Image? tileSetImage;
-  EditorState editorState = EditorState();
+  SplitterEditorState splitterState = SplitterEditorState();
+  OutputEditorState outputState = OutputEditorState();
 
   @override
   void initState() {
@@ -122,7 +124,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                 setState(() {
                                   tileSet = value;
                                   tileSetImage = image;
-                                  editorState = EditorState();
+                                  splitterState = SplitterEditorState();
+                                  outputState = OutputEditorState();
                                 });
                               },
                             ),
@@ -139,7 +142,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
                     padding: const EdgeInsets.all(8.0),
                     child: TileSetEditor(
                       key: GlobalKey(),
-                      editorState: editorState, //
+                      splitterState: splitterState, //
+                      outputState: outputState,
                       project: project!,
                       tileSet: tileSet!,
                       tileSetImage: tileSetImage!,
@@ -249,7 +253,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
       project = null;
       tileSet = null;
       tileSetImage = null;
-      editorState = EditorState();
+      splitterState = SplitterEditorState();
+      outputState = OutputEditorState();
     });
   }
 
