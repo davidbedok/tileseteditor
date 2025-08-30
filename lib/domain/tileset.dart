@@ -234,6 +234,15 @@ class TileSet {
     return groups.where((group) => group.key == key).first;
   }
 
+  TileSetTile? findTile(TileCoord coord) {
+    TileSetTile? result;
+    List<TileSetTile> tileSetTiles = tiles.where((tile) => tile.left == coord.left && tile.top == coord.top).toList();
+    if (tileSetTiles.isNotEmpty) {
+      result = tileSetTiles.first;
+    }
+    return result;
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'key': key,

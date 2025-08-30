@@ -1,2 +1,2 @@
 Output Editor:
-    - init (remove all slice.output, group.output, etc..)
+    - show not-current tileset items in the output matrix
