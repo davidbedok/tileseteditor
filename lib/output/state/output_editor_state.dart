@@ -4,6 +4,7 @@ class OutputEditorState {
   TileSetItem? selectedItem;
 
   List<void Function(TileSetItem tileSetItem)> onRemovedEventHandlers = [];
+  List<void Function()> onRemovedAllEventHandlers = [];
   List<void Function(OutputEditorState state, TileSetItem? tileSetItem)> onSelectedEventHandlers = [];
 
   OutputEditorState();
@@ -24,6 +25,14 @@ class OutputEditorState {
     onRemovedEventHandlers.remove(eventHandler);
   }
 
+  void subscribeOnRemovedAll(void Function() eventHandler) {
+    onRemovedAllEventHandlers.add(eventHandler);
+  }
+
+  void unsubscribeOnRemovedAll(void Function() eventHandler) {
+    onRemovedAllEventHandlers.remove(eventHandler);
+  }
+
   void select(TileSetItem? tileSetItem) {
     selectedItem = tileSetItem;
     for (var eventHandler in onSelectedEventHandlers) {
@@ -37,5 +46,12 @@ class OutputEditorState {
         eventHandler.call(selectedItem!);
       }
     }
+  }
+
+  void removeAll() {
+    for (var eventHandler in onRemovedAllEventHandlers) {
+      eventHandler.call();
+    }
+    select(null);
   }
 }

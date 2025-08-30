@@ -50,26 +50,38 @@ class OutputActionControllerState extends State<OutputActionController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          ElevatedButton.icon(
-            icon: Icon(Icons.add_circle_outline),
-            label: const Text('Init'),
+          IconButton(
+            icon: Icon(Icons.delete_forever),
             onPressed: () {
-              widget.project.initOutput();
+              widget.outputState.removeAll();
+              setState(() {
+                selectedItem = null;
+              });
             },
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: selectedItem != null,
+            visible: selectedItem != null && selectedItem!.output != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
               label: Text('Remove ${selectedItem != null ? selectedItem!.getButtonLabel() : ''}'),
               onPressed: () {
                 widget.outputState.remove();
+                setState(() {
+                  if (selectedItem != null) {
+                    selectedItem!.output = null;
+                  }
+                });
               },
             ),
           ),
           SizedBox(width: 5),
-          ElevatedButton.icon(icon: Icon(Icons.edit), label: Text('Splitter'), onPressed: widget.onSplitterPressed),
+          ElevatedButton.icon(
+            icon: Icon(Icons.edit), //
+            label: Text('Splitter'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            onPressed: widget.onSplitterPressed,
+          ),
         ],
       ),
     );

@@ -72,22 +72,20 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void place(OutputTileComponent topLeftTile, TileSetComponent component) {
-    print('Place: $component');
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
         OutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
-          print('Place.Store: $component');
           tile.store(component);
           numberOfPlacedTiles++;
         }
       }
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
-      print('Place.Output: $topLeftTile');
       component.placeOutput(topLeftTile);
+      game.outputState.select(component.getTileSetItem());
     }
   }
 
@@ -123,6 +121,15 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         outputTile.removeStoredTileSetItem();
       }
     }
+  }
+
+  void removeAllTileSetItem() {
+    for (OutputTileComponent outputTile in outputTiles) {
+      if (outputTile.isUsed()) {
+        outputTile.removeStoredTileSetItem();
+      }
+    }
+    game.project.initOutput();
   }
 
   void setAction(int actionKey) {

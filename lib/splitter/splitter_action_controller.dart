@@ -155,7 +155,12 @@ class SplitterActionControllerState extends State<SplitterActionController> {
             ),
           ),
           SizedBox(width: 5),
-          ElevatedButton.icon(icon: Icon(Icons.edit), label: Text('Output'), onPressed: widget.onOutputPressed),
+          ElevatedButton.icon(
+            icon: Icon(Icons.edit), //
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            label: Text('Output'),
+            onPressed: widget.onOutputPressed,
+          ),
         ],
       ),
     );

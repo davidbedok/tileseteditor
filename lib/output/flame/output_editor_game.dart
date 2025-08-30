@@ -34,10 +34,21 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
     outputState.subscribeOnRemoved(removeTileSetItem);
+    outputState.subscribeOnRemovedAll(removeAllTileSetItem);
+  }
+
+  @override
+  void onRemove() {
+    outputState.unsubscribeOnRemoved(removeTileSetItem);
+    outputState.unsubscribeOnRemovedAll(removeAllTileSetItem);
   }
 
   void removeTileSetItem(TileSetItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
+  }
+
+  void removeAllTileSetItem() {
+    world.removeAllTileSetItem();
   }
 
   @override
@@ -104,6 +115,11 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
             if (world.moveByKey(topLeftOutputTile.atlasX, topLeftOutputTile.atlasY + 1)) {
               result = KeyEventResult.handled;
             }
+          }
+        }
+        if (event is KeyDownEvent) {
+          if (keysPressed.contains(LogicalKeyboardKey.delete)) {
+            world.removeTileSetItem(world.selected!.getTileSetItem());
           }
         }
       }
