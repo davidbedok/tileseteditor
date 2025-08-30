@@ -1,7 +1,5 @@
-import 'package:tileseteditor/domain/tile_reference.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_data.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
 
 class TileSetOutput {
   int tileWidth;
@@ -11,6 +9,10 @@ class TileSetOutput {
   TileSetData data = TileSetData(0, 0);
 
   TileSetOutput({required this.tileWidth, required this.tileHeight, required this.width, required this.height});
+
+  void init() {
+    data = TileSetData(0, 0);
+  }
 
   Map<String, dynamic> toJson(List<TileSet> tileSets) {
     return {

@@ -2,21 +2,20 @@ import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class SliceComponent extends TileSetComponent {
   TileSetSlice slice;
-  dui.Image tileSetImage;
 
   SliceComponent({
-    required this.tileSetImage, //
-    required this.slice,
+    required super.position,
+    required super.tileSetImage, //
+    required super.originalPosition,
     required super.tileWidth,
     required super.tileHeight,
-    required super.position,
+    required this.slice,
   }) : super(areaSize: slice.size);
 
   @override
@@ -29,7 +28,7 @@ class SliceComponent extends TileSetComponent {
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = Sprite(
-      tileSetImage,
+      tileSetImage, //
       srcPosition: Vector2((slice.left - 1) * tileWidth, (slice.top - 1) * tileHeight),
       srcSize: Vector2(slice.size.width * tileWidth, slice.size.height * tileHeight),
     );

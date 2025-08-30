@@ -6,8 +6,9 @@ import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset_garbage.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
 class TileSet {
   int key;
@@ -23,6 +24,7 @@ class TileSet {
 
   List<TileSetSlice> slices = [];
   List<TileSetGroup> groups = [];
+  List<TileSetTile> tiles = [];
   TileSetGarbage garbage = TileSetGarbage();
 
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
@@ -56,6 +58,18 @@ class TileSet {
     required this.imageWidth,
     required this.imageHeight,
   });
+
+  void initOutput() {
+    for (TileSetSlice slice in slices) {
+      slice.output = null;
+    }
+    for (TileSetGroup group in groups) {
+      group.output = null;
+    }
+    for (TileSetTile tile in tiles) {
+      tile.output = null;
+    }
+  }
 
   void subscribeOnChanged(void Function(TileSet tileSet, TileSetChangeType type) eventHandler) {
     onChangedEventHandlers.add(eventHandler);
@@ -113,7 +127,7 @@ class TileSet {
   }
 
   int getIndex(TileCoord coord) {
-    return (coord.y - 1) * getMaxTileRow() + coord.x - 1;
+    return (coord.top - 1) * getMaxTileRow() + coord.left - 1;
   }
 
   void addSlice(TileSetSlice slice) {
@@ -124,6 +138,12 @@ class TileSet {
   void addGroup(TileSetGroup group) {
     groups.add(group);
     callEventHandlers(TileSetChangeType.groupCreated);
+  }
+
+  void addTile(TileSetTile tile) {
+    tiles.removeWhere((current) => current.left == tile.left && current.top == tile.top);
+    tiles.add(tile);
+    // callEventHandlers(TileSetChangeType.groupCreated);
   }
 
   void addGarbage(List<TileCoord> coords) {
@@ -227,26 +247,11 @@ class TileSet {
         'width': imageWidth, //
         'height': imageHeight,
       },
-      'slices': toSlicesJson(),
-      'groups': toGroupsJson(),
+      'slices': TileSetSlice.slicestoJson(slices),
+      'groups': TileSetGroup.groupsToJson(groups),
+      'tiles': TileSetTile.tilesToJson(this, tiles),
       'garbage': garbage.toJson(),
     };
-  }
-
-  List<Map<String, dynamic>> toSlicesJson() {
-    List<Map<String, dynamic>> result = [];
-    for (var slice in slices) {
-      result.add(slice.toJson());
-    }
-    return result;
-  }
-
-  List<Map<String, dynamic>> toGroupsJson() {
-    List<Map<String, dynamic>> result = [];
-    for (var group in groups) {
-      result.add(group.toJson());
-    }
-    return result;
   }
 
   factory TileSet.fromJson(Map<String, dynamic> json) {
@@ -279,17 +284,10 @@ class TileSet {
         ),
       _ => throw const FormatException('Failed to load TileSetProject'),
     };
-
-    List<Map<String, dynamic>> slices = json['slices'] != null ? (json['slices'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var slice in slices) {
-      result.addSlice(TileSetSlice.fromJson(result, slice));
-    }
-    List<Map<String, dynamic>> groups = json['groups'] != null ? (json['groups'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var group in groups) {
-      result.addGroup(TileSetGroup.fromJson(group));
-    }
+    result.slices = TileSetSlice.slicesFromJson(result, json);
+    result.groups = TileSetGroup.groupsFromJson(json);
+    result.tiles = TileSetTile.tilesFromJson(json);
     result.garbage = TileSetGarbage.fromJson(json['garbage']);
-
     return result;
   }
 

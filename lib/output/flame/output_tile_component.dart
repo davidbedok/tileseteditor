@@ -68,7 +68,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   @override
   void update(double dt) {
     if (isHovered) {
-      priority = 100;
+      priority = 200;
     } else {
       priority = 0;
     }
@@ -89,10 +89,10 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     TileCoord coord = getCoord();
     var textSpan = TextSpan(
       text: '${game.tileSet.getIndex(coord)} [${coord.toString()}]',
-      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+      style: TextStyle(color: const dui.Color.fromARGB(255, 14, 110, 199), fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: 200);
-    textPainter.paint(canvas, Offset(0, -20));
+    textPainter.paint(canvas, Offset(0, tileHeight));
   }
 }

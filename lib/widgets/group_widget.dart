@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/utils/tile_utils.dart';

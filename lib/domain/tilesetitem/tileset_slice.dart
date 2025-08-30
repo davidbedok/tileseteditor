@@ -1,7 +1,8 @@
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_named_area.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
 
 class TileSetSlice extends TileSetNamedArea {
   static final TileSetSlice none = TileSetSlice(-1, '-', TileSetAreaSize(0, 0), 0, 0);
@@ -9,12 +10,10 @@ class TileSetSlice extends TileSetNamedArea {
   int left;
   int top;
 
-  TileCoord? output;
-
   TileSetSlice(super.key, super.name, super.size, this.left, this.top);
 
   bool isInnerCoord(TileCoord coord) {
-    return coord.x >= left && coord.x < left + size.width && coord.y >= top && coord.y < top + size.height;
+    return coord.left >= left && coord.left < left + size.width && coord.top >= top && coord.top < top + size.height;
   }
 
   Map<String, dynamic> toJson() {
@@ -22,7 +21,7 @@ class TileSetSlice extends TileSetNamedArea {
     return {
       'key': key, //
       'name': name, //
-      'tiles': tileIndices,
+      'indices': tileIndices,
       'left': left,
       'top': top,
       'width': size.width,
@@ -44,19 +43,30 @@ class TileSetSlice extends TileSetNamedArea {
         TileSetSlice(key, name, TileSetAreaSize(width, height), left, top),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
-    List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];
-    if (tileIndices.isNotEmpty) {
-      result.tileIndices.addAll(tileIndices);
-    }
-
-    Map<String, dynamic>? output = json['output'] != null ? (json['output'] as Map<String, dynamic>) : null;
-    result.output = output != null ? TileCoord.fromJson(output) : null;
-
+    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
+    result.output = TileSetItem.outputFromJson(json);
     return result;
   }
 
   @override
   String toString() {
     return 'Slice $name (l:$left t:$top w:${size.width} h:${size.height})';
+  }
+
+  static List<TileSetSlice> slicesFromJson(TileSet tileSet, Map<String, dynamic> json) {
+    List<TileSetSlice> result = [];
+    List<Map<String, dynamic>> slices = json['slices'] != null ? (json['slices'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var slice in slices) {
+      result.add(TileSetSlice.fromJson(tileSet, slice));
+    }
+    return result;
+  }
+
+  static List<Map<String, dynamic>> slicestoJson(List<TileSetSlice> slices) {
+    List<Map<String, dynamic>> result = [];
+    for (var slice in slices) {
+      result.add(slice.toJson());
+    }
+    return result;
   }
 }

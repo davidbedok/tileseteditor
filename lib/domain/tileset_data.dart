@@ -1,6 +1,8 @@
 import 'package:tileseteditor/domain/tile_reference.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
 class TileSetData {
   List<List<TileReference>> tiles = [];
@@ -19,16 +21,39 @@ class TileSetData {
     TileSetData result = TileSetData(width, height);
     for (TileSet tileSet in tileSets) {
       for (TileSetSlice slice in tileSet.slices) {
-        if (slice.output != null) {
+        if (slice.output != null && slice.tileIndices.length == slice.size.height * slice.size.width) {
           int tileIndex = 0;
           for (int j = 0; j < slice.size.height; j++) {
             for (int i = 0; i < slice.size.width; i++) {
-              result.tiles[slice.output!.y - 1 + j][slice.output!.x - 1 + i] = TileReference(
-                tileSetKey: tileSet.key,
+              result.tiles[slice.output!.top - 1 + j][slice.output!.left - 1 + i] = TileReference(
+                tileSetKey: tileSet.key, //
                 tileIndex: slice.tileIndices[tileIndex++],
               );
             }
           }
+        }
+      }
+
+      for (TileSetGroup group in tileSet.groups) {
+        if (group.output != null && group.tileIndices.length == group.size.height * group.size.width) {
+          int tileIndex = 0;
+          for (int j = 0; j < group.size.height; j++) {
+            for (int i = 0; i < group.size.width; i++) {
+              result.tiles[group.output!.top - 1 + j][group.output!.left - 1 + i] = TileReference(
+                tileSetKey: tileSet.key, //
+                tileIndex: group.tileIndices[tileIndex++],
+              );
+            }
+          }
+        }
+      }
+
+      for (TileSetTile tile in tileSet.tiles) {
+        if (tile.output != null && tile.tileIndices.isNotEmpty) {
+          result.tiles[tile.output!.top - 1][tile.output!.left - 1] = TileReference(
+            tileSetKey: tileSet.key, //
+            tileIndex: tile.tileIndices[0],
+          );
         }
       }
     }

@@ -36,7 +36,25 @@ class OutputActionControllerState extends State<OutputActionController> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        children: [ElevatedButton.icon(icon: Icon(Icons.edit), label: Text('Splitter'), onPressed: widget.onSplitterPressed)],
+        children: [
+          ElevatedButton.icon(
+            icon: Icon(Icons.add_circle_outline),
+            label: const Text('Init'),
+            onPressed: () {
+              widget.project.initOutput();
+            },
+          ),
+          SizedBox(width: 5),
+          ElevatedButton.icon(
+            icon: Icon(Icons.add_circle_outline),
+            label: const Text('Delete'),
+            onPressed: () {
+              //
+            },
+          ),
+          SizedBox(width: 5),
+          ElevatedButton.icon(icon: Icon(Icons.edit), label: Text('Splitter'), onPressed: widget.onSplitterPressed),
+        ],
       ),
     );
   }

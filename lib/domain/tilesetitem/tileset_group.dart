@@ -1,11 +1,10 @@
-import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
-import 'package:tileseteditor/domain/tileset_named_area.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
 
 class TileSetGroup extends TileSetNamedArea {
   static final TileSetGroup none = TileSetGroup(-1, '-', TileSetAreaSize(0, 0));
-
-  TileCoord? output;
 
   TileSetGroup(super.key, super.name, super.size);
 
@@ -13,7 +12,7 @@ class TileSetGroup extends TileSetNamedArea {
     return {
       'key': key, //
       'name': name, //
-      'tiles': tileIndices,
+      'indices': tileIndices,
       'width': size.width,
       'height': size.height,
       'output': output?.toJson(),
@@ -31,19 +30,30 @@ class TileSetGroup extends TileSetNamedArea {
         TileSetGroup(key, name, TileSetAreaSize(width, height)),
       _ => throw const FormatException('Failed to load TileSetGroup'),
     };
-    List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];
-    if (tileIndices.isNotEmpty) {
-      result.tileIndices.addAll(tileIndices);
-    }
-
-    Map<String, dynamic>? output = json['output'] != null ? (json['output'] as Map<String, dynamic>) : null;
-    result.output = output != null ? TileCoord.fromJson(output) : null;
-
+    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
+    result.output = TileSetItem.outputFromJson(json);
     return result;
   }
 
   @override
   String toString() {
     return 'Group $name (#:${tileIndices.length} w:${size.width} h:${size.height})';
+  }
+
+  static List<TileSetGroup> groupsFromJson(Map<String, dynamic> json) {
+    List<TileSetGroup> result = [];
+    List<Map<String, dynamic>> groups = json['groups'] != null ? (json['groups'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var group in groups) {
+      result.add(TileSetGroup.fromJson(group));
+    }
+    return result;
+  }
+
+  static List<Map<String, dynamic>> groupsToJson(List<TileSetGroup> groups) {
+    List<Map<String, dynamic>> result = [];
+    for (var group in groups) {
+      result.add(group.toJson());
+    }
+    return result;
   }
 }

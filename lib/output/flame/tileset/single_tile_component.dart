@@ -4,32 +4,36 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class SingleTileComponent extends TileSetComponent {
-  dui.Image tileSetImage;
+  TileSetTile tile;
 
   int atlasX;
   int atlasY;
 
   SingleTileComponent({
-    required this.tileSetImage,
+    required super.position,
+    required super.tileSetImage,
+    required super.originalPosition,
     required super.tileWidth,
     required super.tileHeight,
+    required this.tile,
     required this.atlasX,
     required this.atlasY,
-    required super.position,
   }) : super(areaSize: TileSetAreaSize(1, 1));
 
   @override
   void releaseOutputData() {
-    // xxx.output = null;
+    tile.output = null;
   }
 
   @override
   void placeOutput(OutputTileComponent topLeftTile) {
-    // TODO: implement placeOutput
+    tile.output = topLeftTile.getCoord();
+    game.tileSet.addTile(tile);
   }
 
   @override

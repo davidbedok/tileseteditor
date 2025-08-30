@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';

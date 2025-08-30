@@ -6,16 +6,16 @@ class TileReference {
 
   Map<String, dynamic> toJson() {
     return {
-      'tileSet': tileSetKey, //
-      'tile': tileIndex, //
+      'tileset': tileSetKey, //
+      'index': tileIndex, //
     };
   }
 
   factory TileReference.fromJson(Map<String, dynamic> json) {
     TileReference result = switch (json) {
       {
-        'tileSet': int tileSetKey, //
-        'tile': int tileIndex, //
+        'tileset': int tileSetKey, //
+        'index': int tileIndex, //
       } =>
         TileReference(tileSetKey: tileSetKey, tileIndex: tileIndex),
       _ => throw const FormatException('Failed to load TileReference'),

@@ -6,8 +6,9 @@ import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/output/flame/tileset/group_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
@@ -161,6 +162,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           slice: slice,
           tileWidth: tileWidth.toDouble(),
           tileHeight: tileHeight.toDouble(),
+          originalPosition: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
           position: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
         ),
       );
@@ -179,6 +181,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           group: group,
           tileWidth: tileWidth.toDouble(),
           tileHeight: tileHeight.toDouble(),
+          originalPosition: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
           position: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
         ),
       );
@@ -191,10 +194,12 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           add(
             SingleTileComponent(
               tileSetImage: image!,
+              tile: TileSetTile(i + 1, j + 1),
               tileWidth: tileWidth.toDouble(),
               tileHeight: tileHeight.toDouble(),
               atlasX: i,
               atlasY: j,
+              originalPosition: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
               position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
             ),
           );

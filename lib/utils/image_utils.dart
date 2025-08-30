@@ -39,7 +39,13 @@ class ImageUtils {
     List<GroupImageWidget> result = [];
     imglib.Image? image = imglib.decodePng(File(path).readAsBytesSync());
     for (TileIndexedCoord coord in coords) {
-      imglib.Image croppedImage = imglib.copyCrop(image!, x: (coord.x - 1) * tileWidth, y: (coord.y - 1) * tileHeight, width: tileWidth, height: tileHeight);
+      imglib.Image croppedImage = imglib.copyCrop(
+        image!,
+        x: (coord.left - 1) * tileWidth,
+        y: (coord.top - 1) * tileHeight,
+        width: tileWidth,
+        height: tileHeight,
+      );
       result.add(
         GroupImageWidget(
           tileIndex: coord.index,

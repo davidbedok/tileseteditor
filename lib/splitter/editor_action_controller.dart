@@ -3,9 +3,9 @@ import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/splitter/state/editor_state.dart';
 
 class EditorActionController extends StatefulWidget {

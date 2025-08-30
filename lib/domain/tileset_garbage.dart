@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter_randomcolor/flutter_randomcolor.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileSetGarbage {
   List<int> tileIndices = [];
@@ -10,15 +11,12 @@ class TileSetGarbage {
   TileSetGarbage();
 
   Map<String, dynamic> toJson() {
-    return {'tiles': tileIndices};
+    return {'indices': tileIndices};
   }
 
   factory TileSetGarbage.fromJson(Map<String, dynamic> json) {
     TileSetGarbage result = TileSetGarbage();
-    List<int> tileIndices = json['tiles'] != null ? (json['tiles'] as List).map((index) => index as int).toList() : [];
-    if (tileIndices.isNotEmpty) {
-      result.tileIndices.addAll(tileIndices);
-    }
+    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
     return result;
   }
 

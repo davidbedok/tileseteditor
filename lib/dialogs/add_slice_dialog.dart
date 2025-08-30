@@ -8,7 +8,7 @@ import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/widgets/slice_widget.dart';
 
 class AddSliceDialog extends StatefulWidget {
@@ -32,10 +32,10 @@ class AddSliceDialogState extends State<AddSliceDialog> {
   @override
   void initState() {
     super.initState();
-    int minX = widget.tiles.map((coord) => coord.x).reduce(min);
-    int minY = widget.tiles.map((coord) => coord.y).reduce(min);
-    int maxX = widget.tiles.map((coord) => coord.x).reduce(max);
-    int maxY = widget.tiles.map((coord) => coord.y).reduce(max);
+    int minX = widget.tiles.map((coord) => coord.left).reduce(min);
+    int minY = widget.tiles.map((coord) => coord.top).reduce(min);
+    int maxX = widget.tiles.map((coord) => coord.left).reduce(max);
+    int maxY = widget.tiles.map((coord) => coord.top).reduce(max);
     _slice = TileSetSlice(widget.tileSet.getNextKey(), '', TileSetAreaSize(maxX - minX + 1, maxY - minY + 1), minX, minY);
     for (int y = minY; y <= maxY; y++) {
       for (int x = minX; x <= maxX; x++) {

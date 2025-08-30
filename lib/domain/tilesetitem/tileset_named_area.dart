@@ -2,11 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
-class TileSetNamedArea {
+class TileSetNamedArea extends TileSetItem {
   int key;
   String name;
-  List<int> tileIndices = [];
   TileSetAreaSize size;
 
   Color color = RandomColor.getColorObject(Options());

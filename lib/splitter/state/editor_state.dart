@@ -2,8 +2,8 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
-import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 
 class EditorState {
   List<TileCoord> selectedFreeTiles = [];
@@ -27,9 +27,9 @@ class EditorState {
     bool result = false;
     switch (info.type) {
       case TileType.free:
-        result = selectedFreeTiles.where((c) => c.x == info.coord.x && c.y == info.coord.y).isNotEmpty;
+        result = selectedFreeTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
       case TileType.garbage:
-        result = selectedGarbageTiles.where((c) => c.x == info.coord.x && c.y == info.coord.y).isNotEmpty;
+        result = selectedGarbageTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
       case TileType.slice:
         result = selectedSliceInfo != null && selectedSliceInfo == info;
       case TileType.group:
@@ -61,7 +61,7 @@ class EditorState {
     switch (info.type) {
       case TileType.free:
         if (selectedFreeTiles.contains(info.coord)) {
-          selectedFreeTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
+          selectedFreeTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
         } else {
           selectedFreeTiles.add(info.coord);
         }
@@ -81,7 +81,7 @@ class EditorState {
         }
       case TileType.garbage:
         if (selectedGarbageTiles.contains(info.coord)) {
-          selectedGarbageTiles.removeWhere((c) => c.x == info.coord.x && c.y == info.coord.y);
+          selectedGarbageTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
         } else {
           selectedGarbageTiles.add(info.coord);
         }

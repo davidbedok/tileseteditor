@@ -4,20 +4,20 @@ import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class GroupComponent extends TileSetComponent {
   TileSetGroup group;
-  dui.Image tileSetImage;
 
   GroupComponent({
-    required this.tileSetImage, //
-    required this.group,
+    required super.position,
+    required super.tileSetImage, //
+    required super.originalPosition,
     required super.tileWidth,
     required super.tileHeight,
-    required super.position,
+    required this.group,
   }) : super(areaSize: group.size);
 
   @override
@@ -42,7 +42,7 @@ class GroupComponent extends TileSetComponent {
           TileCoord tileCoord = game.tileSet.getTileCoord(index);
           Sprite tmpSprite = Sprite(
             tileSetImage,
-            srcPosition: Vector2((tileCoord.x - 1) * tileWidth, (tileCoord.y - 1) * tileHeight),
+            srcPosition: Vector2((tileCoord.left - 1) * tileWidth, (tileCoord.top - 1) * tileHeight),
             srcSize: Vector2(tileWidth, tileHeight),
           );
 

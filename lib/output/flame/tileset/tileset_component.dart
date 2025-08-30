@@ -1,3 +1,4 @@
+import 'dart:ui' as dui;
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
@@ -9,20 +10,32 @@ import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
 abstract class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+  dui.Image tileSetImage;
+  Vector2 originalPosition;
   TileSetAreaSize areaSize;
-
-  List<OutputTileComponent> reservedTiles = [];
-
   double tileWidth;
   double tileHeight;
 
+  List<OutputTileComponent> reservedTiles = [];
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   bool isPlaced() => reservedTiles.isNotEmpty;
 
-  TileSetComponent({required super.position, required this.tileWidth, required this.tileHeight, required this.areaSize}) {
+  TileSetComponent({
+    required super.position,
+    required this.tileSetImage,
+    required this.originalPosition,
+    required this.tileWidth,
+    required this.tileHeight,
+    required this.areaSize,
+  }) {
     priority = 0;
+  }
+
+  void removeFromOutput() {
+    release();
+    moveToPlace(originalPosition);
   }
 
   OutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;

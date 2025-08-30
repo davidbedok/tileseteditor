@@ -23,6 +23,13 @@ class TileSetProject {
     return [result, maxTileSetKey].reduce(Math.max) + 1;
   }
 
+  void initOutput() {
+    output.init();
+    for (var tileSet in tileSets) {
+      tileSet.initOutput();
+    }
+  }
+
   @override
   String toString() {
     return 'Project $name ($output) in $filePath';
