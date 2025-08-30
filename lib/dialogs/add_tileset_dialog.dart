@@ -23,6 +23,7 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
   void initState() {
     super.initState();
     _tileSet = TileSet(
+      key: widget.project.getNextTileSetKey(),
       name: '',
       filePath: '',
       tileWidth: widget.project.output.tileWidth,

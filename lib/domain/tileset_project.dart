@@ -1,3 +1,5 @@
+import 'dart:math' as Math;
+
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:path/path.dart' as path;
@@ -14,6 +16,12 @@ class TileSetProject {
   String getDirectory() => path.dirname(filePath!);
 
   TileSetProject({required this.name, this.description, required this.output});
+
+  int getNextTileSetKey() {
+    int result = 0;
+    int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(Math.max) : 0;
+    return [result, maxTileSetKey].reduce(Math.max) + 1;
+  }
 
   @override
   String toString() {
@@ -37,8 +45,8 @@ class TileSetProject {
       'name': name,
       'description': description,
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
-      'output': output.toJson(),
       'tilesets': toTileSetJson(),
+      'output': output.toJson(tileSets),
     };
   }
 

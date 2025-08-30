@@ -39,11 +39,15 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
   }
 
   void release() {
+    releaseOutputData();
     for (OutputTileComponent outputTile in reservedTiles) {
       outputTile.empty();
     }
     reservedTiles.clear();
   }
+
+  void releaseOutputData();
+  void placeOutput(OutputTileComponent topLeftTile);
 
   static Paint getBorderPaint(Color color, double strokeWidth) {
     return Paint()

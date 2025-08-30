@@ -1,8 +1,11 @@
+import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tileset_named_area.dart';
 
 class TileSetGroup extends TileSetNamedArea {
   static final TileSetGroup none = TileSetGroup(-1, '-', TileSetAreaSize(0, 0));
+
+  TileCoord? output;
 
   TileSetGroup(super.key, super.name, super.size);
 
@@ -13,6 +16,7 @@ class TileSetGroup extends TileSetNamedArea {
       'tiles': tileIndices,
       'width': size.width,
       'height': size.height,
+      'output': output?.toJson(),
     };
   }
 
@@ -31,6 +35,10 @@ class TileSetGroup extends TileSetNamedArea {
     if (tileIndices.isNotEmpty) {
       result.tileIndices.addAll(tileIndices);
     }
+
+    Map<String, dynamic>? output = json['output'] != null ? (json['output'] as Map<String, dynamic>) : null;
+    result.output = output != null ? TileCoord.fromJson(output) : null;
+
     return result;
   }
 

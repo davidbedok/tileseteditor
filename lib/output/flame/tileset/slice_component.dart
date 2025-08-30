@@ -2,7 +2,9 @@ import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
+import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class SliceComponent extends TileSetComponent {
@@ -16,6 +18,12 @@ class SliceComponent extends TileSetComponent {
     required super.tileHeight,
     required super.position,
   }) : super(areaSize: slice.size);
+
+  @override
+  void releaseOutputData() => slice.output = null;
+
+  @override
+  void placeOutput(OutputTileComponent topLeftTile) => slice.output = topLeftTile.getCoord();
 
   @override
   Future<void> onLoad() async {

@@ -68,13 +68,18 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void place(OutputTileComponent topLeftTile, TileSetComponent component) {
     component.release();
+    int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
         OutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
+          numberOfPlacedTiles++;
         }
       }
+    }
+    if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
+      component.placeOutput(topLeftTile);
     }
   }
 

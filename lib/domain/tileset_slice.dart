@@ -9,6 +9,8 @@ class TileSetSlice extends TileSetNamedArea {
   int left;
   int top;
 
+  TileCoord? output;
+
   TileSetSlice(super.key, super.name, super.size, this.left, this.top);
 
   bool isInnerCoord(TileCoord coord) {
@@ -16,6 +18,7 @@ class TileSetSlice extends TileSetNamedArea {
   }
 
   Map<String, dynamic> toJson() {
+    tileIndices.sort();
     return {
       'key': key, //
       'name': name, //
@@ -24,6 +27,7 @@ class TileSetSlice extends TileSetNamedArea {
       'top': top,
       'width': size.width,
       'height': size.height,
+      'output': output?.toJson(),
     };
   }
 
@@ -44,6 +48,10 @@ class TileSetSlice extends TileSetNamedArea {
     if (tileIndices.isNotEmpty) {
       result.tileIndices.addAll(tileIndices);
     }
+
+    Map<String, dynamic>? output = json['output'] != null ? (json['output'] as Map<String, dynamic>) : null;
+    result.output = output != null ? TileCoord.fromJson(output) : null;
+
     return result;
   }
 

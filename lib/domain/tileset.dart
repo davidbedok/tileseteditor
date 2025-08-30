@@ -10,6 +10,7 @@ import 'package:tileseteditor/domain/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_slice.dart';
 
 class TileSet {
+  int key;
   String name;
   String filePath;
   int tileWidth;
@@ -24,7 +25,6 @@ class TileSet {
   List<TileSetGroup> groups = [];
   TileSetGarbage garbage = TileSetGarbage();
 
-  // void Function(TileSetSlice slice)? onCreateSlice;
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
   int getMaxTileRow() => imageWidth ~/ tileWidth;
@@ -46,6 +46,7 @@ class TileSet {
   }
 
   TileSet({
+    required this.key,
     required this.name,
     required this.filePath,
     required this.tileWidth,
@@ -117,10 +118,6 @@ class TileSet {
 
   void addSlice(TileSetSlice slice) {
     slices.add(slice);
-    /* 
-    if (onCreateSlice != null) {
-      onCreateSlice!.call(slice);
-    }*/
     callEventHandlers(TileSetChangeType.sliceCreated);
   }
 
@@ -217,6 +214,7 @@ class TileSet {
 
   Map<String, dynamic> toJson() {
     return {
+      'key': key,
       'name': name,
       'input': filePath,
       'margin': margin,
@@ -254,6 +252,7 @@ class TileSet {
   factory TileSet.fromJson(Map<String, dynamic> json) {
     TileSet result = switch (json) {
       {
+        'key': int key,
         'name': String name, //
         'input': String filePath, //
         'margin': int margin, //
@@ -268,6 +267,7 @@ class TileSet {
         }, //
       } =>
         TileSet(
+          key: key,
           name: name,
           filePath: filePath,
           tileWidth: tileWidth,

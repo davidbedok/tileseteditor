@@ -17,6 +17,8 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
 
   TileSetComponent? storedTile;
 
+  TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
+
   OutputTileComponent({
     required this.tileSetImage,
     required this.tileWidth,
@@ -45,7 +47,6 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    // sprite = Sprite(tileSetImage, srcPosition: Vector2(0, 0), srcSize: Vector2(tileWidth, tileHeight));
     size = Vector2(tileWidth, tileHeight);
     // debugMode = true;
   }
@@ -85,7 +86,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   }
 
   void drawInfo(dui.Canvas canvas) {
-    TileCoord coord = TileCoord(atlasX + 1, atlasY + 1);
+    TileCoord coord = getCoord();
     var textSpan = TextSpan(
       text: '${game.tileSet.getIndex(coord)} [${coord.toString()}]',
       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),

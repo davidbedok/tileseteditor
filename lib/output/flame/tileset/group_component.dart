@@ -5,6 +5,7 @@ import 'package:flame/image_composition.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset_group.dart';
+import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class GroupComponent extends TileSetComponent {
@@ -18,6 +19,12 @@ class GroupComponent extends TileSetComponent {
     required super.tileHeight,
     required super.position,
   }) : super(areaSize: group.size);
+
+  @override
+  void releaseOutputData() => group.output = null;
+
+  @override
+  void placeOutput(OutputTileComponent topLeftTile) => group.output = topLeftTile.getCoord();
 
   @override
   Future<void> onLoad() async {
