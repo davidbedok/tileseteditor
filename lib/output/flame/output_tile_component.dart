@@ -15,7 +15,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   int atlasX;
   int atlasY;
 
-  TileSetComponent? storedTile;
+  TileSetComponent? _storedTile;
 
   TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
 
@@ -30,18 +30,25 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     priority = 0;
   }
 
-  bool canAccept(TileSetComponent tile) => isFree() || tile == storedTile;
+  bool canAccept(TileSetComponent tile) => isFree() || tile == _storedTile;
 
-  bool isFree() => storedTile == null;
-  bool isUsed() => storedTile != null;
+  bool isFree() => _storedTile == null;
+  bool isUsed() => _storedTile != null;
 
   void store(TileSetComponent tile) {
-    storedTile = tile;
+    _storedTile = tile;
     tile.reservedTiles.add(this);
   }
 
   void empty() {
-    storedTile = null;
+    _storedTile = null;
+  }
+
+  void removeStoredTileSetItem() {
+    if (_storedTile != null) {
+      _storedTile!.removeFromOutput();
+    }
+    empty();
   }
 
   @override

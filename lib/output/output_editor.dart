@@ -35,6 +35,7 @@ class OutputEditor extends StatelessWidget {
             OutputActionController(
               project: project, //
               tileSet: tileSet,
+              outputState: outputState,
               onSplitterPressed: onSplitterPressed,
             ),
             Row(

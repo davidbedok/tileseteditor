@@ -4,6 +4,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
@@ -13,6 +14,9 @@ class SingleTileComponent extends TileSetComponent {
 
   int atlasX;
   int atlasY;
+
+  @override
+  TileSetItem getTileSetItem() => tile;
 
   SingleTileComponent({
     required super.position,

@@ -4,6 +4,8 @@ abstract class TileSetItem {
   TileCoord? output;
   List<int> tileIndices = [];
 
+  String getButtonLabel();
+
   static TileCoord? outputFromJson(Map<String, dynamic> json) {
     Map<String, dynamic>? output = json['output'] != null ? (json['output'] as Map<String, dynamic>) : null;
     return output != null ? TileCoord.fromJson(output) : null;

@@ -2,12 +2,16 @@ import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class SliceComponent extends TileSetComponent {
   TileSetSlice slice;
+
+  @override
+  TileSetItem getTileSetItem() => slice;
 
   SliceComponent({
     required super.position,

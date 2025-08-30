@@ -7,6 +7,7 @@ import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/output/flame/tileset/group_component.dart';
@@ -19,35 +20,38 @@ import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
-
-  TileSetComponent? selected;
-
-  List<OutputTileComponent> outputTiles = [];
+  static final Size ruler = Size(20, 20);
 
   dui.Image? image;
+  TileSetComponent? selected;
+  List<OutputTileComponent> outputTiles = [];
 
   int _actionKey = -1;
 
-  static final Size ruler = Size(20, 20);
+  int get actionKey => _actionKey;
 
   OutputEditorWorld({required this.image});
 
-  int get actionKey => _actionKey;
-
   void select(TileSetComponent component, {bool force = false}) {
     if (force) {
-      selected = component;
+      setSelected(component);
     } else {
       if (selected != null) {
         if (selected == component) {
           selected = null;
+          game.outputState.select(null);
         } else {
-          selected = component;
+          setSelected(component);
         }
       } else {
-        selected = component;
+        setSelected(component);
       }
     }
+  }
+
+  void setSelected(TileSetComponent component) {
+    selected = component;
+    game.outputState.select(component.getTileSetItem());
   }
 
   bool isSelected(TileSetComponent component) {
@@ -68,18 +72,21 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void place(OutputTileComponent topLeftTile, TileSetComponent component) {
+    print('Place: $component');
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
         OutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
+          print('Place.Store: $component');
           tile.store(component);
           numberOfPlacedTiles++;
         }
       }
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
+      print('Place.Output: $topLeftTile');
       component.placeOutput(topLeftTile);
     }
   }
@@ -109,7 +116,14 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     return result;
   }
 
-  TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
+  void removeTileSetItem(TileSetItem tileSetItem) {
+    if (tileSetItem.output != null) {
+      OutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
+      if (outputTile != null && outputTile.isUsed()) {
+        outputTile.removeStoredTileSetItem();
+      }
+    }
+  }
 
   void setAction(int actionKey) {
     _actionKey = actionKey;
@@ -121,6 +135,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
   }
+
+  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
 
   @override
   Future<void> onLoad() async {

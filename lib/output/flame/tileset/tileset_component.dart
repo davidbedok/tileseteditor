@@ -4,6 +4,7 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
@@ -21,6 +22,7 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   bool isPlaced() => reservedTiles.isNotEmpty;
+  TileSetItem getTileSetItem();
 
   TileSetComponent({
     required super.position,

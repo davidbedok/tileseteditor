@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/state/output_editor_state.dart';
@@ -31,7 +32,13 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   }) : super(
          world: OutputEditorWorld(image: tileSetImage),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
-       );
+       ) {
+    outputState.subscribeOnRemoved(removeTileSetItem);
+  }
+
+  void removeTileSetItem(TileSetItem tileSetItem) {
+    world.removeTileSetItem(tileSetItem);
+  }
 
   @override
   Color backgroundColor() => Colors.white;

@@ -4,6 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/tileset_output.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileSetProject {
   String? filePath;

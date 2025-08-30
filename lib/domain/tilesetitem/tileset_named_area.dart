@@ -11,6 +11,9 @@ class TileSetNamedArea extends TileSetItem {
 
   Color color = RandomColor.getColorObject(Options());
 
+  @override
+  String getButtonLabel() => name;
+
   TileSetNamedArea(this.key, this.name, this.size);
 
   String toDropDownValue() {

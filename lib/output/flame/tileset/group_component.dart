@@ -5,11 +5,15 @@ import 'package:flame/image_composition.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class GroupComponent extends TileSetComponent {
   TileSetGroup group;
+
+  @override
+  TileSetItem getTileSetItem() => group;
 
   GroupComponent({
     required super.position,

@@ -6,6 +6,9 @@ class TileSetTile extends TileSetItem {
   int left;
   int top;
 
+  @override
+  String getButtonLabel() => 'Tile $left:$top';
+
   TileSetTile(this.left, this.top);
 
   Map<String, dynamic> toJson(TileSet tileSet) {

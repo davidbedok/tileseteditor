@@ -1,4 +1,2 @@
 Output Editor:
-    - store somehow the individual tiles output data..
     - init (remove all slice.output, group.output, etc..)
-    - delete selected item (move back to its original location)

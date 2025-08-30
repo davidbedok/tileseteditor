@@ -66,9 +66,11 @@ class TileSet {
     for (TileSetGroup group in groups) {
       group.output = null;
     }
+    tiles.clear();
+    /*
     for (TileSetTile tile in tiles) {
       tile.output = null;
-    }
+    }*/
   }
 
   void subscribeOnChanged(void Function(TileSet tileSet, TileSetChangeType type) eventHandler) {
