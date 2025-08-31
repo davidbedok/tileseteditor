@@ -1,10 +1,9 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/tileset_output.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileSetProject {
   String? filePath;
@@ -20,8 +19,8 @@ class TileSetProject {
 
   int getNextTileSetKey() {
     int result = 0;
-    int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(Math.max) : 0;
-    return [result, maxTileSetKey].reduce(Math.max) + 1;
+    int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(math.max) : 0;
+    return [result, maxTileSetKey].reduce(math.max) + 1;
   }
 
   void initOutput() {

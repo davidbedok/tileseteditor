@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
@@ -89,9 +89,9 @@ class TileSet {
 
   int getNextKey() {
     int result = 0;
-    int maxSliceKey = slices.isNotEmpty ? slices.map((slice) => slice.key).reduce(Math.max) : 0;
-    int maxGroupKey = groups.isNotEmpty ? groups.map((group) => group.key).reduce(Math.max) : 0;
-    return [result, maxSliceKey, maxGroupKey].reduce(Math.max) + 1;
+    int maxSliceKey = slices.isNotEmpty ? slices.map((slice) => slice.key).reduce(math.max) : 0;
+    int maxGroupKey = groups.isNotEmpty ? groups.map((group) => group.key).reduce(math.max) : 0;
+    return [result, maxSliceKey, maxGroupKey].reduce(math.max) + 1;
   }
 
   bool isFree(int index) {

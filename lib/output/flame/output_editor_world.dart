@@ -260,7 +260,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, sliceComponent);
-          sliceComponent.position = topLeftOutputTile!.position;
+          sliceComponent.position = topLeftOutputTile.position;
         }
       }
       add(sliceComponent);
@@ -280,7 +280,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, groupComponent);
-          groupComponent.position = topLeftOutputTile!.position;
+          groupComponent.position = topLeftOutputTile.position;
         }
       }
       add(groupComponent);
@@ -308,7 +308,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
             OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
               placeSilent(topLeftOutputTile, singleTileComponent);
-              singleTileComponent.position = topLeftOutputTile!.position;
+              singleTileComponent.position = topLeftOutputTile.position;
             }
           }
           add(singleTileComponent);
