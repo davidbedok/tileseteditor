@@ -3,6 +3,7 @@ import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_output.dart';
@@ -16,16 +17,14 @@ import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
+import 'package:tileseteditor/utils/draw_utils.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
-  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
+  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
-  static final Size ruler = Size(20, 20);
   static double cameraButtonDim = 30;
   static double cameraButtonSpace = 5;
-  static Paint buttonNormalPaint = BasicPalette.gray.withAlpha(200).paint();
-  static Paint buttonDownPaint = BasicPalette.darkGreen.withAlpha(200).paint();
 
   TileSetComponent? selected;
   List<OutputTileComponent> outputTiles = [];
@@ -261,8 +260,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         TextComponent(
           textRenderer: rulerPaint,
           text: '$column',
-          position: Vector2(ruler.width + (column - 1) * tileWidth + 12, 0),
-          size: Vector2(tileWidth.toDouble(), ruler.height),
+          position: Vector2(DrawUtils.ruler.width + (column - 1) * tileWidth + 12, 0),
+          size: Vector2(tileWidth.toDouble(), DrawUtils.ruler.height),
           anchor: Anchor.topLeft,
           priority: 20,
         ),
@@ -273,8 +272,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         TextComponent(
           textRenderer: rulerPaint,
           text: '$row',
-          position: Vector2(0, ruler.height + (row - 1) * tileHeight + 6),
-          size: Vector2(ruler.width, tileHeight.toDouble()),
+          position: Vector2(0, DrawUtils.ruler.height + (row - 1) * tileHeight + 6),
+          size: Vector2(DrawUtils.ruler.width, tileHeight.toDouble()),
           anchor: Anchor.topLeft,
           priority: 20,
         ),
@@ -289,8 +288,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       SliceComponent sliceComponent = SliceComponent(
         tileSet: tileSet,
         slice: slice,
-        originalPosition: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
-        position: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
+        originalPosition: Vector2(DrawUtils.ruler.width + (slice.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.top - 1) * tileHeight),
+        position: Vector2(DrawUtils.ruler.width + (slice.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.top - 1) * tileHeight),
         external: false,
       );
       if (slice.output != null) {
@@ -312,8 +311,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       GroupComponent groupComponent = GroupComponent(
         tileSet: tileSet,
         group: group,
-        originalPosition: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
-        position: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
+        originalPosition: Vector2(DrawUtils.ruler.width + (atlasMaxX + 1) * tileWidth, DrawUtils.ruler.height + groupTopIndex * tileHeight),
+        position: Vector2(DrawUtils.ruler.width + (atlasMaxX + 1) * tileWidth, DrawUtils.ruler.height + groupTopIndex * tileHeight),
         external: false,
       );
       if (group.output != null) {
@@ -341,8 +340,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           SingleTileComponent singleTileComponent = SingleTileComponent(
             tileSet: tileSet,
             tile: tileSetTile,
-            originalPosition: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
-            position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
+            originalPosition: Vector2(DrawUtils.ruler.width + i * tileWidth, DrawUtils.ruler.height + j * tileHeight),
+            position: Vector2(DrawUtils.ruler.width + i * tileWidth, DrawUtils.ruler.height + j * tileHeight),
             external: false,
           );
           if (tileSetTile.output != null) {
@@ -401,8 +400,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   HudButtonComponent createButton(Rect buttonRect, EdgeInsets margin, Anchor anchor, dynamic Function() onPressed) {
     return HudButtonComponent(
-      button: RectangleComponent.fromRect(buttonRect, paint: buttonNormalPaint),
-      buttonDown: RectangleComponent.fromRect(buttonRect, paint: buttonDownPaint),
+      button: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getBorderPaint(EditorColor.buttonNormal.color, 1.0)),
+      buttonDown: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getBorderPaint(EditorColor.buttonDown.color, 1.0)),
       margin: margin,
       anchor: anchor,
       onPressed: onPressed,
@@ -425,7 +424,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           tileHeight: tileHeight.toDouble(),
           atlasX: i,
           atlasY: j,
-          position: Vector2(outputShiftX + ruler.width + i * tileWidth, ruler.height + j * tileHeight),
+          position: Vector2(outputShiftX + DrawUtils.ruler.width + i * tileWidth, DrawUtils.ruler.height + j * tileHeight),
         );
         add(outputTile);
         outputTiles.add(outputTile);
@@ -439,8 +438,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         TextComponent(
           textRenderer: rulerPaint,
           text: '$column',
-          position: Vector2(outputShiftX + ruler.width + (column - 1) * outputTileWidth + 12, 0),
-          size: Vector2(outputTileWidth.toDouble(), ruler.height),
+          position: Vector2(outputShiftX + DrawUtils.ruler.width + (column - 1) * outputTileWidth + 12, 0),
+          size: Vector2(outputTileWidth.toDouble(), DrawUtils.ruler.height),
           anchor: Anchor.topLeft,
           priority: 20,
         ),
@@ -451,8 +450,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         TextComponent(
           textRenderer: rulerPaint,
           text: '$row',
-          position: Vector2(outputShiftX, ruler.height + (row - 1) * outputTileHeight + 6),
-          size: Vector2(ruler.width, outputTileHeight.toDouble()),
+          position: Vector2(outputShiftX, DrawUtils.ruler.height + (row - 1) * outputTileHeight + 6),
+          size: Vector2(DrawUtils.ruler.width, outputTileHeight.toDouble()),
           anchor: Anchor.topLeft,
           priority: 20,
         ),

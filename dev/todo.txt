@@ -1,7 +1,3 @@
-Output Editor:
-    - Hover: show the origin tileSet (name, key)
-    - Delete tiles from ~external tileset (some animation?)
-
 Show output when open a Project
     - 3rd game widget
     - Editable: with scroll option, without drag-and-drop (use arrows)

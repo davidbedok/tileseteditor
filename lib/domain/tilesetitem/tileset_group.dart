@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/game.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
@@ -9,7 +10,7 @@ class TileSetGroup extends TileSetNamedArea {
   static final TileSetGroup none = TileSetGroup(-1, '-', TileSetAreaSize(0, 0));
 
   @override
-  Color getTextColor() => Color.fromARGB(255, 171, 33, 178);
+  Color getTextColor() => EditorColor.tileSetGroup.color;
 
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);

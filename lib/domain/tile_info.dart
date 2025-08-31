@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 
@@ -28,13 +29,13 @@ class TileInfo {
   Color getHoverColor() {
     switch (type) {
       case TileType.free:
-        return Colors.black;
+        return EditorColor.tileFreeHovered.color;
       case TileType.slice:
-        return Color.fromARGB(255, 247, 224, 19);
+        return EditorColor.tileSliceHovered.color;
       case TileType.group:
-        return Color.fromARGB(255, 171, 33, 178);
+        return EditorColor.tileGroupHovered.color;
       case TileType.garbage:
-        return Color.fromARGB(255, 216, 21, 21);
+        return EditorColor.tileGarbageHovered.color;
     }
   }
 

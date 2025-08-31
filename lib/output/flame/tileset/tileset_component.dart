@@ -2,6 +2,7 @@ import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
@@ -12,12 +13,6 @@ import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 abstract class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
-  static const Color hoverBorderColor = Color.fromARGB(255, 29, 16, 215);
-  static const Color hoverExternalBorderColor = Color.fromARGB(255, 37, 151, 62);
-
-  static const Color selectedFillColor = Color.fromARGB(255, 27, 138, 222);
-  static const Color selectedExternalFillColor = Color.fromARGB(255, 112, 228, 30);
-
   TileSet tileSet;
   TileSetItem tileSetItem;
   Vector2 originalPosition;
@@ -189,10 +184,10 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
   void render(Canvas canvas) {
     super.render(canvas);
     if (game.world.isSelected(this)) {
-      canvas.drawRect(getRect(), DrawUtils.getFillPaint(external ? selectedExternalFillColor : selectedFillColor, 100));
+      canvas.drawRect(getRect(), DrawUtils.getFillPaint(external ? EditorColor.selectedExternalFill.color : EditorColor.selectedFill.color, alpha: 100));
     }
     if (isHovered) {
-      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(external ? hoverExternalBorderColor : hoverBorderColor, 2.0));
+      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(external ? EditorColor.hoverExternalBorder.color : EditorColor.hoverBorder.color, 2.0));
       drawInfo(canvas);
     }
   }
