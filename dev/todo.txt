@@ -1,1 +1,4 @@
 Edit tileset
+Rename json:
+    tilesets[].input -> file
+    output.name -> file

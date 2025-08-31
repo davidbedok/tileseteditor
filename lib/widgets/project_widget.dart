@@ -34,6 +34,15 @@ class ProjectWidget extends StatelessWidget {
           },
         ),
         SizedBox(height: space),
+        AppDialogTextField(
+          name: 'Output file',
+          initialValue: project.output.name,
+          validationMessage: 'Please enter the file name of the output (*.png)',
+          onChanged: (String value) {
+            project.output.name = value;
+          },
+        ),
+        SizedBox(height: space),
         AppDialogTileSizeField(
           name: 'Output Tile width',
           initialValue: project.output.tileWidth,

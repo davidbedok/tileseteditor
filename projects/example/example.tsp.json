@@ -1090,7 +1090,7 @@
         {
             "key": 2,
             "name": "floors",
-            "active": false,
+            "active": true,
             "input": "tilesets\\floors.png",
             "margin": 0,
             "spacing": 0,
@@ -1235,6 +1235,7 @@
         }
     ],
     "output": {
+		"name": "example.png",
         "tile": {
             "width": 32,
             "height": 32

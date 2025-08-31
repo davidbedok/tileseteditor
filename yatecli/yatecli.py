@@ -1,4 +1,3 @@
-import enum
 import subprocess
 import json
 import os
@@ -7,13 +6,7 @@ import argparse
 import textwrap
 import sys
 import yate.utils
-
-class Mode(enum.Enum):
-    split = 'split'
-    build = 'build'
-
-    def __str__(self):
-        return self.value
+import yate.mode
 
 parser = argparse.ArgumentParser(
                     prog='Yet Another TileSet Editor CLI',
@@ -26,10 +19,10 @@ parser = argparse.ArgumentParser(
                     epilog=f'example: {sys.argv[0]} --mode split --project demo.tsp.json --target output'
 )
 
-parser.add_argument('-m', '--mode', help = 'Choose one of the supported option ()', type = Mode, choices=list(Mode), required = True, dest = 'mode')
+parser.add_argument('-m', '--mode', help = 'Choose one of the supported option ()', type = yate.mode.Mode, choices=list(yate.mode.Mode), required = True, dest = 'mode')
 parser.add_argument('-p', '--project', help = 'TileSet Project file (*.tsp.json)', required = True, dest = 'projectFile')
 parser.add_argument('-t', '--target', help = 'Target directory for the output tile images (*.png)', required = True, dest = 'outputDirectory')
-parser.add_argument('-e', '--empty', help = 'Location of the empty tile (*.png)', dest = 'emptyPath', default = None)
+parser.add_argument('-e', '--empty', help = 'Location of the empty tile (*.png)', dest = 'emptyTilePath', default = None)
 
 args = parser.parse_args()
 
@@ -45,4 +38,4 @@ if ( project == None ):
 
 print(f'YATE TileSet Project found: {project["name"]} (YATE version: {project["editor"]["version"]})')
 
-yate.utils.process(args.projectFile, args.outputDirectory, project)
+yate.utils.process(args.mode, args.projectFile, args.outputDirectory, args.emptyTilePath, project)

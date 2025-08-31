@@ -4,6 +4,8 @@ import json
 import pathlib
 import subprocess
 
+from .mode import Mode
+
 targetTilesDirectory = 'tiles'
 targetSlicesDirectory = 'slices'
 targetGroupsDirectory = 'groups'
@@ -24,9 +26,12 @@ def openTileSetProject( projectFile: str ):
             data = json.load(json_data)
     return data
 
-def process( projectFile: str, outputDirectory: str, json ):
+def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: str, json ):
+    tileSetKeyNamePairs = {}
     for tileset in json['tilesets']:
+        key = tileset['key']
         name = tileset['name']
+        tileSetKeyNamePairs[key] = name
         active = bool(tileset['active'])
         if ( active ):
             tile = tileset['tile']
@@ -35,7 +40,7 @@ def process( projectFile: str, outputDirectory: str, json ):
 
             projectFilePath = pathlib.Path(projectFile)
             tileSetFilePath = f'{projectFilePath.parent}/{tileset["input"]}'
-            print(f'Open \'{name}\' TileSet image from: {tileSetFilePath}')
+            print(f'Open \'{name}\' TileSet image from: {tileSetFilePath} (mode: {mode})')
             
             tilesDirectory = f'{outputDirectory}\\{targetTilesDirectory}\\{name}'
             slicesDirectory = f'{outputDirectory}\\{targetSlicesDirectory}\\{name}'
@@ -49,12 +54,27 @@ def process( projectFile: str, outputDirectory: str, json ):
             
             print(f'Tile of \'{name}\' were built into: {tilesDirectory}')
 
-            buildSlices(tileset['slices'], name, tilesDirectory, slicesDirectory, tileWidth, tileHeight, tileSetFilePath)
-            buildGroups(tileset['groups'], name, tilesDirectory, groupsDirectory, tileWidth, tileHeight, tileSetFilePath)
-            dropGarbages(tileset['garbage'], name, tilesDirectory)
-            removeUnusedTiles(tileset['tiles'], name, tilesDirectory, tileWidth, tileHeight, tileSetFilePath)
+            if mode == Mode.split:
+                buildSlices(tileset['slices'], name, tilesDirectory, slicesDirectory, tileWidth, tileHeight, tileSetFilePath)
+                buildGroups(tileset['groups'], name, tilesDirectory, groupsDirectory, tileWidth, tileHeight, tileSetFilePath)
+                dropGarbages(tileset['garbage'], name, tilesDirectory)
+                removeUnusedTiles(tileset['tiles'], name, tilesDirectory, tileWidth, tileHeight, tileSetFilePath)
+
         else:
             print(f'Skip \'{name}\' TileSet')
+    if mode == Mode.build:
+        output = json['output']
+        name = output['name']
+        tile = output['tile']
+        tileWidth = int(tile['width'])
+        tileHeight = int(tile['height'])
+        size = output['size']
+        outputWidth = int(size['width'])
+        outputHeight = int(size['height'])
+        print(f'Building {outputWidth}x{outputHeight} output from {tileWidth}x{tileHeight} tiles')
+        tilesRootDirectory = f'{outputDirectory}\\{targetTilesDirectory}'
+        outputFile = f'{outputDirectory}\\{name}'
+        buildOutput(output['data'], tileSetKeyNamePairs, tilesRootDirectory, emptyTilePath, tileWidth, tileHeight, outputWidth, outputHeight, outputFile)
 
 def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
     for slice in json:
@@ -123,3 +143,23 @@ def removeUnusedTilesByIndices( maxIndex: int, usedIndices: list[int], tilesDire
                 os.remove(file)
                 result.append(index)
     return result
+
+def buildOutput( json, tileSetKeyNamePairs: map, tilesRootDirectory: str, emptyTilePath: str, tileWidth: int, tileHeight: int, outputWidth: int, outputHeight: int, outputFile: str):
+    tiles = []
+    for row in json:
+        for column in row:
+            tileSetKey = column['tileset']
+            tileIndex = column['index']
+            if tileSetKey != -1:
+                tileSetName = tileSetKeyNamePairs[tileSetKey]
+                tiles.append(f'{tilesRootDirectory}\\{tileSetName}\\{tileSetName}-{tileIndex}.png')
+            else:
+                tiles.append(f'{emptyTilePath}')
+
+    # magick montage -mode concatenate -background none -geometry 32x32+0+0 -tile 3x input/group/floor-0.png input/group/floor-1.png input/group/floor-2.png input/group/floor-3.png input/group/floor-4.png input/group/floor-5.png output/floor.png
+    commandData = ["magick", "montage", "-mode", "concatenate", "-background", "none", "-geometry", f'{tileWidth}x{tileHeight}+0+0', "-tile", f'{outputWidth}x']
+    for tileImageFilePath in tiles:
+        commandData.append(tileImageFilePath)
+    commandData.append(outputFile)
+    subprocess.run(commandData)
+        

@@ -15,7 +15,10 @@ class NewProjectDialogState extends State<NewProjectDialog> {
   static final double space = 8.0;
   final _formKey = GlobalKey<FormState>();
 
-  final TileSetProject _project = TileSetProject(name: '', output: TileSetOutput(tileWidth: 32, tileHeight: 32, width: 50, height: 100));
+  final TileSetProject _project = TileSetProject(
+    name: '',
+    output: TileSetOutput(name: '', tileWidth: 32, tileHeight: 32, width: 50, height: 100),
+  );
 
   @override
   Widget build(BuildContext context) {
