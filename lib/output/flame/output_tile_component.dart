@@ -10,7 +10,6 @@ import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, HoverCallbacks {
   double tileWidth;
   double tileHeight;
-  dui.Image tileSetImage;
 
   int atlasX;
   int atlasY;
@@ -20,8 +19,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
 
   OutputTileComponent({
-    required this.tileSetImage,
-    required this.tileWidth,
+    required this.tileWidth, //
     required this.tileHeight,
     required this.atlasX,
     required this.atlasY,
