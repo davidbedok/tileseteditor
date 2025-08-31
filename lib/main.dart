@@ -12,7 +12,7 @@ void main() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
   windowManager.waitUntilReadyToShow(windowOptions).then((_) async {
-    await windowManager.setTitle('TileSet Editor');
+    await windowManager.setTitle('Yet Another TileSet Editor');
   });
 
   runApp(TileSetMaterialApp(packageInfo: packageInfo));

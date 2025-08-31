@@ -9,11 +9,21 @@ import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
+import 'package:tileseteditor/utils/draw_utils.dart';
 
 abstract class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+  static const Color hoverBorderColor = Color.fromARGB(255, 29, 16, 215);
+  static const Color hoverExternalBorderColor = Color.fromARGB(255, 37, 151, 62);
+
+  static const Color selectedFillColor = Color.fromARGB(255, 27, 138, 222);
+  static const Color selectedExternalFillColor = Color.fromARGB(255, 112, 228, 30);
+
   TileSet tileSet;
+  TileSetItem tileSetItem;
   Vector2 originalPosition;
   TileSetAreaSize areaSize;
+  bool external;
+
   double tileWidth;
   double tileHeight;
 
@@ -21,30 +31,38 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
+  Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
-  TileSetItem getTileSetItem();
+  OutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+  TileSetItem getTileSetItem() => tileSetItem;
 
   TileSetComponent({
     required super.position,
     required this.tileSet,
+    required this.tileSetItem,
     required this.originalPosition,
-    required this.tileWidth,
-    required this.tileHeight,
     required this.areaSize,
-  }) {
+    required this.external,
+  }) : tileWidth = tileSet.tileWidth.toDouble(),
+       tileHeight = tileSet.tileHeight.toDouble() {
     priority = 0;
   }
 
   void removeFromOutput() {
     release();
-    moveToPlace(originalPosition);
+    if (external) {
+      removeFromParent();
+    } else {
+      moveToPlace(originalPosition);
+    }
   }
 
-  OutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
-
-  @override
-  void onTapUp(TapUpEvent event) {
-    game.world.select(this);
+  void release() {
+    tileSetItem.output = null;
+    for (OutputTileComponent outputTile in reservedTiles) {
+      outputTile.empty();
+    }
+    reservedTiles.clear();
   }
 
   void place(OutputTileComponent outputTile) {
@@ -53,45 +71,14 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
     }
   }
 
-  void release() {
-    releaseOutputData();
-    for (OutputTileComponent outputTile in reservedTiles) {
-      outputTile.empty();
-    }
-    reservedTiles.clear();
-  }
-
-  void releaseOutputData();
-  void placeOutput(OutputTileComponent topLeftTile);
-
-  static Paint getBorderPaint(Color color, double strokeWidth) {
-    return Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-  }
-
-  static Paint getFillPaint(Color color, int alpha) {
-    return Paint()
-      ..color = color.withAlpha(alpha)
-      ..style = PaintingStyle.fill;
-  }
-
-  @override
-  void update(double dt) {
-    if (isHovered) {
-      priority = 100;
-    } else {
-      priority = 0;
-    }
+  void placeOutput(OutputTileComponent topLeftTile) {
+    tileSetItem.output = topLeftTile.getCoord();
   }
 
   void doMove(
-    Vector2 to, {
+    Vector2 to, { //
     double speed = 10.0,
     double start = 0.0,
-    bool keepPriority = false,
-    int additionalPriority = 0,
     Curve curve = Curves.easeOutQuad,
     VoidCallback? onComplete,
   }) {
@@ -101,13 +88,36 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
         TileMoveEffect(
           to,
           EffectController(duration: dt, startDelay: start, curve: curve),
-          keepPriority: keepPriority,
-          additionalPriority: additionalPriority,
           onComplete: () {
             onComplete?.call();
           },
         ),
       );
+    }
+  }
+
+  void moveToPlace(Vector2 place) {
+    doMove(
+      place,
+      speed: 15.0,
+      onComplete: () {
+        priority = 0;
+        game.world.setAction(-1);
+      },
+    );
+  }
+
+  @override
+  void onTapUp(TapUpEvent event) {
+    game.world.select(this);
+  }
+
+  @override
+  void update(double dt) {
+    if (isHovered) {
+      priority = 100;
+    } else {
+      priority = 0;
     }
   }
 
@@ -175,30 +185,25 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
     }
   }
 
-  void moveToPlace(Vector2 place) {
-    doMove(
-      place,
-      speed: 15.0,
-      onComplete: () {
-        priority = 0;
-        game.world.setAction(-1);
-      },
-    );
-  }
-
   @override
   void render(Canvas canvas) {
     super.render(canvas);
     if (game.world.isSelected(this)) {
-      canvas.drawRect(getRect(), TileSetComponent.getFillPaint(const Color.fromARGB(255, 202, 215, 16), 100));
+      canvas.drawRect(getRect(), DrawUtils.getFillPaint(external ? selectedExternalFillColor : selectedFillColor, 100));
     }
     if (isHovered) {
-      canvas.drawRect(getRect(), TileSetComponent.getBorderPaint(const Color.fromARGB(255, 29, 16, 215), 2.0));
+      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(external ? hoverExternalBorderColor : hoverBorderColor, 2.0));
       drawInfo(canvas);
     }
   }
 
-  Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
-
-  void drawInfo(Canvas canvas);
+  void drawInfo(Canvas canvas) {
+    var textSpan = TextSpan(
+      text: '${external ? '${tileSet.name}\n' : ''}${tileSetItem.getButtonLabel()}',
+      style: TextStyle(color: tileSetItem.getTextColor(), fontWeight: FontWeight.bold),
+    );
+    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 0, maxWidth: 200);
+    textPainter.paint(canvas, Offset(0, external ? -40 : -20));
+  }
 }

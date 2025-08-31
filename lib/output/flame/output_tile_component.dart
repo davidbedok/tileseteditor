@@ -6,8 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
+import 'package:tileseteditor/utils/draw_utils.dart';
 
 class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, HoverCallbacks {
+  static const dui.Color standardColor = dui.Color.fromARGB(255, 182, 182, 193);
+  static const dui.Color hoveredColor = dui.Color.fromARGB(255, 29, 16, 215);
+  static const dui.Color textColor = dui.Color.fromARGB(255, 14, 110, 199);
+
   double tileWidth;
   double tileHeight;
 
@@ -17,6 +22,10 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   TileSetComponent? _storedTile;
 
   TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
+  bool canAccept(TileSetComponent tile) => isFree() || tile == _storedTile;
+  bool isFree() => _storedTile == null;
+  bool isUsed() => _storedTile != null;
+  Rect getRect() => Rect.fromLTWH(0, 0, tileWidth, tileHeight);
 
   OutputTileComponent({
     required this.tileWidth, //
@@ -27,11 +36,6 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   }) {
     priority = 0;
   }
-
-  bool canAccept(TileSetComponent tile) => isFree() || tile == _storedTile;
-
-  bool isFree() => _storedTile == null;
-  bool isUsed() => _storedTile != null;
 
   void store(TileSetComponent tile) {
     _storedTile = tile;
@@ -56,20 +60,6 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     // debugMode = true;
   }
 
-  static Paint getStandardPaint(Color color, double strokeWidth) {
-    return Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-  }
-
-  static Paint getSelectionPaint(Color color, double strokeWidth) {
-    return Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-  }
-
   @override
   void update(double dt) {
     if (isHovered) {
@@ -82,10 +72,10 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getStandardPaint(const dui.Color.fromARGB(255, 182, 182, 193), 1.0));
+    canvas.drawRect(getRect(), DrawUtils.getBorderPaint(standardColor, 1.0));
 
     if (isHovered) {
-      canvas.drawRect(Rect.fromLTWH(0, 0, tileWidth, tileHeight), getSelectionPaint(const dui.Color.fromARGB(255, 29, 16, 215), 2.0));
+      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(hoveredColor, 2.0));
       drawInfo(canvas);
     }
   }
@@ -94,7 +84,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     TileCoord coord = getCoord();
     var textSpan = TextSpan(
       text: '${game.tileSet.getIndex(coord)} [${coord.toString()}]',
-      style: TextStyle(color: const dui.Color.fromARGB(255, 14, 110, 199), fontWeight: FontWeight.bold),
+      style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: 200);

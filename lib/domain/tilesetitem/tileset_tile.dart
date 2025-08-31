@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
@@ -8,6 +11,15 @@ class TileSetTile extends TileSetItem {
 
   @override
   String getButtonLabel() => 'Tile $left:$top';
+
+  @override
+  Color getTextColor() => Color.fromARGB(255, 0, 0, 0);
+
+  @override
+  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((left - 1) * tileWidth, (top - 1) * tileHeight);
+
+  @override
+  Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(tileWidth, tileHeight);
 
   TileSetTile(this.left, this.top);
 

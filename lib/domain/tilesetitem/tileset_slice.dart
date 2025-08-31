@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -9,6 +12,12 @@ class TileSetSlice extends TileSetNamedArea {
 
   int left;
   int top;
+
+  @override
+  Color getTextColor() => Color.fromARGB(255, 247, 224, 19);
+
+  @override
+  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((left - 1) * tileWidth, (top - 1) * tileHeight);
 
   TileSetSlice(super.key, super.name, super.size, this.left, this.top);
 

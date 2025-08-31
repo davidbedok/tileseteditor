@@ -2,42 +2,27 @@ import 'dart:ui' as dui;
 
 import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
-import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 
 class GroupComponent extends TileSetComponent {
-  TileSetGroup group;
-
-  @override
-  TileSetItem getTileSetItem() => group;
+  TileSetGroup getGroup() => tileSetItem as TileSetGroup;
 
   GroupComponent({
     required super.position,
     required super.tileSet, //
     required super.originalPosition,
-    required super.tileWidth,
-    required super.tileHeight,
-    required this.group,
-  }) : super(areaSize: group.size);
-
-  @override
-  void releaseOutputData() => group.output = null;
-
-  @override
-  void placeOutput(OutputTileComponent topLeftTile) => group.output = topLeftTile.getCoord();
+    required super.external,
+    required TileSetGroup group,
+  }) : super(tileSetItem: group, areaSize: group.size);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+    TileSetGroup group = getGroup();
 
     ImageComposition composition = ImageComposition();
-
-    List<Sprite> sprites = [];
-
     int tileIndex = 0;
     for (int j = 0; j < group.size.height; j++) {
       for (int i = 0; i < group.size.width; i++) {
@@ -51,7 +36,6 @@ class GroupComponent extends TileSetComponent {
           );
 
           composition.add(tmpSprite.toImageSync(), Vector2(i * tileWidth.toDouble(), j * tileHeight.toDouble()));
-          sprites.add(tmpSprite);
           tileIndex++;
         }
       }
@@ -63,18 +47,7 @@ class GroupComponent extends TileSetComponent {
       srcPosition: Vector2(0, 0),
       srcSize: Vector2(group.size.width * tileWidth, group.size.height * tileHeight),
     );
-    size = Vector2(group.size.width * tileWidth, group.size.height * tileHeight);
+    size = group.getRealSize(tileWidth, tileHeight);
     // debugMode = true;
-  }
-
-  @override
-  void drawInfo(dui.Canvas canvas) {
-    var textSpan = TextSpan(
-      text: group.name,
-      style: TextStyle(color: Color.fromARGB(255, 171, 33, 178), fontWeight: FontWeight.bold),
-    );
-    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 200);
-    textPainter.paint(canvas, Offset(0, -20));
   }
 }

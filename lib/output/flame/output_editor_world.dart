@@ -18,6 +18,7 @@ import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
+  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
   static final Size ruler = Size(20, 20);
@@ -31,6 +32,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   int _actionKey = -1;
 
+  void setAction(int actionKey) => _actionKey = actionKey;
   int get actionKey => _actionKey;
 
   OutputEditorWorld();
@@ -146,31 +148,15 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     game.project.initOutput();
   }
 
-  void setAction(int actionKey) {
-    _actionKey = actionKey;
-  }
-
-  static Paint getBorderPaint(Color color, double strokeWidth) {
-    return Paint()
-      ..color = color
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = strokeWidth;
-  }
-
-  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
-
   @override
   Future<void> onLoad() async {
     TileSet tileSet = game.tileSet;
-    int tileWidth = tileSet.tileWidth;
-    int tileHeight = tileSet.tileHeight;
-
-    int atlasMaxX = tileSet.image!.width ~/ tileWidth;
-    int atlasMaxY = tileSet.image!.height ~/ tileHeight;
+    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileWidth;
+    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileHeight;
 
     double outputShiftX = getOutputShiftLeft(tileSet, atlasMaxX);
     initOutputComponents(atlasMaxX, outputShiftX);
-    initTileSetComponents(tileSet, tileWidth, tileHeight, atlasMaxX, atlasMaxY);
+    initTileSetComponents(tileSet, atlasMaxX, atlasMaxY);
     initOtherTileSetComponents(tileSet.key);
     initButtonsAndCamera();
   }
@@ -189,16 +175,14 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   void initOtherTileSetComponents(int currentTileSetKey) {
     for (TileSet tileSet in game.project.tileSets) {
       if (tileSet.key != currentTileSetKey) {
-        int tileWidth = tileSet.tileWidth;
-        int tileHeight = tileSet.tileHeight;
-        initOtherTileSetSlices(tileSet, tileWidth, tileHeight);
-        initOtherTileSetGroups(tileSet, tileWidth, tileHeight);
-        initOtherTileSetTiles(tileSet, tileWidth, tileHeight);
+        initOtherTileSetSlices(tileSet);
+        initOtherTileSetGroups(tileSet);
+        initOtherTileSetTiles(tileSet);
       }
     }
   }
 
-  void initOtherTileSetSlices(TileSet tileSet, int tileWidth, int tileHeight) {
+  void initOtherTileSetSlices(TileSet tileSet) {
     for (TileSetSlice slice in tileSet.slices) {
       if (slice.output != null) {
         OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
@@ -206,10 +190,9 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           SliceComponent sliceComponent = SliceComponent(
             tileSet: tileSet,
             slice: slice,
-            tileWidth: tileWidth.toDouble(),
-            tileHeight: tileHeight.toDouble(),
             originalPosition: topLeftOutputTile.position,
             position: topLeftOutputTile.position,
+            external: true,
           );
           placeSilent(topLeftOutputTile, sliceComponent);
           add(sliceComponent);
@@ -218,7 +201,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initOtherTileSetGroups(TileSet tileSet, int tileWidth, int tileHeight) {
+  void initOtherTileSetGroups(TileSet tileSet) {
     for (TileSetGroup group in tileSet.groups) {
       if (group.output != null) {
         OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
@@ -226,10 +209,9 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           GroupComponent groupComponent = GroupComponent(
             tileSet: tileSet,
             group: group,
-            tileWidth: tileWidth.toDouble(),
-            tileHeight: tileHeight.toDouble(),
             originalPosition: topLeftOutputTile.position,
             position: topLeftOutputTile.position,
+            external: true,
           );
           placeSilent(topLeftOutputTile, groupComponent);
           add(groupComponent);
@@ -238,9 +220,9 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initOtherTileSetTiles(TileSet tileSet, int tileWidth, int tileHeight) {
-    int atlasMaxX = tileSet.image!.width ~/ tileWidth;
-    int atlasMaxY = tileSet.image!.height ~/ tileHeight;
+  void initOtherTileSetTiles(TileSet tileSet) {
+    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileWidth;
+    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileHeight;
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
@@ -252,13 +234,10 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
             if (topLeftOutputTile != null) {
               SingleTileComponent singleTileComponent = SingleTileComponent(
                 tileSet: tileSet,
-                tile: TileSetTile(i + 1, j + 1),
-                tileWidth: tileWidth.toDouble(),
-                tileHeight: tileHeight.toDouble(),
-                atlasX: i,
-                atlasY: j,
+                tile: tileSetTile,
                 originalPosition: topLeftOutputTile.position,
                 position: topLeftOutputTile.position,
+                external: true,
               );
               placeSilent(topLeftOutputTile, singleTileComponent);
               add(singleTileComponent);
@@ -269,11 +248,11 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initTileSetComponents(TileSet tileSet, int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
-    initTileSetRuler(tileWidth, tileHeight, atlasMaxX, atlasMaxY);
-    initTileSetSlices(tileSet, tileWidth, tileHeight);
-    initTileSetGroups(tileSet, tileWidth, tileHeight, atlasMaxX);
-    initTileSetTiles(tileSet, tileWidth, tileHeight, atlasMaxX, atlasMaxY);
+  void initTileSetComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
+    initTileSetRuler(tileSet.tileWidth, tileSet.tileHeight, atlasMaxX, atlasMaxY);
+    initTileSetSlices(tileSet);
+    initTileSetGroups(tileSet, atlasMaxX);
+    initTileSetTiles(tileSet, atlasMaxX, atlasMaxY);
   }
 
   void initTileSetRuler(int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
@@ -303,15 +282,16 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initTileSetSlices(TileSet tileSet, int tileWidth, int tileHeight) {
+  void initTileSetSlices(TileSet tileSet) {
+    int tileWidth = tileSet.tileWidth;
+    int tileHeight = tileSet.tileHeight;
     for (TileSetSlice slice in game.tileSet.slices) {
       SliceComponent sliceComponent = SliceComponent(
         tileSet: tileSet,
         slice: slice,
-        tileWidth: tileWidth.toDouble(),
-        tileHeight: tileHeight.toDouble(),
         originalPosition: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
         position: Vector2(ruler.width + (slice.left - 1) * tileWidth, ruler.height + (slice.top - 1) * tileHeight),
+        external: false,
       );
       if (slice.output != null) {
         OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
@@ -324,16 +304,17 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initTileSetGroups(TileSet tileSet, int tileWidth, int tileHeight, int atlasMaxX) {
+  void initTileSetGroups(TileSet tileSet, int atlasMaxX) {
+    int tileWidth = tileSet.tileWidth;
+    int tileHeight = tileSet.tileHeight;
     int groupTopIndex = 0;
     for (TileSetGroup group in game.tileSet.groups) {
       GroupComponent groupComponent = GroupComponent(
         tileSet: tileSet,
         group: group,
-        tileWidth: tileWidth.toDouble(),
-        tileHeight: tileHeight.toDouble(),
         originalPosition: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
         position: Vector2(ruler.width + (atlasMaxX + 1) * tileWidth, ruler.height + groupTopIndex * tileHeight),
+        external: false,
       );
       if (group.output != null) {
         OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
@@ -347,7 +328,9 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initTileSetTiles(TileSet tileSet, int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
+  void initTileSetTiles(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
+    int tileWidth = tileSet.tileWidth;
+    int tileHeight = tileSet.tileHeight;
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
@@ -357,13 +340,10 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
           SingleTileComponent singleTileComponent = SingleTileComponent(
             tileSet: tileSet,
-            tile: TileSetTile(i + 1, j + 1),
-            tileWidth: tileWidth.toDouble(),
-            tileHeight: tileHeight.toDouble(),
-            atlasX: i,
-            atlasY: j,
+            tile: tileSetTile,
             originalPosition: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
             position: Vector2(ruler.width + i * tileWidth, ruler.height + j * tileHeight),
+            external: false,
           );
           if (tileSetTile.output != null) {
             OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
@@ -413,50 +393,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         game.camera.moveBy(Vector2(OutputEditorGame.scrollUnit, 0));
       },
     );
-    /*
-    final actionCameraUpButton = HudButtonComponent(
-      button: RectangleComponent.fromRect(actionCameraUpRect, paint: buttonNormalPaint),
-      buttonDown: RectangleComponent.fromRect(actionCameraUpRect, paint: buttonDownPaint),
-      margin: const EdgeInsets.only(right: 5, top: 5),
-      anchor: Anchor.topLeft,
-      onPressed: () {
-        game.camera.moveBy(Vector2(0, -1 * OutputEditorGame.scrollUnit));
-      },
-    );
-    Rect actionCameraDownRect = Rect.fromLTWH(0, 0, cameraButtonDim, upDownButtonHeight);
-    final actionCameraDownButton = HudButtonComponent(
-      button: RectangleComponent.fromRect(actionCameraDownRect, paint: buttonNormalPaint),
-      buttonDown: RectangleComponent.fromRect(actionCameraDownRect, paint: buttonDownPaint),
-      margin: const EdgeInsets.only(right: 5, bottom: 40),
-      anchor: Anchor.bottomLeft,
-      onPressed: () {
-        game.camera.moveBy(Vector2(0, OutputEditorGame.scrollUnit));
-      },
-    );
-    Rect actionCameraLeftRect = Rect.fromLTWH(0, 0, leftRightButtonWidth, 30);
-    final actionCameraLeftButton = HudButtonComponent(
-      button: RectangleComponent.fromRect(actionCameraLeftRect, paint: buttonNormalPaint),
-      buttonDown: RectangleComponent.fromRect(actionCameraLeftRect, paint: buttonDownPaint),
-      margin: const EdgeInsets.only(left: 5, bottom: 5),
-      anchor: Anchor.topLeft,
-      onPressed: () {
-        game.camera.moveBy(Vector2(-1 * OutputEditorGame.scrollUnit, 0));
-      },
-    );
-    Rect actionCameraRightRect = Rect.fromLTWH(0, 0, leftRightButtonWidth, cameraButtonDim);
-    final actionCameraRightButton = HudButtonComponent(
-      button: RectangleComponent.fromRect(actionCameraRightRect, paint: buttonNormalPaint),
-      buttonDown: RectangleComponent.fromRect(actionCameraRightRect, paint: buttonDownPaint),
-      margin: const EdgeInsets.only(right: 40, bottom: 5),
-      anchor: Anchor.bottomLeft,
-      onPressed: () {
-        game.camera.moveBy(Vector2(OutputEditorGame.scrollUnit, 0));
-      },
-    );
-    */
 
     game.camera.viewport.addAll([actionCameraLeftButton, actionCameraRightButton, actionCameraUpButton, actionCameraDownButton]);
-
     game.camera.viewfinder.anchor = Anchor.topLeft;
     game.camera.viewfinder.position = Vector2(0, 0);
   }
@@ -473,21 +411,21 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void initOutputComponents(int atlasMaxX, double outputShiftX) {
     TileSetOutput output = game.project.output;
-    int outputTileWidth = output.tileWidth;
-    int outputTileHeight = output.tileHeight;
+    int tileWidth = output.tileWidth;
+    int tileHeight = output.tileHeight;
     int outputWidth = output.width;
     int outputHeight = output.height;
 
-    initOutputRuler(outputWidth, outputHeight, outputTileWidth, outputTileHeight, outputShiftX);
+    initOutputRuler(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX);
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
         OutputTileComponent outputTile = OutputTileComponent(
-          tileWidth: outputTileWidth.toDouble(),
-          tileHeight: outputTileHeight.toDouble(),
+          tileWidth: tileWidth.toDouble(),
+          tileHeight: tileHeight.toDouble(),
           atlasX: i,
           atlasY: j,
-          position: Vector2(outputShiftX + ruler.width + i * outputTileWidth, ruler.height + j * outputTileHeight),
+          position: Vector2(outputShiftX + ruler.width + i * tileWidth, ruler.height + j * tileHeight),
         );
         add(outputTile);
         outputTiles.add(outputTile);
