@@ -16,9 +16,10 @@ import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
 import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
 import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
+import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
+class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame>, HasCollisionDetection {
   static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
@@ -33,7 +34,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   void setAction(int actionKey) => _actionKey = actionKey;
   int get actionKey => _actionKey;
 
-  OutputEditorWorld();
+  OverviewEditorWorld();
 
   void select(TileSetComponent component, {bool force = false}) {
     if (force) {
@@ -42,7 +43,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       if (selected != null) {
         if (selected == component) {
           selected = null;
-          game.outputState.select(null);
+          game.overviewState.select(null);
         } else {
           setSelected(component);
         }
@@ -54,7 +55,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void setSelected(TileSetComponent component) {
     selected = component;
-    game.outputState.select(component.getTileSetItem());
+    game.overviewState.select(component.getTileSetItem());
   }
 
   bool isSelected(TileSetComponent component) {
@@ -88,7 +89,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
       component.placeOutput(topLeftTile);
-      game.outputState.select(component.getTileSetItem());
+      game.overviewState.select(component.getTileSetItem());
     }
   }
 
