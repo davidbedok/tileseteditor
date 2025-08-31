@@ -14,10 +14,22 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSet {
-  static final TileSet none = TileSet(key: -1, name: '-', filePath: '', imageHeight: 0, imageWidth: 0, margin: 0, spacing: 0, tileHeight: 0, tileWidth: 0);
+  static final TileSet none = TileSet(
+    key: -1,
+    name: '-',
+    active: true,
+    filePath: '',
+    imageHeight: 0,
+    imageWidth: 0,
+    margin: 0,
+    spacing: 0,
+    tileHeight: 0,
+    tileWidth: 0,
+  );
 
   int key;
   String name;
+  bool active;
   String filePath;
   int tileWidth;
   int tileHeight;
@@ -56,6 +68,7 @@ class TileSet {
   TileSet({
     required this.key,
     required this.name,
+    required this.active,
     required this.filePath,
     required this.tileWidth,
     required this.tileHeight,
@@ -257,6 +270,7 @@ class TileSet {
     return {
       'key': key,
       'name': name,
+      'active': active,
       'input': filePath,
       'margin': margin,
       'spacing': spacing,
@@ -280,6 +294,7 @@ class TileSet {
       {
         'key': int key,
         'name': String name, //
+        'active': bool active,
         'input': String filePath, //
         'margin': int margin, //
         'spacing': int spacing, //
@@ -295,6 +310,7 @@ class TileSet {
         TileSet(
           key: key,
           name: name,
+          active: active,
           filePath: filePath,
           tileWidth: tileWidth,
           tileHeight: tileHeight,
@@ -303,7 +319,7 @@ class TileSet {
           imageWidth: imageWidth,
           imageHeight: imageHeight,
         ),
-      _ => throw const FormatException('Failed to load TileSetProject'),
+      _ => throw const FormatException('Failed to load TileSet'),
     };
     result.slices = TileSetSlice.slicesFromJson(result, json);
     result.groups = TileSetGroup.groupsFromJson(json);

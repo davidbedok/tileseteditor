@@ -24,7 +24,7 @@ def openTileSetProject( projectFile: str ):
             data = json.load(json_data)
     return data
 
-def buildTiles( projectFile: str, outputDirectory: str, json ):
+def process( projectFile: str, outputDirectory: str, json ):
     for tileset in json['tilesets']:
         name = tileset['name']
         active = bool(tileset['active'])
@@ -52,6 +52,7 @@ def buildTiles( projectFile: str, outputDirectory: str, json ):
             buildSlices(tileset['slices'], name, tilesDirectory, slicesDirectory, tileWidth, tileHeight, tileSetFilePath)
             buildGroups(tileset['groups'], name, tilesDirectory, groupsDirectory, tileWidth, tileHeight, tileSetFilePath)
             dropGarbages(tileset['garbage'], name, tilesDirectory)
+            removeUnusedTiles(tileset['tiles'], name, tilesDirectory, tileWidth, tileHeight, tileSetFilePath)
         else:
             print(f'Skip \'{name}\' TileSet')
 
@@ -69,7 +70,7 @@ def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: s
 
         # magick input/magecity.png -crop 96x64+96+128 +repage input/slice.png
         subprocess.run(["magick", tileSetFilePath, "-crop", f'{width}x{height}+{left}+{top}', "+repage", sliceFile])
-        deletedIndices = removeTilesByIndices(slice['tiles'], tilesDirectory, tileSetName)
+        deletedIndices = removeTilesByIndices(slice['indices'], tilesDirectory, tileSetName)
         print(f'Related slice tiles were deleted: {deletedIndices}')
 
 def buildGroups( json, tileSetName: str, tilesDirectory: str, groupsDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
@@ -83,15 +84,22 @@ def buildGroups( json, tileSetName: str, tilesDirectory: str, groupsDirectory: s
 
         # magick montage -mode concatenate -background none -geometry 32x32+0+0 -tile 3x input/group/floor-0.png input/group/floor-1.png input/group/floor-2.png input/group/floor-3.png input/group/floor-4.png input/group/floor-5.png output/floor.png
         commandData = ["magick", "montage", "-mode", "concatenate", "-background", "none", "-geometry", f'{tileWidth}x{tileHeight}+0+0', "-tile", f'{width}x']
-        for tileIndex in group['tiles']:
+        for tileIndex in group['indices']:
             commandData.append(f'{tilesDirectory}\\{tileSetName}-{tileIndex}.png')
         commandData.append(groupFile)
         subprocess.run(commandData)
-        deletedIndices = removeTilesByIndices(group['tiles'], tilesDirectory, tileSetName)
+        deletedIndices = removeTilesByIndices(group['indices'], tilesDirectory, tileSetName)
         print(f'Related group tiles were deleted: {deletedIndices}')
-                
+
+def removeUnusedTiles( json, tileSetName: str, tilesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
+    usedIndices = []
+    for tile in json:
+        usedIndices.extend(tile['indices'])
+    deletedIndices = removeUnusedTilesByIndices(maxIndex=tileWidth * tileHeight, usedIndices= usedIndices, tilesDirectory= tilesDirectory, tileSetName=tileSetName)
+    print(f'All other unused tiles were deleted: {deletedIndices}')
+
 def dropGarbages( json, tileSetName:str , tilesDirectory:str ):
-    indices = removeTilesByIndices(json['tiles'], tilesDirectory, tileSetName)
+    indices = removeTilesByIndices(json['indices'], tilesDirectory, tileSetName)
     print(f'Garbage | Related tiles were deleted: {indices}')
     
 def removeTilesByIndices( indices, tilesDirectory: str, tileSetName: str):
@@ -104,3 +112,14 @@ def removeTileByIndex( index: int, tilesDirectory: str, tileSetName: str):
     file = f'{tilesDirectory}\\{tileSetName}-{index}.png'
     os.remove(file)
     return index
+
+def removeUnusedTilesByIndices( maxIndex: int, usedIndices: list[int], tilesDirectory: str, tileSetName: str):
+    result = []
+    for index in range(0, maxIndex):
+        if index not in usedIndices:
+            file = f'{tilesDirectory}\\{tileSetName}-{index}.png'
+            tileFilePath = pathlib.Path(file)
+            if tileFilePath.exists():
+                os.remove(file)
+                result.append(index)
+    return result

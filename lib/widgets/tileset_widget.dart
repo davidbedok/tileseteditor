@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
+import 'package:tileseteditor/widgets/app_dialog_switch_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
 import 'package:path/path.dart' as path;
@@ -28,6 +29,15 @@ class TileSetWidget extends StatelessWidget {
           validationMessage: 'Please enter the name of the TileSet.',
           onChanged: (String value) {
             tileSet.name = value;
+          },
+        ),
+        SizedBox(height: space),
+        AppDialogSwitchField(
+          name: 'Active',
+          initialValue: tileSet.active,
+          disabled: false,
+          onChanged: (bool value) {
+            tileSet.active = value;
           },
         ),
         SizedBox(height: space),

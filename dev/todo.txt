@@ -1,3 +1,1 @@
-Show output when open a Project
-    - 3rd game widget
-    - Editable: with scroll option, without drag-and-drop (use arrows)
+Edit tileset
