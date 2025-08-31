@@ -161,7 +161,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   double getOutputShiftLeft(TileSet tileSet, int atlasMaxX) {
     int maxGroupWidth = 0;
-    for (TileSetGroup group in game.tileSet.groups) {
+    for (TileSetGroup group in tileSet.groups) {
       if (group.size.width > maxGroupWidth) {
         maxGroupWidth = group.size.width;
       }
@@ -283,7 +283,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   void initTileSetSlices(TileSet tileSet) {
     int tileWidth = tileSet.tileWidth;
     int tileHeight = tileSet.tileHeight;
-    for (TileSetSlice slice in game.tileSet.slices) {
+    for (TileSetSlice slice in tileSet.slices) {
       SliceComponent sliceComponent = SliceComponent(
         tileSet: tileSet,
         slice: slice,
@@ -306,7 +306,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     int tileWidth = tileSet.tileWidth;
     int tileHeight = tileSet.tileHeight;
     int groupTopIndex = 0;
-    for (TileSetGroup group in game.tileSet.groups) {
+    for (TileSetGroup group in tileSet.groups) {
       GroupComponent groupComponent = GroupComponent(
         tileSet: tileSet,
         group: group,
@@ -332,8 +332,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
-        if (game.tileSet.isFree(game.tileSet.getIndex(coord))) {
-          TileSetTile? usedTileSetTile = game.tileSet.findTile(coord);
+        if (tileSet.isFree(tileSet.getIndex(coord))) {
+          TileSetTile? usedTileSetTile = tileSet.findTile(coord);
           TileSetTile tileSetTile = usedTileSetTile ?? TileSetTile(i + 1, j + 1);
 
           SingleTileComponent singleTileComponent = SingleTileComponent(

@@ -3,26 +3,23 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_world.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
 
-class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetector, KeyboardEvents {
+class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetector, ScaleDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
   TileSetProject project;
-  TileSet tileSet;
 
   OverviewEditorState overviewState;
 
   OverviewEditorGame({
     required this.project, //
-    required this.tileSet,
     required double width,
     required double height,
     required this.overviewState,
@@ -136,5 +133,23 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
       }
     }
     return result;
+  }
+
+  @override
+  void onScaleStart(_) {
+    startZoom = camera.viewfinder.zoom;
+  }
+
+  @override
+  void onScaleUpdate(ScaleUpdateInfo info) {
+    final currentScale = info.scale.global;
+    if (!currentScale.isIdentity()) {
+      camera.viewfinder.zoom = startZoom * currentScale.y;
+      clampZoom();
+    } else {
+      final zoom = camera.viewfinder.zoom;
+      final delta = (info.delta.global..negate()) / zoom;
+      camera.moveBy(delta);
+    }
   }
 }

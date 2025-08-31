@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
 
 class OverviewActionController extends StatefulWidget {
   final TileSetProject project;
-  final TileSet tileSet;
   final OverviewEditorState overviewState;
   final void Function() onSplitterPressed;
 
   const OverviewActionController({
     super.key, //
     required this.project,
-    required this.tileSet,
     required this.overviewState,
     required this.onSplitterPressed,
   });

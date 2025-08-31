@@ -9,14 +9,12 @@ import 'package:tileseteditor/overview/overview_editor_state.dart';
 
 class OverviewEditor extends StatelessWidget {
   final TileSetProject project;
-  final TileSet tileSet;
   final OverviewEditorState overviewState;
   final void Function() onSplitterPressed;
 
   const OverviewEditor({
     super.key, //
     required this.project,
-    required this.tileSet,
     required this.overviewState,
     required this.onSplitterPressed,
   });
@@ -30,7 +28,6 @@ class OverviewEditor extends StatelessWidget {
           children: [
             OverviewActionController(
               project: project, //
-              tileSet: tileSet,
               overviewState: overviewState,
               onSplitterPressed: onSplitterPressed,
             ),
@@ -46,7 +43,6 @@ class OverviewEditor extends StatelessWidget {
                     child: GameWidget(
                       game: OverviewEditorGame(
                         project: project,
-                        tileSet: tileSet,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
                         overviewState: overviewState,
