@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_world.dart';
+import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
 
 class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetector, ScaleDetector, KeyboardEvents {
@@ -90,7 +90,7 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
       result = KeyEventResult.handled;
     }
     if (world.selected != null && world.selected!.isPlaced()) {
-      OutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
+      OverviewTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
       if (topLeftOutputTile != null) {
         if (event is KeyDownEvent || event is KeyRepeatEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {

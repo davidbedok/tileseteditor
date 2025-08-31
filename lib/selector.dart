@@ -13,6 +13,8 @@ import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/editor.dart';
 import 'package:tileseteditor/menubar.dart';
 import 'package:tileseteditor/output/state/output_editor_state.dart';
+import 'package:tileseteditor/overview/overview_editor.dart';
+import 'package:tileseteditor/overview/overview_editor_state.dart';
 import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
@@ -30,6 +32,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
   TileSet? tileSet;
   SplitterEditorState splitterState = SplitterEditorState();
   OutputEditorState outputState = OutputEditorState();
+  OverviewEditorState overviewState = OverviewEditorState();
 
   @override
   void initState() {
@@ -145,6 +148,15 @@ class TileSetSelectorState extends State<TileSetSelector> {
                       tileSet: tileSet!,
                     ),
                   )
+                : project != null
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: OverviewEditor(
+                      key: GlobalKey(),
+                      overviewState: overviewState, //
+                      project: project!,
+                    ),
+                  )
                 : Row(),
           ],
         ),
@@ -184,11 +196,12 @@ class TileSetSelectorState extends State<TileSetSelector> {
       File file = File(filePickerResult.files.single.path!);
       if (file.existsSync()) {
         String content = await file.readAsString();
+        TileSetProject loadedProject = TileSetProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
+        loadedProject!.filePath = filePickerResult.files.single.path!;
+        await loadedProject!.loadTileSetImages();
         setState(() {
-          project = TileSetProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
-          project!.filePath = filePickerResult.files.single.path!;
+          project = loadedProject;
         });
-        await project!.loadTileSetImages();
       }
     }
   }

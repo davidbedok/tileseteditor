@@ -6,13 +6,11 @@ import 'package:tileseteditor/overview/overview_editor_state.dart';
 class OverviewActionController extends StatefulWidget {
   final TileSetProject project;
   final OverviewEditorState overviewState;
-  final void Function() onSplitterPressed;
 
   const OverviewActionController({
     super.key, //
     required this.project,
     required this.overviewState,
-    required this.onSplitterPressed,
   });
 
   @override
@@ -71,13 +69,6 @@ class OverviewActionControllerState extends State<OverviewActionController> {
                 });
               },
             ),
-          ),
-          SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.edit), //
-            label: Text('Splitter'),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            onPressed: widget.onSplitterPressed,
           ),
         ],
       ),

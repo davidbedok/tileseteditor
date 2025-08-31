@@ -10,13 +10,11 @@ import 'package:tileseteditor/overview/overview_editor_state.dart';
 class OverviewEditor extends StatelessWidget {
   final TileSetProject project;
   final OverviewEditorState overviewState;
-  final void Function() onSplitterPressed;
 
   const OverviewEditor({
     super.key, //
     required this.project,
     required this.overviewState,
-    required this.onSplitterPressed,
   });
 
   @override
@@ -29,7 +27,6 @@ class OverviewEditor extends StatelessWidget {
             OverviewActionController(
               project: project, //
               overviewState: overviewState,
-              onSplitterPressed: onSplitterPressed,
             ),
             Row(
               children: [
