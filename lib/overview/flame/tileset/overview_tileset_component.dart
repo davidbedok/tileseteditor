@@ -12,7 +12,7 @@ import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class OverviewTileSetComponent extends SpriteComponent with HasGameReference<OverviewEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+abstract class OverviewTileSetComponent extends SpriteComponent with HasGameReference<OverviewEditorGame>, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
   TileSetItem tileSetItem;
   Vector2 originalPosition;
@@ -113,70 +113,6 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
       priority = 100;
     } else {
       priority = 0;
-    }
-  }
-
-  @override
-  void onDragStart(DragStartEvent event) {
-    if (game.world.actionKey < 0) {
-      super.onDragStart(event);
-      game.world.setAction(event.pointerId);
-      dragWhereStarted = position.clone();
-
-      isDragging = true;
-      priority = OutputEditorWorld.movePriority;
-      game.world.select(this, force: true);
-    }
-  }
-
-  @override
-  void onDragUpdate(DragUpdateEvent event) {
-    if (game.world.actionKey == event.pointerId) {
-      if (!isDragging) {
-        return;
-      }
-      final delta = event.localDelta;
-      position.add(delta);
-    }
-  }
-
-  @override
-  void onDragEnd(DragEndEvent event) {
-    if (game.world.actionKey == event.pointerId) {
-      super.onDragEnd(event);
-      if (!isDragging) {
-        game.world.setAction(-1);
-        return;
-      }
-      isDragging = false;
-
-      final shortDrag = (position - dragWhereStarted).length < OutputEditorWorld.dragTolarance;
-      if (shortDrag) {
-        moveToPlace(dragWhereStarted);
-        return;
-      }
-
-      var dropOutputTile = parent!.componentsAtPoint(position).whereType<OverviewTileComponent>().toList();
-      if (dropOutputTile.isNotEmpty) {
-        if (game.world.canAccept(dropOutputTile.first, this)) {
-          final dropPosition = dropOutputTile.first.position;
-          doMove(
-            dropPosition,
-            speed: 15,
-            onComplete: () {
-              game.world.place(dropOutputTile.first, this);
-              game.world.setAction(-1);
-            },
-          );
-        } else {
-          moveToPlace(dragWhereStarted);
-          return;
-        }
-        game.world.setAction(-1);
-        return;
-      }
-
-      moveToPlace(dragWhereStarted);
     }
   }
 

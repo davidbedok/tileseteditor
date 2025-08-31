@@ -14,6 +14,8 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSet {
+  static final TileSet none = TileSet(key: -1, name: '-', filePath: '', imageHeight: 0, imageWidth: 0, margin: 0, spacing: 0, tileHeight: 0, tileWidth: 0);
+
   int key;
   String name;
   String filePath;

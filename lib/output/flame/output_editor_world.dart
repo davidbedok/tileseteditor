@@ -399,8 +399,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   HudButtonComponent createButton(Rect buttonRect, EdgeInsets margin, Anchor anchor, dynamic Function() onPressed) {
     return HudButtonComponent(
-      button: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getBorderPaint(EditorColor.buttonNormal.color, 1.0)),
-      buttonDown: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getBorderPaint(EditorColor.buttonDown.color, 1.0)),
+      button: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getFillPaint(EditorColor.buttonNormal.color)),
+      buttonDown: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getFillPaint(EditorColor.buttonDown.color)),
       margin: margin,
       anchor: anchor,
       onPressed: onPressed,

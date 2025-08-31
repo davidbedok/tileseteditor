@@ -29,7 +29,7 @@ class TileSetSelector extends StatefulWidget {
 
 class TileSetSelectorState extends State<TileSetSelector> {
   TileSetProject? project;
-  TileSet? tileSet;
+  TileSet tileSet = TileSet.none;
   SplitterEditorState splitterState = SplitterEditorState();
   OutputEditorState outputState = OutputEditorState();
   OverviewEditorState overviewState = OverviewEditorState();
@@ -118,15 +118,24 @@ class TileSetSelectorState extends State<TileSetSelector> {
                               isExpanded: true,
                               items: project == null
                                   ? []
-                                  : project!.tileSets.map((TileSet tileSetItem) {
-                                      return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
+                                  : project!.getTileSetsDropDownItems().map((TileSet tileSetItem) {
+                                      return DropdownMenuItem<TileSet>(
+                                        value: tileSetItem, //
+                                        child: Text(
+                                          tileSetItem.key >= 0
+                                              ? 'Splitter and output editor for ${tileSetItem.name} (${tileSetItem.key})'
+                                              : 'Overview output editor',
+                                        ),
+                                      );
                                     }).toList(),
-                              onChanged: (value) async {
-                                setState(() {
-                                  tileSet = value;
-                                  splitterState = SplitterEditorState();
-                                  outputState = OutputEditorState();
-                                });
+                              onChanged: (TileSet? value) async {
+                                if (value != null) {
+                                  setState(() {
+                                    tileSet = value;
+                                    splitterState = SplitterEditorState();
+                                    outputState = OutputEditorState();
+                                  });
+                                }
                               },
                             ),
                           ),
@@ -137,7 +146,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 ),
               ),
             ),
-            tileSet != null && tileSet!.image != null
+            tileSet != TileSet.none && tileSet.image != null
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TileSetEditor(
@@ -148,7 +157,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                       tileSet: tileSet!,
                     ),
                   )
-                : project != null
+                : project != null && tileSet == TileSet.none
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: OverviewEditor(
@@ -261,7 +270,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
   void closeProject() {
     setState(() {
       project = null;
-      tileSet = null;
+      tileSet = TileSet.none;
       splitterState = SplitterEditorState();
       outputState = OutputEditorState();
     });

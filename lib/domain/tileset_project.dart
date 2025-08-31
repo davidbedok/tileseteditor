@@ -17,6 +17,13 @@ class TileSetProject {
 
   TileSetProject({required this.name, this.description, required this.output});
 
+  List<TileSet> getTileSetsDropDownItems() {
+    List<TileSet> result = [];
+    result.add(TileSet.none);
+    result.addAll(tileSets);
+    return result;
+  }
+
   int getNextTileSetKey() {
     int result = 0;
     int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(math.max) : 0;
