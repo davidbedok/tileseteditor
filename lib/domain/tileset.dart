@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'dart:ui' as dui;
 
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
@@ -6,9 +7,11 @@ import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset_garbage.dart';
+import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSet {
   int key;
@@ -21,6 +24,7 @@ class TileSet {
 
   int imageWidth;
   int imageHeight;
+  dui.Image? image;
 
   List<TileSetSlice> slices = [];
   List<TileSetGroup> groups = [];
@@ -58,6 +62,10 @@ class TileSet {
     required this.imageWidth,
     required this.imageHeight,
   });
+
+  Future<void> loadImage(TileSetProject project) async {
+    image = await ImageUtils.getImage(project.getTileSetFilePath(this));
+  }
 
   void initOutput() {
     for (TileSetSlice slice in slices) {

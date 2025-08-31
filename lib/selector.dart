@@ -28,7 +28,6 @@ class TileSetSelector extends StatefulWidget {
 class TileSetSelectorState extends State<TileSetSelector> {
   TileSetProject? project;
   TileSet? tileSet;
-  dui.Image? tileSetImage;
   SplitterEditorState splitterState = SplitterEditorState();
   OutputEditorState outputState = OutputEditorState();
 
@@ -120,10 +119,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                       return DropdownMenuItem<TileSet>(value: tileSetItem, child: Text(tileSetItem.name));
                                     }).toList(),
                               onChanged: (value) async {
-                                var image = await ImageUtils.getImage(project!.getTileSetFilePath(value!));
                                 setState(() {
                                   tileSet = value;
-                                  tileSetImage = image;
                                   splitterState = SplitterEditorState();
                                   outputState = OutputEditorState();
                                 });
@@ -137,7 +134,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 ),
               ),
             ),
-            tileSet != null && tileSetImage != null
+            tileSet != null && tileSet!.image != null
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TileSetEditor(
@@ -146,7 +143,6 @@ class TileSetSelectorState extends State<TileSetSelector> {
                       outputState: outputState,
                       project: project!,
                       tileSet: tileSet!,
-                      tileSetImage: tileSetImage!,
                     ),
                   )
                 : Row(),
@@ -192,6 +188,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
           project = TileSetProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
           project!.filePath = filePickerResult.files.single.path!;
         });
+        await project!.loadTileSetImages();
       }
     }
   }
@@ -252,7 +249,6 @@ class TileSetSelectorState extends State<TileSetSelector> {
     setState(() {
       project = null;
       tileSet = null;
-      tileSetImage = null;
       splitterState = SplitterEditorState();
       outputState = OutputEditorState();
     });
@@ -273,6 +269,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
         setState(() {
           project!.addTileSet(dialogResult);
         });
+        await dialogResult.loadImage(project!);
       }
     }
   }

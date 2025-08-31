@@ -1,5 +1,3 @@
-import 'dart:ui' as dui;
-
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -27,10 +25,9 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
     required this.tileSet,
     required double width,
     required double height,
-    required dui.Image? tileSetImage,
     required this.outputState,
   }) : super(
-         world: OutputEditorWorld(image: tileSetImage),
+         world: OutputEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
     outputState.subscribeOnRemoved(removeTileSetItem);

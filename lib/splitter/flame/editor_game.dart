@@ -1,5 +1,3 @@
-import 'dart:ui' as dui;
-
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
@@ -16,9 +14,9 @@ class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetect
 
   SplitterEditorState splitterState;
 
-  EditorGame({required this.tileSet, required double width, required double height, required dui.Image? tileSetImage, required this.splitterState})
+  EditorGame({required this.tileSet, required double width, required double height, required this.splitterState})
     : super(
-        world: EditorWorld(image: tileSetImage),
+        world: EditorWorld(),
         camera: CameraComponent.withFixedResolution(width: width, height: height),
       );
 

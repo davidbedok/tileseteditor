@@ -1,11 +1,10 @@
-import 'dart:ui' as dui;
-
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
@@ -22,7 +21,6 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   static const double dragTolarance = 5;
   static final Size ruler = Size(20, 20);
 
-  dui.Image? image;
   TileSetComponent? selected;
   List<OutputTileComponent> outputTiles = [];
 
@@ -30,7 +28,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   int get actionKey => _actionKey;
 
-  OutputEditorWorld({required this.image});
+  OutputEditorWorld();
 
   void select(TileSetComponent component, {bool force = false}) {
     if (force) {
@@ -158,11 +156,12 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   @override
   Future<void> onLoad() async {
-    int tileWidth = game.tileSet.tileWidth;
-    int tileHeight = game.tileSet.tileHeight;
+    TileSet tileSet = game.tileSet;
+    int tileWidth = tileSet.tileWidth;
+    int tileHeight = tileSet.tileHeight;
 
-    int atlasMaxX = image!.width ~/ tileWidth;
-    int atlasMaxY = image!.height ~/ tileHeight;
+    int atlasMaxX = tileSet.image!.width ~/ tileWidth;
+    int atlasMaxY = tileSet.image!.height ~/ tileHeight;
 
     // output side
 
@@ -208,7 +207,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
         OutputTileComponent outputTile = OutputTileComponent(
-          tileSetImage: image!,
+          tileSetImage: tileSet.image!,
           tileWidth: outputTileWidth.toDouble(),
           tileHeight: outputTileHeight.toDouble(),
           atlasX: i,
@@ -249,7 +248,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
     for (TileSetSlice slice in game.tileSet.slices) {
       SliceComponent sliceComponent = SliceComponent(
-        tileSetImage: image!,
+        tileSetImage: tileSet.image!,
         slice: slice,
         tileWidth: tileWidth.toDouble(),
         tileHeight: tileHeight.toDouble(),
@@ -269,7 +268,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     int groupTopIndex = 0;
     for (TileSetGroup group in game.tileSet.groups) {
       GroupComponent groupComponent = GroupComponent(
-        tileSetImage: image!,
+        tileSetImage: tileSet.image!,
         group: group,
         tileWidth: tileWidth.toDouble(),
         tileHeight: tileHeight.toDouble(),
@@ -295,7 +294,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           TileSetTile tileSetTile = usedTileSetTile ?? TileSetTile(i + 1, j + 1);
 
           SingleTileComponent singleTileComponent = SingleTileComponent(
-            tileSetImage: image!,
+            tileSetImage: tileSet.image!,
             tile: TileSetTile(i + 1, j + 1),
             tileWidth: tileWidth.toDouble(),
             tileHeight: tileHeight.toDouble(),

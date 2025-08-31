@@ -107,4 +107,10 @@ class TileSetProject {
   String getTileSetFilePath(TileSet tileSet) {
     return path.join(getDirectory(), tileSet.filePath);
   }
+
+  Future<void> loadTileSetImages() async {
+    for (TileSet tileSet in tileSets) {
+      await tileSet.loadImage(this);
+    }
+  }
 }

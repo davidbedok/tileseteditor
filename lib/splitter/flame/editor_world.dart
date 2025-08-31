@@ -3,15 +3,14 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame/palette.dart';
 import 'package:flame/text.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
 import 'package:tileseteditor/splitter/flame/tile_component.dart';
 
 class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionDetection {
-  Image? image;
-
   static final Size ruler = Size(20, 20);
 
-  EditorWorld({required this.image});
+  EditorWorld();
 
   TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: BasicPalette.black.color));
 
@@ -24,11 +23,12 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
 
   @override
   Future<void> onLoad() async {
-    int tileWidth = game.tileSet.tileWidth;
-    int tileHeight = game.tileSet.tileHeight;
+    TileSet tileSet = game.tileSet;
+    int tileWidth = tileSet.tileWidth;
+    int tileHeight = tileSet.tileHeight;
 
-    int atlasMaxX = image!.width ~/ tileWidth;
-    int atlasMaxY = image!.height ~/ tileHeight;
+    int atlasMaxX = tileSet.image!.width ~/ tileWidth;
+    int atlasMaxY = tileSet.image!.height ~/ tileHeight;
 
     for (int column = 1; column <= atlasMaxX; column++) {
       /*
@@ -77,7 +77,7 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
         // TileInfo info = game.tileSet.getTileInfo(TileCoord(i + 1, j + 1));
         add(
           TileComponent(
-            tileSetImage: image!,
+            tileSetImage: tileSet.image!,
             tileWidth: tileWidth.toDouble(),
             tileHeight: tileHeight.toDouble(),
             atlasX: i,

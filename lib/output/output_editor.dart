@@ -1,5 +1,3 @@
-import 'dart:ui' as dui;
-
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
@@ -12,7 +10,6 @@ import 'package:tileseteditor/output/state/output_editor_state.dart';
 class OutputEditor extends StatelessWidget {
   final TileSetProject project;
   final TileSet tileSet;
-  final dui.Image tileSetImage;
   final OutputEditorState outputState;
   final void Function() onSplitterPressed;
 
@@ -20,7 +17,6 @@ class OutputEditor extends StatelessWidget {
     super.key, //
     required this.project,
     required this.tileSet,
-    required this.tileSetImage,
     required this.outputState,
     required this.onSplitterPressed,
   });
@@ -53,7 +49,6 @@ class OutputEditor extends StatelessWidget {
                         tileSet: tileSet,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
-                        tileSetImage: tileSetImage,
                         outputState: outputState,
                       ),
                     ),

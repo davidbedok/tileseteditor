@@ -1,5 +1,3 @@
-import 'dart:ui' as dui;
-
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
@@ -13,7 +11,6 @@ class TileSetEditor extends StatefulWidget {
 
   final TileSetProject project;
   final TileSet tileSet;
-  final dui.Image tileSetImage;
   final SplitterEditorState splitterState;
   final OutputEditorState outputState;
 
@@ -21,7 +18,6 @@ class TileSetEditor extends StatefulWidget {
     super.key, //
     required this.project,
     required this.tileSet,
-    required this.tileSetImage,
     required this.splitterState,
     required this.outputState,
   });
@@ -39,7 +35,6 @@ class _TileSetEditorState extends State<TileSetEditor> {
         ? OutputEditor(
             project: widget.project,
             tileSet: widget.tileSet,
-            tileSetImage: widget.tileSetImage,
             outputState: widget.outputState,
             onSplitterPressed: () {
               setState(() {
@@ -50,7 +45,6 @@ class _TileSetEditorState extends State<TileSetEditor> {
         : SplitterEditor(
             project: widget.project,
             tileSet: widget.tileSet,
-            tileSetImage: widget.tileSetImage,
             splitterState: widget.splitterState,
             onOutputPressed: () {
               setState(() {
