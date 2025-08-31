@@ -15,7 +15,7 @@ class SliceComponent extends TileSetComponent {
 
   SliceComponent({
     required super.position,
-    required super.tileSetImage, //
+    required super.tileSet, //
     required super.originalPosition,
     required super.tileWidth,
     required super.tileHeight,
@@ -32,7 +32,7 @@ class SliceComponent extends TileSetComponent {
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = Sprite(
-      tileSetImage, //
+      tileSet.image!, //
       srcPosition: Vector2((slice.left - 1) * tileWidth, (slice.top - 1) * tileHeight),
       srcSize: Vector2(slice.size.width * tileWidth, slice.size.height * tileHeight),
     );

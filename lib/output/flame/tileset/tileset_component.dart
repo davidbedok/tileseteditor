@@ -1,8 +1,8 @@
-import 'dart:ui' as dui;
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
@@ -11,7 +11,7 @@ import 'package:tileseteditor/output/flame/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 
 abstract class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
-  dui.Image tileSetImage;
+  TileSet tileSet;
   Vector2 originalPosition;
   TileSetAreaSize areaSize;
   double tileWidth;
@@ -26,7 +26,7 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
 
   TileSetComponent({
     required super.position,
-    required this.tileSetImage,
+    required this.tileSet,
     required this.originalPosition,
     required this.tileWidth,
     required this.tileHeight,

@@ -20,7 +20,7 @@ class SingleTileComponent extends TileSetComponent {
 
   SingleTileComponent({
     required super.position,
-    required super.tileSetImage,
+    required super.tileSet,
     required super.originalPosition,
     required super.tileWidth,
     required super.tileHeight,
@@ -37,13 +37,17 @@ class SingleTileComponent extends TileSetComponent {
   @override
   void placeOutput(OutputTileComponent topLeftTile) {
     tile.output = topLeftTile.getCoord();
-    game.tileSet.addTile(tile);
+    tileSet.addTile(tile);
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    sprite = Sprite(tileSetImage, srcPosition: Vector2(atlasX * tileWidth, atlasY * tileHeight), srcSize: Vector2(tileWidth, tileHeight));
+    sprite = Sprite(
+      tileSet.image!, //
+      srcPosition: Vector2(atlasX * tileWidth, atlasY * tileHeight),
+      srcSize: Vector2(tileWidth, tileHeight),
+    );
     size = Vector2(tileWidth, tileHeight);
     // debugMode = true;
   }
@@ -52,7 +56,7 @@ class SingleTileComponent extends TileSetComponent {
   void drawInfo(dui.Canvas canvas) {
     TileCoord coord = TileCoord(atlasX + 1, atlasY + 1);
     var textSpan = TextSpan(
-      text: '${game.tileSet.getIndex(coord)} [${coord.toString()}]',
+      text: '${tileSet.getIndex(coord)} [${coord.toString()}]',
       style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);

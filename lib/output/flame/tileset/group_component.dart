@@ -17,7 +17,7 @@ class GroupComponent extends TileSetComponent {
 
   GroupComponent({
     required super.position,
-    required super.tileSetImage, //
+    required super.tileSet, //
     required super.originalPosition,
     required super.tileWidth,
     required super.tileHeight,
@@ -43,9 +43,9 @@ class GroupComponent extends TileSetComponent {
       for (int i = 0; i < group.size.width; i++) {
         if (tileIndex < group.tileIndices.length) {
           int index = group.tileIndices[tileIndex];
-          TileCoord tileCoord = game.tileSet.getTileCoord(index);
+          TileCoord tileCoord = tileSet.getTileCoord(index);
           Sprite tmpSprite = Sprite(
-            tileSetImage,
+            tileSet.image!,
             srcPosition: Vector2((tileCoord.left - 1) * tileWidth, (tileCoord.top - 1) * tileHeight),
             srcSize: Vector2(tileWidth, tileHeight),
           );
