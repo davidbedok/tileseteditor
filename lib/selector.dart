@@ -15,6 +15,7 @@ import 'package:tileseteditor/menubar.dart';
 import 'package:tileseteditor/output/state/output_editor_state.dart';
 import 'package:tileseteditor/overview/overview_editor.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
+import 'package:tileseteditor/project_action_controller.dart';
 import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/welcome_widget.dart';
@@ -78,18 +79,11 @@ class TileSetSelectorState extends State<TileSetSelector> {
                           onNewProject: newProject, //
                           onOpenProject: openProject,
                         )
-                      : RichText(
-                          text: TextSpan(
-                            text: 'TileSet Project: ',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: project!.name,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(text: '. Please select or add a TileSet (*.png).'),
-                            ],
-                          ),
+                      : ProjectActionController(
+                          project: project!, //
+                          onAddTileSet: addTileSet,
+                          onCloseProject: closeProject,
+                          onEditProject: editProject,
                         ),
                 ),
               ],

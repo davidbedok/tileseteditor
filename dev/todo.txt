@@ -1,6 +1,6 @@
-Save tileset after create
-
+Edit project - do not reinit output
 Edit tileset
+
 Rename json:
     tilesets[].input -> file
     output.name -> file
