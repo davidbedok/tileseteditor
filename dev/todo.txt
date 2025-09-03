@@ -1,3 +1,5 @@
+Save tileset after create
+
 Edit tileset
 Rename json:
     tilesets[].input -> file

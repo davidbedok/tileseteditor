@@ -17,7 +17,7 @@ class NewProjectDialogState extends State<NewProjectDialog> {
 
   final TileSetProject _project = TileSetProject(
     name: '',
-    output: TileSetOutput(name: '', tileWidth: 32, tileHeight: 32, width: 50, height: 100),
+    output: TileSetOutput(name: '', tileWidth: 32, tileHeight: 32, width: 12, height: 24),
   );
 
   @override

@@ -113,7 +113,8 @@ class TileSetWidget extends StatelessWidget {
       allowMultiple: false,
       allowedExtensions: ['png'],
       dialogTitle: 'Open TileSet',
-      type: FileType.image,
+      type: FileType.custom,
+      lockParentWindow: true,
     );
     if (filePickerResult != null) {
       sourceController.text = filePickerResult.files.single.path!;

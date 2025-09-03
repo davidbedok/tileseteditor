@@ -78,7 +78,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
           menuChildren: <Widget>[
             MenuItemButton(onPressed: project == null ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project')),
             Divider(),
-            MenuItemButton(onPressed: project == null ? null : onAddTileSet, child: const MenuAcceleratorLabel('&Add tileset')),
+            MenuItemButton(onPressed: project != null && project!.filePath != null ? onAddTileSet : null, child: const MenuAcceleratorLabel('&Add tileset')),
           ],
           child: const MenuAcceleratorLabel('&Edit'),
         ),

@@ -17,6 +17,7 @@ import 'package:tileseteditor/overview/overview_editor.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
 import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
+import 'package:tileseteditor/widgets/welcome_widget.dart';
 
 class TileSetSelector extends StatefulWidget {
   final PackageInfo packageInfo;
@@ -73,7 +74,10 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: project == null
-                      ? Text('Please create or open a TileSet Project (*.tsp.json).', style: Theme.of(context).textTheme.bodyMedium)
+                      ? WelcomeWidget(
+                          onNewProject: newProject, //
+                          onOpenProject: openProject,
+                        )
                       : RichText(
                           text: TextSpan(
                             text: 'TileSet Project: ',
@@ -170,13 +174,6 @@ class TileSetSelectorState extends State<TileSetSelector> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('hello');
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
     );
   }
 
@@ -191,15 +188,17 @@ class TileSetSelectorState extends State<TileSetSelector> {
       setState(() {
         project = dialogResult;
       });
+      saveProject();
     }
   }
 
   void openProject() async {
     FilePickerResult? filePickerResult = await FilePicker.platform.pickFiles(
       allowMultiple: false,
-      allowedExtensions: ['tsp.json'],
+      allowedExtensions: ['yate.json'],
       dialogTitle: 'Open TileSet Project',
       type: FileType.custom,
+      lockParentWindow: true,
     );
     if (filePickerResult != null) {
       File file = File(filePickerResult.files.single.path!);
@@ -232,15 +231,20 @@ class TileSetSelectorState extends State<TileSetSelector> {
 
   void saveAsProject() async {
     if (project != null) {
-      project!.filePath = await FilePicker.platform.saveFile(
+      TileSetProject savedProject = project!;
+      savedProject.filePath = await FilePicker.platform.saveFile(
         dialogTitle: 'Save Tile Set Project',
-        allowedExtensions: ['tsp.json'],
-        fileName: '${project!.name}.tsp.json',
+        allowedExtensions: ['yate.json'],
+        fileName: '${savedProject.name}.yate.json',
         type: FileType.custom,
+        lockParentWindow: true,
       );
-      if (project!.filePath != null) {
-        File file = File(project!.filePath!);
-        file.writeAsString(prettyJson(project!.toJson(widget.packageInfo)));
+      if (savedProject.filePath != null) {
+        File file = File(savedProject.filePath!);
+        file.writeAsString(prettyJson(savedProject.toJson(widget.packageInfo)));
+        setState(() {
+          project = savedProject;
+        });
       }
     }
   }
