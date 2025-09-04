@@ -37,6 +37,14 @@ class TileSetProject {
     }
   }
 
+  int getMaxOutputLeft(int minWidth) {
+    return output.getMaxOutputLeft(minWidth, tileSets);
+  }
+
+  int getMaxOutputTop(int minHeight) {
+    return output.getMaxOutputTop(minHeight, tileSets);
+  }
+
   @override
   String toString() {
     return 'Project $name ($output) in $filePath';
@@ -50,8 +58,10 @@ class TileSetProject {
       width: project.output.width,
       height: project.output.height,
     );
+    output.data = project.output.data;
     TileSetProject result = TileSetProject(name: project.name, description: project.description, output: output);
     result.filePath = project.filePath;
+    result.tileSets = project.tileSets;
     return result;
   }
 

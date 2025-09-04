@@ -17,6 +17,66 @@ class TileSetData {
     }
   }
 
+  int getMaxOutputLeft(int minWidth, List<TileSet> tileSets) {
+    int maxLeft = minWidth;
+    for (TileSet tileSet in tileSets) {
+      for (TileSetSlice slice in tileSet.slices) {
+        if (slice.output != null) {
+          int currentMaxLeft = slice.output!.left + slice.size.width - 1;
+          if (currentMaxLeft > maxLeft) {
+            maxLeft = currentMaxLeft;
+          }
+        }
+      }
+      for (TileSetGroup group in tileSet.groups) {
+        if (group.output != null) {
+          int currentMaxLeft = group.output!.left + group.size.width - 1;
+          if (currentMaxLeft > maxLeft) {
+            maxLeft = currentMaxLeft;
+          }
+        }
+      }
+      for (TileSetTile tile in tileSet.tiles) {
+        if (tile.output != null) {
+          if (tile.output!.left > maxLeft) {
+            maxLeft = tile.output!.left;
+          }
+        }
+      }
+    }
+    return maxLeft;
+  }
+
+  int getMaxOutputTop(int minHeight, List<TileSet> tileSets) {
+    int maxTop = minHeight;
+    for (TileSet tileSet in tileSets) {
+      for (TileSetSlice slice in tileSet.slices) {
+        if (slice.output != null) {
+          int currentMaxHeight = slice.output!.top + slice.size.height - 1;
+          if (currentMaxHeight > maxTop) {
+            maxTop = currentMaxHeight;
+          }
+        }
+      }
+      for (TileSetGroup group in tileSet.groups) {
+        if (group.output != null) {
+          int currentMaxHeight = group.output!.top + group.size.height - 1;
+          if (currentMaxHeight > maxTop) {
+            maxTop = currentMaxHeight;
+          }
+        }
+      }
+      for (TileSetTile tile in tileSet.tiles) {
+        if (tile.output != null) {
+          if (tile.output!.top > maxTop) {
+            maxTop = tile.output!.top;
+          }
+        }
+      }
+    }
+    return maxTop;
+  }
+
   factory TileSetData.init(int width, int height, List<TileSet> tileSets) {
     TileSetData result = TileSetData(width, height);
     for (TileSet tileSet in tileSets) {

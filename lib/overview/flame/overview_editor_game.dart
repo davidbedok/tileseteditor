@@ -55,18 +55,6 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
     camera.viewfinder.zoom = camera.viewfinder.zoom.clamp(0.05, 3.0);
   }
 
-  void zoomIn() {
-    camera.viewfinder.zoom += 10 * zoomPerScrollUnit;
-    clampZoom();
-  }
-
-  void zoomOut() {
-    if (camera.viewfinder.zoom - 10 * zoomPerScrollUnit > 0) {
-      camera.viewfinder.zoom -= 10 * zoomPerScrollUnit;
-      clampZoom();
-    }
-  }
-
   @override
   void onScroll(PointerScrollInfo info) {
     camera.viewfinder.zoom += info.scrollDelta.global.y.sign * zoomPerScrollUnit;

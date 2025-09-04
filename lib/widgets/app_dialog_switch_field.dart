@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AppDialogSwitchField extends StatelessWidget {
+class AppDialogSwitchField extends StatefulWidget {
   final String name;
   final bool initialValue;
   final bool disabled;
@@ -10,13 +10,38 @@ class AppDialogSwitchField extends StatelessWidget {
   const AppDialogSwitchField({super.key, required this.name, required this.initialValue, this.validationMessage, this.onChanged, this.disabled = false});
 
   @override
+  State<AppDialogSwitchField> createState() => _AppDialogSwitchFieldState();
+}
+
+class _AppDialogSwitchFieldState extends State<AppDialogSwitchField> {
+  bool switchValue = false;
+
+  @override
+  void initState() {
+    super.initState();
+    switchValue = widget.initialValue;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(name, style: Theme.of(context).textTheme.bodyMedium)),
+        Flexible(child: Text(widget.name, style: Theme.of(context).textTheme.bodyMedium)),
         Expanded(
-          child: Switch(value: initialValue, onChanged: disabled ? null : onChanged),
+          child: Switch(
+            value: widget.initialValue, //
+            onChanged: widget.disabled
+                ? null
+                : (bool value) {
+                    setState(() {
+                      switchValue = value;
+                    });
+                    if (widget.onChanged != null) {
+                      widget.onChanged!.call(value);
+                    }
+                  },
+          ),
         ),
       ],
     );

@@ -2,6 +2,11 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_data.dart';
 
 class TileSetOutput {
+  static const int minOutputWidth = 12;
+  static const int maxOutputWidth = 50;
+  static const int minOutputHeight = 24;
+  static const int maxOutputHeight = 100;
+
   String name;
   int tileWidth;
   int tileHeight;
@@ -13,6 +18,14 @@ class TileSetOutput {
 
   void init() {
     data = TileSetData(0, 0);
+  }
+
+  int getMaxOutputLeft(int minWidth, List<TileSet> tileSets) {
+    return data.getMaxOutputLeft(minWidth, tileSets);
+  }
+
+  int getMaxOutputTop(int minHeight, List<TileSet> tileSets) {
+    return data.getMaxOutputTop(minHeight, tileSets);
   }
 
   Map<String, dynamic> toJson(List<TileSet> tileSets) {

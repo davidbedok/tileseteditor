@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset_output.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
+import 'package:tileseteditor/widgets/app_dialog_limited_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
 
@@ -14,6 +15,9 @@ class ProjectWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int maxOutputLeft = project.getMaxOutputLeft(TileSetOutput.minOutputWidth);
+    int maxOutputTop = project.getMaxOutputTop(TileSetOutput.minOutputHeight);
+
     return Column(
       children: [
         AppDialogTextField(
@@ -63,22 +67,28 @@ class ProjectWidget extends StatelessWidget {
           },
         ),
         SizedBox(height: space),
-        AppDialogNumberField(
-          name: 'Output width',
+        AppDialogLimitedNumberField(
+          name: 'Output width ($maxOutputLeft..${TileSetOutput.maxOutputWidth})',
           initialValue: project.output.width,
+          minValue: maxOutputLeft,
+          maxValue: TileSetOutput.maxOutputWidth,
           onChanged: (int value) {
             project.output.width = value;
           },
-          validationMessage: 'Please define the output width',
+          validationEmptyMessage: 'Please define the output width',
+          validationLimitMessage: 'Output width must be between $maxOutputLeft and ${TileSetOutput.maxOutputWidth}',
         ),
         SizedBox(height: space),
-        AppDialogNumberField(
-          name: 'Output height',
+        AppDialogLimitedNumberField(
+          name: 'Output height ($maxOutputTop..${TileSetOutput.maxOutputHeight})',
           initialValue: project.output.height,
+          minValue: maxOutputTop,
+          maxValue: TileSetOutput.maxOutputHeight,
           onChanged: (int value) {
             project.output.height = value;
           },
-          validationMessage: 'Please define the output height',
+          validationEmptyMessage: 'Please define the output height',
+          validationLimitMessage: 'Output height must be between $maxOutputTop and ${TileSetOutput.maxOutputHeight}',
         ),
       ],
     );

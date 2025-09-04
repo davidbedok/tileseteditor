@@ -5,7 +5,6 @@ import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_switch_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
-import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
 import 'package:path/path.dart' as path;
 
 class TileSetWidget extends StatelessWidget {
@@ -67,43 +66,11 @@ class TileSetWidget extends StatelessWidget {
           ],
         ),
         SizedBox(height: space),
-        AppDialogTileSizeField(
-          name: 'Tile width',
-          initialValue: tileSet.tileWidth,
-          validationMessage: 'Please choose tile width',
-          edit: edit,
-          onChanged: (int value) {
-            tileSet.tileWidth = value;
-          },
-        ),
-        AppDialogTileSizeField(
-          name: 'Tile height',
-          initialValue: tileSet.tileHeight,
-          validationMessage: 'Please choose tile height',
-          edit: edit,
-          onChanged: (int value) {
-            tileSet.tileHeight = value;
-          },
-        ),
+        AppDialogNumberField(name: 'Tile width (same as output)', initialValue: tileSet.tileWidth, disabled: true),
+        AppDialogNumberField(name: 'Tile height (same as output)', initialValue: tileSet.tileHeight, disabled: true),
         SizedBox(height: space),
-        AppDialogNumberField(
-          name: 'Margin (not yet supported)',
-          initialValue: tileSet.margin,
-          disabled: true,
-          validationMessage: 'Please define Margin of the TileSet',
-          onChanged: (int value) {
-            tileSet.margin = value;
-          },
-        ),
-        AppDialogNumberField(
-          name: 'Spacing (not yet supported)',
-          initialValue: tileSet.spacing,
-          disabled: true,
-          validationMessage: 'Please define Spacing of the TileSet',
-          onChanged: (int value) {
-            tileSet.spacing = value;
-          },
-        ),
+        AppDialogNumberField(name: 'Margin (not yet supported)', initialValue: tileSet.margin, disabled: true),
+        AppDialogNumberField(name: 'Spacing (not yet supported)', initialValue: tileSet.spacing, disabled: true),
       ],
     );
   }
