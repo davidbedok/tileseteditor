@@ -7,16 +7,28 @@ import 'package:tileseteditor/widgets/app_dialog_switch_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 import 'package:path/path.dart' as path;
 
-class TileSetWidget extends StatelessWidget {
+class TileSetWidget extends StatefulWidget {
   static final double space = 8.0;
 
   final TileSetProject project;
   final TileSet tileSet;
   final bool edit;
 
+  const TileSetWidget({super.key, required this.project, required this.tileSet, required this.edit});
+
+  @override
+  State<TileSetWidget> createState() => _TileSetWidgetState();
+}
+
+class _TileSetWidgetState extends State<TileSetWidget> {
+  bool active = false;
   final sourceController = TextEditingController();
 
-  TileSetWidget({super.key, required this.project, required this.tileSet, required this.edit});
+  @override
+  void initState() {
+    super.initState();
+    active = widget.tileSet.active;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +36,28 @@ class TileSetWidget extends StatelessWidget {
       children: [
         AppDialogTextField(
           name: 'Name',
-          initialValue: tileSet.name,
+          initialValue: widget.tileSet.name,
           validationMessage: 'Please enter the name of the TileSet.',
           onChanged: (String value) {
-            tileSet.name = value;
+            widget.tileSet.name = value;
           },
         ),
-        SizedBox(height: space),
+        SizedBox(height: TileSetWidget.space),
         AppDialogSwitchField(
           name: 'Active',
-          initialValue: tileSet.active,
+          initialValue: active,
           disabled: false,
           onChanged: (bool value) {
-            tileSet.active = value;
+            setState(() {
+              active = value;
+            });
+            widget.tileSet.active = value;
           },
         ),
-        SizedBox(height: space),
+        SizedBox(height: TileSetWidget.space),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Flexible(child: Text("Source", style: Theme.of(context).textTheme.bodyMedium)),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 18.0, right: 18.0),
@@ -65,12 +79,12 @@ class TileSetWidget extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: space),
-        AppDialogNumberField(name: 'Tile width (same as output)', initialValue: tileSet.tileWidth, disabled: true),
-        AppDialogNumberField(name: 'Tile height (same as output)', initialValue: tileSet.tileHeight, disabled: true),
-        SizedBox(height: space),
-        AppDialogNumberField(name: 'Margin (not yet supported)', initialValue: tileSet.margin, disabled: true),
-        AppDialogNumberField(name: 'Spacing (not yet supported)', initialValue: tileSet.spacing, disabled: true),
+        SizedBox(height: TileSetWidget.space),
+        AppDialogNumberField(name: 'Tile width (same as output)', initialValue: widget.tileSet.tileWidth, disabled: true),
+        AppDialogNumberField(name: 'Tile height (same as output)', initialValue: widget.tileSet.tileHeight, disabled: true),
+        SizedBox(height: TileSetWidget.space),
+        AppDialogNumberField(name: 'Margin (not yet supported)', initialValue: widget.tileSet.margin, disabled: true),
+        AppDialogNumberField(name: 'Spacing (not yet supported)', initialValue: widget.tileSet.spacing, disabled: true),
       ],
     );
   }
@@ -85,7 +99,7 @@ class TileSetWidget extends StatelessWidget {
     );
     if (filePickerResult != null) {
       sourceController.text = filePickerResult.files.single.path!;
-      tileSet.filePath = path.relative(sourceController.text, from: project.getDirectory());
+      widget.tileSet.filePath = path.relative(sourceController.text, from: widget.project.getDirectory());
     }
   }
 }
