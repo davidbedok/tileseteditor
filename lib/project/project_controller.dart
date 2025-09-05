@@ -35,15 +35,15 @@ class ProjectControllerState extends State<ProjectController> {
     super.initState();
     project = widget.projectState.project.object;
     tileSet = widget.projectState.tileSet.object;
-    widget.projectState.project.subscribe(selectProject);
-    widget.projectState.tileSet.subscribe(selectTileSet);
+    widget.projectState.project.subscribeSelection(selectProject);
+    widget.projectState.tileSet.subscribeSelection(selectTileSet);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.projectState.project.unsubscribe(selectProject);
-    widget.projectState.tileSet.unsubscribe(selectTileSet);
+    widget.projectState.project.unsubscribeSelection(selectProject);
+    widget.projectState.tileSet.unsubscribeSelection(selectTileSet);
   }
 
   void selectProject(ProjectState state, TileSetProject project) {

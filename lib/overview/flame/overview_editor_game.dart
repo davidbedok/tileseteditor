@@ -7,7 +7,7 @@ import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_world.dart';
 import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
-import 'package:tileseteditor/overview/overview_editor_state.dart';
+import 'package:tileseteditor/overview/overview_state.dart';
 
 class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetector, ScaleDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
@@ -16,7 +16,7 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
   late double startZoom;
   TileSetProject project;
 
-  OverviewEditorState overviewState;
+  OverviewState overviewState;
 
   OverviewEditorGame({
     required this.project, //
@@ -27,21 +27,21 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
          world: OverviewEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
-    overviewState.subscribeOnRemoved(removeTileSetItem);
-    overviewState.subscribeOnRemovedAll(removeAllTileSetItem);
+    overviewState.tileSetItem.subscribeRemoval(removeTileSetItem);
+    overviewState.removeAll.subscribe(removeAllTileSetItem);
   }
 
   @override
   void onRemove() {
-    overviewState.unsubscribeOnRemoved(removeTileSetItem);
-    overviewState.unsubscribeOnRemovedAll(removeAllTileSetItem);
+    overviewState.tileSetItem.unsubscribeRemoval(removeTileSetItem);
+    overviewState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(TileSetItem tileSetItem) {
+  void removeTileSetItem(OverviewState state, TileSetItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 
-  void removeAllTileSetItem() {
+  void removeAllTileSetItem(OverviewState state) {
     world.removeAllTileSetItem();
   }
 

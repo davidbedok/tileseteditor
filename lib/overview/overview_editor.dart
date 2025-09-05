@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
-import 'package:tileseteditor/overview/overview_action_controller.dart';
-import 'package:tileseteditor/overview/overview_editor_state.dart';
+import 'package:tileseteditor/overview/overview_controller.dart';
+import 'package:tileseteditor/overview/overview_state.dart';
 
 class OverviewEditor extends StatelessWidget {
   final TileSetProject project;
-  final OverviewEditorState overviewState;
+  final OverviewState overviewState;
 
   const OverviewEditor({
     super.key, //
@@ -23,7 +23,7 @@ class OverviewEditor extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OverviewActionController(
+            OverviewController(
               project: project, //
               overviewState: overviewState,
             ),

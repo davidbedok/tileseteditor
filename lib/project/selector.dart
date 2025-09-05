@@ -15,7 +15,7 @@ import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/project/menubar.dart';
 import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/overview/overview_editor.dart';
-import 'package:tileseteditor/overview/overview_editor_state.dart';
+import 'package:tileseteditor/overview/overview_state.dart';
 import 'package:tileseteditor/project/project_controller.dart';
 import 'package:tileseteditor/project/project_state.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
@@ -35,7 +35,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
   ProjectState projectState = ProjectState();
   SplitterState splitterState = SplitterState();
   OutputState outputState = OutputState();
-  OverviewEditorState overviewState = OverviewEditorState();
+  OverviewState overviewState = OverviewState();
 
   @override
   void initState() {

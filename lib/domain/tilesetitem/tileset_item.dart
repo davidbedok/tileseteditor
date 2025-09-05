@@ -2,8 +2,11 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
 abstract class TileSetItem {
+  static final TileSetItem none = TileSetTile(0, 0);
+
   TileCoord? output;
   List<int> tileIndices = [];
 
