@@ -2,16 +2,16 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/editor.dart';
-import 'package:tileseteditor/splitter/splitter_action_controller.dart';
+import 'package:tileseteditor/project/editor.dart';
+import 'package:tileseteditor/splitter/splitter_controller.dart';
 import 'package:tileseteditor/splitter/splitter_datasheet.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
-import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
+import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterEditor extends StatelessWidget {
   final TileSetProject project;
   final TileSet tileSet;
-  final SplitterEditorState splitterState;
+  final SplitterState splitterState;
   final void Function() onOutputPressed;
 
   const SplitterEditor({
@@ -29,7 +29,7 @@ class SplitterEditor extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SplitterActionController(
+            SplitterController(
               project: project, //
               splitterState: splitterState,
               tileSet: tileSet,

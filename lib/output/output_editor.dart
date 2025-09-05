@@ -2,15 +2,15 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/editor.dart';
+import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/output_action_controller.dart';
-import 'package:tileseteditor/output/state/output_editor_state.dart';
+import 'package:tileseteditor/output/output_controller.dart';
+import 'package:tileseteditor/output/output_state.dart';
 
 class OutputEditor extends StatelessWidget {
   final TileSetProject project;
   final TileSet tileSet;
-  final OutputEditorState outputState;
+  final OutputState outputState;
   final void Function() onSplitterPressed;
 
   const OutputEditor({
@@ -28,7 +28,7 @@ class OutputEditor extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OutputActionController(
+            OutputController(
               project: project, //
               tileSet: tileSet,
               outputState: outputState,

@@ -4,10 +4,10 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
+import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterDatasheet extends StatefulWidget {
-  final SplitterEditorState editorState;
+  final SplitterState editorState;
   final TileSet tileSet;
 
   const SplitterDatasheet({super.key, required this.editorState, required this.tileSet});
@@ -47,7 +47,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
     });
   }
 
-  void selectTile(SplitterEditorState state, TileInfo tileInfo) {
+  void selectTile(SplitterState state, TileInfo tileInfo) {
     if (tileInfo.key != null) {
       if (state.selectedSliceInfo != null) {
         TileSetSlice? slice = tileSet.findSliceByKey(tileInfo.key!);

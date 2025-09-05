@@ -6,15 +6,15 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
+import 'package:tileseteditor/splitter/splitter_state.dart';
 
-class SplitterActionController extends StatefulWidget {
+class SplitterController extends StatefulWidget {
   final TileSetProject project;
   final TileSet tileSet;
-  final SplitterEditorState splitterState;
+  final SplitterState splitterState;
   final void Function() onOutputPressed;
 
-  const SplitterActionController({
+  const SplitterController({
     super.key, //
     required this.project,
     required this.splitterState,
@@ -23,12 +23,12 @@ class SplitterActionController extends StatefulWidget {
   });
 
   @override
-  State<SplitterActionController> createState() => SplitterActionControllerState();
+  State<SplitterController> createState() => SplitterControllerState();
 }
 
 class TileSetImage {}
 
-class SplitterActionControllerState extends State<SplitterActionController> {
+class SplitterControllerState extends State<SplitterController> {
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
   TileInfo? selectedSlice;
@@ -46,7 +46,7 @@ class SplitterActionControllerState extends State<SplitterActionController> {
     super.dispose();
   }
 
-  void selectTile(SplitterEditorState state, TileInfo tileInfo) {
+  void selectTile(SplitterState state, TileInfo tileInfo) {
     setState(() {
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
@@ -166,7 +166,7 @@ class SplitterActionControllerState extends State<SplitterActionController> {
     );
   }
 
-  void addSlice(BuildContext context, SplitterEditorState editorState) async {
+  void addSlice(BuildContext context, SplitterState editorState) async {
     TileSetSlice? dialogResult = await showDialog<TileSetSlice>(
       context: context,
       builder: (BuildContext context) {
@@ -182,7 +182,7 @@ class SplitterActionControllerState extends State<SplitterActionController> {
     }
   }
 
-  void addGroup(BuildContext context, SplitterEditorState editorState) async {
+  void addGroup(BuildContext context, SplitterState editorState) async {
     TileSetGroup? dialogResult = await showDialog<TileSetGroup>(
       context: context,
       builder: (BuildContext context) {

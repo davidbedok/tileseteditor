@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/output/state/output_editor_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 
-class OutputActionController extends StatefulWidget {
+class OutputController extends StatefulWidget {
   final TileSetProject project;
   final TileSet tileSet;
-  final OutputEditorState outputState;
+  final OutputState outputState;
   final void Function() onSplitterPressed;
 
-  const OutputActionController({
+  const OutputController({
     super.key, //
     required this.project,
     required this.tileSet,
@@ -19,10 +19,10 @@ class OutputActionController extends StatefulWidget {
   });
 
   @override
-  State<OutputActionController> createState() => OutputActionControllerState();
+  State<OutputController> createState() => OutputControllerState();
 }
 
-class OutputActionControllerState extends State<OutputActionController> {
+class OutputControllerState extends State<OutputController> {
   TileSetItem? selectedItem;
 
   @override
@@ -38,7 +38,7 @@ class OutputActionControllerState extends State<OutputActionController> {
     widget.outputState.unsubscribeOnSelected(select);
   }
 
-  void select(OutputEditorState state, TileSetItem? tileSetItem) {
+  void select(OutputState state, TileSetItem? tileSetItem) {
     setState(() {
       selectedItem = tileSetItem;
     });

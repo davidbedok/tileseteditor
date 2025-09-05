@@ -1,19 +1,19 @@
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
-class OutputEditorState {
+class OutputState {
   TileSetItem? selectedItem;
 
   List<void Function(TileSetItem tileSetItem)> onRemovedEventHandlers = [];
   List<void Function()> onRemovedAllEventHandlers = [];
-  List<void Function(OutputEditorState state, TileSetItem? tileSetItem)> onSelectedEventHandlers = [];
+  List<void Function(OutputState state, TileSetItem? tileSetItem)> onSelectedEventHandlers = [];
 
-  OutputEditorState();
+  OutputState();
 
-  void subscribeOnSelected(void Function(OutputEditorState state, TileSetItem? tileSetItem) eventHandler) {
+  void subscribeOnSelected(void Function(OutputState state, TileSetItem? tileSetItem) eventHandler) {
     onSelectedEventHandlers.add(eventHandler);
   }
 
-  void unsubscribeOnSelected(void Function(OutputEditorState state, TileSetItem? tileSetItem) eventHandler) {
+  void unsubscribeOnSelected(void Function(OutputState state, TileSetItem? tileSetItem) eventHandler) {
     onSelectedEventHandlers.remove(eventHandler);
   }
 

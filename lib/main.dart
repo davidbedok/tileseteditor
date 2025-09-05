@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tileseteditor/selector.dart';
+import 'package:tileseteditor/project/selector.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {

@@ -11,14 +11,14 @@ import 'package:tileseteditor/dialogs/edit_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/editor.dart';
-import 'package:tileseteditor/menubar.dart';
-import 'package:tileseteditor/output/state/output_editor_state.dart';
+import 'package:tileseteditor/project/editor.dart';
+import 'package:tileseteditor/project/menubar.dart';
+import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/overview/overview_editor.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
-import 'package:tileseteditor/project_controller.dart';
-import 'package:tileseteditor/project_state.dart';
-import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
+import 'package:tileseteditor/project/project_controller.dart';
+import 'package:tileseteditor/project/project_state.dart';
+import 'package:tileseteditor/splitter/splitter_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/welcome_widget.dart';
 
@@ -33,8 +33,8 @@ class TileSetSelector extends StatefulWidget {
 
 class TileSetSelectorState extends State<TileSetSelector> {
   ProjectState projectState = ProjectState();
-  SplitterEditorState splitterState = SplitterEditorState();
-  OutputEditorState outputState = OutputEditorState();
+  SplitterState splitterState = SplitterState();
+  OutputState outputState = OutputState();
   OverviewEditorState overviewState = OverviewEditorState();
 
   @override
@@ -131,8 +131,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
                               onChanged: (TileSet? value) async {
                                 if (value != null) {
                                   setState(() {
-                                    splitterState = SplitterEditorState();
-                                    outputState = OutputEditorState();
+                                    splitterState = SplitterState();
+                                    outputState = OutputState();
                                     projectState.tileSet.select(value);
                                   });
                                 }
@@ -275,8 +275,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
     setState(() {
       projectState.project.select(TileSetProject.none);
       projectState.tileSet.select(TileSet.none);
-      splitterState = SplitterEditorState();
-      outputState = OutputEditorState();
+      splitterState = SplitterState();
+      outputState = OutputState();
     });
   }
 

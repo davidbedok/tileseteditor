@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/splitter/flame/editor_world.dart';
-import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
+import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetector {
   static const zoomPerScrollUnit = 0.02;
@@ -12,7 +12,7 @@ class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetect
   late double startZoom;
   TileSet tileSet;
 
-  SplitterEditorState splitterState;
+  SplitterState splitterState;
 
   EditorGame({required this.tileSet, required double width, required double height, required this.splitterState})
     : super(

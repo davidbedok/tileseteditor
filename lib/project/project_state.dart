@@ -1,6 +1,6 @@
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/state/select_event.dart';
+import 'package:tileseteditor/event/select_event.dart';
 
 class ProjectState {
   late SelectEvent<ProjectState, TileSetProject> project;
