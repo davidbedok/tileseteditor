@@ -13,10 +13,16 @@ abstract class TileSetNamedArea extends TileSetItem {
   Color color = RandomColor.getColorObject(Options());
 
   @override
+  Color getColor() => color;
+
+  @override
+  int getKey() => key;
+
+  @override
   Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(size.width * tileWidth, size.height * tileHeight);
 
   @override
-  String getButtonLabel() => name;
+  String getLabel() => name;
 
   TileSetNamedArea(this.key, this.name, this.size);
 

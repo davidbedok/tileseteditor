@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
@@ -67,28 +69,26 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
   void render(Canvas canvas) {
     super.render(canvas);
     TileInfo info = getInfo();
-    switch (info.type) {
-      case TileType.free:
-        if (isSelected()) {
-          canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(EditorColor.free.color, 2.0));
-        }
-      case TileType.slice:
-        canvas.drawRect(getRect(0), DrawUtils.getFillPaint(info.color!, alpha: 100));
-        if (isSelected()) {
-          canvas.drawOval(getRect(4), DrawUtils.getFillPaint(info.color!, alpha: 150));
-        }
-      case TileType.group:
-        canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(info.color!, 2.0));
-
-        if (isSelected()) {
-          canvas.drawOval(getRect(4), DrawUtils.getFillPaint(info.color!, alpha: 150));
-        }
-      case TileType.garbage:
-        if (isSelected()) {
-          drawGarbage(canvas, EditorColor.garbageSelected.color);
-        } else {
-          drawGarbage(canvas, EditorColor.garbage.color);
-        }
+    if (info.tileSetItem == TileSetTile.freeTile) {
+      if (isSelected()) {
+        canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(EditorColor.free.color, 2.0));
+      }
+    } else if (info.tileSetItem == TileSetTile.garbageTile) {
+      if (isSelected()) {
+        drawGarbage(canvas, EditorColor.garbageSelected.color);
+      } else {
+        drawGarbage(canvas, EditorColor.garbage.color);
+      }
+    } else if (info.tileSetItem is TileSetSlice) {
+      canvas.drawRect(getRect(0), DrawUtils.getFillPaint(info.tileSetItem.getColor(), alpha: 100));
+      if (isSelected()) {
+        canvas.drawOval(getRect(4), DrawUtils.getFillPaint(info.tileSetItem.getColor(), alpha: 150));
+      }
+    } else if (info.tileSetItem is TileSetGroup) {
+      canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(info.tileSetItem.getColor(), 2.0));
+      if (isSelected()) {
+        canvas.drawOval(getRect(4), DrawUtils.getFillPaint(info.tileSetItem.getColor(), alpha: 150));
+      }
     }
     if (isHovered) {
       canvas.drawRect(getRect(0), DrawUtils.getBorderPaint(EditorColor.hovered.color, 2.0));
@@ -104,8 +104,8 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
 
   void drawInfo(TileInfo info, dui.Canvas canvas) {
     var textSpan = TextSpan(
-      text: info.getHoverText(),
-      style: TextStyle(color: info.getHoverColor(), fontWeight: FontWeight.bold),
+      text: info.tileSetItem.getLabel(),
+      style: TextStyle(color: info.tileSetItem.getHoverColor(), fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: 200);

@@ -15,6 +15,9 @@ class TileSetSlice extends TileSetNamedArea {
   int top;
 
   @override
+  Color getHoverColor() => EditorColor.tileSliceHovered.color;
+
+  @override
   Color getTextColor() => EditorColor.tileSetSlice.color;
 
   @override

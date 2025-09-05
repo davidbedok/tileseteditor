@@ -62,7 +62,7 @@ class OutputControllerState extends State<OutputController> {
             visible: tileSetItem != TileSetItem.none && tileSetItem.output != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
-              label: Text('Remove ${tileSetItem.getButtonLabel()}'),
+              label: Text('Remove ${tileSetItem.getLabel()}'),
               onPressed: () {
                 widget.outputState.tileSetItem.remove();
                 setState(() {

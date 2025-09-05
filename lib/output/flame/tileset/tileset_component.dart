@@ -194,7 +194,7 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
 
   void drawInfo(Canvas canvas) {
     var textSpan = TextSpan(
-      text: '${external ? '${tileSet.name}\n' : ''}${tileSetItem.getButtonLabel()}',
+      text: '${external ? '${tileSet.name}\n' : ''}${tileSetItem.getLabel()}',
       style: TextStyle(color: tileSetItem.getTextColor(), fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);

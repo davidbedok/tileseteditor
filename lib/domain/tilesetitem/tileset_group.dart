@@ -10,6 +10,9 @@ class TileSetGroup extends TileSetNamedArea {
   static final TileSetGroup none = TileSetGroup(-1, '-', TileSetAreaSize(0, 0));
 
   @override
+  Color getHoverColor() => EditorColor.tileGroupHovered.color;
+
+  @override
   Color getTextColor() => EditorColor.tileSetGroup.color;
 
   @override

@@ -4,11 +4,11 @@ import 'dart:ui' as dui;
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset_garbage.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
@@ -45,6 +45,7 @@ class TileSet {
   List<TileSetTile> tiles = [];
   TileSetGarbage garbage = TileSetGarbage();
 
+  // FIXME do we need it here?
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
   int getMaxTileRow() => imageWidth ~/ tileWidth;
@@ -96,14 +97,17 @@ class TileSet {
     }*/
   }
 
+  // FIXME do we need it here?
   void subscribeOnChanged(void Function(TileSet tileSet, TileSetChangeType type) eventHandler) {
     onChangedEventHandlers.add(eventHandler);
   }
 
+  // FIXME do we need it here?
   void unsubscribeOnChanged(void Function(TileSet tileSet, TileSetChangeType type) eventHandler) {
     onChangedEventHandlers.remove(eventHandler);
   }
 
+  // FIXME do we need it here?
   void callEventHandlers(TileSetChangeType type) {
     for (var eventHandler in onChangedEventHandlers) {
       eventHandler.call(this, type);
@@ -117,7 +121,11 @@ class TileSet {
     return [result, maxSliceKey, maxGroupKey].reduce(math.max) + 1;
   }
 
-  bool isFree(int index) {
+  bool isFreeByCoord(TileCoord coord) {
+    return getTileInfo(coord).tileSetItem == TileSetTile.freeTile;
+  }
+
+  bool isFreeByIndex(int index) {
     bool result = true;
     if (garbage.tileIndices.contains(index)) {
       result = false;
@@ -189,42 +197,32 @@ class TileSet {
     }
   }
 
-  void remove(TileInfo info) {
-    if (info.key != null) {
-      switch (info.type) {
-        case TileType.slice:
-          TileSetSlice? slice = findSliceByKey(info.key!);
-          if (slice != null) {
-            slices.remove(slice);
-            callEventHandlers(TileSetChangeType.sliceRemoved);
-          }
-        case TileType.group:
-          TileSetGroup? group = findGroupByKey(info.key!);
-          if (group != null) {
-            groups.remove(group);
-            callEventHandlers(TileSetChangeType.groupRemoved);
-          }
-        case TileType.free:
-        case TileType.garbage:
-        //
-      }
+  void remove(TileSetItem tileSetItem) {
+    if (tileSetItem is TileSetSlice) {
+      slices.remove(tileSetItem);
+      callEventHandlers(TileSetChangeType.sliceRemoved); // FIXME do not handle events here...
+    } else if (tileSetItem is TileSetGroup) {
+      groups.remove(tileSetItem);
+      callEventHandlers(TileSetChangeType.groupRemoved); // FIXME do not handle events here...
     }
   }
 
   TileInfo getTileInfo(TileCoord coord) {
-    TileInfo result = TileInfo(type: TileType.free, coord: coord);
+    TileSetItem result = TileSetTile.freeTile;
     TileSetSlice? slice = findSlice(coord);
     if (slice != null) {
-      result = TileInfo(type: TileType.slice, coord: coord, key: slice.key, name: slice.name, color: slice.color);
+      result = slice;
+    } else {
+      TileSetGroup? group = findGroup(coord);
+      if (group != null) {
+        result = group;
+      } else {
+        if (garbage.tileIndices.contains(getIndex(coord))) {
+          result = TileSetTile.garbageTile;
+        }
+      }
     }
-    TileSetGroup? group = findGroup(coord);
-    if (group != null) {
-      result = TileInfo(type: TileType.group, coord: coord, key: group.key, name: group.name, color: group.color);
-    }
-    if (garbage.tileIndices.contains(getIndex(coord))) {
-      result = TileInfo(type: TileType.garbage, coord: coord);
-    }
-    return result;
+    return TileInfo(coord: coord, tileSetItem: result);
   }
 
   TileSetSlice? findSlice(TileCoord coord) {

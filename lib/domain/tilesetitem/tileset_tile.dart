@@ -7,11 +7,24 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileSetTile extends TileSetItem {
+  static final TileSetTile freeTile = TileSetTile(0, 0);
+  static final TileSetTile garbageTile = TileSetTile(0, 0, garbage: true);
+
   int left;
   int top;
+  bool garbage = false;
 
   @override
-  String getButtonLabel() => 'Tile $left:$top';
+  int getKey() => -1;
+
+  @override
+  String getLabel() => 'Tile $left:$top';
+
+  @override
+  Color getColor() => EditorColor.tileFreeHovered.color; // FIXME check this
+
+  @override
+  Color getHoverColor() => garbage ? EditorColor.tileGarbageHovered.color : EditorColor.tileFreeHovered.color;
 
   @override
   Color getTextColor() => EditorColor.tileSetTile.color;
@@ -22,7 +35,7 @@ class TileSetTile extends TileSetItem {
   @override
   Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(tileWidth, tileHeight);
 
-  TileSetTile(this.left, this.top);
+  TileSetTile(this.left, this.top, {bool garbage = false});
 
   Map<String, dynamic> toJson(TileSet tileSet) {
     tileIndices.clear();

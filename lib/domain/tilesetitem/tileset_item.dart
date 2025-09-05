@@ -10,8 +10,11 @@ abstract class TileSetItem {
   TileCoord? output;
   List<int> tileIndices = [];
 
-  String getButtonLabel();
+  Color getColor();
+  Color getHoverColor();
   Color getTextColor();
+  int getKey();
+  String getLabel();
   Vector2 getRealSize(double tileWidth, double tileHeight);
   Vector2 getRealPosition(double tileWidth, double tileHeight);
 

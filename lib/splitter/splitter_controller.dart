@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
-import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
@@ -31,27 +31,26 @@ class TileSetImage {}
 class SplitterControllerState extends State<SplitterController> {
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
-  TileInfo? selectedSlice;
-  TileInfo? selectedGroup;
+  late TileSetItem tileSetItem;
 
   @override
   void initState() {
     super.initState();
-    widget.splitterState.subscribeOnSelected(selectTile);
+    tileSetItem = widget.splitterState.tileSetItem;
+    widget.splitterState.subscribeSelection(selectTile);
   }
 
   @override
   void dispose() {
-    widget.splitterState.unsubscribeOnSelected(selectTile);
+    widget.splitterState.unsubscribeSelection(selectTile);
     super.dispose();
   }
 
-  void selectTile(SplitterState state, TileInfo tileInfo) {
+  void selectTile(SplitterState state, TileSetItem tileSetItem) {
     setState(() {
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;
-      selectedSlice = state.selectedSliceInfo;
-      selectedGroup = state.selectedGroupInfo;
+      this.tileSetItem = tileSetItem;
     });
   }
 
@@ -132,25 +131,13 @@ class SplitterControllerState extends State<SplitterController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: selectedSlice != null,
+            visible: tileSetItem is TileSetSlice || tileSetItem is TileSetGroup,
             child: ElevatedButton.icon(
               icon: Icon(Icons.delete),
-              label: Text('Delete ${selectedSlice != null ? selectedSlice!.name : ''}'),
+              label: Text('Delete ${tileSetItem.getLabel()}'),
               onPressed: () {
-                widget.tileSet.remove(widget.splitterState.selectedSliceInfo!);
-                widget.splitterState.selectedSliceInfo = null;
-              },
-            ),
-          ),
-          SizedBox(width: 5),
-          Visibility(
-            visible: selectedGroup != null,
-            child: ElevatedButton.icon(
-              icon: Icon(Icons.delete),
-              label: Text('Delete ${selectedGroup != null ? selectedGroup!.name : ''}'),
-              onPressed: () {
-                widget.tileSet.remove(widget.splitterState.selectedGroupInfo!);
-                widget.splitterState.selectedGroupInfo = null;
+                widget.tileSet.remove(widget.splitterState.tileSetItem);
+                widget.splitterState.unselectTileSetItem();
               },
             ),
           ),

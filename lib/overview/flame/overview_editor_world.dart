@@ -205,7 +205,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
-        if (tileSet.isFree(tileSet.getIndex(coord))) {
+        if (tileSet.isFreeByIndex(tileSet.getIndex(coord))) {
           TileSetTile? usedTileSetTile = tileSet.findTile(coord);
           TileSetTile tileSetTile = usedTileSetTile ?? TileSetTile(i + 1, j + 1);
           if (tileSetTile.output != null) {

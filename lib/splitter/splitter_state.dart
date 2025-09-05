@@ -1,100 +1,87 @@
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
 class SplitterState {
+  TileSetItem tileSetItem = TileSetItem.none;
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
-  TileInfo? selectedSliceInfo;
-  TileInfo? selectedGroupInfo;
 
-  List<void Function(SplitterState state, TileInfo tileInfo)> onSelectedEventHandlers = [];
+  List<void Function(SplitterState state, TileSetItem tileSetItem)> selectionEventHandlers = [];
 
   SplitterState();
 
-  void subscribeOnSelected(void Function(SplitterState state, TileInfo tileInfo) eventHandler) {
-    onSelectedEventHandlers.add(eventHandler);
+  void subscribeSelection(void Function(SplitterState state, TileSetItem tileSetItem) eventHandler) {
+    selectionEventHandlers.add(eventHandler);
   }
 
-  void unsubscribeOnSelected(void Function(SplitterState state, TileInfo tileInfo) eventHandler) {
-    onSelectedEventHandlers.remove(eventHandler);
+  void unsubscribeSelection(void Function(SplitterState state, TileSetItem tileSetItem) eventHandler) {
+    selectionEventHandlers.remove(eventHandler);
   }
 
   bool isSelected(TileInfo info) {
     bool result = false;
-    switch (info.type) {
-      case TileType.free:
-        result = selectedFreeTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
-      case TileType.garbage:
-        result = selectedGarbageTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
-      case TileType.slice:
-        result = selectedSliceInfo != null && selectedSliceInfo == info;
-      case TileType.group:
-        result = selectedGroupInfo != null && selectedGroupInfo == info;
+    if (info.tileSetItem == TileSetTile.freeTile) {
+      result = selectedFreeTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
+    } else if (info.tileSetItem == TileSetTile.garbageTile) {
+      result = selectedGarbageTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
+    } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
+      result = tileSetItem == info.tileSetItem;
     }
     return result;
   }
 
-  void selectSlice(TileSetSlice slice) {
-    if (slice != TileSetSlice.none) {
-      selectTile(TileInfo(type: TileType.slice, name: slice.name, key: slice.key, coord: TileCoord(slice.left, slice.top), color: slice.color));
-    } else {
-      selectedSliceInfo = null;
+  void unselectTileSetItem() {
+    tileSetItem = TileSetItem.none;
+    for (var eventHandler in selectionEventHandlers) {
+      eventHandler.call(this, tileSetItem);
     }
   }
 
-  void selectGroup(TileSet tileSet, TileSetGroup group) {
-    if (group != TileSetGroup.none) {
-      if (group.tileIndices.isNotEmpty) {
-        TileCoord coord = tileSet.getTileCoord(group.tileIndices.first);
-        selectTile(TileInfo(type: TileType.group, name: group.name, key: group.key, coord: coord, color: group.color));
-      }
+  void selectTileSetItem(TileSetItem tileSetItem) {
+    if (this.tileSetItem == tileSetItem) {
+      this.tileSetItem = TileSetItem.none;
     } else {
-      selectedGroupInfo = null;
+      this.tileSetItem = tileSetItem;
+    }
+    for (var eventHandler in selectionEventHandlers) {
+      eventHandler.call(this, tileSetItem);
     }
   }
 
   void selectTile(TileInfo info) {
-    switch (info.type) {
-      case TileType.free:
-        if (selectedFreeTiles.contains(info.coord)) {
-          selectedFreeTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
-        } else {
-          selectedFreeTiles.add(info.coord);
-        }
-      case TileType.slice:
-        if (selectedSliceInfo == info) {
-          selectedSliceInfo = null;
-        } else {
-          selectedSliceInfo = info;
-          selectedGroupInfo = null;
-        }
-      case TileType.group:
-        if (selectedGroupInfo == info) {
-          selectedGroupInfo = null;
-        } else {
-          selectedGroupInfo = info;
-          selectedSliceInfo = null;
-        }
-      case TileType.garbage:
-        if (selectedGarbageTiles.contains(info.coord)) {
-          selectedGarbageTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
-        } else {
-          selectedGarbageTiles.add(info.coord);
-        }
+    if (info.tileSetItem == TileSetTile.freeTile) {
+      if (selectedFreeTiles.contains(info.coord)) {
+        selectedFreeTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
+      } else {
+        selectedFreeTiles.add(info.coord);
+      }
+    } else if (info.tileSetItem == TileSetTile.garbageTile) {
+      if (selectedGarbageTiles.contains(info.coord)) {
+        selectedGarbageTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
+      } else {
+        selectedGarbageTiles.add(info.coord);
+      }
+    } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
+      if (tileSetItem == info.tileSetItem) {
+        tileSetItem = TileSetItem.none;
+      } else {
+        tileSetItem = info.tileSetItem;
+      }
     }
-    for (var eventHandler in onSelectedEventHandlers) {
-      eventHandler.call(this, info);
+    for (var eventHandler in selectionEventHandlers) {
+      eventHandler.call(this, tileSetItem);
     }
   }
 
   void selectAllFree(TileSet tileSet) {
     selectedFreeTiles.clear();
     for (int index = 0; index < tileSet.getMaxTileIndex(); index++) {
-      if (tileSet.isFree(index)) {
+      if (tileSet.isFreeByIndex(index)) {
         selectedFreeTiles.add(tileSet.getTileCoord(index));
       }
     }

@@ -3,6 +3,7 @@ import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
@@ -18,23 +19,20 @@ class SplitterDatasheet extends StatefulWidget {
 
 class SplitterDatasheetState extends State<SplitterDatasheet> {
   late TileSet tileSet;
-  TileSetSlice? selectedSlice;
-  TileSetGroup? selectedGroup;
-
-  TileSetSlice currentSlice = TileSetSlice.none;
-  TileSetGroup currentGroup = TileSetGroup.none;
+  late TileSetItem tileSetItem;
 
   @override
   void initState() {
     super.initState();
     tileSet = widget.tileSet;
-    widget.editorState.subscribeOnSelected(selectTile);
+    tileSetItem = widget.editorState.tileSetItem;
+    widget.editorState.subscribeSelection(selectTile);
     widget.tileSet.subscribeOnChanged(changeTileSet);
   }
 
   @override
   void dispose() {
-    widget.editorState.unsubscribeOnSelected(selectTile);
+    widget.editorState.unsubscribeSelection(selectTile);
     widget.tileSet.unsubscribeOnChanged(changeTileSet);
     super.dispose();
   }
@@ -42,44 +40,13 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
   void changeTileSet(TileSet tileSet, TileSetChangeType type) {
     setState(() {
       this.tileSet = tileSet;
-      currentSlice = TileSetSlice.none;
-      currentGroup = TileSetGroup.none;
     });
   }
 
-  void selectTile(SplitterState state, TileInfo tileInfo) {
-    if (tileInfo.key != null) {
-      if (state.selectedSliceInfo != null) {
-        TileSetSlice? slice = tileSet.findSliceByKey(tileInfo.key!);
-        setState(() {
-          if (slice != null) {
-            currentSlice = slice;
-            currentGroup = TileSetGroup.none;
-          } else {
-            currentSlice = TileSetSlice.none;
-          }
-        });
-      } else {
-        setState(() {
-          currentSlice = TileSetSlice.none;
-        });
-      }
-      if (state.selectedGroupInfo != null) {
-        TileSetGroup? group = tileSet.findGroupByKey(tileInfo.key!);
-        setState(() {
-          if (group != null) {
-            currentGroup = group;
-            currentSlice = TileSetSlice.none;
-          } else {
-            currentGroup = TileSetGroup.none;
-          }
-        });
-      } else {
-        setState(() {
-          currentGroup = TileSetGroup.none;
-        });
-      }
-    }
+  void selectTile(SplitterState state, TileSetItem tileSetItem) {
+    setState(() {
+      this.tileSetItem = tileSetItem;
+    });
   }
 
   @override
@@ -127,18 +94,18 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                   focusColor: Theme.of(context).canvasColor,
                 ),
                 child: DropdownButton<TileSetSlice>(
-                  value: currentSlice,
+                  value: tileSetItem is TileSetSlice ? tileSetItem as TileSetSlice : TileSetSlice.none,
                   style: Theme.of(context).textTheme.bodyMedium,
                   isExpanded: true,
                   items: tileSet.getSlicesWithNone().map((TileSetSlice slice) {
                     return DropdownMenuItem<TileSetSlice>(value: slice, child: Text(slice.toDropDownValue()));
                   }).toList(),
-                  onChanged: (value) {
-                    if (value != null && currentSlice.key != value.key) {
+                  onChanged: (TileSetSlice? value) {
+                    if (value != null && tileSetItem.getKey() != value.key) {
                       setState(() {
-                        currentSlice = value;
+                        tileSetItem = value;
                       });
-                      widget.editorState.selectSlice(currentSlice);
+                      widget.editorState.selectTileSetItem(tileSetItem);
                     }
                   },
                 ),
@@ -160,18 +127,18 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                   focusColor: Colors.transparent,
                 ),
                 child: DropdownButton<TileSetGroup>(
-                  value: currentGroup,
+                  value: tileSetItem is TileSetGroup ? tileSetItem as TileSetGroup : TileSetGroup.none,
                   style: Theme.of(context).textTheme.bodyMedium,
                   isExpanded: true,
                   items: tileSet.getGroupsWithNone().map((TileSetGroup group) {
                     return DropdownMenuItem<TileSetGroup>(value: group, child: Text(group.toDropDownValue()));
                   }).toList(),
-                  onChanged: (value) {
-                    if (value != null && currentGroup.key != value.key) {
+                  onChanged: (TileSetGroup? value) {
+                    if (value != null && tileSetItem.getKey() != value.key) {
                       setState(() {
-                        currentGroup = value;
+                        tileSetItem = value;
                       });
-                      widget.editorState.selectGroup(tileSet, currentGroup);
+                      widget.editorState.selectTileSetItem(tileSetItem);
                     }
                   },
                 ),

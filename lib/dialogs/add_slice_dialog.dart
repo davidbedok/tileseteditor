@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset_area_size.dart';
-import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tile_type.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
@@ -40,8 +38,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     for (int y = minY; y <= maxY; y++) {
       for (int x = minX; x <= maxX; x++) {
         TileCoord coord = TileCoord(x, y);
-        TileInfo tileInfo = widget.tileSet.getTileInfo(coord);
-        if (tileInfo.type != TileType.free) {
+        if (!widget.tileSet.isFreeByCoord(coord)) {
           numberOfNonFreeTiles++;
         }
         _slice.tileIndices.add(widget.tileSet.getIndex(coord));
