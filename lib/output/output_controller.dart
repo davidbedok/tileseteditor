@@ -23,24 +23,24 @@ class OutputController extends StatefulWidget {
 }
 
 class OutputControllerState extends State<OutputController> {
-  TileSetItem? selectedItem;
+  late TileSetItem tileSetItem;
 
   @override
   void initState() {
     super.initState();
-    widget.outputState.subscribeOnSelected(select);
-    selectedItem = widget.outputState.selectedItem;
+    tileSetItem = widget.outputState.tileSetItem.object;
+    widget.outputState.tileSetItem.subscribeSelection(select);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.outputState.unsubscribeOnSelected(select);
+    widget.outputState.tileSetItem.unsubscribeSelection(select);
   }
 
-  void select(OutputState state, TileSetItem? tileSetItem) {
+  void select(OutputState state, TileSetItem tileSetItem) {
     setState(() {
-      selectedItem = tileSetItem;
+      this.tileSetItem = tileSetItem;
     });
   }
 
@@ -53,24 +53,20 @@ class OutputControllerState extends State<OutputController> {
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () {
-              widget.outputState.removeAll();
-              setState(() {
-                selectedItem = null;
-              });
+              widget.outputState.tileSetItem.select(TileSetItem.none);
+              widget.outputState.removeAll.invoke();
             },
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: selectedItem != null && selectedItem!.output != null,
+            visible: tileSetItem != TileSetItem.none && tileSetItem.output != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
-              label: Text('Remove ${selectedItem != null ? selectedItem!.getButtonLabel() : ''}'),
+              label: Text('Remove ${tileSetItem.getButtonLabel()}'),
               onPressed: () {
-                widget.outputState.remove();
+                widget.outputState.tileSetItem.remove();
                 setState(() {
-                  if (selectedItem != null) {
-                    selectedItem!.output = null;
-                  }
+                  tileSetItem.output = null;
                 });
               },
             ),

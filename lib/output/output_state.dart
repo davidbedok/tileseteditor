@@ -1,57 +1,13 @@
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/event/custom_event.dart';
+import 'package:tileseteditor/event/object_level_event.dart';
 
 class OutputState {
-  TileSetItem? selectedItem;
+  late ObjectLevelEvent<OutputState, TileSetItem> tileSetItem;
+  late CustomEvent<OutputState> removeAll;
 
-  List<void Function(TileSetItem tileSetItem)> onRemovedEventHandlers = [];
-  List<void Function()> onRemovedAllEventHandlers = [];
-  List<void Function(OutputState state, TileSetItem? tileSetItem)> onSelectedEventHandlers = [];
-
-  OutputState();
-
-  void subscribeOnSelected(void Function(OutputState state, TileSetItem? tileSetItem) eventHandler) {
-    onSelectedEventHandlers.add(eventHandler);
-  }
-
-  void unsubscribeOnSelected(void Function(OutputState state, TileSetItem? tileSetItem) eventHandler) {
-    onSelectedEventHandlers.remove(eventHandler);
-  }
-
-  void subscribeOnRemoved(void Function(TileSetItem tileSetItem) eventHandler) {
-    onRemovedEventHandlers.add(eventHandler);
-  }
-
-  void unsubscribeOnRemoved(void Function(TileSetItem tileSetItem) eventHandler) {
-    onRemovedEventHandlers.remove(eventHandler);
-  }
-
-  void subscribeOnRemovedAll(void Function() eventHandler) {
-    onRemovedAllEventHandlers.add(eventHandler);
-  }
-
-  void unsubscribeOnRemovedAll(void Function() eventHandler) {
-    onRemovedAllEventHandlers.remove(eventHandler);
-  }
-
-  void select(TileSetItem? tileSetItem) {
-    selectedItem = tileSetItem;
-    for (var eventHandler in onSelectedEventHandlers) {
-      eventHandler.call(this, tileSetItem);
-    }
-  }
-
-  void remove() {
-    if (selectedItem != null) {
-      for (var eventHandler in onRemovedEventHandlers) {
-        eventHandler.call(selectedItem!);
-      }
-    }
-  }
-
-  void removeAll() {
-    for (var eventHandler in onRemovedAllEventHandlers) {
-      eventHandler.call();
-    }
-    select(null);
+  OutputState() {
+    tileSetItem = ObjectLevelEvent(state: this, noneObject: TileSetItem.none);
+    removeAll = CustomEvent(state: this);
   }
 }

@@ -30,21 +30,21 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
          world: OutputEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
-    outputState.subscribeOnRemoved(removeTileSetItem);
-    outputState.subscribeOnRemovedAll(removeAllTileSetItem);
+    outputState.tileSetItem.subscribeRemoval(removeTileSetItem);
+    outputState.removeAll.subscribe(removeAllTileSetItem);
   }
 
   @override
   void onRemove() {
-    outputState.unsubscribeOnRemoved(removeTileSetItem);
-    outputState.unsubscribeOnRemovedAll(removeAllTileSetItem);
+    outputState.tileSetItem.unsubscribeRemoval(removeTileSetItem);
+    outputState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(TileSetItem tileSetItem) {
+  void removeTileSetItem(OutputState outputState, TileSetItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 
-  void removeAllTileSetItem() {
+  void removeAllTileSetItem(OutputState outputState) {
     world.removeAllTileSetItem();
   }
 
