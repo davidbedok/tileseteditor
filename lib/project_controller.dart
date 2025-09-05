@@ -32,13 +32,13 @@ class ProjectControllerState extends State<ProjectController> {
   @override
   void initState() {
     super.initState();
-    widget.projectState.subscribeOnSelected(selectTileSet);
+    widget.projectState.tileSet.subscribe(selectTileSet);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.projectState.unsubscribeOnSelected(selectTileSet);
+    widget.projectState.tileSet.unsubscribe(selectTileSet);
   }
 
   void selectTileSet(ProjectState state, TileSet? tileSet) {

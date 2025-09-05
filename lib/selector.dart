@@ -138,7 +138,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                     splitterState = SplitterEditorState();
                                     outputState = OutputEditorState();
                                   });
-                                  projectState.select(value);
+                                  projectState.tileSet.select(value == TileSet.none ? null : value);
                                 }
                               },
                             ),
