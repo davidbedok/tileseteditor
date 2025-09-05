@@ -2,6 +2,14 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_data.dart';
 
 class TileSetOutput {
+  static final TileSetOutput none = TileSetOutput(
+    fileName: '', //
+    tileWidth: 0,
+    tileHeight: 0,
+    width: 0,
+    height: 0,
+  );
+
   static const int minOutputWidth = 12;
   static const int maxOutputWidth = 50;
   static const int minOutputHeight = 24;

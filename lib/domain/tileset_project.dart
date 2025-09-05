@@ -6,6 +6,12 @@ import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/tileset_output.dart';
 
 class TileSetProject {
+  static final TileSetProject none = TileSetProject(
+    name: '', //
+    description: null,
+    output: TileSetOutput.none,
+  );
+
   String? filePath;
   String name;
   String? description;
@@ -131,5 +137,11 @@ class TileSetProject {
     for (TileSet tileSet in tileSets) {
       await tileSet.loadImage(this);
     }
+  }
+
+  void deleteTileSet(TileSet tileSet) {
+    print(tileSets.length);
+    tileSets.remove(tileSet);
+    print(tileSets.length);
   }
 }

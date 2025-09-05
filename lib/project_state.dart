@@ -7,7 +7,7 @@ class ProjectState {
   late SelectEvent<ProjectState, TileSet> tileSet;
 
   ProjectState() {
-    project = SelectEvent(state: this);
-    tileSet = SelectEvent(state: this);
+    project = SelectEvent(state: this, noneObject: TileSetProject.none);
+    tileSet = SelectEvent(state: this, noneObject: TileSet.none);
   }
 }

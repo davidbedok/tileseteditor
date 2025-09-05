@@ -32,8 +32,6 @@ class TileSetSelector extends StatefulWidget {
 }
 
 class TileSetSelectorState extends State<TileSetSelector> {
-  TileSetProject? project;
-  TileSet tileSet = TileSet.none;
   ProjectState projectState = ProjectState();
   SplitterEditorState splitterState = SplitterEditorState();
   OutputEditorState outputState = OutputEditorState();
@@ -42,7 +40,6 @@ class TileSetSelectorState extends State<TileSetSelector> {
   @override
   void initState() {
     super.initState();
-    project = null;
   }
 
   @override
@@ -61,7 +58,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
               children: <Widget>[
                 Expanded(
                   child: TileSetEditorMenuBar(
-                    project: project,
+                    project: projectState.project.object,
                     onNewProject: newProject,
                     onOpenProject: openProject,
                     onSaveProject: saveProject,
@@ -77,24 +74,24 @@ class TileSetSelectorState extends State<TileSetSelector> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: project == null
+                  child: projectState.project.isNotDefined()
                       ? WelcomeWidget(
                           onNewProject: newProject, //
                           onOpenProject: openProject,
                         )
                       : ProjectController(
-                          project: project!, //
                           projectState: projectState,
                           onAddTileSet: addTileSet,
                           onCloseProject: closeProject,
                           onEditProject: editProject,
                           onEditTileSet: editTileSet,
+                          onDeleteTileSet: deleteTileSet,
                         ),
                 ),
               ],
             ),
             Visibility(
-              visible: project != null,
+              visible: projectState.project.isDefined(),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -113,15 +110,15 @@ class TileSetSelectorState extends State<TileSetSelector> {
                           ),
                           child: DropdownButtonHideUnderline(
                             child: DropdownButton<TileSet>(
-                              value: tileSet,
+                              value: projectState.tileSet.object,
                               hint: Text('Choose a TileSet..'),
                               style: Theme.of(context).textTheme.bodyMedium,
                               focusColor: Colors.transparent,
                               isDense: true,
                               isExpanded: true,
-                              items: project == null
+                              items: projectState.project.isNotDefined()
                                   ? []
-                                  : project!.getTileSetsDropDownItems().map((TileSet tileSetItem) {
+                                  : projectState.project.object.getTileSetsDropDownItems().map((TileSet tileSetItem) {
                                       return DropdownMenuItem<TileSet>(
                                         value: tileSetItem, //
                                         child: Text(
@@ -134,11 +131,10 @@ class TileSetSelectorState extends State<TileSetSelector> {
                               onChanged: (TileSet? value) async {
                                 if (value != null) {
                                   setState(() {
-                                    tileSet = value;
                                     splitterState = SplitterEditorState();
                                     outputState = OutputEditorState();
+                                    projectState.tileSet.select(value);
                                   });
-                                  projectState.tileSet.select(value == TileSet.none ? null : value);
                                 }
                               },
                             ),
@@ -150,24 +146,24 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 ),
               ),
             ),
-            tileSet != TileSet.none && tileSet.image != null
+            projectState.tileSet.isDefined() && projectState.tileSet.object.image != null
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TileSetEditor(
                       key: GlobalKey(),
                       splitterState: splitterState, //
                       outputState: outputState,
-                      project: project!,
-                      tileSet: tileSet,
+                      project: projectState.project.object,
+                      tileSet: projectState.tileSet.object,
                     ),
                   )
-                : project != null && tileSet == TileSet.none
+                : projectState.project.isDefined() && projectState.tileSet.isNotDefined()
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: OverviewEditor(
                       key: GlobalKey(),
                       overviewState: overviewState, //
-                      project: project!,
+                      project: projectState.project.object,
                     ),
                   )
                 : Row(),
@@ -186,7 +182,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
     );
     if (dialogResult != null) {
       setState(() {
-        project = dialogResult;
+        projectState.project.select(dialogResult);
       });
       saveProject();
     }
@@ -208,18 +204,18 @@ class TileSetSelectorState extends State<TileSetSelector> {
         loadedProject.filePath = filePickerResult.files.single.path!;
         await loadedProject.loadTileSetImages();
         setState(() {
-          project = loadedProject;
+          projectState.project.select(loadedProject);
         });
       }
     }
   }
 
   void saveProject() async {
-    if (project != null) {
-      if (project!.filePath != null) {
-        File file = File(project!.filePath!);
+    if (projectState.project.isDefined()) {
+      if (projectState.project.object.filePath != null) {
+        File file = File(projectState.project.object.filePath!);
         if (file.existsSync()) {
-          file.writeAsString(prettyJson(project!.toJson(widget.packageInfo)));
+          file.writeAsString(prettyJson(projectState.project.object.toJson(widget.packageInfo)));
         } else {
           saveAsProject();
         }
@@ -230,8 +226,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
   }
 
   void saveAsProject() async {
-    if (project != null) {
-      TileSetProject savedProject = project!;
+    if (projectState.project.isDefined()) {
+      TileSetProject savedProject = projectState.project.object;
       savedProject.filePath = await FilePicker.platform.saveFile(
         dialogTitle: 'Save Tile Set Project',
         allowedExtensions: ['yate.json'],
@@ -243,7 +239,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
         File file = File(savedProject.filePath!);
         file.writeAsString(prettyJson(savedProject.toJson(widget.packageInfo)));
         setState(() {
-          project = savedProject;
+          projectState.project.select(savedProject);
         });
       }
     }
@@ -256,20 +252,20 @@ class TileSetSelectorState extends State<TileSetSelector> {
   }
 
   void editProject() async {
-    if (project != null) {
+    if (projectState.project.isDefined()) {
       TileSetProject? dialogResult = await showDialog<TileSetProject>(
         context: context,
         builder: (BuildContext context) {
-          return EditProjectDialog(project: TileSetProject.clone(project!));
+          return EditProjectDialog(project: TileSetProject.clone(projectState.project.object));
         },
       );
       if (dialogResult != null) {
         setState(() {
-          project!.name = dialogResult.name;
-          project!.description = dialogResult.description;
-          project!.output.fileName = dialogResult.output.fileName;
-          project!.output.width = dialogResult.output.width;
-          project!.output.height = dialogResult.output.height;
+          projectState.project.object.name = dialogResult.name;
+          projectState.project.object.description = dialogResult.description;
+          projectState.project.object.output.fileName = dialogResult.output.fileName;
+          projectState.project.object.output.width = dialogResult.output.width;
+          projectState.project.object.output.height = dialogResult.output.height;
         });
       }
     }
@@ -277,47 +273,57 @@ class TileSetSelectorState extends State<TileSetSelector> {
 
   void closeProject() {
     setState(() {
-      project = null;
-      tileSet = TileSet.none;
+      projectState.project.select(TileSetProject.none);
+      projectState.tileSet.select(TileSet.none);
       splitterState = SplitterEditorState();
       outputState = OutputEditorState();
     });
   }
 
   void addTileSet() async {
-    if (project != null) {
+    if (projectState.project.isDefined()) {
       TileSet? dialogResult = await showDialog<TileSet>(
         context: context,
         builder: (BuildContext context) {
-          return AddTileSetDialog(project: project!);
+          return AddTileSetDialog(project: projectState.project.object);
         },
       );
       if (dialogResult != null) {
-        dui.Image image = await ImageUtils.getImage(project!.getTileSetFilePath(dialogResult));
+        dui.Image image = await ImageUtils.getImage(projectState.project.object.getTileSetFilePath(dialogResult));
         dialogResult.imageWidth = image.width;
         dialogResult.imageHeight = image.height;
+        await dialogResult.loadImage(projectState.project.object);
         setState(() {
-          project!.addTileSet(dialogResult);
+          projectState.project.object.addTileSet(dialogResult);
+          projectState.tileSet.select(dialogResult);
         });
-        await dialogResult.loadImage(project!);
       }
     }
   }
 
   void editTileSet() async {
-    if (project != null) {
+    if (projectState.project.isDefined() && projectState.tileSet.isDefined()) {
       TileSet? dialogResult = await showDialog<TileSet>(
         context: context,
         builder: (BuildContext context) {
-          return EditTileSetDialog(project: project!, tileSet: TileSet.clone(tileSet));
+          return EditTileSetDialog(project: projectState.project.object, tileSet: TileSet.clone(projectState.tileSet.object));
         },
       );
       if (dialogResult != null) {
         setState(() {
-          tileSet.name = dialogResult.name;
-          tileSet.active = dialogResult.active;
+          projectState.tileSet.object.name = dialogResult.name;
+          projectState.tileSet.object.active = dialogResult.active;
         });
       }
+    }
+  }
+
+  void deleteTileSet() async {
+    if (projectState.project.isDefined() && projectState.tileSet.isDefined()) {
+      setState(() {
+        projectState.project.object.deleteTileSet(projectState.tileSet.object);
+        projectState.tileSet.select(TileSet.none);
+      });
     }
   }
 }
