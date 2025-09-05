@@ -30,8 +30,8 @@ def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: 
     tileSetKeyNamePairs = {}
     for tileset in json['tilesets']:
         key = tileset['key']
-        name = tileset['name']
-        tileSetKeyNamePairs[key] = name
+        fileName = tileset['name']
+        tileSetKeyNamePairs[key] = fileName
         active = bool(tileset['active'])
         if ( active ):
             tile = tileset['tile']
@@ -39,12 +39,12 @@ def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: 
             tileHeight = int(tile['height'])
 
             projectFilePath = pathlib.Path(projectFile)
-            tileSetFilePath = f'{projectFilePath.parent}/{tileset["input"]}'
-            print(f'Open \'{name}\' TileSet image from: {tileSetFilePath} (mode: {mode})')
+            tileSetFilePath = f'{projectFilePath.parent}/{tileset["file"]}'
+            print(f'Open \'{fileName}\' TileSet image from: {tileSetFilePath} (mode: {mode})')
             
-            tilesDirectory = f'{outputDirectory}\\{targetTilesDirectory}\\{name}'
-            slicesDirectory = f'{outputDirectory}\\{targetSlicesDirectory}\\{name}'
-            groupsDirectory = f'{outputDirectory}\\{targetGroupsDirectory}\\{name}'
+            tilesDirectory = f'{outputDirectory}\\{targetTilesDirectory}\\{fileName}'
+            slicesDirectory = f'{outputDirectory}\\{targetSlicesDirectory}\\{fileName}'
+            groupsDirectory = f'{outputDirectory}\\{targetGroupsDirectory}\\{fileName}'
             os.mkdir(tilesDirectory)
             os.mkdir(slicesDirectory)
             os.mkdir(groupsDirectory)
@@ -52,19 +52,19 @@ def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: 
             # magick input/magecity.png -crop 32x32 output/magecity32x32/magecity.png
             subprocess.run(["magick", tileSetFilePath, "-crop", f'{tileWidth}x{tileHeight}', f'{tilesDirectory}\\{tileset["name"]}.png'])
             
-            print(f'Tile of \'{name}\' were built into: {tilesDirectory}')
+            print(f'Tile of \'{fileName}\' were built into: {tilesDirectory}')
 
             if mode == Mode.split:
-                buildSlices(tileset['slices'], name, tilesDirectory, slicesDirectory, tileWidth, tileHeight, tileSetFilePath)
-                buildGroups(tileset['groups'], name, tilesDirectory, groupsDirectory, tileWidth, tileHeight, tileSetFilePath)
-                dropGarbages(tileset['garbage'], name, tilesDirectory)
-                removeUnusedTiles(tileset['tiles'], name, tilesDirectory, tileWidth, tileHeight, tileSetFilePath)
+                buildSlices(tileset['slices'], fileName, tilesDirectory, slicesDirectory, tileWidth, tileHeight, tileSetFilePath)
+                buildGroups(tileset['groups'], fileName, tilesDirectory, groupsDirectory, tileWidth, tileHeight, tileSetFilePath)
+                dropGarbages(tileset['garbage'], fileName, tilesDirectory)
+                removeUnusedTiles(tileset['tiles'], fileName, tilesDirectory, tileWidth, tileHeight, tileSetFilePath)
 
         else:
-            print(f'Skip \'{name}\' TileSet')
+            print(f'Skip \'{fileName}\' TileSet')
     if mode == Mode.build:
         output = json['output']
-        name = output['name']
+        fileName = output['file']
         tile = output['tile']
         tileWidth = int(tile['width'])
         tileHeight = int(tile['height'])
@@ -73,7 +73,7 @@ def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: 
         outputHeight = int(size['height'])
         print(f'Building {outputWidth}x{outputHeight} output from {tileWidth}x{tileHeight} tiles')
         tilesRootDirectory = f'{outputDirectory}\\{targetTilesDirectory}'
-        outputFile = f'{outputDirectory}\\{name}'
+        outputFile = f'{outputDirectory}\\{fileName}'
         buildOutput(output['data'], tileSetKeyNamePairs, tilesRootDirectory, emptyTilePath, tileWidth, tileHeight, outputWidth, outputHeight, outputFile)
 
 def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):

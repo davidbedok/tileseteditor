@@ -52,7 +52,7 @@ class TileSetProject {
 
   static TileSetProject clone(TileSetProject project) {
     TileSetOutput output = TileSetOutput(
-      name: project.output.name,
+      fileName: project.output.fileName,
       tileWidth: project.output.tileWidth,
       tileHeight: project.output.tileHeight,
       width: project.output.width,
@@ -89,7 +89,7 @@ class TileSetProject {
         'name': String name, //
         'description': String description, //
         'output': {
-          'name': String file, //
+          'file': String fileName, //
           'tile': {
             'width': int tileWidth, //
             'height': int tileHeight, //
@@ -103,7 +103,7 @@ class TileSetProject {
         TileSetProject(
           name: name,
           description: description,
-          output: TileSetOutput(name: file, tileWidth: tileWidth, tileHeight: tileHeight, width: width, height: height),
+          output: TileSetOutput(fileName: fileName, tileWidth: tileWidth, tileHeight: tileHeight, width: width, height: height),
         ),
       _ => throw const FormatException('Failed to load TileSetProject'),
     };

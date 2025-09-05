@@ -271,7 +271,7 @@ class TileSet {
       'key': key,
       'name': name,
       'active': active,
-      'input': filePath,
+      'file': filePath,
       'margin': margin,
       'spacing': spacing,
       'tile': {
@@ -295,7 +295,7 @@ class TileSet {
         'key': int key,
         'name': String name, //
         'active': bool active,
-        'input': String filePath, //
+        'file': String filePath, //
         'margin': int margin, //
         'spacing': int spacing, //
         'tile': {

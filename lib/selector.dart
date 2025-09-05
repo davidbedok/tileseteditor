@@ -267,7 +267,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
         setState(() {
           project!.name = dialogResult.name;
           project!.description = dialogResult.description;
-          project!.output.name = dialogResult.output.name;
+          project!.output.fileName = dialogResult.output.fileName;
           project!.output.width = dialogResult.output.width;
           project!.output.height = dialogResult.output.height;
         });

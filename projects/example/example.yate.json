@@ -11,7 +11,7 @@
             "key": 0,
             "name": "magecity",
             "active": true,
-            "input": "tilesets\\magecity.png",
+            "file": "tilesets\\magecity.png",
             "margin": 0,
             "spacing": 0,
             "tile": {
@@ -424,7 +424,7 @@
                     "height": 5,
                     "output": {
                         "left": 9,
-                        "top": 5
+                        "top": 6
                     }
                 },
                 {
@@ -1003,7 +1003,7 @@
             "key": 1,
             "name": "interior",
             "active": true,
-            "input": "tilesets\\interior.png",
+            "file": "tilesets\\interior.png",
             "margin": 0,
             "spacing": 0,
             "tile": {
@@ -1091,7 +1091,7 @@
             "key": 2,
             "name": "floors",
             "active": true,
-            "input": "tilesets\\floors.png",
+            "file": "tilesets\\floors.png",
             "margin": 0,
             "spacing": 0,
             "tile": {
@@ -1235,7 +1235,7 @@
         }
     ],
     "output": {
-		"name": "example.png",
+        "file": "example.png",
         "tile": {
             "width": 32,
             "height": 32
@@ -1687,20 +1687,20 @@
                     "index": 12
                 },
                 {
-                    "tileset": 0,
-                    "index": 116
+                    "tileset": -1,
+                    "index": -1
                 },
                 {
-                    "tileset": 0,
-                    "index": 117
+                    "tileset": -1,
+                    "index": -1
                 },
                 {
-                    "tileset": 0,
-                    "index": 118
+                    "tileset": -1,
+                    "index": -1
                 },
                 {
-                    "tileset": 0,
-                    "index": 119
+                    "tileset": -1,
+                    "index": -1
                 },
                 {
                     "tileset": -1,
@@ -1790,19 +1790,19 @@
                 },
                 {
                     "tileset": 0,
-                    "index": 124
+                    "index": 116
                 },
                 {
                     "tileset": 0,
-                    "index": 125
+                    "index": 117
                 },
                 {
                     "tileset": 0,
-                    "index": 126
+                    "index": 118
                 },
                 {
                     "tileset": 0,
-                    "index": 127
+                    "index": 119
                 },
                 {
                     "tileset": -1,
@@ -1892,19 +1892,19 @@
                 },
                 {
                     "tileset": 0,
-                    "index": 132
+                    "index": 124
                 },
                 {
                     "tileset": 0,
-                    "index": 133
+                    "index": 125
                 },
                 {
                     "tileset": 0,
-                    "index": 134
+                    "index": 126
                 },
                 {
                     "tileset": 0,
-                    "index": 135
+                    "index": 127
                 },
                 {
                     "tileset": -1,
@@ -1994,19 +1994,19 @@
                 },
                 {
                     "tileset": 0,
-                    "index": 140
+                    "index": 132
                 },
                 {
                     "tileset": 0,
-                    "index": 141
+                    "index": 133
                 },
                 {
                     "tileset": 0,
-                    "index": 142
+                    "index": 134
                 },
                 {
                     "tileset": 0,
-                    "index": 143
+                    "index": 135
                 },
                 {
                     "tileset": -1,
@@ -2096,19 +2096,19 @@
                 },
                 {
                     "tileset": 0,
-                    "index": 148
+                    "index": 140
                 },
                 {
                     "tileset": 0,
-                    "index": 149
+                    "index": 141
                 },
                 {
                     "tileset": 0,
-                    "index": 150
+                    "index": 142
                 },
                 {
                     "tileset": 0,
-                    "index": 151
+                    "index": 143
                 },
                 {
                     "tileset": -1,
@@ -2197,20 +2197,20 @@
                     "index": -1
                 },
                 {
-                    "tileset": -1,
-                    "index": -1
+                    "tileset": 0,
+                    "index": 148
                 },
                 {
-                    "tileset": -1,
-                    "index": -1
+                    "tileset": 0,
+                    "index": 149
                 },
                 {
-                    "tileset": -1,
-                    "index": -1
+                    "tileset": 0,
+                    "index": 150
                 },
                 {
-                    "tileset": -1,
-                    "index": -1
+                    "tileset": 0,
+                    "index": 151
                 },
                 {
                     "tileset": -1,

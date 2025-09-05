@@ -40,10 +40,10 @@ class ProjectWidget extends StatelessWidget {
         SizedBox(height: space),
         AppDialogTextField(
           name: 'Output file',
-          initialValue: project.output.name,
+          initialValue: project.output.fileName,
           validationMessage: 'Please enter the file name of the output (*.png)',
           onChanged: (String value) {
-            project.output.name = value;
+            project.output.fileName = value;
           },
         ),
         SizedBox(height: space),

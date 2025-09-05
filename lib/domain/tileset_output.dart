@@ -7,14 +7,20 @@ class TileSetOutput {
   static const int minOutputHeight = 24;
   static const int maxOutputHeight = 100;
 
-  String name;
+  String fileName;
   int tileWidth;
   int tileHeight;
   int width;
   int height;
   TileSetData data = TileSetData(0, 0);
 
-  TileSetOutput({required this.name, required this.tileWidth, required this.tileHeight, required this.width, required this.height});
+  TileSetOutput({
+    required this.fileName, //
+    required this.tileWidth,
+    required this.tileHeight,
+    required this.width,
+    required this.height,
+  });
 
   void init() {
     data = TileSetData(0, 0);
@@ -30,7 +36,7 @@ class TileSetOutput {
 
   Map<String, dynamic> toJson(List<TileSet> tileSets) {
     return {
-      'name': name,
+      'file': fileName,
       'tile': {'width': tileWidth, 'height': tileHeight},
       'size': {'width': width, 'height': height},
       'data': TileSetData.init(width, height, tileSets).toJson(),
