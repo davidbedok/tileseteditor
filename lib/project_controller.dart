@@ -1,37 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/project_state.dart';
 
-class ProjectActionController extends StatefulWidget {
+class ProjectController extends StatefulWidget {
   final TileSetProject project;
+  final ProjectState projectState;
 
   final void Function() onEditProject;
   final void Function() onCloseProject;
   final void Function() onAddTileSet;
+  final void Function() onEditTileSet;
 
-  const ProjectActionController({
+  const ProjectController({
     super.key, //
     required this.project,
+    required this.projectState,
     required this.onEditProject,
     required this.onCloseProject,
     required this.onAddTileSet,
+    required this.onEditTileSet,
   });
 
   @override
-  State<ProjectActionController> createState() => ProjectActionControllerState();
+  State<ProjectController> createState() => ProjectControllerState();
 }
 
-class ProjectActionControllerState extends State<ProjectActionController> {
-  TileSetItem? selectedItem;
+class ProjectControllerState extends State<ProjectController> {
+  TileSet? selectedTileSet;
 
   @override
   void initState() {
     super.initState();
+    widget.projectState.subscribeOnSelected(selectTileSet);
   }
 
   @override
   void dispose() {
     super.dispose();
+    widget.projectState.unsubscribeOnSelected(selectTileSet);
+  }
+
+  void selectTileSet(ProjectState state, TileSet? tileSet) {
+    setState(() {
+      selectedTileSet = tileSet;
+    });
   }
 
   @override
@@ -54,6 +67,17 @@ class ProjectActionControllerState extends State<ProjectActionController> {
             onPressed: () {
               widget.onAddTileSet.call();
             },
+          ),
+          SizedBox(width: 5),
+          Visibility(
+            visible: selectedTileSet != null,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.add), //
+              label: Text('Edit ${selectedTileSet != null ? selectedTileSet!.name : ''} TileSet'),
+              onPressed: () {
+                widget.onEditTileSet.call();
+              },
+            ),
           ),
           SizedBox(width: 5),
           ElevatedButton.icon(

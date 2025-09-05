@@ -13,7 +13,7 @@ class TileSetProject {
 
   List<TileSet> tileSets = [];
 
-  String getDirectory() => path.dirname(filePath!); // FIXME project must be saved before
+  String getDirectory() => path.dirname(filePath!);
 
   TileSetProject({required this.name, this.description, required this.output});
 

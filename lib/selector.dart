@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
+import 'package:tileseteditor/dialogs/edit_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
 import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
@@ -15,7 +16,8 @@ import 'package:tileseteditor/menubar.dart';
 import 'package:tileseteditor/output/state/output_editor_state.dart';
 import 'package:tileseteditor/overview/overview_editor.dart';
 import 'package:tileseteditor/overview/overview_editor_state.dart';
-import 'package:tileseteditor/project_action_controller.dart';
+import 'package:tileseteditor/project_controller.dart';
+import 'package:tileseteditor/project_state.dart';
 import 'package:tileseteditor/splitter/state/splitter_editor_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/welcome_widget.dart';
@@ -32,6 +34,7 @@ class TileSetSelector extends StatefulWidget {
 class TileSetSelectorState extends State<TileSetSelector> {
   TileSetProject? project;
   TileSet tileSet = TileSet.none;
+  ProjectState projectState = ProjectState();
   SplitterEditorState splitterState = SplitterEditorState();
   OutputEditorState outputState = OutputEditorState();
   OverviewEditorState overviewState = OverviewEditorState();
@@ -79,11 +82,13 @@ class TileSetSelectorState extends State<TileSetSelector> {
                           onNewProject: newProject, //
                           onOpenProject: openProject,
                         )
-                      : ProjectActionController(
+                      : ProjectController(
                           project: project!, //
+                          projectState: projectState,
                           onAddTileSet: addTileSet,
                           onCloseProject: closeProject,
                           onEditProject: editProject,
+                          onEditTileSet: editTileSet,
                         ),
                 ),
               ],
@@ -133,6 +138,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                                     splitterState = SplitterEditorState();
                                     outputState = OutputEditorState();
                                   });
+                                  projectState.select(value);
                                 }
                               },
                             ),
@@ -152,7 +158,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                       splitterState: splitterState, //
                       outputState: outputState,
                       project: project!,
-                      tileSet: tileSet!,
+                      tileSet: tileSet,
                     ),
                   )
                 : project != null && tileSet == TileSet.none
@@ -199,8 +205,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
       if (file.existsSync()) {
         String content = await file.readAsString();
         TileSetProject loadedProject = TileSetProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
-        loadedProject!.filePath = filePickerResult.files.single.path!;
-        await loadedProject!.loadTileSetImages();
+        loadedProject.filePath = filePickerResult.files.single.path!;
+        await loadedProject.loadTileSetImages();
         setState(() {
           project = loadedProject;
         });
@@ -259,7 +265,11 @@ class TileSetSelectorState extends State<TileSetSelector> {
       );
       if (dialogResult != null) {
         setState(() {
-          project = dialogResult;
+          project!.name = dialogResult.name;
+          project!.description = dialogResult.description;
+          project!.output.name = dialogResult.output.name;
+          project!.output.width = dialogResult.output.width;
+          project!.output.height = dialogResult.output.height;
         });
       }
     }
@@ -290,6 +300,23 @@ class TileSetSelectorState extends State<TileSetSelector> {
           project!.addTileSet(dialogResult);
         });
         await dialogResult.loadImage(project!);
+      }
+    }
+  }
+
+  void editTileSet() async {
+    if (project != null) {
+      TileSet? dialogResult = await showDialog<TileSet>(
+        context: context,
+        builder: (BuildContext context) {
+          return EditTileSetDialog(project: project!, tileSet: TileSet.clone(tileSet));
+        },
+      );
+      if (dialogResult != null) {
+        setState(() {
+          tileSet.name = dialogResult.name;
+          tileSet.active = dialogResult.active;
+        });
       }
     }
   }

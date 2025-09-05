@@ -28,6 +28,7 @@ class _TileSetWidgetState extends State<TileSetWidget> {
   void initState() {
     super.initState();
     active = widget.tileSet.active;
+    sourceController.text = widget.tileSet.filePath;
   }
 
   @override
@@ -55,29 +56,32 @@ class _TileSetWidgetState extends State<TileSetWidget> {
           },
         ),
         SizedBox(height: TileSetWidget.space),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    browseTileSet();
-                  },
-                  child: const Text('Choose TileSet image (*.png)'),
+        Visibility(
+          visible: !widget.edit,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 18.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      browseTileSet();
+                    },
+                    child: const Text('Choose TileSet image (*.png)'),
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: TextFormField(
-                controller: sourceController,
-                style: Theme.of(context).textTheme.bodyMedium,
-                readOnly: true,
-                validator: (value) => value!.isEmpty ? 'Please select a tileset image' : null,
+              Expanded(
+                child: TextFormField(
+                  controller: sourceController,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  readOnly: true,
+                  validator: (value) => value!.isEmpty ? 'Please select a tileset image' : null,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         SizedBox(height: TileSetWidget.space),
         AppDialogNumberField(name: 'Tile width (same as output)', initialValue: widget.tileSet.tileWidth, disabled: true),

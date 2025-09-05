@@ -332,4 +332,20 @@ class TileSet {
   String toString() {
     return 'TileSet $name (${tileWidth}x$tileHeight) in $filePath';
   }
+
+  static TileSet clone(TileSet tileSet) {
+    TileSet result = TileSet(
+      key: tileSet.key, //
+      name: tileSet.name, //
+      active: tileSet.active,
+      filePath: tileSet.filePath,
+      imageHeight: tileSet.imageHeight,
+      imageWidth: tileSet.imageWidth,
+      margin: tileSet.margin,
+      spacing: tileSet.spacing,
+      tileHeight: tileSet.tileHeight,
+      tileWidth: tileSet.tileWidth,
+    );
+    return result;
+  }
 }
