@@ -58,7 +58,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
               children: <Widget>[
                 Expanded(
                   child: TileSetEditorMenuBar(
-                    project: projectState.project.object,
+                    projectState: projectState,
                     onNewProject: newProject,
                     onOpenProject: openProject,
                     onSaveProject: saveProject,
@@ -66,6 +66,9 @@ class TileSetSelectorState extends State<TileSetSelector> {
                     onEditProject: editProject,
                     onCloseProject: closeProject,
                     onAddTileSet: addTileSet,
+                    onEditTileSet: editTileSet,
+                    onDeleteTileSet: deleteTileSet,
+                    onAddTiles: addTiles,
                   ),
                 ),
               ],
@@ -325,5 +328,9 @@ class TileSetSelectorState extends State<TileSetSelector> {
         projectState.tileSet.select(TileSet.none);
       });
     }
+  }
+
+  void addTiles() async {
+    //
   }
 }

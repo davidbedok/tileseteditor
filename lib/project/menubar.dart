@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/project/project_state.dart';
 
 class TileSetEditorMenuBar extends StatelessWidget {
-  final TileSetProject? project;
+  final ProjectState projectState;
   final void Function() onNewProject;
   final void Function() onOpenProject;
   final void Function() onSaveProject;
@@ -12,10 +14,13 @@ class TileSetEditorMenuBar extends StatelessWidget {
   final void Function() onEditProject;
   final void Function() onCloseProject;
   final void Function() onAddTileSet;
+  final void Function() onEditTileSet;
+  final void Function() onDeleteTileSet;
+  final void Function() onAddTiles;
 
   const TileSetEditorMenuBar({
     super.key,
-    required this.project,
+    required this.projectState,
     required this.onNewProject,
     required this.onOpenProject,
     required this.onSaveProject,
@@ -23,10 +28,16 @@ class TileSetEditorMenuBar extends StatelessWidget {
     required this.onEditProject,
     required this.onCloseProject,
     required this.onAddTileSet,
+    required this.onEditTileSet,
+    required this.onDeleteTileSet,
+    required this.onAddTiles,
   });
 
   @override
   Widget build(BuildContext context) {
+    TileSetProject project = projectState.project.object;
+    TileSet tileSet = projectState.tileSet.object;
+
     return MenuBar(
       style: MenuStyle(
         backgroundColor: WidgetStatePropertyAll(Colors.amber),
@@ -37,32 +48,13 @@ class TileSetEditorMenuBar extends StatelessWidget {
         SubmenuButton(
           style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.only(left: 5, right: 5))),
           menuChildren: <Widget>[
-            /*
-            MenuItemButton(
-              child: SubmenuButton(
-                menuChildren: <Widget>[
-                  MenuItemButton(
-                    onPressed: () {
-                      onNewProject.call();
-                    },
-                    child: const MenuAcceleratorLabel('&Project'),
-                  ),
-                ],
-                child: const MenuAcceleratorLabel('&New'),
-              ),
-            ),
-            */
-            MenuItemButton(
-              onPressed: onNewProject,
-              // style: MenuItemButton.styleFrom(textStyle: Theme.of(context).textTheme.bodySmall),
-              child: const MenuAcceleratorLabel('&New project'),
-            ),
-            MenuItemButton(onPressed: onOpenProject, child: const MenuAcceleratorLabel('&Open project')),
+            MenuItemButton(onPressed: projectState.project.isDefined() ? null : onNewProject, child: const MenuAcceleratorLabel('&New project')),
+            MenuItemButton(onPressed: projectState.project.isDefined() ? null : onOpenProject, child: const MenuAcceleratorLabel('&Open project')),
             Divider(),
-            MenuItemButton(onPressed: project == null ? null : onSaveProject, child: const MenuAcceleratorLabel('&Save project')),
-            MenuItemButton(onPressed: project == null ? null : onSaveAsProject, child: const MenuAcceleratorLabel('Save as..')),
+            MenuItemButton(onPressed: projectState.project.isNotDefined() ? null : onSaveProject, child: const MenuAcceleratorLabel('&Save  project')),
+            MenuItemButton(onPressed: projectState.project.isNotDefined() ? null : onSaveAsProject, child: const MenuAcceleratorLabel('Save as..')),
             Divider(),
-            MenuItemButton(onPressed: project == null ? null : onCloseProject, child: const MenuAcceleratorLabel('&Close project')),
+            MenuItemButton(onPressed: projectState.project.isNotDefined() ? null : onCloseProject, child: const MenuAcceleratorLabel('&Close project')),
             Divider(),
             MenuItemButton(
               onPressed: () {
@@ -76,9 +68,47 @@ class TileSetEditorMenuBar extends StatelessWidget {
         SubmenuButton(
           style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.only(left: 5, right: 5))),
           menuChildren: <Widget>[
-            MenuItemButton(onPressed: project == null ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project')),
+            MenuItemButton(onPressed: projectState.project.isNotDefined() ? null : onEditProject, child: const MenuAcceleratorLabel('&Edit project')),
             Divider(),
-            MenuItemButton(onPressed: project != null && project!.filePath != null ? onAddTileSet : null, child: const MenuAcceleratorLabel('&Add tileset')),
+            MenuItemButton(
+              child: SubmenuButton(
+                menuChildren: <Widget>[
+                  MenuItemButton(
+                    onPressed: projectState.project.isDefined() && project.filePath != null ? onAddTileSet : null,
+                    child: MenuAcceleratorLabel(projectState.project.isDefined() ? '&Add new tileset to ${project.name} project' : '&Add new tileset'),
+                  ),
+                  MenuItemButton(
+                    onPressed: projectState.tileSet.isDefined() ? onEditTileSet : null,
+                    child: MenuAcceleratorLabel(projectState.tileSet.isDefined() ? '&Edit ${tileSet.name} tileset' : '&Edit tileset'),
+                  ),
+                  MenuItemButton(
+                    onPressed: projectState.tileSet.isDefined() ? onDeleteTileSet : null,
+                    child: MenuAcceleratorLabel(projectState.tileSet.isDefined() ? '&Delete ${tileSet.name} tileset' : '&Delete tileset'),
+                  ),
+                ],
+                child: const MenuAcceleratorLabel('&TileSet'),
+              ),
+            ),
+            MenuItemButton(
+              child: SubmenuButton(
+                menuChildren: <Widget>[
+                  MenuItemButton(
+                    onPressed: projectState.project.isDefined() && project.filePath != null ? onAddTiles : null,
+                    child: const MenuAcceleratorLabel('&Add tiles'),
+                  ),
+                  /*
+                  MenuItemButton(
+                    onPressed: project != null && project!.filePath != null ? onEditTileSet : null,
+                    child: const MenuAcceleratorLabel('&Edit tileset'),
+                  ),
+                  MenuItemButton(
+                    onPressed: project != null && project!.filePath != null ? onDeleteTileSet : null,
+                    child: const MenuAcceleratorLabel('&Delete tileset'),
+                  ),*/
+                ],
+                child: const MenuAcceleratorLabel('&Tiles'),
+              ),
+            ),
           ],
           child: const MenuAcceleratorLabel('&Edit'),
         ),
