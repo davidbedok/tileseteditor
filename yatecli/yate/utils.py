@@ -27,11 +27,11 @@ def openTileSetProject( projectFile: str ):
     return data
 
 def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: str, json ):
-    tileSetKeyNamePairs = {}
+    keyReferenceMap = {}
     for tileset in json['tilesets']:
         key = tileset['key']
         fileName = tileset['name']
-        tileSetKeyNamePairs[key] = fileName
+        keyReferenceMap[key] = fileName
         active = bool(tileset['active'])
         if ( active ):
             tile = tileset['tile']
@@ -74,11 +74,11 @@ def process( mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: 
         print(f'Building {outputWidth}x{outputHeight} output from {tileWidth}x{tileHeight} tiles')
         tilesRootDirectory = f'{outputDirectory}\\{targetTilesDirectory}'
         outputFile = f'{outputDirectory}\\{fileName}'
-        buildOutput(output['data'], tileSetKeyNamePairs, tilesRootDirectory, emptyTilePath, tileWidth, tileHeight, outputWidth, outputHeight, outputFile)
+        buildOutput(output['data'], keyReferenceMap, tilesRootDirectory, emptyTilePath, tileWidth, tileHeight, outputWidth, outputHeight, outputFile)
 
 def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
     for slice in json:
-        key = slice['key']
+        id = slice['id']
         name = slice['name']
         left = (slice['left'] - 1) * tileWidth
         top = (slice['top'] - 1) * tileHeight
@@ -86,7 +86,7 @@ def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: s
         height = slice['height'] * tileHeight
         
         sliceFile = f'{slicesDirectory}\\{name}.png'
-        print(f'Create \'{name}\' Slice image (key: {key}) into: {sliceFile}')
+        print(f'Create \'{name}\' Slice image (id: {id}) into: {sliceFile}')
 
         # magick input/magecity.png -crop 96x64+96+128 +repage input/slice.png
         subprocess.run(["magick", tileSetFilePath, "-crop", f'{width}x{height}+{left}+{top}', "+repage", sliceFile])
@@ -95,12 +95,12 @@ def buildSlices( json, tileSetName: str, tilesDirectory: str, slicesDirectory: s
 
 def buildGroups( json, tileSetName: str, tilesDirectory: str, groupsDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
     for group in json:
-        key = group['key']
+        id = group['id']
         name = group['name']
         width = group['width']
         
         groupFile = f'{groupsDirectory}\\{name}.png'
-        print(f'Create \'{name}\' Group image (key: {key}) into: {groupFile}')
+        print(f'Create \'{name}\' Group image (id: {id}) into: {groupFile}')
 
         # magick montage -mode concatenate -background none -geometry 32x32+0+0 -tile 3x input/group/floor-0.png input/group/floor-1.png input/group/floor-2.png input/group/floor-3.png input/group/floor-4.png input/group/floor-5.png output/floor.png
         commandData = ["magick", "montage", "-mode", "concatenate", "-background", "none", "-geometry", f'{tileWidth}x{tileHeight}+0+0', "-tile", f'{width}x']
@@ -144,15 +144,15 @@ def removeUnusedTilesByIndices( maxIndex: int, usedIndices: list[int], tilesDire
                 result.append(index)
     return result
 
-def buildOutput( json, tileSetKeyNamePairs: map, tilesRootDirectory: str, emptyTilePath: str, tileWidth: int, tileHeight: int, outputWidth: int, outputHeight: int, outputFile: str):
+def buildOutput( json, keyReferenceMap: map, tilesRootDirectory: str, emptyTilePath: str, tileWidth: int, tileHeight: int, outputWidth: int, outputHeight: int, outputFile: str):
     tiles = []
     for row in json:
         for column in row:
-            tileSetKey = column['tileset']
-            tileIndex = column['index']
-            if tileSetKey != -1:
-                tileSetName = tileSetKeyNamePairs[tileSetKey]
-                tiles.append(f'{tilesRootDirectory}\\{tileSetName}\\{tileSetName}-{tileIndex}.png')
+            key = column['key']
+            index = column['index']
+            if key != -1:
+                tileSetName = keyReferenceMap[key] # FIXME can be tilegroup too
+                tiles.append(f'{tilesRootDirectory}\\{tileSetName}\\{tileSetName}-{index}.png')
             else:
                 tiles.append(f'{emptyTilePath}')
 
