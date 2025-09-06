@@ -30,7 +30,12 @@ class TileSetProject {
     return result;
   }
 
-  int getNextTileSetKey() {
+  int getNextTileSetId() {
+    int max = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.id).reduce(math.max) : 0;
+    return max + 1;
+  }
+
+  int getNextKey() {
     int result = 0;
     int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(math.max) : 0;
     return [result, maxTileSetKey].reduce(math.max) + 1;

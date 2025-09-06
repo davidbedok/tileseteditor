@@ -7,7 +7,7 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
 
 class TileSetGroup extends TileSetNamedArea {
-  static final TileSetGroup none = TileSetGroup(-1, '-', TileSetAreaSize(0, 0));
+  static final TileSetGroup none = TileSetGroup(id: -1, name: '-', size: TileSetAreaSize(0, 0));
 
   @override
   Color getHoverColor() => EditorColor.tileGroupHovered.color;
@@ -18,11 +18,15 @@ class TileSetGroup extends TileSetNamedArea {
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);
 
-  TileSetGroup(super.key, super.name, super.size);
+  TileSetGroup({
+    required super.id, //
+    required super.name,
+    required super.size,
+  });
 
   Map<String, dynamic> toJson() {
     return {
-      'key': key, //
+      'id': id, //
       'name': name, //
       'indices': tileIndices,
       'width': size.width,
@@ -34,12 +38,12 @@ class TileSetGroup extends TileSetNamedArea {
   factory TileSetGroup.fromJson(Map<String, dynamic> json) {
     TileSetGroup result = switch (json) {
       {
-        'key': int key, //
+        'id': int id,
         'name': String name, //
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetGroup(key, name, TileSetAreaSize(width, height)),
+        TileSetGroup(id: id, name: name, size: TileSetAreaSize(width, height)),
       _ => throw const FormatException('Failed to load TileSetGroup'),
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);

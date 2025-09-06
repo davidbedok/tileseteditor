@@ -6,7 +6,6 @@ import 'package:tileseteditor/domain/tileset_area_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 abstract class TileSetNamedArea extends TileSetItem {
-  int key;
   String name;
   TileSetAreaSize size;
 
@@ -16,20 +15,21 @@ abstract class TileSetNamedArea extends TileSetItem {
   Color getColor() => color;
 
   @override
-  int getKey() => key;
-
-  @override
   Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(size.width * tileWidth, size.height * tileHeight);
 
   @override
   String getLabel() => name;
 
-  TileSetNamedArea(this.key, this.name, this.size);
+  TileSetNamedArea({
+    required super.id, //
+    required this.name,
+    required this.size,
+  });
 
   String toDropDownValue() {
     String addon = '';
-    if (key >= 0) {
-      addon = ' ${size.toDropDownValue()} ($key)';
+    if (id >= 0) {
+      addon = ' ${size.toDropDownValue()} ($id)';
     }
     return '$name$addon';
   }

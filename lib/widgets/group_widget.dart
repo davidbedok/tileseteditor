@@ -66,7 +66,7 @@ class _GroupWidgetState extends State<GroupWidget> {
           width: 400,
           child: Column(
             children: [
-              AppDialogNumberField(name: 'Key', initialValue: widget.group.key, disabled: true),
+              AppDialogNumberField(name: 'ID', initialValue: widget.group.id, disabled: true),
               AppDialogTextField(
                 name: 'Name',
                 initialValue: widget.group.name,

@@ -207,7 +207,14 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
         TileCoord coord = TileCoord(i + 1, j + 1);
         if (tileSet.isFreeByIndex(tileSet.getIndex(coord))) {
           TileSetTile? usedTileSetTile = tileSet.findTile(coord);
-          TileSetTile tileSetTile = usedTileSetTile ?? TileSetTile(i + 1, j + 1);
+          TileSetTile tileSetTile =
+              usedTileSetTile ??
+              TileSetTile(
+                id: tileSet.getNextTileId(), //
+                left: i + 1,
+                top: j + 1,
+              );
+          ;
           if (tileSetTile.output != null) {
             OverviewTileComponent? topLeftOutputTile = getOverviewTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {

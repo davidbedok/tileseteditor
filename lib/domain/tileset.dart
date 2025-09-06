@@ -15,6 +15,7 @@ import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileSet {
   static final TileSet none = TileSet(
+    id: -1,
     key: -1,
     name: '-',
     active: true,
@@ -27,6 +28,7 @@ class TileSet {
     tileWidth: 0,
   );
 
+  int id;
   int key;
   String name;
   bool active;
@@ -67,6 +69,7 @@ class TileSet {
   }
 
   TileSet({
+    required this.id,
     required this.key,
     required this.name,
     required this.active,
@@ -114,11 +117,19 @@ class TileSet {
     }
   }
 
-  int getNextKey() {
-    int result = 0;
-    int maxSliceKey = slices.isNotEmpty ? slices.map((slice) => slice.key).reduce(math.max) : 0;
-    int maxGroupKey = groups.isNotEmpty ? groups.map((group) => group.key).reduce(math.max) : 0;
-    return [result, maxSliceKey, maxGroupKey].reduce(math.max) + 1;
+  int getNextSliceId() {
+    int max = slices.isNotEmpty ? slices.map((slice) => slice.id).reduce(math.max) : 0;
+    return max + 1;
+  }
+
+  int getNextGroupId() {
+    int max = groups.isNotEmpty ? groups.map((group) => group.id).reduce(math.max) : 0;
+    return max + 1;
+  }
+
+  int getNextTileId() {
+    int max = tiles.isNotEmpty ? tiles.map((tile) => tile.id).reduce(math.max) : 0;
+    return max + 1;
   }
 
   bool isFreeByCoord(TileCoord coord) {
@@ -236,8 +247,8 @@ class TileSet {
     return result;
   }
 
-  TileSetSlice? findSliceByKey(int key) {
-    return slices.where((slice) => slice.key == key).first;
+  TileSetSlice? findSliceById(int id) {
+    return slices.where((slice) => slice.id == id).first;
   }
 
   TileSetGroup? findGroup(TileCoord coord) {
@@ -251,8 +262,8 @@ class TileSet {
     return result;
   }
 
-  TileSetGroup? findGroupByKey(int key) {
-    return groups.where((group) => group.key == key).first;
+  TileSetGroup? findGroupById(int id) {
+    return groups.where((group) => group.id == id).first;
   }
 
   TileSetTile? findTile(TileCoord coord) {
@@ -266,6 +277,7 @@ class TileSet {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'key': key,
       'name': name,
       'active': active,
@@ -290,6 +302,7 @@ class TileSet {
   factory TileSet.fromJson(Map<String, dynamic> json) {
     TileSet result = switch (json) {
       {
+        'id': int id,
         'key': int key,
         'name': String name, //
         'active': bool active,
@@ -306,6 +319,7 @@ class TileSet {
         }, //
       } =>
         TileSet(
+          id: id,
           key: key,
           name: name,
           active: active,
@@ -333,8 +347,9 @@ class TileSet {
 
   static TileSet clone(TileSet tileSet) {
     TileSet result = TileSet(
-      key: tileSet.key, //
-      name: tileSet.name, //
+      id: tileSet.id, //
+      key: tileSet.key,
+      name: tileSet.name,
       active: tileSet.active,
       filePath: tileSet.filePath,
       imageHeight: tileSet.imageHeight,

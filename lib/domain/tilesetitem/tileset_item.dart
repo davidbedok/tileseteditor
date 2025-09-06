@@ -5,15 +5,17 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
 abstract class TileSetItem {
-  static final TileSetItem none = TileSetTile(0, 0);
+  static final TileSetItem none = TileSetTile(id: -1, left: 0, top: 0);
 
+  int id;
   TileCoord? output;
   List<int> tileIndices = [];
+
+  TileSetItem({required this.id});
 
   Color getColor();
   Color getHoverColor();
   Color getTextColor();
-  int getKey();
   String getLabel();
   Vector2 getRealSize(double tileWidth, double tileHeight);
   Vector2 getRealPosition(double tileWidth, double tileHeight);

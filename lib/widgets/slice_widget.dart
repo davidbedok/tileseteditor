@@ -66,7 +66,7 @@ class SliceWidget extends StatelessWidget {
                 )
               : Column(
                   children: [
-                    AppDialogNumberField(name: 'Key', initialValue: slice.key, disabled: true),
+                    AppDialogNumberField(name: 'ID', initialValue: slice.id, disabled: true),
                     AppDialogTextField(
                       name: 'Name',
                       initialValue: slice.name,

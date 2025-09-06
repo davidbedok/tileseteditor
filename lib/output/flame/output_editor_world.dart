@@ -226,7 +226,13 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         TileCoord coord = TileCoord(i + 1, j + 1);
         if (tileSet.isFreeByIndex(tileSet.getIndex(coord))) {
           TileSetTile? usedTileSetTile = tileSet.findTile(coord);
-          TileSetTile tileSetTile = usedTileSetTile ?? TileSetTile(i + 1, j + 1);
+          TileSetTile tileSetTile =
+              usedTileSetTile ??
+              TileSetTile(
+                id: tileSet.getNextTileId(), //
+                left: i + 1,
+                top: j + 1,
+              );
           if (tileSetTile.output != null) {
             OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
@@ -334,8 +340,13 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         TileCoord coord = TileCoord(i + 1, j + 1);
         if (tileSet.isFreeByIndex(tileSet.getIndex(coord))) {
           TileSetTile? usedTileSetTile = tileSet.findTile(coord);
-          TileSetTile tileSetTile = usedTileSetTile ?? TileSetTile(i + 1, j + 1);
-
+          TileSetTile tileSetTile =
+              usedTileSetTile ??
+              TileSetTile(
+                id: tileSet.getNextTileId(), //
+                left: i + 1,
+                top: j + 1,
+              );
           SingleTileComponent singleTileComponent = SingleTileComponent(
             tileSet: tileSet,
             tile: tileSetTile,

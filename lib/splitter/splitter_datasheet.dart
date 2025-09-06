@@ -101,7 +101,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                     return DropdownMenuItem<TileSetSlice>(value: slice, child: Text(slice.toDropDownValue()));
                   }).toList(),
                   onChanged: (TileSetSlice? value) {
-                    if (value != null && tileSetItem.getKey() != value.key) {
+                    if (value != null && tileSetItem.id != value.id) {
                       setState(() {
                         tileSetItem = value;
                       });
@@ -134,7 +134,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                     return DropdownMenuItem<TileSetGroup>(value: group, child: Text(group.toDropDownValue()));
                   }).toList(),
                   onChanged: (TileSetGroup? value) {
-                    if (value != null && tileSetItem.getKey() != value.key) {
+                    if (value != null && tileSetItem.id != value.id) {
                       setState(() {
                         tileSetItem = value;
                       });

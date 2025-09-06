@@ -7,15 +7,12 @@ import 'package:tileseteditor/domain/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileSetTile extends TileSetItem {
-  static final TileSetTile freeTile = TileSetTile(0, 0);
-  static final TileSetTile garbageTile = TileSetTile(0, 0, garbage: true);
+  static final TileSetTile freeTile = TileSetTile(id: -1, left: 0, top: 0);
+  static final TileSetTile garbageTile = TileSetTile(id: -1, left: 0, top: 0, garbage: true);
 
   int left;
   int top;
   bool garbage = false;
-
-  @override
-  int getKey() => -1;
 
   @override
   String getLabel() => 'Tile $left:$top';
@@ -35,14 +32,20 @@ class TileSetTile extends TileSetItem {
   @override
   Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(tileWidth, tileHeight);
 
-  TileSetTile(this.left, this.top, {bool garbage = false});
+  TileSetTile({
+    required super.id, //
+    required this.left,
+    required this.top,
+    bool garbage = false,
+  });
 
   Map<String, dynamic> toJson(TileSet tileSet) {
     tileIndices.clear();
     tileIndices.add(tileSet.getIndex(TileCoord(left, top)));
     return {
-      'left': left, //
-      'top': top, //
+      'id': id, //
+      'left': left,
+      'top': top,
       'indices': tileIndices,
       'output': output?.toJson(),
     };
@@ -51,10 +54,11 @@ class TileSetTile extends TileSetItem {
   factory TileSetTile.fromJson(Map<String, dynamic> json) {
     TileSetTile result = switch (json) {
       {
+        'id': int id,
         'left': int left, //
         'top': int top, //
       } =>
-        TileSetTile(left, top),
+        TileSetTile(id: id, left: left, top: top),
       _ => throw const FormatException('Failed to load TileSetTile'),
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);
