@@ -1,14 +1,14 @@
-class TileSetAreaSize {
+class TileRectSize {
   int width;
   int height;
 
-  TileSetAreaSize(this.width, this.height);
+  TileRectSize(this.width, this.height);
 
-  static List<TileSetAreaSize> options(int numberOfTiles) {
-    List<TileSetAreaSize> result = [];
+  static List<TileRectSize> options(int numberOfTiles) {
+    List<TileRectSize> result = [];
     for (int i = 1; i <= numberOfTiles; i++) {
       if (numberOfTiles % i == 0) {
-        result.add(TileSetAreaSize(i, numberOfTiles ~/ i));
+        result.add(TileRectSize(i, numberOfTiles ~/ i));
       }
     }
     return result;
@@ -20,7 +20,7 @@ class TileSetAreaSize {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is TileSetAreaSize && runtimeType == other.runtimeType && width == other.width && height == other.height);
+      identical(this, other) || (other is TileRectSize && runtimeType == other.runtimeType && width == other.width && height == other.height);
 
   @override
   int get hashCode => width.hashCode;

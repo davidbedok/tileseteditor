@@ -10,6 +10,7 @@
 		{
 			"id": 0,
 			"name": "doors",
+            "active": true,
             "tile": {
                 "width": 32,
                 "height": 32

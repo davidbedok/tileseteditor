@@ -4,9 +4,10 @@ import 'dart:ui' as dui;
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tileset_change_type.dart';
-import 'package:tileseteditor/domain/tileset_garbage.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tile_size.dart';
+import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
+import 'package:tileseteditor/domain/tileset/tileset_garbage.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
@@ -24,8 +25,7 @@ class TileSet {
     imageWidth: 0,
     margin: 0,
     spacing: 0,
-    tileHeight: 0,
-    tileWidth: 0,
+    tileSize: TileSize(0, 0),
   );
 
   int id;
@@ -33,8 +33,7 @@ class TileSet {
   String name;
   bool active;
   String filePath;
-  int tileWidth;
-  int tileHeight;
+  TileSize tileSize;
   int margin;
   int spacing;
 
@@ -50,8 +49,8 @@ class TileSet {
   // FIXME do we need it here?
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
-  int getMaxTileRow() => imageWidth ~/ tileWidth;
-  int getMaxTileColumn() => imageHeight ~/ tileHeight;
+  int getMaxTileRow() => imageWidth ~/ tileSize.widthPx;
+  int getMaxTileColumn() => imageHeight ~/ tileSize.heightPx;
   int getMaxTileIndex() => getMaxTileRow() * getMaxTileColumn() - 1;
 
   List<TileSetGroup> getGroupsWithNone() {
@@ -74,8 +73,7 @@ class TileSet {
     required this.name,
     required this.active,
     required this.filePath,
-    required this.tileWidth,
-    required this.tileHeight,
+    required this.tileSize,
     required this.margin,
     required this.spacing,
     required this.imageWidth,
@@ -285,8 +283,8 @@ class TileSet {
       'margin': margin,
       'spacing': spacing,
       'tile': {
-        'width': tileWidth, //
-        'height': tileHeight,
+        'width': tileSize.widthPx, //
+        'height': tileSize.heightPx,
       },
       'size': {
         'width': imageWidth, //
@@ -310,8 +308,8 @@ class TileSet {
         'margin': int margin, //
         'spacing': int spacing, //
         'tile': {
-          'width': int tileWidth, //
-          'height': int tileHeight, //
+          'width': int tileWidthPx, //
+          'height': int tileHeightPx, //
         }, //
         'size': {
           'width': int imageWidth, //
@@ -324,8 +322,7 @@ class TileSet {
           name: name,
           active: active,
           filePath: filePath,
-          tileWidth: tileWidth,
-          tileHeight: tileHeight,
+          tileSize: TileSize(tileWidthPx, tileHeightPx),
           margin: margin,
           spacing: spacing,
           imageWidth: imageWidth,
@@ -342,7 +339,7 @@ class TileSet {
 
   @override
   String toString() {
-    return 'TileSet $name (${tileWidth}x$tileHeight) in $filePath';
+    return 'TileSet $name (${tileSize.widthPx}x${tileSize.heightPx}) in $filePath';
   }
 
   static TileSet clone(TileSet tileSet) {
@@ -356,8 +353,7 @@ class TileSet {
       imageWidth: tileSet.imageWidth,
       margin: tileSet.margin,
       spacing: tileSet.spacing,
-      tileHeight: tileSet.tileHeight,
-      tileWidth: tileSet.tileWidth,
+      tileSize: TileSize(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx),
     );
     return result;
   }

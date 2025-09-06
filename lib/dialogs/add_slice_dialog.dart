@@ -1,11 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/widgets/slice_widget.dart';
 
@@ -37,7 +37,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
     _slice = TileSetSlice(
       id: widget.tileSet.getNextSliceId(), //
       name: '',
-      size: TileSetAreaSize(maxX - minX + 1, maxY - minY + 1),
+      size: TileRectSize(maxX - minX + 1, maxY - minY + 1),
       left: minX,
       top: minY,
     );

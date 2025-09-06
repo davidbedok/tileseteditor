@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/project_widget.dart';
 

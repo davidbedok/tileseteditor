@@ -1,11 +1,11 @@
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_data.dart';
+import 'package:tileseteditor/domain/tile_size.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/output/tileset_data.dart';
 
 class TileSetOutput {
   static final TileSetOutput none = TileSetOutput(
     fileName: '', //
-    tileWidth: 0,
-    tileHeight: 0,
+    tileSize: TileSize(0, 0),
     width: 0,
     height: 0,
   );
@@ -16,16 +16,14 @@ class TileSetOutput {
   static const int maxOutputHeight = 100;
 
   String fileName;
-  int tileWidth;
-  int tileHeight;
+  TileSize tileSize;
   int width;
   int height;
   TileSetData data = TileSetData(0, 0);
 
   TileSetOutput({
     required this.fileName, //
-    required this.tileWidth,
-    required this.tileHeight,
+    required this.tileSize,
     required this.width,
     required this.height,
   });
@@ -45,7 +43,7 @@ class TileSetOutput {
   Map<String, dynamic> toJson(List<TileSet> tileSets) {
     return {
       'file': fileName,
-      'tile': {'width': tileWidth, 'height': tileHeight},
+      'tile': {'width': tileSize.widthPx, 'height': tileSize.heightPx},
       'size': {'width': width, 'height': height},
       'data': TileSetData.init(width, height, tileSets).toJson(),
     };
@@ -53,6 +51,6 @@ class TileSetOutput {
 
   @override
   String toString() {
-    return 'Output [${width}x$height] from (${tileWidth}x$tileHeight) tiles';
+    return 'Output [${width}x$height] from (${tileSize.widthPx}x${tileSize.heightPx}) tiles';
   }
 }

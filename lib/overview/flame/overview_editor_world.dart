@@ -2,8 +2,8 @@ import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_output.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/output/tileset_output.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
@@ -200,8 +200,8 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   }
 
   void initOtherTileSetTiles(TileSet tileSet) {
-    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileWidth;
-    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileHeight;
+    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileSize.widthPx;
+    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileSize.heightPx;
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
@@ -236,8 +236,8 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
   void initOutputComponents(int atlasMaxX, double outputShiftX) {
     TileSetOutput output = game.project.output;
-    int tileWidth = output.tileWidth;
-    int tileHeight = output.tileHeight;
+    int tileWidth = output.tileSize.widthPx;
+    int tileHeight = output.tileSize.heightPx;
     int outputWidth = output.width;
     int outputHeight = output.height;
 

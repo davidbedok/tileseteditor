@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
@@ -34,8 +34,8 @@ class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, T
     required this.atlasX,
     required this.atlasY,
     required super.position,
-  }) : tileWidth = tileSet.tileWidth.toDouble(),
-       tileHeight = tileSet.tileHeight.toDouble() {
+  }) : tileWidth = tileSet.tileSize.widthPx.toDouble(),
+       tileHeight = tileSet.tileSize.heightPx.toDouble() {
     priority = 0;
   }
 

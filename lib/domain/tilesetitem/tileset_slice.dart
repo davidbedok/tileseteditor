@@ -2,14 +2,14 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
 
 class TileSetSlice extends TileSetNamedArea {
-  static final TileSetSlice none = TileSetSlice(id: -1, name: '-', size: TileSetAreaSize(0, 0), left: 0, top: 0);
+  static final TileSetSlice none = TileSetSlice(id: -1, name: '-', size: TileRectSize(0, 0), left: 0, top: 0);
 
   int left;
   int top;
@@ -59,7 +59,7 @@ class TileSetSlice extends TileSetNamedArea {
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetSlice(id: id, name: name, size: TileSetAreaSize(width, height), left: left, top: top),
+        TileSetSlice(id: id, name: name, size: TileRectSize(width, height), left: left, top: top),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);

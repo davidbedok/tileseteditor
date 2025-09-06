@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/utils/tile_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_named_area_size_field.dart';
@@ -82,7 +82,7 @@ class _GroupWidgetState extends State<GroupWidget> {
                 numberOfTiles: tileIndices.length,
                 initialValue: widget.group.size,
                 validationMessage: 'Please define Width of the Group',
-                onChanged: (TileSetAreaSize size) {
+                onChanged: (TileRectSize size) {
                   widget.group.size = size;
                   setState(() {
                     groupWidth = size.width;
@@ -116,7 +116,14 @@ class _GroupWidgetState extends State<GroupWidget> {
     for (int index in tileIndices) {
       coords.add(tileSet.getTileIndexedCoord(index));
     }
-    return ImageUtils.cropTiles(widget.project.getTileSetFilePath(tileSet), coords, tileSet.tileWidth, tileSet.tileHeight, selectTile, selectedTiles);
+    return ImageUtils.cropTiles(
+      widget.project.getTileSetFilePath(tileSet), //
+      coords,
+      tileSet.tileSize.widthPx,
+      tileSet.tileSize.heightPx,
+      selectTile,
+      selectedTiles,
+    );
   }
 
   void selectTile(bool selected, int tileIndex) {

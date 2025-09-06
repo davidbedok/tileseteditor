@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_output.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/output/tileset_output.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_limited_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
@@ -49,21 +49,21 @@ class ProjectWidget extends StatelessWidget {
         SizedBox(height: space),
         AppDialogTileSizeField(
           name: 'Output Tile width',
-          initialValue: project.output.tileWidth,
+          initialValue: project.output.tileSize.widthPx,
           validationMessage: 'Please choose tile width',
           edit: edit,
           onChanged: (int value) {
-            project.output.tileWidth = value;
+            project.output.tileSize.widthPx = value;
           },
         ),
         SizedBox(height: space),
         AppDialogTileSizeField(
           name: 'Output Tile height',
-          initialValue: project.output.tileHeight,
+          initialValue: project.output.tileSize.heightPx,
           validationMessage: 'Please choose tile height',
           edit: edit,
           onChanged: (int value) {
-            project.output.tileHeight = value;
+            project.output.tileSize.heightPx = value;
           },
         ),
         SizedBox(height: space),

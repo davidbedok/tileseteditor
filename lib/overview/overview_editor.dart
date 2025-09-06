@@ -1,6 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/overview/overview_controller.dart';

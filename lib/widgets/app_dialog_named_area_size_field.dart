@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 
 class AppDialogNamedAreaSizeField extends StatelessWidget {
   final String name;
   final int numberOfTiles;
-  final TileSetAreaSize initialValue;
+  final TileRectSize initialValue;
   final String validationMessage;
   final bool edit;
-  final void Function(TileSetAreaSize value) onChanged;
+  final void Function(TileRectSize value) onChanged;
 
   const AppDialogNamedAreaSizeField({
     super.key,
@@ -26,13 +26,13 @@ class AppDialogNamedAreaSizeField extends StatelessWidget {
       children: [
         Flexible(child: Text(name, style: Theme.of(context).textTheme.bodyMedium)),
         Expanded(
-          child: DropdownButtonFormField<TileSetAreaSize>(
+          child: DropdownButtonFormField<TileRectSize>(
             value: initialValue,
             style: Theme.of(context).textTheme.bodyMedium,
             decoration: const InputDecoration(border: InputBorder.none),
             isExpanded: true,
-            items: TileSetAreaSize.options(numberOfTiles).map((TileSetAreaSize size) {
-              return DropdownMenuItem<TileSetAreaSize>(value: size, child: Text('${size.width} x ${size.height}'));
+            items: TileRectSize.options(numberOfTiles).map((TileRectSize size) {
+              return DropdownMenuItem<TileRectSize>(value: size, child: Text('${size.width} x ${size.height}'));
             }).toList(),
             onChanged: edit
                 ? (value) {

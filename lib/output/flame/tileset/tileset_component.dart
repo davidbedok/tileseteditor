@@ -3,8 +3,8 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
@@ -16,7 +16,7 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
   TileSet tileSet;
   TileSetItem tileSetItem;
   Vector2 originalPosition;
-  TileSetAreaSize areaSize;
+  TileRectSize areaSize;
   bool external;
 
   double tileWidth;
@@ -38,8 +38,8 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
     required this.originalPosition,
     required this.areaSize,
     required this.external,
-  }) : tileWidth = tileSet.tileWidth.toDouble(),
-       tileHeight = tileSet.tileHeight.toDouble() {
+  }) : tileWidth = tileSet.tileSize.widthPx.toDouble(),
+       tileHeight = tileSet.tileSize.heightPx.toDouble() {
     priority = 0;
   }
 

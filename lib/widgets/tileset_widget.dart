@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_switch_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
@@ -84,8 +84,8 @@ class _TileSetWidgetState extends State<TileSetWidget> {
           ),
         ),
         SizedBox(height: TileSetWidget.space),
-        AppDialogNumberField(name: 'Tile width (same as output)', initialValue: widget.tileSet.tileWidth, disabled: true),
-        AppDialogNumberField(name: 'Tile height (same as output)', initialValue: widget.tileSet.tileHeight, disabled: true),
+        AppDialogNumberField(name: 'Tile width (same as output)', initialValue: widget.tileSet.tileSize.widthPx, disabled: true),
+        AppDialogNumberField(name: 'Tile height (same as output)', initialValue: widget.tileSet.tileSize.heightPx, disabled: true),
         SizedBox(height: TileSetWidget.space),
         AppDialogNumberField(name: 'Margin (not yet supported)', initialValue: widget.tileSet.margin, disabled: true),
         AppDialogNumberField(name: 'Spacing (not yet supported)', initialValue: widget.tileSet.spacing, disabled: true),

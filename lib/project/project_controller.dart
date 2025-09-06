@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';
 
 class ProjectController extends StatefulWidget {

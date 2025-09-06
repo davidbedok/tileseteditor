@@ -1,7 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/splitter/splitter_controller.dart';
 import 'package:tileseteditor/splitter/splitter_datasheet.dart';

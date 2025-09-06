@@ -4,8 +4,8 @@ import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_output.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/output/tileset_output.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
@@ -149,8 +149,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   @override
   Future<void> onLoad() async {
     TileSet tileSet = game.tileSet;
-    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileWidth;
-    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileHeight;
+    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileSize.widthPx;
+    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileSize.heightPx;
 
     double outputShiftX = getOutputShiftLeft(tileSet, atlasMaxX);
     initOutputComponents(atlasMaxX, outputShiftX);
@@ -166,7 +166,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         maxGroupWidth = group.size.width;
       }
     }
-    double outputShiftX = (atlasMaxX + maxGroupWidth + 1) * tileSet.tileWidth + 50;
+    double outputShiftX = (atlasMaxX + maxGroupWidth + 1) * tileSet.tileSize.widthPx + 50;
     return outputShiftX;
   }
 
@@ -219,8 +219,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void initOtherTileSetTiles(TileSet tileSet) {
-    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileWidth;
-    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileHeight;
+    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileSize.widthPx;
+    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileSize.heightPx;
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
@@ -253,7 +253,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void initTileSetComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
-    initTileSetRuler(tileSet.tileWidth, tileSet.tileHeight, atlasMaxX, atlasMaxY);
+    initTileSetRuler(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx, atlasMaxX, atlasMaxY);
     initTileSetSlices(tileSet);
     initTileSetGroups(tileSet, atlasMaxX);
     initTileSetTiles(tileSet, atlasMaxX, atlasMaxY);
@@ -287,8 +287,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void initTileSetSlices(TileSet tileSet) {
-    int tileWidth = tileSet.tileWidth;
-    int tileHeight = tileSet.tileHeight;
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
     for (TileSetSlice slice in tileSet.slices) {
       SliceComponent sliceComponent = SliceComponent(
         tileSet: tileSet,
@@ -309,8 +309,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void initTileSetGroups(TileSet tileSet, int atlasMaxX) {
-    int tileWidth = tileSet.tileWidth;
-    int tileHeight = tileSet.tileHeight;
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
     int groupTopIndex = 0;
     for (TileSetGroup group in tileSet.groups) {
       GroupComponent groupComponent = GroupComponent(
@@ -333,8 +333,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void initTileSetTiles(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
-    int tileWidth = tileSet.tileWidth;
-    int tileHeight = tileSet.tileHeight;
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
         TileCoord coord = TileCoord(i + 1, j + 1);
@@ -420,8 +420,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void initOutputComponents(int atlasMaxX, double outputShiftX) {
     TileSetOutput output = game.project.output;
-    int tileWidth = output.tileWidth;
-    int tileHeight = output.tileHeight;
+    int tileWidth = output.tileSize.widthPx;
+    int tileHeight = output.tileSize.heightPx;
     int outputWidth = output.width;
     int outputHeight = output.height;
 

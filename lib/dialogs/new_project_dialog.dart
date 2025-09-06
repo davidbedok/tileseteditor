@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_output.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/output/tileset_output.dart';
+import 'package:tileseteditor/domain/project.dart';
+import 'package:tileseteditor/domain/tile_size.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/project_widget.dart';
 
@@ -17,7 +18,7 @@ class NewProjectDialogState extends State<NewProjectDialog> {
 
   final TileSetProject _project = TileSetProject(
     name: '',
-    output: TileSetOutput(fileName: '', tileWidth: 32, tileHeight: 32, width: TileSetOutput.minOutputWidth, height: TileSetOutput.minOutputHeight),
+    output: TileSetOutput(fileName: '', tileSize: TileSize(32, 32), width: TileSetOutput.minOutputWidth, height: TileSetOutput.minOutputHeight),
   );
 
   @override

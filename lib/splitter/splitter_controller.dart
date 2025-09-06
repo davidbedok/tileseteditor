@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';

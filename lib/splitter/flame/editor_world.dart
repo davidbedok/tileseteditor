@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
 import 'package:tileseteditor/splitter/flame/tile_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
@@ -14,8 +14,8 @@ class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionD
   @override
   Future<void> onLoad() async {
     TileSet tileSet = game.tileSet;
-    int tileWidth = tileSet.tileWidth;
-    int tileHeight = tileSet.tileHeight;
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
 
     int atlasMaxX = tileSet.image!.width ~/ tileWidth;
     int atlasMaxY = tileSet.image!.height ~/ tileHeight;

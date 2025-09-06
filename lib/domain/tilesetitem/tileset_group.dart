@@ -2,12 +2,12 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
 
 class TileSetGroup extends TileSetNamedArea {
-  static final TileSetGroup none = TileSetGroup(id: -1, name: '-', size: TileSetAreaSize(0, 0));
+  static final TileSetGroup none = TileSetGroup(id: -1, name: '-', size: TileRectSize(0, 0));
 
   @override
   Color getHoverColor() => EditorColor.tileGroupHovered.color;
@@ -43,7 +43,7 @@ class TileSetGroup extends TileSetNamedArea {
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetGroup(id: id, name: name, size: TileSetAreaSize(width, height)),
+        TileSetGroup(id: id, name: name, size: TileRectSize(width, height)),
       _ => throw const FormatException('Failed to load TileSetGroup'),
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);

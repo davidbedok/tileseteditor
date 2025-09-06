@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
@@ -30,10 +30,10 @@ class SliceWidget extends StatelessWidget {
                 decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
                 child: ImageUtils.cropImage(
                   project.getTileSetFilePath(tileSet),
-                  x: (slice.left - 1) * tileSet.tileWidth,
-                  y: (slice.top - 1) * tileSet.tileHeight,
-                  width: slice.size.width * tileSet.tileWidth,
-                  height: slice.size.height * tileSet.tileHeight,
+                  x: (slice.left - 1) * tileSet.tileSize.widthPx,
+                  y: (slice.top - 1) * tileSet.tileSize.heightPx,
+                  width: slice.size.width * tileSet.tileSize.widthPx,
+                  height: slice.size.height * tileSet.tileSize.heightPx,
                 ),
               ),
             ],

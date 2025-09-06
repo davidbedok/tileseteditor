@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/tile_size.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/tileset_widget.dart';
 
@@ -28,8 +29,7 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
       name: '',
       active: true,
       filePath: '',
-      tileWidth: widget.project.output.tileWidth,
-      tileHeight: widget.project.output.tileHeight,
+      tileSize: TileSize(widget.project.output.tileSize.widthPx, widget.project.output.tileSize.heightPx),
       margin: 0,
       spacing: 0,
       imageWidth: 0,

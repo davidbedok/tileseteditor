@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset_area_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tileset_project.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/widgets/group_widget.dart';
 
 class AddGroupDialog extends StatefulWidget {
@@ -30,7 +30,7 @@ class AddGroupDialogState extends State<AddGroupDialog> {
     _group = TileSetGroup(
       id: widget.tileSet.getNextGroupId(), //
       name: '',
-      size: TileSetAreaSize(1, widget.tiles.length),
+      size: TileRectSize(1, widget.tiles.length),
     );
     for (TileCoord coord in widget.tiles) {
       _group.tileIndices.add(widget.tileSet.getIndex(coord));

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tileset.dart';
-import 'package:tileseteditor/domain/tileset_change_type.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
@@ -64,7 +64,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
           children: [
             Text('Tile size:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${tileSet.tileWidth} x ${tileSet.tileHeight}'),
+            Text('${tileSet.tileSize.widthPx} x ${tileSet.tileSize.heightPx}'),
           ],
         ),
         Row(
