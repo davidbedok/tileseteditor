@@ -12,9 +12,10 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/yate_mapper.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
-class TileSet {
+class TileSet implements YateMapper {
   static final TileSet none = TileSet(
     id: -1,
     key: -1,
@@ -270,6 +271,22 @@ class TileSet {
     return result;
   }
 
+  static TileSet clone(TileSet tileSet) {
+    TileSet result = TileSet(
+      id: tileSet.id, //
+      key: tileSet.key,
+      name: tileSet.name,
+      active: tileSet.active,
+      filePath: tileSet.filePath,
+      imageSize: PixelSize(tileSet.imageSize.widthPx, tileSet.imageSize.heightPx),
+      margin: tileSet.margin,
+      spacing: tileSet.spacing,
+      tileSize: PixelSize(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx),
+    );
+    return result;
+  }
+
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -287,8 +304,8 @@ class TileSet {
         'width': imageSize.widthPx, //
         'height': imageSize.heightPx,
       },
-      'slices': TileSetSlice.slicestoJson(slices),
-      'groups': TileSetGroup.groupsToJson(groups),
+      'slices': YateMapper.itemsToJson(slices),
+      'groups': YateMapper.itemsToJson(groups),
       'tiles': TileSetTile.tilesToJson(this, tiles),
       'garbage': garbage.toJson(),
     };
@@ -326,9 +343,9 @@ class TileSet {
         ),
       _ => throw const FormatException('Failed to load TileSet'),
     };
-    result.slices = TileSetSlice.slicesFromJson(result, json);
-    result.groups = TileSetGroup.groupsFromJson(json);
-    result.tiles = TileSetTile.tilesFromJson(json);
+    result.slices = TileSetSlice.itemsFromJson(result, json);
+    result.groups = TileSetGroup.itemsFromJson(json);
+    result.tiles = TileSetTile.itemsFromJson(json);
     result.garbage = TileSetGarbage.fromJson(json['garbage']);
     return result;
   }
@@ -336,20 +353,5 @@ class TileSet {
   @override
   String toString() {
     return 'TileSet $name (${tileSize.widthPx}x${tileSize.heightPx}) in $filePath';
-  }
-
-  static TileSet clone(TileSet tileSet) {
-    TileSet result = TileSet(
-      id: tileSet.id, //
-      key: tileSet.key,
-      name: tileSet.name,
-      active: tileSet.active,
-      filePath: tileSet.filePath,
-      imageSize: PixelSize(tileSet.imageSize.widthPx, tileSet.imageSize.heightPx),
-      margin: tileSet.margin,
-      spacing: tileSet.spacing,
-      tileSize: PixelSize(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx),
-    );
-    return result;
   }
 }

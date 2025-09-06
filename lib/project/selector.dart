@@ -297,7 +297,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
         dialogResult.imageSize.heightPx = image.height;
         await dialogResult.loadImage(projectState.project.object);
         setState(() {
-          projectState.project.object.addTileSet(dialogResult);
+          projectState.project.object.tileSets.add(dialogResult);
           projectState.tileSet.select(dialogResult);
         });
       }

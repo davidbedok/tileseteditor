@@ -1,9 +1,12 @@
-class TileReference {
+import 'package:tileseteditor/domain/yate_mapper.dart';
+
+class TileReference implements YateMapper {
   int key;
   int index;
 
   TileReference({required this.key, required this.index});
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'key': key, //

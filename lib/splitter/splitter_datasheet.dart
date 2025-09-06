@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';

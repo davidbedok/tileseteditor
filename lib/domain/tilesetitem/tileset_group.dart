@@ -5,8 +5,9 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
+import 'package:tileseteditor/domain/yate_mapper.dart';
 
-class TileSetGroup extends TileSetNamedArea {
+class TileSetGroup extends TileSetNamedArea implements YateMapper {
   static final TileSetGroup none = TileSetGroup(id: -1, name: '-', size: TileRectSize(0, 0));
 
   @override
@@ -24,6 +25,7 @@ class TileSetGroup extends TileSetNamedArea {
     required super.size,
   });
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id, //
@@ -33,6 +35,15 @@ class TileSetGroup extends TileSetNamedArea {
       'height': size.height,
       'output': output?.toJson(),
     };
+  }
+
+  static List<TileSetGroup> itemsFromJson(Map<String, dynamic> json) {
+    List<TileSetGroup> result = [];
+    List<Map<String, dynamic>> groups = json['groups'] != null ? (json['groups'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var group in groups) {
+      result.add(TileSetGroup.fromJson(group));
+    }
+    return result;
   }
 
   factory TileSetGroup.fromJson(Map<String, dynamic> json) {
@@ -54,22 +65,5 @@ class TileSetGroup extends TileSetNamedArea {
   @override
   String toString() {
     return 'Group $name (#:${tileIndices.length} w:${size.width} h:${size.height})';
-  }
-
-  static List<TileSetGroup> groupsFromJson(Map<String, dynamic> json) {
-    List<TileSetGroup> result = [];
-    List<Map<String, dynamic>> groups = json['groups'] != null ? (json['groups'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var group in groups) {
-      result.add(TileSetGroup.fromJson(group));
-    }
-    return result;
-  }
-
-  static List<Map<String, dynamic>> groupsToJson(List<TileSetGroup> groups) {
-    List<Map<String, dynamic>> result = [];
-    for (var group in groups) {
-      result.add(group.toJson());
-    }
-    return result;
   }
 }

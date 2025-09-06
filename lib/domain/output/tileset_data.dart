@@ -3,6 +3,7 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetData {
   List<List<TileReference>> tiles = [];
@@ -17,6 +18,7 @@ class TileSetData {
     }
   }
 
+  // FIXME generalize
   int getMaxOutputLeft(int minWidth, List<TileSet> tileSets) {
     int maxLeft = minWidth;
     for (TileSet tileSet in tileSets) {
@@ -47,6 +49,7 @@ class TileSetData {
     return maxLeft;
   }
 
+  // FIXME generalize
   int getMaxOutputTop(int minHeight, List<TileSet> tileSets) {
     int maxTop = minHeight;
     for (TileSet tileSet in tileSets) {
@@ -77,6 +80,7 @@ class TileSetData {
     return maxTop;
   }
 
+  // FIXME generalize
   factory TileSetData.init(int width, int height, List<TileSet> tileSets) {
     TileSetData result = TileSetData(width, height);
     for (TileSet tileSet in tileSets) {
@@ -123,15 +127,7 @@ class TileSetData {
   List<List<Map<String, dynamic>>> toJson() {
     List<List<Map<String, dynamic>>> result = [];
     for (List<TileReference> row in tiles) {
-      result.add(toRowsJson(row));
-    }
-    return result;
-  }
-
-  List<Map<String, dynamic>> toRowsJson(List<TileReference> row) {
-    List<Map<String, dynamic>> result = [];
-    for (TileReference tileReference in row) {
-      result.add(tileReference.toJson());
+      result.add(YateMapper.itemsToJson(row));
     }
     return result;
   }

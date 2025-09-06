@@ -81,7 +81,10 @@
                     "top": 3,
                     "width": 1,
                     "height": 2,
-                    "output": null
+                    "output": {
+                        "left": 11,
+                        "top": 4
+                    }
                 },
                 {
                     "id": 4,
@@ -127,7 +130,7 @@
                     "height": 2,
                     "output": {
                         "left": 1,
-                        "top": 2
+                        "top": 1
                     }
                 },
                 {
@@ -909,18 +912,6 @@
             ],
             "tiles": [
                 {
-                    "id": 0,
-                    "left": 6,
-                    "top": 10,
-                    "indices": [
-                        77
-                    ],
-                    "output": {
-                        "left": 4,
-                        "top": 3
-                    }
-                },
-                {
                     "id": 1,
                     "left": 5,
                     "top": 6,
@@ -942,6 +933,18 @@
                     "output": {
                         "left": 6,
                         "top": 2
+                    }
+                },
+                {
+                    "id": 0,
+                    "left": 6,
+                    "top": 10,
+                    "indices": [
+                        77
+                    ],
+                    "output": {
+                        "left": 4,
+                        "top": 3
                     }
                 }
             ],
@@ -1042,7 +1045,7 @@
                     "width": 3,
                     "height": 3,
                     "output": {
-                        "left": 4,
+                        "left": 5,
                         "top": 10
                     }
                 }
@@ -1258,7 +1261,7 @@
                     "width": 3,
                     "height": 3,
                     "output": {
-                        "left": 7,
+                        "left": 8,
                         "top": 11
                     }
                 }
@@ -1270,6 +1273,7 @@
             }
         }
     ],
+    "tilegroups": [],
     "output": {
         "file": "example.png",
         "tile": {
@@ -1283,12 +1287,12 @@
         "data": [
             [
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 22
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 23
                 },
                 {
                     "key": 0,
@@ -1386,11 +1390,11 @@
             [
                 {
                     "key": 0,
-                    "index": 22
+                    "index": 30
                 },
                 {
                     "key": 0,
-                    "index": 23
+                    "index": 31
                 },
                 {
                     "key": 0,
@@ -1487,12 +1491,12 @@
             ],
             [
                 {
-                    "key": 0,
-                    "index": 30
+                    "key": -1,
+                    "index": -1
                 },
                 {
-                    "key": 0,
-                    "index": 31
+                    "key": -1,
+                    "index": -1
                 },
                 {
                     "key": -1,
@@ -1629,8 +1633,8 @@
                     "index": 84
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 19
                 },
                 {
                     "key": -1,
@@ -1731,8 +1735,8 @@
                     "index": -1
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 27
                 },
                 {
                     "key": -1,
@@ -2213,6 +2217,10 @@
                     "index": 199
                 },
                 {
+                    "key": -1,
+                    "index": -1
+                },
+                {
                     "key": 1,
                     "index": 2
                 },
@@ -2223,10 +2231,6 @@
                 {
                     "key": 1,
                     "index": 4
-                },
-                {
-                    "key": -1,
-                    "index": -1
                 },
                 {
                     "key": -1,
@@ -2315,6 +2319,10 @@
                     "index": 207
                 },
                 {
+                    "key": -1,
+                    "index": -1
+                },
+                {
                     "key": 1,
                     "index": 18
                 },
@@ -2397,13 +2405,13 @@
                 {
                     "key": -1,
                     "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
                 }
             ],
             [
+                {
+                    "key": -1,
+                    "index": -1
+                },
                 {
                     "key": -1,
                     "index": -1
@@ -2499,10 +2507,6 @@
                 {
                     "key": -1,
                     "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
                 }
             ],
             [
@@ -2531,6 +2535,10 @@
                     "index": 123
                 },
                 {
+                    "key": -1,
+                    "index": -1
+                },
+                {
                     "key": 2,
                     "index": 466
                 },
@@ -2541,10 +2549,6 @@
                 {
                     "key": 2,
                     "index": 468
-                },
-                {
-                    "key": -1,
-                    "index": -1
                 },
                 {
                     "key": -1,

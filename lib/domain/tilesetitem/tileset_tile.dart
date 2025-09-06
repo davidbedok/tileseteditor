@@ -37,6 +37,14 @@ class TileSetTile extends TileSetItem {
     bool garbage = false,
   });
 
+  static List<Map<String, dynamic>> tilesToJson(TileSet tileSet, List<TileSetTile> tiles) {
+    List<Map<String, dynamic>> result = [];
+    for (var tile in tiles) {
+      result.add(tile.toJson(tileSet));
+    }
+    return result;
+  }
+
   Map<String, dynamic> toJson(TileSet tileSet) {
     tileIndices.clear();
     tileIndices.add(tileSet.getIndex(coord));
@@ -47,6 +55,15 @@ class TileSetTile extends TileSetItem {
       'indices': tileIndices,
       'output': output?.toJson(),
     };
+  }
+
+  static List<TileSetTile> itemsFromJson(Map<String, dynamic> json) {
+    List<TileSetTile> result = [];
+    List<Map<String, dynamic>> tiles = json['tiles'] != null ? (json['tiles'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var group in tiles) {
+      result.add(TileSetTile.fromJson(group));
+    }
+    return result;
   }
 
   factory TileSetTile.fromJson(Map<String, dynamic> json) {
@@ -61,23 +78,6 @@ class TileSetTile extends TileSetItem {
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);
     result.output = TileSetItem.outputFromJson(json);
-    return result;
-  }
-
-  static List<TileSetTile> tilesFromJson(Map<String, dynamic> json) {
-    List<TileSetTile> result = [];
-    List<Map<String, dynamic>> tiles = json['tiles'] != null ? (json['tiles'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var group in tiles) {
-      result.add(TileSetTile.fromJson(group));
-    }
-    return result;
-  }
-
-  static List<Map<String, dynamic>> tilesToJson(TileSet tileSet, List<TileSetTile> tiles) {
-    List<Map<String, dynamic>> result = [];
-    for (var tile in tiles) {
-      result.add(tile.toJson(tileSet));
-    }
     return result;
   }
 }

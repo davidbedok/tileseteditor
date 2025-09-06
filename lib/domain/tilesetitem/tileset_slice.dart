@@ -7,8 +7,9 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
+import 'package:tileseteditor/domain/yate_mapper.dart';
 
-class TileSetSlice extends TileSetNamedArea {
+class TileSetSlice extends TileSetNamedArea implements YateMapper {
   static final TileSetSlice none = TileSetSlice(
     id: -1, //
     name: '-',
@@ -41,6 +42,7 @@ class TileSetSlice extends TileSetNamedArea {
         coord.top < this.coord.top + size.height;
   }
 
+  @override
   Map<String, dynamic> toJson() {
     tileIndices.sort();
     return {
@@ -53,6 +55,15 @@ class TileSetSlice extends TileSetNamedArea {
       'height': size.height,
       'output': output?.toJson(),
     };
+  }
+
+  static List<TileSetSlice> itemsFromJson(TileSet tileSet, Map<String, dynamic> json) {
+    List<TileSetSlice> result = [];
+    List<Map<String, dynamic>> slices = json['slices'] != null ? (json['slices'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var slice in slices) {
+      result.add(TileSetSlice.fromJson(tileSet, slice));
+    }
+    return result;
   }
 
   factory TileSetSlice.fromJson(TileSet tileSet, Map<String, dynamic> json) {
@@ -81,22 +92,5 @@ class TileSetSlice extends TileSetNamedArea {
   @override
   String toString() {
     return 'Slice $name (l:${coord.left} t:${coord.top} w:${size.width} h:${size.height})';
-  }
-
-  static List<TileSetSlice> slicesFromJson(TileSet tileSet, Map<String, dynamic> json) {
-    List<TileSetSlice> result = [];
-    List<Map<String, dynamic>> slices = json['slices'] != null ? (json['slices'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var slice in slices) {
-      result.add(TileSetSlice.fromJson(tileSet, slice));
-    }
-    return result;
-  }
-
-  static List<Map<String, dynamic>> slicestoJson(List<TileSetSlice> slices) {
-    List<Map<String, dynamic>> result = [];
-    for (var slice in slices) {
-      result.add(slice.toJson());
-    }
-    return result;
   }
 }

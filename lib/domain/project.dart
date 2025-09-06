@@ -3,9 +3,11 @@ import 'dart:math' as math;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/output/tileset_output.dart';
+import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetProject {
   static final TileSetProject none = TileSetProject(
@@ -19,6 +21,7 @@ class TileSetProject {
   String? description;
   TileSetOutput output;
   List<TileSet> tileSets = [];
+  List<TileGroup> tileGroups = [];
 
   String getDirectory() => path.dirname(filePath!);
 
@@ -57,6 +60,24 @@ class TileSetProject {
     return output.getMaxOutputTop(minHeight, tileSets);
   }
 
+  String getTileSetFilePathByName(String name) {
+    return getTileSetFilePath(tileSets.where((tileSet) => tileSet.name == name).first);
+  }
+
+  String getTileSetFilePath(TileSet tileSet) {
+    return path.join(getDirectory(), tileSet.filePath);
+  }
+
+  Future<void> loadTileSetImages() async {
+    for (TileSet tileSet in tileSets) {
+      await tileSet.loadImage(this);
+    }
+  }
+
+  void deleteTileSet(TileSet tileSet) {
+    tileSets.remove(tileSet);
+  }
+
   @override
   String toString() {
     return 'Project $name ($output) in $filePath';
@@ -80,17 +101,10 @@ class TileSetProject {
       'name': name,
       'description': description,
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
-      'tilesets': toTileSetJson(),
+      'tilesets': YateMapper.itemsToJson(tileSets),
+      'tilegroups': YateMapper.itemsToJson(tileGroups),
       'output': output.toJson(tileSets),
     };
-  }
-
-  List<Map<String, dynamic>> toTileSetJson() {
-    List<Map<String, dynamic>> result = [];
-    for (var tileSet in tileSets) {
-      result.add(tileSet.toJson());
-    }
-    return result;
   }
 
   factory TileSetProject.fromJson(Map<String, dynamic> json) {
@@ -124,32 +138,8 @@ class TileSetProject {
 
     List<Map<String, dynamic>> tileSets = json['tilesets'] != null ? (json['tilesets'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
     for (var tileSet in tileSets) {
-      result.addTileSet(TileSet.fromJson(tileSet));
+      result.tileSets.add(TileSet.fromJson(tileSet));
     }
     return result;
-  }
-
-  void addTileSet(TileSet tileSet) {
-    tileSets.add(tileSet);
-  }
-
-  String getTileSetFilePathByName(String name) {
-    return getTileSetFilePath(tileSets.where((tileSet) => tileSet.name == name).first);
-  }
-
-  String getTileSetFilePath(TileSet tileSet) {
-    return path.join(getDirectory(), tileSet.filePath);
-  }
-
-  Future<void> loadTileSetImages() async {
-    for (TileSet tileSet in tileSets) {
-      await tileSet.loadImage(this);
-    }
-  }
-
-  void deleteTileSet(TileSet tileSet) {
-    print(tileSets.length);
-    tileSets.remove(tileSet);
-    print(tileSets.length);
   }
 }

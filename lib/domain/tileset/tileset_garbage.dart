@@ -2,14 +2,16 @@ import 'dart:ui';
 
 import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/yate_mapper.dart';
 
-class TileSetGarbage {
+class TileSetGarbage implements YateMapper {
   List<int> tileIndices = [];
 
   Color color = RandomColor.getColorObject(Options());
 
   TileSetGarbage();
 
+  @override
   Map<String, dynamic> toJson() {
     return {'indices': tileIndices};
   }

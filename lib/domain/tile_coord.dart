@@ -1,9 +1,12 @@
-class TileCoord {
+import 'package:tileseteditor/domain/yate_mapper.dart';
+
+class TileCoord implements YateMapper {
   int left;
   int top;
 
   TileCoord(this.left, this.top);
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'left': left, //
