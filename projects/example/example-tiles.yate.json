@@ -20,7 +20,7 @@
 					"id": 0,
 					"key": 5,
 					"file": "tiles\\doors\\door1.png",
-					"size": {
+					"image": {
 						"width": 64,
 						"height": 64
 					},
@@ -41,7 +41,7 @@
 					"id": 1,
 					"key": 6,
 					"file": "tiles\\doors\\door2.png",
-					"size": {
+					"image": {
 						"width": 32,
 						"height": 64
 					},

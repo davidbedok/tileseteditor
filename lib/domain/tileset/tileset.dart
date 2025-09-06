@@ -283,7 +283,7 @@ class TileSet {
         'width': tileSize.widthPx, //
         'height': tileSize.heightPx,
       },
-      'size': {
+      'image': {
         'width': imageSize.widthPx, //
         'height': imageSize.heightPx,
       },
@@ -308,7 +308,7 @@ class TileSet {
           'width': int tileWidthPx, //
           'height': int tileHeightPx, //
         }, //
-        'size': {
+        'image': {
           'width': int imageWidthPx, //
           'height': int imageHeightPx, //
         }, //
