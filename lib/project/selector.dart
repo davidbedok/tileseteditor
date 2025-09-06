@@ -267,8 +267,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
           projectState.project.object.name = dialogResult.name;
           projectState.project.object.description = dialogResult.description;
           projectState.project.object.output.fileName = dialogResult.output.fileName;
-          projectState.project.object.output.width = dialogResult.output.width;
-          projectState.project.object.output.height = dialogResult.output.height;
+          projectState.project.object.output.size.width = dialogResult.output.size.width;
+          projectState.project.object.output.size.height = dialogResult.output.size.height;
         });
       }
     }
@@ -293,8 +293,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
       );
       if (dialogResult != null) {
         dui.Image image = await ImageUtils.getImage(projectState.project.object.getTileSetFilePath(dialogResult));
-        dialogResult.imageWidth = image.width;
-        dialogResult.imageHeight = image.height;
+        dialogResult.imageSize.widthPx = image.width;
+        dialogResult.imageSize.heightPx = image.height;
         await dialogResult.loadImage(projectState.project.object);
         setState(() {
           projectState.project.object.addTileSet(dialogResult);

@@ -9,10 +9,14 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
 
 class TileSetSlice extends TileSetNamedArea {
-  static final TileSetSlice none = TileSetSlice(id: -1, name: '-', size: TileRectSize(0, 0), left: 0, top: 0);
+  static final TileSetSlice none = TileSetSlice(
+    id: -1, //
+    name: '-',
+    size: TileRectSize(0, 0),
+    coord: TileCoord(0, 0),
+  );
 
-  int left;
-  int top;
+  TileCoord coord;
 
   @override
   Color getHoverColor() => EditorColor.tileSliceHovered.color;
@@ -21,18 +25,20 @@ class TileSetSlice extends TileSetNamedArea {
   Color getTextColor() => EditorColor.tileSetSlice.color;
 
   @override
-  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((left - 1) * tileWidth, (top - 1) * tileHeight);
+  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((coord.left - 1) * tileWidth, (coord.top - 1) * tileHeight);
 
   TileSetSlice({
     required super.id, //
     required super.name,
     required super.size,
-    required this.left,
-    required this.top,
+    required this.coord,
   });
 
   bool isInnerCoord(TileCoord coord) {
-    return coord.left >= left && coord.left < left + size.width && coord.top >= top && coord.top < top + size.height;
+    return coord.left >= this.coord.left &&
+        coord.left < this.coord.left + size.width &&
+        coord.top >= this.coord.top &&
+        coord.top < this.coord.top + size.height;
   }
 
   Map<String, dynamic> toJson() {
@@ -41,8 +47,8 @@ class TileSetSlice extends TileSetNamedArea {
       'id': id, //
       'name': name, //
       'indices': tileIndices,
-      'left': left,
-      'top': top,
+      'left': coord.left,
+      'top': coord.top,
       'width': size.width,
       'height': size.height,
       'output': output?.toJson(),
@@ -59,7 +65,12 @@ class TileSetSlice extends TileSetNamedArea {
         'width': int width, //
         'height': int height, //
       } =>
-        TileSetSlice(id: id, name: name, size: TileRectSize(width, height), left: left, top: top),
+        TileSetSlice(
+          id: id, //
+          name: name,
+          size: TileRectSize(width, height),
+          coord: TileCoord(left, top),
+        ),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);
@@ -69,7 +80,7 @@ class TileSetSlice extends TileSetNamedArea {
 
   @override
   String toString() {
-    return 'Slice $name (l:$left t:$top w:${size.width} h:${size.height})';
+    return 'Slice $name (l:${coord.left} t:${coord.top} w:${size.width} h:${size.height})';
   }
 
   static List<TileSetSlice> slicesFromJson(TileSet tileSet, Map<String, dynamic> json) {

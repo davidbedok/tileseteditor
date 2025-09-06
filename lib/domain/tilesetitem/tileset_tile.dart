@@ -7,15 +7,14 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileSetTile extends TileSetItem {
-  static final TileSetTile freeTile = TileSetTile(id: -1, left: 0, top: 0);
-  static final TileSetTile garbageTile = TileSetTile(id: -1, left: 0, top: 0, garbage: true);
+  static final TileSetTile freeTile = TileSetTile(id: -1, coord: TileCoord(0, 0));
+  static final TileSetTile garbageTile = TileSetTile(id: -1, coord: TileCoord(0, 0), garbage: true);
 
-  int left;
-  int top;
+  TileCoord coord;
   bool garbage = false;
 
   @override
-  String getLabel() => 'Tile $left:$top';
+  String getLabel() => 'Tile ${coord.left}:${coord.top}';
 
   @override
   Color getColor() => EditorColor.tileFreeHovered.color; // FIXME check this
@@ -27,25 +26,24 @@ class TileSetTile extends TileSetItem {
   Color getTextColor() => EditorColor.tileSetTile.color;
 
   @override
-  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((left - 1) * tileWidth, (top - 1) * tileHeight);
+  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((coord.left - 1) * tileWidth, (coord.top - 1) * tileHeight);
 
   @override
   Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(tileWidth, tileHeight);
 
   TileSetTile({
     required super.id, //
-    required this.left,
-    required this.top,
+    required this.coord,
     bool garbage = false,
   });
 
   Map<String, dynamic> toJson(TileSet tileSet) {
     tileIndices.clear();
-    tileIndices.add(tileSet.getIndex(TileCoord(left, top)));
+    tileIndices.add(tileSet.getIndex(coord));
     return {
       'id': id, //
-      'left': left,
-      'top': top,
+      'left': coord.left,
+      'top': coord.top,
       'indices': tileIndices,
       'output': output?.toJson(),
     };
@@ -58,7 +56,7 @@ class TileSetTile extends TileSetItem {
         'left': int left, //
         'top': int top, //
       } =>
-        TileSetTile(id: id, left: left, top: top),
+        TileSetTile(id: id, coord: TileCoord(left, top)),
       _ => throw const FormatException('Failed to load TileSetTile'),
     };
     result.tileIndices = TileSetItem.tileIndicesFromJson(json);

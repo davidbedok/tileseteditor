@@ -1,8 +1,8 @@
-class TileSize {
+class PixelSize {
   int widthPx;
   int heightPx;
 
-  TileSize(this.widthPx, this.heightPx);
+  PixelSize(this.widthPx, this.heightPx);
 
   @override
   String toString() {

@@ -1,22 +1,21 @@
 import 'dart:ui';
 
 import 'package:flame/game.dart';
+import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 
 class TileGroupFile extends TileSetItem {
   int key;
   String filePath;
-  int imageWidth;
-  int imageHeight;
+  PixelSize imageSize;
   TileRectSize size;
 
   TileGroupFile({
     required super.id, //
     required this.key,
     required this.filePath,
-    required this.imageWidth,
-    required this.imageHeight,
+    required this.imageSize,
     required this.size,
   });
 

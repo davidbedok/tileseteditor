@@ -4,7 +4,7 @@ import 'dart:ui' as dui;
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
-import 'package:tileseteditor/domain/tile_size.dart';
+import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset/tileset_garbage.dart';
 import 'package:tileseteditor/domain/project.dart';
@@ -21,11 +21,10 @@ class TileSet {
     name: '-',
     active: true,
     filePath: '',
-    imageHeight: 0,
-    imageWidth: 0,
+    imageSize: PixelSize(0, 0),
     margin: 0,
     spacing: 0,
-    tileSize: TileSize(0, 0),
+    tileSize: PixelSize(0, 0),
   );
 
   int id;
@@ -33,12 +32,11 @@ class TileSet {
   String name;
   bool active;
   String filePath;
-  TileSize tileSize;
+  PixelSize tileSize;
   int margin;
   int spacing;
 
-  int imageWidth;
-  int imageHeight;
+  PixelSize imageSize;
   dui.Image? image;
 
   List<TileSetSlice> slices = [];
@@ -49,8 +47,8 @@ class TileSet {
   // FIXME do we need it here?
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
-  int getMaxTileRow() => imageWidth ~/ tileSize.widthPx;
-  int getMaxTileColumn() => imageHeight ~/ tileSize.heightPx;
+  int getMaxTileRow() => imageSize.widthPx ~/ tileSize.widthPx;
+  int getMaxTileColumn() => imageSize.heightPx ~/ tileSize.heightPx;
   int getMaxTileIndex() => getMaxTileRow() * getMaxTileColumn() - 1;
 
   List<TileSetGroup> getGroupsWithNone() {
@@ -76,8 +74,7 @@ class TileSet {
     required this.tileSize,
     required this.margin,
     required this.spacing,
-    required this.imageWidth,
-    required this.imageHeight,
+    required this.imageSize,
   });
 
   Future<void> loadImage(TileSetProject project) async {
@@ -183,7 +180,7 @@ class TileSet {
   }
 
   void addTile(TileSetTile tile) {
-    tiles.removeWhere((current) => current.left == tile.left && current.top == tile.top);
+    tiles.removeWhere((current) => current.coord.left == tile.coord.left && current.coord.top == tile.coord.top);
     tiles.add(tile);
     // callEventHandlers(TileSetChangeType.groupCreated);
   }
@@ -266,7 +263,7 @@ class TileSet {
 
   TileSetTile? findTile(TileCoord coord) {
     TileSetTile? result;
-    List<TileSetTile> tileSetTiles = tiles.where((tile) => tile.left == coord.left && tile.top == coord.top).toList();
+    List<TileSetTile> tileSetTiles = tiles.where((tile) => tile.coord.left == coord.left && tile.coord.top == coord.top).toList();
     if (tileSetTiles.isNotEmpty) {
       result = tileSetTiles.first;
     }
@@ -287,8 +284,8 @@ class TileSet {
         'height': tileSize.heightPx,
       },
       'size': {
-        'width': imageWidth, //
-        'height': imageHeight,
+        'width': imageSize.widthPx, //
+        'height': imageSize.heightPx,
       },
       'slices': TileSetSlice.slicestoJson(slices),
       'groups': TileSetGroup.groupsToJson(groups),
@@ -312,8 +309,8 @@ class TileSet {
           'height': int tileHeightPx, //
         }, //
         'size': {
-          'width': int imageWidth, //
-          'height': int imageHeight, //
+          'width': int imageWidthPx, //
+          'height': int imageHeightPx, //
         }, //
       } =>
         TileSet(
@@ -322,11 +319,10 @@ class TileSet {
           name: name,
           active: active,
           filePath: filePath,
-          tileSize: TileSize(tileWidthPx, tileHeightPx),
+          tileSize: PixelSize(tileWidthPx, tileHeightPx),
           margin: margin,
           spacing: spacing,
-          imageWidth: imageWidth,
-          imageHeight: imageHeight,
+          imageSize: PixelSize(imageWidthPx, imageHeightPx),
         ),
       _ => throw const FormatException('Failed to load TileSet'),
     };
@@ -349,11 +345,10 @@ class TileSet {
       name: tileSet.name,
       active: tileSet.active,
       filePath: tileSet.filePath,
-      imageHeight: tileSet.imageHeight,
-      imageWidth: tileSet.imageWidth,
+      imageSize: PixelSize(tileSet.imageSize.widthPx, tileSet.imageSize.heightPx),
       margin: tileSet.margin,
       spacing: tileSet.spacing,
-      tileSize: TileSize(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx),
+      tileSize: PixelSize(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx),
     );
     return result;
   }

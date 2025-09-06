@@ -1,7 +1,8 @@
 import 'dart:math' as math;
 
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:tileseteditor/domain/tile_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
+import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/output/tileset_output.dart';
@@ -17,7 +18,6 @@ class TileSetProject {
   String name;
   String? description;
   TileSetOutput output;
-
   List<TileSet> tileSets = [];
 
   String getDirectory() => path.dirname(filePath!);
@@ -65,9 +65,8 @@ class TileSetProject {
   static TileSetProject clone(TileSetProject project) {
     TileSetOutput output = TileSetOutput(
       fileName: project.output.fileName,
-      tileSize: TileSize(project.output.tileSize.widthPx, project.output.tileSize.heightPx),
-      width: project.output.width,
-      height: project.output.height,
+      tileSize: PixelSize(project.output.tileSize.widthPx, project.output.tileSize.heightPx),
+      size: TileRectSize(project.output.size.width, project.output.size.height),
     );
     output.data = project.output.data;
     TileSetProject result = TileSetProject(name: project.name, description: project.description, output: output);
@@ -116,9 +115,8 @@ class TileSetProject {
           description: description,
           output: TileSetOutput(
             fileName: fileName, //
-            tileSize: TileSize(tileWidthPx, tileHeightPx),
-            width: width,
-            height: height,
+            tileSize: PixelSize(tileWidthPx, tileHeightPx),
+            size: TileRectSize(width, height),
           ),
         ),
       _ => throw const FormatException('Failed to load TileSetProject'),

@@ -120,7 +120,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
   OverviewTileComponent? getOverviewTileComponent(int atlasX, int atlasY) {
     OverviewTileComponent? result;
-    if (atlasX >= 0 && atlasX < game.project.output.width && atlasY >= 0 && atlasY < game.project.output.height) {
+    if (atlasX >= 0 && atlasX < game.project.output.size.width && atlasY >= 0 && atlasY < game.project.output.size.height) {
       result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
     }
     return result;
@@ -211,8 +211,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
               usedTileSetTile ??
               TileSetTile(
                 id: tileSet.getNextTileId(), //
-                left: i + 1,
-                top: j + 1,
+                coord: coord,
               );
           ;
           if (tileSetTile.output != null) {
@@ -238,8 +237,8 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     TileSetOutput output = game.project.output;
     int tileWidth = output.tileSize.widthPx;
     int tileHeight = output.tileSize.heightPx;
-    int outputWidth = output.width;
-    int outputHeight = output.height;
+    int outputWidth = output.size.width;
+    int outputHeight = output.size.height;
 
     initOutputRuler(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX);
 

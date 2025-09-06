@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
 abstract class TileSetItem {
-  static final TileSetItem none = TileSetTile(id: -1, left: 0, top: 0);
+  static final TileSetItem none = TileSetTile(id: -1, coord: TileCoord(0, 0));
 
   int id;
   TileCoord? output;

@@ -38,8 +38,7 @@ class AddSliceDialogState extends State<AddSliceDialog> {
       id: widget.tileSet.getNextSliceId(), //
       name: '',
       size: TileRectSize(maxX - minX + 1, maxY - minY + 1),
-      left: minX,
-      top: minY,
+      coord: TileCoord(minX, minY),
     );
     for (int y = minY; y <= maxY; y++) {
       for (int x = minX; x <= maxX; x++) {

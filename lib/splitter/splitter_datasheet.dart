@@ -57,7 +57,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
           children: [
             Text('Image size:', style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(width: 5),
-            Text('${tileSet.imageWidth} x ${tileSet.imageHeight}'),
+            Text('${tileSet.imageSize.widthPx} x ${tileSet.imageSize.heightPx}'),
           ],
         ),
         Row(

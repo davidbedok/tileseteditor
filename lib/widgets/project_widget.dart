@@ -69,11 +69,11 @@ class ProjectWidget extends StatelessWidget {
         SizedBox(height: space),
         AppDialogLimitedNumberField(
           name: 'Output width ($maxOutputLeft..${TileSetOutput.maxOutputWidth})',
-          initialValue: project.output.width,
+          initialValue: project.output.size.width,
           minValue: maxOutputLeft,
           maxValue: TileSetOutput.maxOutputWidth,
           onChanged: (int value) {
-            project.output.width = value;
+            project.output.size.width = value;
           },
           validationEmptyMessage: 'Please define the output width',
           validationLimitMessage: 'Output width must be between $maxOutputLeft and ${TileSetOutput.maxOutputWidth}',
@@ -81,11 +81,11 @@ class ProjectWidget extends StatelessWidget {
         SizedBox(height: space),
         AppDialogLimitedNumberField(
           name: 'Output height ($maxOutputTop..${TileSetOutput.maxOutputHeight})',
-          initialValue: project.output.height,
+          initialValue: project.output.size.height,
           minValue: maxOutputTop,
           maxValue: TileSetOutput.maxOutputHeight,
           onChanged: (int value) {
-            project.output.height = value;
+            project.output.size.height = value;
           },
           validationEmptyMessage: 'Please define the output height',
           validationLimitMessage: 'Output height must be between $maxOutputTop and ${TileSetOutput.maxOutputHeight}',

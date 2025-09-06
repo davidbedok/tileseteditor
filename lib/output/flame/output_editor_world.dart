@@ -122,7 +122,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   OutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
     OutputTileComponent? result;
-    if (atlasX >= 0 && atlasX < game.project.output.width && atlasY >= 0 && atlasY < game.project.output.height) {
+    if (atlasX >= 0 && atlasX < game.project.output.size.width && atlasY >= 0 && atlasY < game.project.output.size.height) {
       result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
     }
     return result;
@@ -230,8 +230,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
               usedTileSetTile ??
               TileSetTile(
                 id: tileSet.getNextTileId(), //
-                left: i + 1,
-                top: j + 1,
+                coord: coord,
               );
           if (tileSetTile.output != null) {
             OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
@@ -293,8 +292,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       SliceComponent sliceComponent = SliceComponent(
         tileSet: tileSet,
         slice: slice,
-        originalPosition: Vector2(DrawUtils.ruler.width + (slice.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.top - 1) * tileHeight),
-        position: Vector2(DrawUtils.ruler.width + (slice.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.top - 1) * tileHeight),
+        originalPosition: Vector2(DrawUtils.ruler.width + (slice.coord.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.coord.top - 1) * tileHeight),
+        position: Vector2(DrawUtils.ruler.width + (slice.coord.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.coord.top - 1) * tileHeight),
         external: false,
       );
       if (slice.output != null) {
@@ -344,8 +343,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
               usedTileSetTile ??
               TileSetTile(
                 id: tileSet.getNextTileId(), //
-                left: i + 1,
-                top: j + 1,
+                coord: coord,
               );
           SingleTileComponent singleTileComponent = SingleTileComponent(
             tileSet: tileSet,
@@ -422,8 +420,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     TileSetOutput output = game.project.output;
     int tileWidth = output.tileSize.widthPx;
     int tileHeight = output.tileSize.heightPx;
-    int outputWidth = output.width;
-    int outputHeight = output.height;
+    int outputWidth = output.size.width;
+    int outputHeight = output.size.height;
 
     initOutputRuler(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX);
 
