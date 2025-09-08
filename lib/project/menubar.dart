@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';
 
-class TileSetEditorMenuBar extends StatelessWidget {
+class ProjectMenuBar extends StatelessWidget {
   final ProjectState projectState;
   final void Function() onNewProject;
   final void Function() onOpenProject;
@@ -21,7 +21,7 @@ class TileSetEditorMenuBar extends StatelessWidget {
   final void Function() onEditTileGroup;
   final void Function() onDeleteTileGroup;
 
-  const TileSetEditorMenuBar({
+  const ProjectMenuBar({
     super.key,
     required this.projectState,
     required this.onNewProject,

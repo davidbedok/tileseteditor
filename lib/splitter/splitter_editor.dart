@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/editor.dart';
+import 'package:tileseteditor/project/selector.dart';
 import 'package:tileseteditor/splitter/splitter_controller.dart';
 import 'package:tileseteditor/splitter/splitter_datasheet.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
@@ -41,7 +42,7 @@ class SplitterEditor extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width - 400,
-                      height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                      height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                       child: Container(
                         margin: const EdgeInsets.all(0),
                         padding: const EdgeInsets.all(0),
@@ -50,7 +51,7 @@ class SplitterEditor extends StatelessWidget {
                           game: EditorGame(
                             tileSet: tileSet,
                             width: MediaQuery.of(context).size.width - 400,
-                            height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                            height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                             splitterState: splitterState,
                           ),
                         ),
@@ -64,7 +65,7 @@ class SplitterEditor extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: 300,
-                          height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                          height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                           child: Container(
                             margin: const EdgeInsets.all(0),
                             padding: const EdgeInsets.all(5),

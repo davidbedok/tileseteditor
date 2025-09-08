@@ -1,10 +1,10 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/overview/overview_controller.dart';
 import 'package:tileseteditor/overview/overview_state.dart';
+import 'package:tileseteditor/project/selector.dart';
 
 class OverviewEditor extends StatelessWidget {
   final TileSetProject project;
@@ -31,7 +31,7 @@ class OverviewEditor extends StatelessWidget {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 100,
-                  height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                  height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                   child: Container(
                     margin: const EdgeInsets.all(0),
                     padding: const EdgeInsets.all(0),
@@ -40,7 +40,7 @@ class OverviewEditor extends StatelessWidget {
                       game: OverviewEditorGame(
                         project: project,
                         width: MediaQuery.of(context).size.width - 100,
-                        height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                        height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                         overviewState: overviewState,
                       ),
                     ),

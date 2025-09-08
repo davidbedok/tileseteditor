@@ -32,7 +32,7 @@ class TileSetMaterialApp extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      home: TileSetSelector(packageInfo: packageInfo),
+      home: ProjectSelector(packageInfo: packageInfo),
     );
   }
 }

@@ -2,10 +2,10 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/output_controller.dart';
 import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/project/selector.dart';
 
 class OutputEditor extends StatelessWidget {
   final TileSetProject project;
@@ -38,7 +38,7 @@ class OutputEditor extends StatelessWidget {
               children: [
                 SizedBox(
                   width: MediaQuery.of(context).size.width - 100,
-                  height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                  height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                   child: Container(
                     margin: const EdgeInsets.all(0),
                     padding: const EdgeInsets.all(0),
@@ -48,7 +48,7 @@ class OutputEditor extends StatelessWidget {
                         project: project,
                         tileSet: tileSet,
                         width: MediaQuery.of(context).size.width - 100,
-                        height: MediaQuery.of(context).size.height - TileSetEditor.topHeight,
+                        height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                         outputState: outputState,
                       ),
                     ),

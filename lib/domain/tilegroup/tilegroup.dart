@@ -1,3 +1,4 @@
+import 'dart:math' as math;
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
@@ -22,6 +23,11 @@ class TileGroup extends TileSetProjectItem implements YateMapper {
     required super.active,
     required super.tileSize,
   });
+
+  int getNextFileId() {
+    int max = files.isNotEmpty ? files.map((group) => group.id).reduce(math.max) : 0;
+    return max + 1;
+  }
 
   static TileGroup clone(TileGroup tileGroup) {
     TileGroup result = TileGroup(

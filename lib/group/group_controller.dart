@@ -7,12 +7,14 @@ class GroupController extends StatefulWidget {
   final TileSetProject project;
   final TileGroup tileGroup;
   final GroupState groupState;
+  final void Function() onAddTiles;
 
   const GroupController({
     super.key, //
     required this.project,
     required this.tileGroup,
     required this.groupState,
+    required this.onAddTiles,
   });
 
   @override
@@ -36,21 +38,10 @@ class GroupControllerState extends State<GroupController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.delete_forever),
-            onPressed: () {
-              //
-            },
-          ),
-          SizedBox(width: 5),
-          SizedBox(width: 5),
           ElevatedButton.icon(
-            icon: Icon(Icons.edit), //
-            label: Text('Splitter'),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            onPressed: () {
-              //
-            },
+            icon: Icon(Icons.add), //
+            label: Text('Add tiles (*.png)'),
+            onPressed: widget.onAddTiles,
           ),
         ],
       ),

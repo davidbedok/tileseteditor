@@ -28,16 +28,18 @@ import 'package:tileseteditor/splitter/splitter_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/welcome_widget.dart';
 
-class TileSetSelector extends StatefulWidget {
+class ProjectSelector extends StatefulWidget {
+  static const int topHeight = 230;
+
   final PackageInfo packageInfo;
 
-  const TileSetSelector({super.key, required this.packageInfo});
+  const ProjectSelector({super.key, required this.packageInfo});
 
   @override
-  State<TileSetSelector> createState() => TileSetSelectorState();
+  State<ProjectSelector> createState() => ProjectSelectorState();
 }
 
-class TileSetSelectorState extends State<TileSetSelector> {
+class ProjectSelectorState extends State<ProjectSelector> {
   ProjectState projectState = ProjectState();
   SplitterState splitterState = SplitterState();
   OutputState outputState = OutputState();
@@ -64,7 +66,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Expanded(
-                  child: TileSetEditorMenuBar(
+                  child: ProjectMenuBar(
                     projectState: projectState,
                     onNewProject: newProject,
                     onOpenProject: openProject,

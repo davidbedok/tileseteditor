@@ -7,8 +7,6 @@ import 'package:tileseteditor/splitter/splitter_editor.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class TileSetEditor extends StatefulWidget {
-  static const int topHeight = 230;
-
   final TileSetProject project;
   final TileSet tileSet;
   final SplitterState splitterState;
