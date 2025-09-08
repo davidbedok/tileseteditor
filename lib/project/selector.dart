@@ -5,10 +5,12 @@ import 'dart:ui' as dui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/dialogs/add_tilegroup_dialog.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/editor.dart';
@@ -68,7 +70,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                     onAddTileSet: addTileSet,
                     onEditTileSet: editTileSet,
                     onDeleteTileSet: deleteTileSet,
-                    onAddTiles: addTiles,
+                    onAddTileGroup: addTileGroup,
                   ),
                 ),
               ],
@@ -330,7 +332,20 @@ class TileSetSelectorState extends State<TileSetSelector> {
     }
   }
 
-  void addTiles() async {
-    //
+  void addTileGroup() async {
+    if (projectState.project.isDefined()) {
+      TileGroup? dialogResult = await showDialog<TileGroup>(
+        context: context,
+        builder: (BuildContext context) {
+          return AddTileGroupDialog(project: projectState.project.object);
+        },
+      );
+      if (dialogResult != null) {
+        setState(() {
+          projectState.project.object.tileGroups.add(dialogResult);
+          projectState.tileGroup.select(dialogResult);
+        });
+      }
+    }
   }
 }

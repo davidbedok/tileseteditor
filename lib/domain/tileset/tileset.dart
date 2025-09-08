@@ -311,6 +311,15 @@ class TileSet implements YateMapper {
     };
   }
 
+  static List<TileSet> itemsFromJson(Map<String, dynamic> json) {
+    List<TileSet> result = [];
+    List<Map<String, dynamic>> tileSets = json['tilesets'] != null ? (json['tilesets'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
+    for (var tileSet in tileSets) {
+      result.add(TileSet.fromJson(tileSet));
+    }
+    return result;
+  }
+
   factory TileSet.fromJson(Map<String, dynamic> json) {
     TileSet result = switch (json) {
       {

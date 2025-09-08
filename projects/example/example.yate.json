@@ -1273,7 +1273,18 @@
             }
         }
     ],
-    "tilegroups": [],
+    "tilegroups": [
+        {
+            "id": 1,
+            "name": "demo",
+            "active": true,
+            "tile": {
+                "width": 32,
+                "height": 32
+            },
+            "files": []
+        }
+    ],
     "output": {
         "file": "example.png",
         "tile": {

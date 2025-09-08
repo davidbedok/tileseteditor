@@ -39,6 +39,11 @@ class TileSetProject {
     return max + 1;
   }
 
+  int getNextTileGroupId() {
+    int max = tileGroups.isNotEmpty ? tileGroups.map((tileGroup) => tileGroup.id).reduce(math.max) : 0;
+    return max + 1;
+  }
+
   int getNextKey() {
     int result = 0;
     int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(math.max) : 0;
@@ -135,11 +140,8 @@ class TileSetProject {
         ),
       _ => throw const FormatException('Failed to load TileSetProject'),
     };
-
-    List<Map<String, dynamic>> tileSets = json['tilesets'] != null ? (json['tilesets'] as List).map((source) => source as Map<String, dynamic>).toList() : [];
-    for (var tileSet in tileSets) {
-      result.tileSets.add(TileSet.fromJson(tileSet));
-    }
+    result.tileSets = TileSet.itemsFromJson(json);
+    result.tileGroups = TileGroup.itemsFromJson(json);
     return result;
   }
 }

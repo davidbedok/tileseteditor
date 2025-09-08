@@ -3,6 +3,13 @@ import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileGroup implements YateMapper {
+  static final TileGroup none = TileGroup(
+    id: -1, //
+    name: '-',
+    active: true,
+    tileSize: PixelSize(0, 0),
+  );
+
   int id;
   String name;
   bool active;
@@ -29,6 +36,17 @@ class TileGroup implements YateMapper {
       },
       'files': YateMapper.itemsToJson(files),
     };
+  }
+
+  static List<TileGroup> itemsFromJson(Map<String, dynamic> json) {
+    List<TileGroup> result = [];
+    List<Map<String, dynamic>> tileSets = json['tilegroups'] != null
+        ? (json['tilegroups'] as List).map((source) => source as Map<String, dynamic>).toList()
+        : [];
+    for (var tileSet in tileSets) {
+      result.add(TileGroup.fromJson(tileSet));
+    }
+    return result;
   }
 
   factory TileGroup.fromJson(Map<String, dynamic> json) {

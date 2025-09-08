@@ -40,7 +40,7 @@ class AddTileSetDialogState extends State<AddTileSetDialog> {
   Widget build(BuildContext context) {
     return AppDialogWidget(
       formKey: _formKey,
-      title: 'Add TileSet',
+      title: 'Add new TileSet to ${widget.project.name} project',
       actionButton: 'Add',
       onAction: () {
         Navigator.of(context).pop(_tileSet);
