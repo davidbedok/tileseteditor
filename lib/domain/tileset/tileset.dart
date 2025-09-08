@@ -79,7 +79,7 @@ class TileSet extends TileSetProjectItem implements YateMapper {
   });
 
   Future<void> loadImage(TileSetProject project) async {
-    image = await ImageUtils.getImage(project.getTileSetFilePath(this));
+    image = await ImageUtils.getImage(project.getTileSetPath(this));
   }
 
   void initOutput() {

@@ -29,7 +29,7 @@ class SliceWidget extends StatelessWidget {
                 padding: EdgeInsets.all(10.0),
                 decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
                 child: ImageUtils.cropImage(
-                  project.getTileSetFilePath(tileSet),
+                  project.getTileSetPath(tileSet),
                   x: (slice.coord.left - 1) * tileSet.tileSize.widthPx,
                   y: (slice.coord.top - 1) * tileSet.tileSize.heightPx,
                   width: slice.size.width * tileSet.tileSize.widthPx,

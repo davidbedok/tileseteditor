@@ -117,7 +117,7 @@ class _GroupWidgetState extends State<GroupWidget> {
       coords.add(tileSet.getTileIndexedCoord(index));
     }
     return ImageUtils.cropTiles(
-      widget.project.getTileSetFilePath(tileSet), //
+      widget.project.getTileSetPath(tileSet), //
       coords,
       tileSet.tileSize.widthPx,
       tileSet.tileSize.heightPx,

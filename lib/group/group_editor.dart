@@ -1,3 +1,4 @@
+import 'dart:ui' as dui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
@@ -6,6 +7,8 @@ import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
 import 'package:tileseteditor/group/group_controller.dart';
 import 'package:tileseteditor/group/group_state.dart';
+import 'package:tileseteditor/utils/image_utils.dart';
+import 'package:tileseteditor/widgets/tile_group_list_widget.dart';
 import 'package:tileseteditor/project/selector.dart';
 import 'package:path/path.dart' as path;
 
@@ -70,7 +73,7 @@ class _GroupEditorState extends State<GroupEditor> {
                           ? Text('Add Tiles (*.png) for this tilegroup..')
                           : ListView(
                               children: [
-                                for (TileGroupFile file in _tileGroup.files) Text(file.filePath), //
+                                for (TileGroupFile groupFile in _tileGroup.files) TileGroupListWidget(groupFile: groupFile), //
                               ],
                             ),
                     ),
@@ -114,18 +117,20 @@ class _GroupEditorState extends State<GroupEditor> {
     );
     if (filePickerResult != null) {
       List<TileGroupFile> newFiles = [];
+      int nextId = _tileGroup.getNextFileId();
       for (PlatformFile file in filePickerResult.files) {
-        //
         if (file.path != null) {
-          newFiles.add(
-            TileGroupFile(
-              id: _tileGroup.getNextFileId(), //
-              key: widget.project.getNextKey(), //
-              filePath: path.relative(file.path!, from: widget.project.getDirectory()),
-              size: widget.project.output.size,
-              imageSize: PixelSize(0, 0),
-            ),
+          dui.Image image = await ImageUtils.getImage(widget.project.buildFilePath(file.path!));
+          TileGroupFile groupFile = TileGroupFile(
+            id: nextId++, //
+            key: widget.project.getNextKey(), //
+            filePath: path.relative(file.path!, from: widget.project.getDirectory()),
+            size: widget.project.output.size,
+            imageSize: PixelSize(image.width, image.height),
           );
+          groupFile.image = image;
+
+          newFiles.add(groupFile);
         }
       }
       if (newFiles.isNotEmpty) {

@@ -318,7 +318,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
         },
       );
       if (dialogResult != null) {
-        dui.Image image = await ImageUtils.getImage(projectState.project.object.getTileSetFilePath(dialogResult));
+        dui.Image image = await ImageUtils.getImage(projectState.project.object.getTileSetPath(dialogResult));
         dialogResult.imageSize.widthPx = image.width;
         dialogResult.imageSize.heightPx = image.height;
         await dialogResult.loadImage(projectState.project.object);

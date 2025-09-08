@@ -1,16 +1,19 @@
 import 'dart:ui';
-
 import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
+import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
+import 'package:tileseteditor/utils/image_utils.dart';
 
 class TileGroupFile extends TileSetItem implements YateMapper {
   int key;
   String filePath;
   PixelSize imageSize;
   TileRectSize size;
+
+  Image? image;
 
   TileGroupFile({
     required super.id, //
@@ -19,6 +22,10 @@ class TileGroupFile extends TileSetItem implements YateMapper {
     required this.imageSize,
     required this.size,
   });
+
+  Future<void> loadImage(TileSetProject project) async {
+    image = await ImageUtils.getImage(project.getTileGroupFilePath(this));
+  }
 
   @override
   Color getColor() {

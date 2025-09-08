@@ -8,6 +8,7 @@ import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/output/tileset_output.dart';
+import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetProject {
@@ -68,11 +69,19 @@ class TileSetProject {
   }
 
   String getTileSetFilePathByName(String name) {
-    return getTileSetFilePath(tileSets.where((tileSet) => tileSet.name == name).first);
+    return getTileSetPath(tileSets.where((tileSet) => tileSet.name == name).first);
   }
 
-  String getTileSetFilePath(TileSet tileSet) {
-    return path.join(getDirectory(), tileSet.filePath);
+  String getTileSetPath(TileSet tileSet) {
+    return buildFilePath(tileSet.filePath);
+  }
+
+  String getTileGroupFilePath(TileGroupFile groupFile) {
+    return buildFilePath(groupFile.filePath);
+  }
+
+  String buildFilePath(String filePath) {
+    return path.join(getDirectory(), filePath);
   }
 
   Future<void> loadTileSetImages() async {
