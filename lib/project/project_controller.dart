@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';
 
@@ -9,8 +9,11 @@ class ProjectController extends StatefulWidget {
   final void Function() onEditProject;
   final void Function() onCloseProject;
   final void Function() onAddTileSet;
+  final void Function() onAddTileGroup;
   final void Function() onEditTileSet;
   final void Function() onDeleteTileSet;
+  final void Function() onEditTileGroup;
+  final void Function() onDeleteTileGroup;
 
   const ProjectController({
     super.key, //
@@ -18,8 +21,11 @@ class ProjectController extends StatefulWidget {
     required this.onEditProject,
     required this.onCloseProject,
     required this.onAddTileSet,
+    required this.onAddTileGroup,
     required this.onEditTileSet,
     required this.onDeleteTileSet,
+    required this.onEditTileGroup,
+    required this.onDeleteTileGroup,
   });
 
   @override
@@ -28,22 +34,22 @@ class ProjectController extends StatefulWidget {
 
 class ProjectControllerState extends State<ProjectController> {
   late TileSetProject project;
-  late TileSet tileSet;
+  late TileSetProjectItem item;
 
   @override
   void initState() {
     super.initState();
     project = widget.projectState.project.object;
-    tileSet = widget.projectState.tileSet.object;
+    item = widget.projectState.item.object;
     widget.projectState.project.subscribeSelection(selectProject);
-    widget.projectState.tileSet.subscribeSelection(selectTileSet);
+    widget.projectState.item.subscribeSelection(selectItem);
   }
 
   @override
   void dispose() {
     super.dispose();
     widget.projectState.project.unsubscribeSelection(selectProject);
-    widget.projectState.tileSet.unsubscribeSelection(selectTileSet);
+    widget.projectState.item.unsubscribeSelection(selectItem);
   }
 
   void selectProject(ProjectState state, TileSetProject project) {
@@ -52,9 +58,9 @@ class ProjectControllerState extends State<ProjectController> {
     });
   }
 
-  void selectTileSet(ProjectState state, TileSet tileSet) {
+  void selectItem(ProjectState state, TileSetProjectItem prjectItem) {
     setState(() {
-      this.tileSet = tileSet;
+      item = prjectItem;
     });
   }
 
@@ -72,37 +78,76 @@ class ProjectControllerState extends State<ProjectController> {
             },
           ),
           SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.add), //
-            label: Text('Add tileset'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(117, 110, 190, 84),
-              foregroundColor: const Color.fromARGB(255, 229, 224, 224),
-            ),
-            onPressed: () {
-              widget.onAddTileSet.call();
-            },
-          ),
-          SizedBox(width: 5),
           Visibility(
-            visible: tileSet != TileSet.none,
+            visible: item == TileSetProjectItem.none,
             child: ElevatedButton.icon(
-              icon: Icon(Icons.edit), //
-              label: Text('${tileSet.name} tileset'),
+              icon: Icon(Icons.add), //
+              label: Text('Add tileset'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(117, 110, 190, 84),
+                foregroundColor: const Color.fromARGB(255, 229, 224, 224),
+              ),
               onPressed: () {
-                widget.onEditTileSet.call();
+                widget.onAddTileSet.call();
               },
             ),
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: tileSet != TileSet.none,
+            visible: item == TileSetProjectItem.none,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.add), //
+              label: Text('Add tilegroup'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(117, 110, 190, 84),
+                foregroundColor: const Color.fromARGB(255, 229, 224, 224),
+              ),
+              onPressed: () {
+                widget.onAddTileGroup.call();
+              },
+            ),
+          ),
+          SizedBox(width: 5),
+          Visibility(
+            visible: item.isTileSet(),
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.edit), //
+              label: Text('${item.name} tileset'),
+              onPressed: () {
+                widget.onEditTileSet.call();
+              },
+            ),
+          ),
+          Visibility(
+            visible: item.isTileGroup(),
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.edit), //
+              label: Text('${item.name} tilegroup'),
+              onPressed: () {
+                widget.onEditTileGroup.call();
+              },
+            ),
+          ),
+          SizedBox(width: 5),
+          Visibility(
+            visible: item.isTileSet(),
             child: ElevatedButton.icon(
               icon: Icon(Icons.delete), //
-              label: Text('${tileSet.name} tileset'),
+              label: Text('${item.name} tileset'),
               style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(82, 206, 46, 6), foregroundColor: const Color.fromARGB(255, 229, 224, 224)),
               onPressed: () {
                 widget.onDeleteTileSet.call();
+              },
+            ),
+          ),
+          Visibility(
+            visible: item.isTileGroup(),
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.delete), //
+              label: Text('${item.name} tilegroup'),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(82, 206, 46, 6), foregroundColor: const Color.fromARGB(255, 229, 224, 224)),
+              onPressed: () {
+                widget.onDeleteTileGroup.call();
               },
             ),
           ),

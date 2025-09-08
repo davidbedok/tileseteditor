@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
@@ -27,10 +28,11 @@ class TileSetProject {
 
   TileSetProject({required this.name, this.description, required this.output});
 
-  List<TileSet> getTileSetsDropDownItems() {
-    List<TileSet> result = [];
-    result.add(TileSet.none);
+  List<TileSetProjectItem> getProjectItemsDropDown() {
+    List<TileSetProjectItem> result = [];
+    result.add(TileSetProjectItem.none);
     result.addAll(tileSets);
+    result.addAll(tileGroups);
     return result;
   }
 
@@ -81,6 +83,10 @@ class TileSetProject {
 
   void deleteTileSet(TileSet tileSet) {
     tileSets.remove(tileSet);
+  }
+
+  void deleteTileGroup(TileGroup tileGroup) {
+    tileGroups.remove(tileGroup);
   }
 
   @override

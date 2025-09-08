@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui' as dui;
 
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_indexed_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
@@ -15,7 +16,7 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
-class TileSet implements YateMapper {
+class TileSet extends TileSetProjectItem implements YateMapper {
   static final TileSet none = TileSet(
     id: -1,
     key: -1,
@@ -28,12 +29,8 @@ class TileSet implements YateMapper {
     tileSize: PixelSize(0, 0),
   );
 
-  int id;
   int key;
-  String name;
-  bool active;
   String filePath;
-  PixelSize tileSize;
   int margin;
   int spacing;
 
@@ -47,6 +44,9 @@ class TileSet implements YateMapper {
 
   // FIXME do we need it here?
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
+
+  @override
+  String getDetails() => 'tileset';
 
   int getMaxTileRow() => imageSize.widthPx ~/ tileSize.widthPx;
   int getMaxTileColumn() => imageSize.heightPx ~/ tileSize.heightPx;
@@ -67,12 +67,12 @@ class TileSet implements YateMapper {
   }
 
   TileSet({
-    required this.id,
+    required super.id,
+    required super.name,
+    required super.active,
+    required super.tileSize,
     required this.key,
-    required this.name,
-    required this.active,
     required this.filePath,
-    required this.tileSize,
     required this.margin,
     required this.spacing,
     required this.imageSize,

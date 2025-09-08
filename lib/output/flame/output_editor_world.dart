@@ -42,7 +42,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       if (selected != null) {
         if (selected == component) {
           selected = null;
-          game.outputState.tileSetItem.select(TileSetItem.none);
+          game.outputState.tileSetItem.unselect();
         } else {
           setSelected(component);
         }

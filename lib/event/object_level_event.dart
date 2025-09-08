@@ -27,6 +27,10 @@ class ObjectLevelEvent<S, T> {
     removalEventHandlers.remove(eventHandler);
   }
 
+  void unselect() {
+    select(noneObject);
+  }
+
   void select(T object) {
     this.object = object;
     for (var eventHandler in selectionEventHandlers) {

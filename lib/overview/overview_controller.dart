@@ -48,7 +48,7 @@ class OverviewControllerState extends State<OverviewController> {
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () {
-              widget.overviewState.tileSetItem.select(TileSetItem.none);
+              widget.overviewState.tileSetItem.unselect();
               widget.overviewState.removeAll.invoke();
             },
           ),

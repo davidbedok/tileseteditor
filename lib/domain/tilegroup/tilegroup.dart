@@ -1,8 +1,9 @@
 import 'package:tileseteditor/domain/pixel_size.dart';
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
-class TileGroup implements YateMapper {
+class TileGroup extends TileSetProjectItem implements YateMapper {
   static final TileGroup none = TileGroup(
     id: -1, //
     name: '-',
@@ -10,19 +11,27 @@ class TileGroup implements YateMapper {
     tileSize: PixelSize(0, 0),
   );
 
-  int id;
-  String name;
-  bool active;
-  PixelSize tileSize;
-
   List<TileGroupFile> files = [];
 
+  @override
+  String getDetails() => 'tilegroup';
+
   TileGroup({
-    required this.id, //
-    required this.name,
-    required this.active,
-    required this.tileSize,
+    required super.id, //
+    required super.name,
+    required super.active,
+    required super.tileSize,
   });
+
+  static TileGroup clone(TileGroup tileGroup) {
+    TileGroup result = TileGroup(
+      id: tileGroup.id, //
+      name: tileGroup.name,
+      active: tileGroup.active,
+      tileSize: PixelSize(tileGroup.tileSize.widthPx, tileGroup.tileSize.heightPx),
+    );
+    return result;
+  }
 
   @override
   Map<String, dynamic> toJson() {

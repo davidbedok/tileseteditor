@@ -40,7 +40,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
       if (selected != null) {
         if (selected == component) {
           selected = null;
-          game.overviewState.tileSetItem.select(TileSetItem.none);
+          game.overviewState.tileSetItem.unselect();
         } else {
           setSelected(component);
         }

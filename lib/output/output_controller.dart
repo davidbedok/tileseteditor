@@ -53,7 +53,7 @@ class OutputControllerState extends State<OutputController> {
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () {
-              widget.outputState.tileSetItem.select(TileSetItem.none);
+              widget.outputState.tileSetItem.unselect();
               widget.outputState.removeAll.invoke();
             },
           ),

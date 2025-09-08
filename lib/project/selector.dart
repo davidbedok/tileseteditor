@@ -8,8 +8,10 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/dialogs/add_tilegroup_dialog.dart';
 import 'package:tileseteditor/dialogs/add_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_project_dialog.dart';
+import 'package:tileseteditor/dialogs/edit_tilegroup_dialog.dart';
 import 'package:tileseteditor/dialogs/edit_tileset_dialog.dart';
 import 'package:tileseteditor/dialogs/new_project_dialog.dart';
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
@@ -65,12 +67,14 @@ class TileSetSelectorState extends State<TileSetSelector> {
                     onOpenProject: openProject,
                     onSaveProject: saveProject,
                     onSaveAsProject: saveAsProject,
-                    onEditProject: editProject,
                     onCloseProject: closeProject,
+                    onEditProject: editProject,
                     onAddTileSet: addTileSet,
                     onEditTileSet: editTileSet,
                     onDeleteTileSet: deleteTileSet,
                     onAddTileGroup: addTileGroup,
+                    onEditTileGroup: editTileGroup,
+                    onDeleteTileGroup: deleteTileGroup,
                   ),
                 ),
               ],
@@ -86,11 +90,14 @@ class TileSetSelectorState extends State<TileSetSelector> {
                         )
                       : ProjectController(
                           projectState: projectState,
-                          onAddTileSet: addTileSet,
-                          onCloseProject: closeProject,
                           onEditProject: editProject,
+                          onAddTileSet: addTileSet,
+                          onAddTileGroup: addTileGroup,
                           onEditTileSet: editTileSet,
                           onDeleteTileSet: deleteTileSet,
+                          onEditTileGroup: editTileGroup,
+                          onDeleteTileGroup: deleteTileGroup,
+                          onCloseProject: closeProject,
                         ),
                 ),
               ],
@@ -114,31 +121,31 @@ class TileSetSelectorState extends State<TileSetSelector> {
                             hoverColor: Colors.transparent, //
                           ),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<TileSet>(
-                              value: projectState.tileSet.object,
-                              hint: Text('Choose a TileSet..'),
+                            child: DropdownButton<TileSetProjectItem>(
+                              value: projectState.item.object,
+                              hint: Text('Choose a tileset or a tilegroup..'),
                               style: Theme.of(context).textTheme.bodyMedium,
                               focusColor: Colors.transparent,
                               isDense: true,
                               isExpanded: true,
                               items: projectState.project.isNotDefined()
                                   ? []
-                                  : projectState.project.object.getTileSetsDropDownItems().map((TileSet tileSetItem) {
-                                      return DropdownMenuItem<TileSet>(
-                                        value: tileSetItem, //
+                                  : projectState.project.object.getProjectItemsDropDown().map((TileSetProjectItem projectItem) {
+                                      return DropdownMenuItem<TileSetProjectItem>(
+                                        value: projectItem, //
                                         child: Text(
-                                          tileSetItem.key >= 0
-                                              ? 'Splitter and output editor for ${tileSetItem.name} (${tileSetItem.key})'
+                                          projectItem.id >= 0
+                                              ? 'Splitter and output editor for ${projectItem.name} ${projectItem.getDetails()} [${projectItem.id}]'
                                               : 'Overview output editor',
                                         ),
                                       );
                                     }).toList(),
-                              onChanged: (TileSet? value) async {
+                              onChanged: (TileSetProjectItem? value) async {
                                 if (value != null) {
                                   setState(() {
                                     splitterState = SplitterState();
                                     outputState = OutputState();
-                                    projectState.tileSet.select(value);
+                                    projectState.item.select(value);
                                   });
                                 }
                               },
@@ -151,7 +158,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 ),
               ),
             ),
-            projectState.tileSet.isDefined() && projectState.tileSet.object.image != null
+            projectState.item.isDefined() && projectState.item.object.isTileSet() && projectState.getItemAsTileSet().image != null
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TileSetEditor(
@@ -159,10 +166,10 @@ class TileSetSelectorState extends State<TileSetSelector> {
                       splitterState: splitterState, //
                       outputState: outputState,
                       project: projectState.project.object,
-                      tileSet: projectState.tileSet.object,
+                      tileSet: projectState.getItemAsTileSet(),
                     ),
                   )
-                : projectState.project.isDefined() && projectState.tileSet.isNotDefined()
+                : projectState.project.isDefined() && projectState.item.isNotDefined()
                 ? Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: OverviewEditor(
@@ -278,8 +285,8 @@ class TileSetSelectorState extends State<TileSetSelector> {
 
   void closeProject() {
     setState(() {
-      projectState.project.select(TileSetProject.none);
-      projectState.tileSet.select(TileSet.none);
+      projectState.project.unselect();
+      projectState.item.unselect();
       splitterState = SplitterState();
       outputState = OutputState();
     });
@@ -300,34 +307,34 @@ class TileSetSelectorState extends State<TileSetSelector> {
         await dialogResult.loadImage(projectState.project.object);
         setState(() {
           projectState.project.object.tileSets.add(dialogResult);
-          projectState.tileSet.select(dialogResult);
+          projectState.item.select(dialogResult);
         });
       }
     }
   }
 
   void editTileSet() async {
-    if (projectState.project.isDefined() && projectState.tileSet.isDefined()) {
+    if (projectState.project.isDefined() && projectState.item.object.isTileSet()) {
       TileSet? dialogResult = await showDialog<TileSet>(
         context: context,
         builder: (BuildContext context) {
-          return EditTileSetDialog(project: projectState.project.object, tileSet: TileSet.clone(projectState.tileSet.object));
+          return EditTileSetDialog(project: projectState.project.object, tileSet: TileSet.clone(projectState.getItemAsTileSet()));
         },
       );
       if (dialogResult != null) {
         setState(() {
-          projectState.tileSet.object.name = dialogResult.name;
-          projectState.tileSet.object.active = dialogResult.active;
+          projectState.item.object.name = dialogResult.name;
+          projectState.item.object.active = dialogResult.active;
         });
       }
     }
   }
 
   void deleteTileSet() async {
-    if (projectState.project.isDefined() && projectState.tileSet.isDefined()) {
+    if (projectState.project.isDefined() && projectState.item.isDefined()) {
       setState(() {
-        projectState.project.object.deleteTileSet(projectState.tileSet.object);
-        projectState.tileSet.select(TileSet.none);
+        projectState.project.object.deleteTileSet(projectState.getItemAsTileSet());
+        projectState.item.unselect();
       });
     }
   }
@@ -343,9 +350,35 @@ class TileSetSelectorState extends State<TileSetSelector> {
       if (dialogResult != null) {
         setState(() {
           projectState.project.object.tileGroups.add(dialogResult);
-          projectState.tileGroup.select(dialogResult);
+          projectState.item.select(dialogResult);
         });
       }
+    }
+  }
+
+  void editTileGroup() async {
+    if (projectState.project.isDefined() && projectState.item.object.isTileGroup()) {
+      TileGroup? dialogResult = await showDialog<TileGroup>(
+        context: context,
+        builder: (BuildContext context) {
+          return EditTileGroupDialog(project: projectState.project.object, tileGroup: TileGroup.clone(projectState.getItemAsTileGroup()));
+        },
+      );
+      if (dialogResult != null) {
+        setState(() {
+          projectState.item.object.name = dialogResult.name;
+          projectState.item.object.active = dialogResult.active;
+        });
+      }
+    }
+  }
+
+  void deleteTileGroup() async {
+    if (projectState.project.isDefined() && projectState.item.object.isTileGroup()) {
+      setState(() {
+        projectState.project.object.deleteTileGroup(projectState.getItemAsTileGroup());
+        projectState.item.unselect();
+      });
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';
@@ -11,12 +12,15 @@ class TileSetEditorMenuBar extends StatelessWidget {
   final void Function() onOpenProject;
   final void Function() onSaveProject;
   final void Function() onSaveAsProject;
-  final void Function() onEditProject;
   final void Function() onCloseProject;
+
+  final void Function() onEditProject;
   final void Function() onAddTileSet;
   final void Function() onEditTileSet;
   final void Function() onDeleteTileSet;
   final void Function() onAddTileGroup;
+  final void Function() onEditTileGroup;
+  final void Function() onDeleteTileGroup;
 
   const TileSetEditorMenuBar({
     super.key,
@@ -25,18 +29,20 @@ class TileSetEditorMenuBar extends StatelessWidget {
     required this.onOpenProject,
     required this.onSaveProject,
     required this.onSaveAsProject,
-    required this.onEditProject,
     required this.onCloseProject,
+    required this.onEditProject,
     required this.onAddTileSet,
     required this.onEditTileSet,
     required this.onDeleteTileSet,
     required this.onAddTileGroup,
+    required this.onEditTileGroup,
+    required this.onDeleteTileGroup,
   });
 
   @override
   Widget build(BuildContext context) {
     TileSetProject project = projectState.project.object;
-    TileSet tileSet = projectState.tileSet.object;
+    TileSetProjectItem item = projectState.item.object;
 
     return MenuBar(
       style: MenuStyle(
@@ -90,12 +96,12 @@ class TileSetEditorMenuBar extends StatelessWidget {
                     child: MenuAcceleratorLabel('&Add new tileset${projectState.project.isDefined() ? ' (to ${project.name})' : ''}'),
                   ),
                   MenuItemButton(
-                    onPressed: projectState.tileSet.isDefined() ? onEditTileSet : null,
-                    child: MenuAcceleratorLabel('&Edit tileset${projectState.tileSet.isDefined() ? ' (${tileSet.name})' : ''}'),
+                    onPressed: projectState.item.object.isTileSet() ? onEditTileSet : null,
+                    child: MenuAcceleratorLabel('&Edit tileset${projectState.item.object.isTileSet() ? ' (${item.name})' : ''}'),
                   ),
                   MenuItemButton(
-                    onPressed: projectState.tileSet.isDefined() ? onDeleteTileSet : null,
-                    child: MenuAcceleratorLabel('&Delete tileset${projectState.tileSet.isDefined() ? ' (${tileSet.name})' : ''}'),
+                    onPressed: projectState.item.object.isTileSet() ? onDeleteTileSet : null,
+                    child: MenuAcceleratorLabel('&Delete tileset${projectState.item.object.isTileSet() ? ' (${item.name})' : ''}'),
                   ),
                 ],
                 child: const MenuAcceleratorLabel('Tile&Set'),
@@ -108,15 +114,14 @@ class TileSetEditorMenuBar extends StatelessWidget {
                     onPressed: projectState.project.isDefined() && project.filePath != null ? onAddTileGroup : null,
                     child: MenuAcceleratorLabel('&Add new tilegroup${projectState.project.isDefined() ? ' (to ${project.name})' : ''}'),
                   ),
-                  /*
                   MenuItemButton(
-                    onPressed: project != null && project!.filePath != null ? onEditTileSet : null,
-                    child: const MenuAcceleratorLabel('&Edit tileset'),
+                    onPressed: projectState.item.object.isTileGroup() ? onEditTileGroup : null,
+                    child: MenuAcceleratorLabel('&Edit tilegroup${projectState.item.object.isTileGroup() ? ' (${item.name})' : ''}'),
                   ),
                   MenuItemButton(
-                    onPressed: project != null && project!.filePath != null ? onDeleteTileSet : null,
-                    child: const MenuAcceleratorLabel('&Delete tileset'),
-                  ),*/
+                    onPressed: projectState.item.object.isTileGroup() ? onDeleteTileGroup : null,
+                    child: MenuAcceleratorLabel('&Delete tilegroup${projectState.item.object.isTileGroup() ? ' (${item.name})' : ''}'),
+                  ),
                 ],
                 child: const MenuAcceleratorLabel('Tile&Group'),
               ),
