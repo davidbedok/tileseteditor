@@ -15,6 +15,8 @@ import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
+import 'package:tileseteditor/group/group_editor.dart';
+import 'package:tileseteditor/group/group_state.dart';
 import 'package:tileseteditor/project/editor.dart';
 import 'package:tileseteditor/project/menubar.dart';
 import 'package:tileseteditor/output/output_state.dart';
@@ -40,6 +42,7 @@ class TileSetSelectorState extends State<TileSetSelector> {
   SplitterState splitterState = SplitterState();
   OutputState outputState = OutputState();
   OverviewState overviewState = OverviewState();
+  GroupState groupState = GroupState();
 
   @override
   void initState() {
@@ -158,26 +161,38 @@ class TileSetSelectorState extends State<TileSetSelector> {
                 ),
               ),
             ),
-            projectState.item.isDefined() && projectState.item.object.isTileSet() && projectState.getItemAsTileSet().image != null
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TileSetEditor(
-                      key: GlobalKey(),
-                      splitterState: splitterState, //
-                      outputState: outputState,
-                      project: projectState.project.object,
-                      tileSet: projectState.getItemAsTileSet(),
-                    ),
-                  )
-                : projectState.project.isDefined() && projectState.item.isNotDefined()
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: OverviewEditor(
-                      key: GlobalKey(),
-                      overviewState: overviewState, //
-                      project: projectState.project.object,
-                    ),
-                  )
+            projectState.item.isDefined()
+                ? projectState.item.object.isTileSet() && projectState.getItemAsTileSet().image != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TileSetEditor(
+                            key: GlobalKey(),
+                            splitterState: splitterState, //
+                            outputState: outputState,
+                            project: projectState.project.object,
+                            tileSet: projectState.getItemAsTileSet(),
+                          ),
+                        )
+                      : projectState.item.object.isTileGroup()
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GroupEditor(
+                            key: GlobalKey(),
+                            groupState: groupState, //
+                            project: projectState.project.object,
+                            tileGroup: projectState.getItemAsTileGroup(),
+                          ),
+                        )
+                      : projectState.item.isNotDefined()
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OverviewEditor(
+                            key: GlobalKey(),
+                            overviewState: overviewState, //
+                            project: projectState.project.object,
+                          ),
+                        )
+                      : Row()
                 : Row(),
           ],
         ),
