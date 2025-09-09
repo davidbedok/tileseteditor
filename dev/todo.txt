@@ -1,28 +1,5 @@
-tilesets.key --> USE
-tilegroups.id
-
-
-NEW:
-    - tilesets.id DONE
-    - tilesets.tiles.id DONE
-
-slices.key --> remove or rename? --> slices.id DONE
-groups.key --> remove or rename? --> groups.id DONE
-files.key --> USE
-
-
-OLD:
-{
-    "tileset": -1,
-    "index": -1
-},
-
-NEW: DONE
-{
-    "key": -1,
-    "index": -1
-},
-
+Description: textarea instead of simepl field
+Add project version too..
 
 Version control support:
-    - json ordering should be fixed! --> based on key within a list
+    - key --> use shortify hash instead of numbers..

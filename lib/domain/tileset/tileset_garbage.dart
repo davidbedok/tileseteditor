@@ -13,6 +13,7 @@ class TileSetGarbage implements YateMapper {
 
   @override
   Map<String, dynamic> toJson() {
+    tileIndices.sort();
     return {'indices': tileIndices};
   }
 

@@ -46,7 +46,8 @@ class TileSet extends TileSetProjectItem implements YateMapper {
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
   @override
-  String getDetails() => 'tileset';
+  String getSummary() =>
+      'TileSet splitter and output editor for $name (${imageSize.toString()}) ${slices.length} slices | ${groups.length} groups | ${tiles.length} tiles';
 
   int getMaxTileRow() => imageSize.widthPx ~/ tileSize.widthPx;
   int getMaxTileColumn() => imageSize.heightPx ~/ tileSize.heightPx;
@@ -114,17 +115,17 @@ class TileSet extends TileSetProjectItem implements YateMapper {
   }
 
   int getNextSliceId() {
-    int max = slices.isNotEmpty ? slices.map((slice) => slice.id).reduce(math.max) : 0;
+    int max = slices.isNotEmpty ? slices.map((slice) => slice.id).reduce(math.max) : -1;
     return max + 1;
   }
 
   int getNextGroupId() {
-    int max = groups.isNotEmpty ? groups.map((group) => group.id).reduce(math.max) : 0;
+    int max = groups.isNotEmpty ? groups.map((group) => group.id).reduce(math.max) : -1;
     return max + 1;
   }
 
   int getNextTileId() {
-    int max = tiles.isNotEmpty ? tiles.map((tile) => tile.id).reduce(math.max) : 0;
+    int max = tiles.isNotEmpty ? tiles.map((tile) => tile.id).reduce(math.max) : -1;
     return max + 1;
   }
 
@@ -288,6 +289,9 @@ class TileSet extends TileSetProjectItem implements YateMapper {
 
   @override
   Map<String, dynamic> toJson() {
+    slices.sort((a, b) => a.id.compareTo(b.id));
+    groups.sort((a, b) => a.id.compareTo(b.id));
+    tiles.sort((a, b) => a.id.compareTo(b.id));
     return {
       'id': id,
       'key': key,

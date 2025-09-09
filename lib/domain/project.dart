@@ -38,19 +38,23 @@ class TileSetProject {
   }
 
   int getNextTileSetId() {
-    int max = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.id).reduce(math.max) : 0;
+    int max = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.id).reduce(math.max) : -1;
     return max + 1;
   }
 
   int getNextTileGroupId() {
-    int max = tileGroups.isNotEmpty ? tileGroups.map((tileGroup) => tileGroup.id).reduce(math.max) : 0;
+    int max = tileGroups.isNotEmpty ? tileGroups.map((tileGroup) => tileGroup.id).reduce(math.max) : -1;
     return max + 1;
   }
 
   int getNextKey() {
-    int result = 0;
-    int maxTileSetKey = tileSets.isNotEmpty ? tileSets.map((tileSet) => tileSet.key).reduce(math.max) : 0;
-    return [result, maxTileSetKey].reduce(math.max) + 1;
+    List<int> keys = [];
+    keys.addAll(tileSets.map((tileSet) => tileSet.key).toList());
+    for (TileGroup tileGroup in tileGroups) {
+      keys.addAll(tileGroup.files.map((file) => file.key).toList());
+    }
+    int max = keys.isNotEmpty ? keys.reduce(math.max) : -1;
+    return max + 1;
   }
 
   void initOutput() {
@@ -84,9 +88,14 @@ class TileSetProject {
     return path.join(getDirectory(), filePath);
   }
 
-  Future<void> loadTileSetImages() async {
+  Future<void> loadAllImages() async {
     for (TileSet tileSet in tileSets) {
       await tileSet.loadImage(this);
+    }
+    for (TileGroup tileGroup in tileGroups) {
+      for (TileGroupFile file in tileGroup.files) {
+        await file.loadImage(this);
+      }
     }
   }
 
@@ -117,6 +126,8 @@ class TileSetProject {
   }
 
   Map<String, dynamic> toJson(PackageInfo packageInfo) {
+    tileSets.sort((a, b) => a.id.compareTo(b.id));
+    tileGroups.sort((a, b) => a.id.compareTo(b.id));
     return {
       'name': name,
       'description': description,

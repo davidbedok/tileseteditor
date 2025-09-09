@@ -15,7 +15,7 @@ class TileSetProjectItem {
   bool active;
   PixelSize tileSize;
 
-  String getDetails() => '';
+  String getSummary() => '';
 
   bool isTileSet() => this is TileSet;
   bool isTileGroup() => this is TileGroup;

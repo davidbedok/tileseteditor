@@ -138,11 +138,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                                   : projectState.project.object.getProjectItemsDropDown().map((TileSetProjectItem projectItem) {
                                       return DropdownMenuItem<TileSetProjectItem>(
                                         value: projectItem, //
-                                        child: Text(
-                                          projectItem.id >= 0
-                                              ? 'Splitter and output editor for ${projectItem.name} ${projectItem.getDetails()} [${projectItem.id}]'
-                                              : 'Overview output editor',
-                                        ),
+                                        child: Text(projectItem.id >= 0 ? '${projectItem.getSummary()} (id: ${projectItem.id})' : 'Overview output editor'),
                                       );
                                     }).toList(),
                               onChanged: (TileSetProjectItem? value) async {
@@ -163,7 +159,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                 ),
               ),
             ),
-            projectState.item.isDefined()
+            projectState.project.isDefined()
                 ? projectState.item.object.isTileSet() && projectState.getItemAsTileSet().image != null
                       ? Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -185,8 +181,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                             tileGroup: projectState.getItemAsTileGroup(),
                           ),
                         )
-                      : projectState.item.isNotDefined()
-                      ? Padding(
+                      : Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: OverviewEditor(
                             key: GlobalKey(),
@@ -194,7 +189,6 @@ class ProjectSelectorState extends State<ProjectSelector> {
                             project: projectState.project.object,
                           ),
                         )
-                      : Row()
                 : Row(),
           ],
         ),
@@ -231,7 +225,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
         String content = await file.readAsString();
         TileSetProject loadedProject = TileSetProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
         loadedProject.filePath = filePickerResult.files.single.path!;
-        await loadedProject.loadTileSetImages();
+        await loadedProject.loadAllImages();
         setState(() {
           projectState.project.select(loadedProject);
         });
