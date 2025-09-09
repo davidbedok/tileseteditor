@@ -11,7 +11,15 @@ class DialogHeader extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Text(title, style: Theme.of(context).textTheme.headlineSmall),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(8.0)),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 3, 3, 3),
+              child: Text(title, style: Theme.of(context).textTheme.headlineSmall),
+            ),
+          ),
+        ),
         const Align(alignment: Alignment.topRight, child: CloseButton()),
       ],
     );

@@ -36,6 +36,7 @@ class AddTileGroupDialogState extends State<AddTileGroupDialog> {
     return AppDialogWidget(
       formKey: _formKey,
       title: 'Add new TileGroup to ${widget.project.name} project',
+      width: 700,
       actionButton: 'Add',
       onAction: () {
         Navigator.of(context).pop(_tileGroup);

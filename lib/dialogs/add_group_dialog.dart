@@ -41,7 +41,8 @@ class AddGroupDialogState extends State<AddGroupDialog> {
   Widget build(BuildContext context) {
     return AppDialogWidget(
       formKey: _formKey,
-      title: 'Add Group',
+      title: 'Add new Group to ${widget.tileSet.name} TileSet',
+      width: 800,
       actionButton: 'Add',
       onAction: () {
         Navigator.of(context).pop(_group);

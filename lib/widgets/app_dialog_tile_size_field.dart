@@ -23,22 +23,31 @@ class AppDialogTileSizeField extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(name, style: Theme.of(context).textTheme.bodyMedium)),
+        Flexible(child: Text(name, style: Theme.of(context).textTheme.labelLarge)),
         Expanded(
-          child: DropdownButtonFormField<int>(
-            value: initialValue,
-            style: Theme.of(context).textTheme.bodyMedium,
-            decoration: const InputDecoration(border: InputBorder.none),
-            isExpanded: true,
-            items: _tileSizeOptions.map((int size) {
-              return DropdownMenuItem<int>(value: size, child: Text(size.toString()));
-            }).toList(),
-            onChanged: edit
-                ? null
-                : (value) {
-                    onChanged.call(value!);
-                  },
-            validator: (value) => value == null ? validationMessage : null,
+          child: Container(
+            decoration: BoxDecoration(
+              border: BoxBorder.all(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(3.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButtonFormField<int>(
+                value: initialValue,
+                style: Theme.of(context).textTheme.bodyMedium,
+                decoration: InputDecoration.collapsed(hintText: ''),
+                isExpanded: true,
+                items: _tileSizeOptions.map((int size) {
+                  return DropdownMenuItem<int>(value: size, child: Text(size.toString()));
+                }).toList(),
+                onChanged: edit
+                    ? null
+                    : (value) {
+                        onChanged.call(value!);
+                      },
+                validator: (value) => value == null ? validationMessage : null,
+              ),
+            ),
           ),
         ),
       ],

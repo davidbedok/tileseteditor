@@ -31,8 +31,11 @@ class _TileGroupWidgetState extends State<TileGroupWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        AppDialogNumberField(name: 'ID', initialValue: widget.tileGroup.id, disabled: true),
+        SizedBox(height: TileGroupWidget.space),
         AppDialogTextField(
-          name: 'Name',
+          name: 'TileGroup name',
+          hint: 'Unique name of the input tilegroup',
           initialValue: widget.tileGroup.name,
           validationMessage: 'Please enter the name of the TileGroup.',
           onChanged: (String value) {
@@ -52,8 +55,8 @@ class _TileGroupWidgetState extends State<TileGroupWidget> {
           },
         ),
         SizedBox(height: TileGroupWidget.space),
-        SizedBox(height: TileGroupWidget.space),
         AppDialogNumberField(name: 'Tile width (same as output)', initialValue: widget.tileGroup.tileSize.widthPx, disabled: true),
+        SizedBox(height: TileGroupWidget.space),
         AppDialogNumberField(name: 'Tile height (same as output)', initialValue: widget.tileGroup.tileSize.heightPx, disabled: true),
       ],
     );

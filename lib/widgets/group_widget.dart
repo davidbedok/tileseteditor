@@ -63,12 +63,14 @@ class _GroupWidgetState extends State<GroupWidget> {
           ),
         ),
         SizedBox(
-          width: 400,
+          width: 500,
           child: Column(
             children: [
               AppDialogNumberField(name: 'ID', initialValue: widget.group.id, disabled: true),
+              SizedBox(height: GroupWidget.space),
               AppDialogTextField(
-                name: 'Name',
+                name: 'Group name',
+                hint: 'Enter the name of this group',
                 initialValue: widget.group.name,
                 validationMessage: 'Please enter the name of the Group.',
                 onChanged: (String value) {

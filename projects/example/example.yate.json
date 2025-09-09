@@ -1,6 +1,8 @@
 {
+	"version": "1.0",
     "name": "Example",
     "description": "This is the example TileSet Project",
+	"creator": "qwaevisz",
     "editor": {
         "name": "tileseteditor",
         "version": "1.0.0",

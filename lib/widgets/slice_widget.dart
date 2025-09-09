@@ -27,7 +27,10 @@ class SliceWidget extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
+                decoration: BoxDecoration(
+                  border: BoxBorder.all(color: Colors.grey, strokeAlign: 1.0),
+                  borderRadius: BorderRadius.circular(3.0),
+                ),
                 child: ImageUtils.cropImage(
                   project.getTileSetPath(tileSet),
                   x: (slice.coord.left - 1) * tileSet.tileSize.widthPx,
@@ -40,7 +43,7 @@ class SliceWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          width: 400,
+          width: 500,
           child: numberOfNonFreeTiles > 0
               ? Column(
                   children: [
@@ -67,8 +70,10 @@ class SliceWidget extends StatelessWidget {
               : Column(
                   children: [
                     AppDialogNumberField(name: 'ID', initialValue: slice.id, disabled: true),
+                    SizedBox(height: space),
                     AppDialogTextField(
-                      name: 'Name',
+                      name: 'Slice name',
+                      hint: 'Enter the name of this slice',
                       initialValue: slice.name,
                       validationMessage: 'Please enter the name of the Slice.',
                       onChanged: (String value) {
@@ -77,6 +82,7 @@ class SliceWidget extends StatelessWidget {
                     ),
                     SizedBox(height: space),
                     AppDialogTextField(name: 'Left x Top', initialValue: '${slice.coord.left} x ${slice.coord.top}', disabled: true),
+                    SizedBox(height: space),
                     AppDialogTextField(name: 'Size (width x height)', initialValue: '${slice.size.width} x ${slice.size.height}', disabled: true),
                     SizedBox(height: space),
                     AppDialogTextField(name: 'Tiles (indices)', initialValue: slice.tileIndices.join(','), disabled: true),

@@ -20,7 +20,8 @@ class EditProjectDialogState extends State<EditProjectDialog> {
   Widget build(BuildContext context) {
     return AppDialogWidget(
       formKey: _formKey,
-      title: 'Edit Project',
+      title: 'Project datasheet',
+      width: 600,
       actionButton: 'Modify',
       onAction: () {
         Navigator.of(context).pop(widget.project);

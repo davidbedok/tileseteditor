@@ -5,6 +5,7 @@ class AppDialogWidget extends StatelessWidget {
   static final double space = 8.0;
 
   final String title;
+  final double width;
   final bool enabled;
   final List<Widget> children;
   final String actionButton;
@@ -14,6 +15,7 @@ class AppDialogWidget extends StatelessWidget {
     super.key,
     required GlobalKey<FormState> formKey,
     required this.title,
+    required this.width,
     required this.children,
     required this.actionButton,
     required this.onAction,
@@ -33,7 +35,7 @@ class AppDialogWidget extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(space),
             child: SizedBox(
-              width: 800,
+              width: width,
               child: ListView(
                 children: [
                   Container(

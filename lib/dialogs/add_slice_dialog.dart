@@ -55,7 +55,8 @@ class AddSliceDialogState extends State<AddSliceDialog> {
   Widget build(BuildContext context) {
     return AppDialogWidget(
       formKey: _formKey,
-      title: 'Add Slice',
+      title: 'Add new Slice to ${widget.tileSet.name} TileSet',
+      width: 800,
       enabled: numberOfNonFreeTiles == 0,
       actionButton: 'Add',
       onAction: () {

@@ -35,8 +35,13 @@ class _TileSetWidgetState extends State<TileSetWidget> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        AppDialogNumberField(name: 'ID', initialValue: widget.tileSet.id, disabled: true),
+        SizedBox(height: TileSetWidget.space),
+        AppDialogNumberField(name: 'Unique key at ${widget.project.name} project level', initialValue: widget.tileSet.key, disabled: true),
+        SizedBox(height: TileSetWidget.space),
         AppDialogTextField(
-          name: 'Name',
+          name: 'TileSet name',
+          hint: 'Unique name of the input tileset',
           initialValue: widget.tileSet.name,
           validationMessage: 'Please enter the name of the TileSet.',
           onChanged: (String value) {
@@ -45,7 +50,7 @@ class _TileSetWidgetState extends State<TileSetWidget> {
         ),
         SizedBox(height: TileSetWidget.space),
         AppDialogSwitchField(
-          name: 'Active',
+          name: 'Active (used by the Yate CLI)',
           initialValue: active,
           disabled: false,
           onChanged: (bool value) {
@@ -73,11 +78,21 @@ class _TileSetWidgetState extends State<TileSetWidget> {
                 ),
               ),
               Expanded(
-                child: TextFormField(
-                  controller: sourceController,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  readOnly: true,
-                  validator: (value) => value!.isEmpty ? 'Please select a tileset image' : null,
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: BoxBorder.all(color: Colors.grey, width: 1.0),
+                    borderRadius: BorderRadius.circular(3.0),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration.collapsed(hintText: '..'),
+                      controller: sourceController,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      readOnly: true,
+                      validator: (value) => value!.isEmpty ? 'Please select a tileset image' : null,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -85,9 +100,11 @@ class _TileSetWidgetState extends State<TileSetWidget> {
         ),
         SizedBox(height: TileSetWidget.space),
         AppDialogNumberField(name: 'Tile width (same as output)', initialValue: widget.tileSet.tileSize.widthPx, disabled: true),
+        SizedBox(height: TileSetWidget.space),
         AppDialogNumberField(name: 'Tile height (same as output)', initialValue: widget.tileSet.tileSize.heightPx, disabled: true),
         SizedBox(height: TileSetWidget.space),
         AppDialogNumberField(name: 'Margin (not yet supported)', initialValue: widget.tileSet.margin, disabled: true),
+        SizedBox(height: TileSetWidget.space),
         AppDialogNumberField(name: 'Spacing (not yet supported)', initialValue: widget.tileSet.spacing, disabled: true),
       ],
     );

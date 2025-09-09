@@ -18,6 +18,7 @@ class NewProjectDialogState extends State<NewProjectDialog> {
   final _formKey = GlobalKey<FormState>();
 
   final TileSetProject _project = TileSetProject(
+    version: '1.0',
     name: '',
     output: TileSetOutput(
       fileName: '', //
@@ -30,7 +31,8 @@ class NewProjectDialogState extends State<NewProjectDialog> {
   Widget build(BuildContext context) {
     return AppDialogWidget(
       formKey: _formKey,
-      title: 'New Project',
+      title: 'Create new project',
+      width: 600,
       actionButton: 'Create',
       onAction: () {
         Navigator.of(context).pop(_project);

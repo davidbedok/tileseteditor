@@ -27,6 +27,7 @@ class EditTileSetDialogState extends State<EditTileSetDialog> {
     return AppDialogWidget(
       formKey: _formKey,
       title: 'Edit TileSet',
+      width: 800,
       actionButton: 'Modify',
       onAction: () {
         Navigator.of(context).pop(widget.tileSet);

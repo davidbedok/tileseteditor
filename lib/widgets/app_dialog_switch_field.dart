@@ -27,21 +27,20 @@ class _AppDialogSwitchFieldState extends State<AppDialogSwitchField> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(widget.name, style: Theme.of(context).textTheme.bodyMedium)),
-        Expanded(
-          child: Switch(
-            value: widget.initialValue, //
-            onChanged: widget.disabled
-                ? null
-                : (bool value) {
-                    setState(() {
-                      switchValue = value;
-                    });
-                    if (widget.onChanged != null) {
-                      widget.onChanged!.call(value);
-                    }
-                  },
-          ),
+        Flexible(child: Text(widget.name, style: Theme.of(context).textTheme.labelLarge)),
+        Switch(
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          value: widget.initialValue, //
+          onChanged: widget.disabled
+              ? null
+              : (bool value) {
+                  setState(() {
+                    switchValue = value;
+                  });
+                  if (widget.onChanged != null) {
+                    widget.onChanged!.call(value);
+                  }
+                },
         ),
       ],
     );

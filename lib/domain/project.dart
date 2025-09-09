@@ -13,21 +13,29 @@ import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetProject {
   static final TileSetProject none = TileSetProject(
+    version: '1.0',
     name: '', //
-    description: null,
     output: TileSetOutput.none,
   );
 
   String? filePath;
+  String version;
   String name;
   String? description;
+  String? creator;
   TileSetOutput output;
   List<TileSet> tileSets = [];
   List<TileGroup> tileGroups = [];
 
   String getDirectory() => path.dirname(filePath!);
 
-  TileSetProject({required this.name, this.description, required this.output});
+  TileSetProject({
+    required this.version, //
+    required this.name, //
+    this.description,
+    this.creator,
+    required this.output,
+  });
 
   List<TileSetProjectItem> getProjectItemsDropDown() {
     List<TileSetProjectItem> result = [];
@@ -119,7 +127,13 @@ class TileSetProject {
       size: TileRectSize(project.output.size.width, project.output.size.height),
     );
     output.data = project.output.data;
-    TileSetProject result = TileSetProject(name: project.name, description: project.description, output: output);
+    TileSetProject result = TileSetProject(
+      version: project.version,
+      name: project.name, //
+      description: project.description,
+      creator: project.creator,
+      output: output,
+    );
     result.filePath = project.filePath;
     result.tileSets = project.tileSets;
     return result;
@@ -129,8 +143,10 @@ class TileSetProject {
     tileSets.sort((a, b) => a.id.compareTo(b.id));
     tileGroups.sort((a, b) => a.id.compareTo(b.id));
     return {
+      'version': version,
       'name': name,
       'description': description,
+      'creator': creator,
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
       'tilesets': YateMapper.itemsToJson(tileSets),
       'tilegroups': YateMapper.itemsToJson(tileGroups),
@@ -141,8 +157,10 @@ class TileSetProject {
   factory TileSetProject.fromJson(Map<String, dynamic> json) {
     TileSetProject result = switch (json) {
       {
+        'version': String version, //
         'name': String name, //
         'description': String description, //
+        'creator': String creator,
         'output': {
           'file': String fileName, //
           'tile': {
@@ -156,8 +174,10 @@ class TileSetProject {
         },
       } =>
         TileSetProject(
+          version: version,
           name: name,
           description: description,
+          creator: creator,
           output: TileSetOutput(
             fileName: fileName, //
             tileSize: PixelSize(tileWidthPx, tileHeightPx),

@@ -27,6 +27,7 @@ class EditTileGroupDialogState extends State<EditTileGroupDialog> {
     return AppDialogWidget(
       formKey: _formKey,
       title: 'Edit TileGroup',
+      width: 800,
       actionButton: 'Modify',
       onAction: () {
         Navigator.of(context).pop(widget.tileGroup);

@@ -28,34 +28,44 @@ class AppDialogLimitedNumberField extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(name, style: Theme.of(context).textTheme.bodyMedium)),
+        Flexible(child: Text(name, style: Theme.of(context).textTheme.labelLarge)),
         Expanded(
-          child: TextFormField(
-            keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
-            inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
-            initialValue: initialValue?.toString(),
-            style: Theme.of(context).textTheme.bodyMedium,
-            readOnly: disabled,
-            onChanged: disabled
-                ? null
-                : (String value) {
-                    if (onChanged != null) {
-                      int parsedValue = int.tryParse(value) ?? 0;
-                      onChanged!.call(parsedValue);
+          child: Container(
+            decoration: BoxDecoration(
+              border: BoxBorder.all(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(3.0),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextFormField(
+                keyboardType: TextInputType.numberWithOptions(decimal: false, signed: true),
+                decoration: InputDecoration.collapsed(hintText: ''),
+                inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],
+                initialValue: initialValue?.toString(),
+                style: Theme.of(context).textTheme.bodyMedium,
+                readOnly: disabled,
+                onChanged: disabled
+                    ? null
+                    : (String value) {
+                        if (onChanged != null) {
+                          int parsedValue = int.tryParse(value) ?? 0;
+                          onChanged!.call(parsedValue);
+                        }
+                      },
+                validator: (String? value) {
+                  String? result;
+                  if (value!.isEmpty || value.trim().isEmpty) {
+                    result = validationEmptyMessage;
+                  } else {
+                    int parsedValue = int.tryParse(value) ?? 0;
+                    if (parsedValue < minValue || parsedValue > maxValue) {
+                      result = validationLimitMessage;
                     }
-                  },
-            validator: (String? value) {
-              String? result;
-              if (value!.isEmpty || value.trim().isEmpty) {
-                result = validationEmptyMessage;
-              } else {
-                int parsedValue = int.tryParse(value) ?? 0;
-                if (parsedValue < minValue || parsedValue > maxValue) {
-                  result = validationLimitMessage;
-                }
-              }
-              return result;
-            },
+                  }
+                  return result;
+                },
+              ),
+            ),
           ),
         ),
       ],
