@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/project_item.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
@@ -16,6 +17,10 @@ class TileGroup extends TileSetProjectItem implements YateMapper {
 
   @override
   String getDetails() => 'tilegroup';
+
+  TileRectSize calcGroupFileSize(PixelSize imageSize) {
+    return TileRectSize(imageSize.widthPx ~/ tileSize.widthPx, imageSize.heightPx ~/ tileSize.heightPx);
+  }
 
   TileGroup({
     required super.id, //

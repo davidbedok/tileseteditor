@@ -27,6 +27,10 @@ class TileGroupFile extends TileSetItem implements YateMapper {
     image = await ImageUtils.getImage(project.getTileGroupFilePath(this));
   }
 
+  void initTileIndices() {
+    tileIndices = List<int>.generate(size.getNumberOfIndices(), (int index) => index++);
+  }
+
   @override
   Color getColor() {
     // TODO: implement getColor
@@ -65,6 +69,7 @@ class TileGroupFile extends TileSetItem implements YateMapper {
 
   @override
   Map<String, dynamic> toJson() {
+    initTileIndices();
     return {
       'id': id, //
       'key': key,

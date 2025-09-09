@@ -1282,7 +1282,262 @@
                 "width": 32,
                 "height": 32
             },
-            "files": []
+            "files": [
+                {
+                    "id": 1,
+                    "key": 3,
+                    "file": "tiles\\magecity\\door1.png",
+                    "image": {
+                        "width": 32,
+                        "height": 64
+                    },
+                    "width": 1,
+                    "height": 2,
+                    "indices": [
+                        0,
+                        1
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 2,
+                    "key": 4,
+                    "file": "tiles\\magecity\\fence1.png",
+                    "image": {
+                        "width": 64,
+                        "height": 64
+                    },
+                    "width": 2,
+                    "height": 2,
+                    "indices": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 3,
+                    "key": 5,
+                    "file": "tiles\\magecity\\floors-1791.png",
+                    "image": {
+                        "width": 32,
+                        "height": 32
+                    },
+                    "width": 1,
+                    "height": 1,
+                    "indices": [
+                        0
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 4,
+                    "key": 6,
+                    "file": "tiles\\magecity\\floors-1801.png",
+                    "image": {
+                        "width": 32,
+                        "height": 32
+                    },
+                    "width": 1,
+                    "height": 1,
+                    "indices": [
+                        0
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 5,
+                    "key": 7,
+                    "file": "tiles\\magecity\\floors-1998.png",
+                    "image": {
+                        "width": 32,
+                        "height": 32
+                    },
+                    "width": 1,
+                    "height": 1,
+                    "indices": [
+                        0
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 6,
+                    "key": 8,
+                    "file": "tiles\\magecity\\floors-2008.png",
+                    "image": {
+                        "width": 32,
+                        "height": 32
+                    },
+                    "width": 1,
+                    "height": 1,
+                    "indices": [
+                        0
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 7,
+                    "key": 9,
+                    "file": "tiles\\magecity\\floors-2022.png",
+                    "image": {
+                        "width": 32,
+                        "height": 32
+                    },
+                    "width": 1,
+                    "height": 1,
+                    "indices": [
+                        0
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 8,
+                    "key": 10,
+                    "file": "tiles\\magecity\\garden1.png",
+                    "image": {
+                        "width": 64,
+                        "height": 32
+                    },
+                    "width": 2,
+                    "height": 1,
+                    "indices": [
+                        0,
+                        1
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 9,
+                    "key": 11,
+                    "file": "tiles\\magecity\\roof1.png",
+                    "image": {
+                        "width": 96,
+                        "height": 96
+                    },
+                    "width": 3,
+                    "height": 3,
+                    "indices": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5,
+                        6,
+                        7,
+                        8
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 10,
+                    "key": 12,
+                    "file": "tiles\\magecity\\wall6.png",
+                    "image": {
+                        "width": 64,
+                        "height": 96
+                    },
+                    "width": 2,
+                    "height": 3,
+                    "indices": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 11,
+                    "key": 13,
+                    "file": "tiles\\magecity\\wall7.png",
+                    "image": {
+                        "width": 64,
+                        "height": 64
+                    },
+                    "width": 2,
+                    "height": 2,
+                    "indices": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 12,
+                    "key": 14,
+                    "file": "tiles\\magecity\\wall8.png",
+                    "image": {
+                        "width": 64,
+                        "height": 96
+                    },
+                    "width": 2,
+                    "height": 3,
+                    "indices": [
+                        0,
+                        1,
+                        2,
+                        3,
+                        4,
+                        5
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 13,
+                    "key": 15,
+                    "file": "tiles\\magecity\\window2.png",
+                    "image": {
+                        "width": 32,
+                        "height": 64
+                    },
+                    "width": 1,
+                    "height": 2,
+                    "indices": [
+                        0,
+                        1
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 14,
+                    "key": 16,
+                    "file": "tiles\\magecity\\window3.png",
+                    "image": {
+                        "width": 32,
+                        "height": 64
+                    },
+                    "width": 1,
+                    "height": 2,
+                    "indices": [
+                        0,
+                        1
+                    ],
+                    "output": null
+                },
+                {
+                    "id": 15,
+                    "key": 17,
+                    "file": "tiles\\magecity\\window6.png",
+                    "image": {
+                        "width": 32,
+                        "height": 64
+                    },
+                    "width": 1,
+                    "height": 2,
+                    "indices": [
+                        0,
+                        1
+                    ],
+                    "output": null
+                }
+            ]
         }
     ],
     "output": {

@@ -2,6 +2,7 @@ import 'dart:ui' as dui;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
+import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
@@ -31,7 +32,7 @@ class GroupEditor extends StatefulWidget {
 }
 
 class _GroupEditorState extends State<GroupEditor> {
-  late TileGroup _tileGroup;
+  late TileGroup _tileGroup; // FIXME: list files + selection + current
 
   @override
   void initState() {
@@ -73,7 +74,18 @@ class _GroupEditorState extends State<GroupEditor> {
                           ? Text('Add Tiles (*.png) for this tilegroup..')
                           : ListView(
                               children: [
-                                for (TileGroupFile groupFile in _tileGroup.files) TileGroupListWidget(groupFile: groupFile), //
+                                for (TileGroupFile groupFile in _tileGroup.files)
+                                  TileGroupListWidget(
+                                    groupFile: groupFile, //
+                                    selected: widget.groupState.isSelected(groupFile),
+                                    onClick: () {
+                                      widget.groupState.selectTileGroupFile(groupFile);
+                                      setState(() {
+                                        // FIXME...
+                                        _tileGroup = widget.tileGroup;
+                                      });
+                                    },
+                                  ), //
                               ],
                             ),
                     ),
@@ -118,17 +130,20 @@ class _GroupEditorState extends State<GroupEditor> {
     if (filePickerResult != null) {
       List<TileGroupFile> newFiles = [];
       int nextId = _tileGroup.getNextFileId();
+      int nextKey = widget.project.getNextKey();
       for (PlatformFile file in filePickerResult.files) {
         if (file.path != null) {
           dui.Image image = await ImageUtils.getImage(widget.project.buildFilePath(file.path!));
+          PixelSize imageSize = PixelSize(image.width, image.height);
           TileGroupFile groupFile = TileGroupFile(
             id: nextId++, //
-            key: widget.project.getNextKey(), //
+            key: nextKey++, //
             filePath: path.relative(file.path!, from: widget.project.getDirectory()),
-            size: widget.project.output.size,
-            imageSize: PixelSize(image.width, image.height),
+            imageSize: imageSize,
+            size: widget.tileGroup.calcGroupFileSize(imageSize),
           );
           groupFile.image = image;
+          groupFile.initTileIndices();
 
           newFiles.add(groupFile);
         }

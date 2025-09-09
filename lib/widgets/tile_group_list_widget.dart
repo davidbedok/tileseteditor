@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
 
 class TileGroupListWidget extends StatefulWidget {
-  const TileGroupListWidget({super.key, required this.groupFile});
-
   final TileGroupFile groupFile;
+  final bool selected;
+  final void Function() onClick;
+
+  const TileGroupListWidget({
+    super.key, //
+    required this.groupFile,
+    required this.selected,
+    required this.onClick,
+  });
 
   @override
   State<TileGroupListWidget> createState() => _TileGroupListWidgetState();
@@ -33,23 +40,30 @@ class _TileGroupListWidgetState extends State<TileGroupListWidget> {
             hovered = false;
           });
         },
-        child: Container(
-          decoration: BoxDecoration(
-            border: BoxBorder.all(color: hovered ? Colors.blueGrey : Colors.transparent),
-            borderRadius: BorderRadius.circular(3.0),
-            color: hovered ? const Color.fromARGB(83, 179, 187, 62) : Colors.transparent,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 6, right: 6, top: 3, bottom: 3),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                RawImage(image: widget.groupFile.image, width: 32, height: 32),
-                SizedBox(width: 5),
-                Flexible(child: Text('${widget.groupFile.filePath} [${widget.groupFile.id.toString()}]', textAlign: TextAlign.center)), //
-                SizedBox(width: 5),
-                Text('( ${widget.groupFile.imageSize.toString()} )'),
-              ],
+        child: GestureDetector(
+          onTap: widget.onClick,
+          child: Container(
+            decoration: BoxDecoration(
+              border: BoxBorder.all(color: hovered ? Colors.blueGrey : Colors.transparent),
+              borderRadius: BorderRadius.circular(3.0),
+              color: hovered
+                  ? const Color.fromARGB(83, 179, 187, 62)
+                  : widget.selected
+                  ? const Color.fromARGB(82, 89, 61, 227)
+                  : Colors.transparent,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 6, right: 6, top: 3, bottom: 3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RawImage(image: widget.groupFile.image, width: 32, height: 32),
+                  SizedBox(width: 5),
+                  Flexible(child: Text('${widget.groupFile.filePath} [${widget.groupFile.id.toString()}]', textAlign: TextAlign.center)), //
+                  SizedBox(width: 5),
+                  Text('( ${widget.groupFile.size.toString()} )'),
+                ],
+              ),
             ),
           ),
         ),

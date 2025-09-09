@@ -2,6 +2,8 @@ class TileRectSize {
   int width;
   int height;
 
+  int getNumberOfIndices() => width * height;
+
   TileRectSize(this.width, this.height);
 
   static List<TileRectSize> options(int numberOfTiles) {
@@ -27,6 +29,6 @@ class TileRectSize {
 
   @override
   String toString() {
-    return '${width}x:$height';
+    return '${width} : $height';
   }
 }
