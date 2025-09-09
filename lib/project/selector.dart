@@ -138,7 +138,22 @@ class ProjectSelectorState extends State<ProjectSelector> {
                                   : projectState.project.object.getProjectItemsDropDown().map((TileSetProjectItem projectItem) {
                                       return DropdownMenuItem<TileSetProjectItem>(
                                         value: projectItem, //
-                                        child: Text(projectItem.id >= 0 ? '${projectItem.getSummary()} (id: ${projectItem.id})' : 'Overview output editor'),
+                                        child: projectItem.id >= 0
+                                            ? RichText(
+                                                text: TextSpan(
+                                                  text: projectItem.getDropDownPrefix(),
+                                                  style: Theme.of(context).textTheme.bodyMedium,
+                                                  children: <TextSpan>[
+                                                    TextSpan(text: ' for '),
+                                                    TextSpan(
+                                                      text: projectItem.name,
+                                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                                    ),
+                                                    TextSpan(text: ' | ${projectItem.getDetails()}'),
+                                                  ],
+                                                ),
+                                              )
+                                            : Text('Overview output editor'),
                                       );
                                     }).toList(),
                               onChanged: (TileSetProjectItem? value) async {

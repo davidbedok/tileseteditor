@@ -16,7 +16,10 @@ class TileGroup extends TileSetProjectItem implements YateMapper {
   List<TileGroupFile> files = [];
 
   @override
-  String getSummary() => 'TileGroup constructor and output editor for $name | ${files.length} files';
+  String getDropDownPrefix() => 'TileGroup constructor and output editor';
+
+  @override
+  String getDetails() => '${getNumberOfTiles()} tiles in ${files.length} files';
 
   TileRectSize calcGroupFileSize(PixelSize imageSize) {
     return TileRectSize(imageSize.widthPx ~/ tileSize.widthPx, imageSize.heightPx ~/ tileSize.heightPx);
@@ -28,6 +31,14 @@ class TileGroup extends TileSetProjectItem implements YateMapper {
     required super.active,
     required super.tileSize,
   });
+
+  int getNumberOfTiles() {
+    int result = 0;
+    for (TileGroupFile file in files) {
+      result += file.size.getNumberOfIndices();
+    }
+    return result;
+  }
 
   int getNextFileId() {
     int max = files.isNotEmpty ? files.map((group) => group.id).reduce(math.max) : -1;

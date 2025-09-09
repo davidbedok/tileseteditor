@@ -46,8 +46,10 @@ class TileSet extends TileSetProjectItem implements YateMapper {
   List<void Function(TileSet tileSet, TileSetChangeType type)> onChangedEventHandlers = [];
 
   @override
-  String getSummary() =>
-      'TileSet splitter and output editor for $name (${imageSize.toString()}) ${slices.length} slices | ${groups.length} groups | ${tiles.length} tiles';
+  String getDropDownPrefix() => 'TileSet splitter and output editor';
+
+  @override
+  String getDetails() => '${getMaxTileIndex()} tiles';
 
   int getMaxTileRow() => imageSize.widthPx ~/ tileSize.widthPx;
   int getMaxTileColumn() => imageSize.heightPx ~/ tileSize.heightPx;
