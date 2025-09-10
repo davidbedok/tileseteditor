@@ -49,7 +49,7 @@ class _TileGroupListWidgetState extends State<TileGroupListWidget> {
               color: hovered
                   ? const Color.fromARGB(83, 179, 187, 62)
                   : widget.selected
-                  ? const Color.fromARGB(82, 89, 61, 227)
+                  ? const Color.fromARGB(52, 94, 71, 211)
                   : Colors.transparent,
             ),
             child: Padding(
@@ -59,7 +59,7 @@ class _TileGroupListWidgetState extends State<TileGroupListWidget> {
                 children: [
                   RawImage(image: widget.groupFile.image, width: 32, height: 32),
                   SizedBox(width: 5),
-                  Flexible(child: Text('${widget.groupFile.filePath} [${widget.groupFile.id.toString()}]', textAlign: TextAlign.center)), //
+                  Flexible(child: Text('(${widget.groupFile.id.toString()}) ${widget.groupFile.filePath}', textAlign: TextAlign.center)), //
                   SizedBox(width: 5),
                   Text('( ${widget.groupFile.size.toString()} )'),
                 ],

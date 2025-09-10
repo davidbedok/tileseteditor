@@ -1,2 +1,6 @@
+Group Editor:
+    - witch button between constructor and output
+    - output editor for tilegroup
+
 Version control support:
     - key --> use shortify hash instead of numbers..

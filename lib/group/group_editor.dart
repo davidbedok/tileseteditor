@@ -31,17 +31,22 @@ class GroupEditor extends StatefulWidget {
 }
 
 class _GroupEditorState extends State<GroupEditor> {
-  late TileGroup _tileGroup; // FIXME: list files + selection + current
+  List<TileGroupFile> files = [];
+  List<TileGroupFile> selectedFiles = [];
+  TileGroupFile? current;
 
   @override
   void initState() {
     super.initState();
-    _tileGroup = widget.tileGroup;
+    files.addAll(widget.tileGroup.files);
+    selectedFiles.addAll(widget.groupState.selectedFiles);
+    widget.groupState.subscribeSelectioAll(selectionAll);
   }
 
   @override
   void dispose() {
     super.dispose();
+    widget.groupState.unsubscribeSelectionAll(selectionAll);
   }
 
   @override
@@ -56,6 +61,7 @@ class _GroupEditorState extends State<GroupEditor> {
               tileGroup: widget.tileGroup,
               groupState: widget.groupState,
               onAddTiles: addTiles,
+              onRemoveTiles: removeTiles,
             ),
             Row(
               children: [
@@ -69,19 +75,23 @@ class _GroupEditorState extends State<GroupEditor> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: _tileGroup.files.isEmpty
+                      child: files.isEmpty
                           ? Text('Add Tiles (*.png) for this tilegroup..')
                           : ListView(
                               children: [
-                                for (TileGroupFile groupFile in _tileGroup.files)
+                                for (TileGroupFile groupFile in files)
                                   TileGroupListWidget(
                                     groupFile: groupFile, //
-                                    selected: widget.groupState.isSelected(groupFile),
+                                    selected: isSelected(groupFile),
                                     onClick: () {
                                       widget.groupState.selectTileGroupFile(groupFile);
                                       setState(() {
-                                        // FIXME...
-                                        _tileGroup = widget.tileGroup;
+                                        if (isSelected(groupFile)) {
+                                          selectedFiles.remove(groupFile);
+                                        } else {
+                                          selectedFiles.add(groupFile);
+                                        }
+                                        current = groupFile;
                                       });
                                     },
                                   ), //
@@ -101,12 +111,59 @@ class _GroupEditorState extends State<GroupEditor> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text('aaa'), //
-                          Text('bbb'),
-                        ],
-                      ),
+                      child: current != null
+                          ? ListView(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('ID:', style: Theme.of(context).textTheme.labelLarge), //
+                                    SizedBox(width: 5),
+                                    Text('${current!.id}'),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text('Unique key:', style: Theme.of(context).textTheme.labelLarge), //
+                                    SizedBox(width: 5),
+                                    Text('${current!.key}'),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text('Path:', style: Theme.of(context).textTheme.labelLarge), //
+                                    SizedBox(width: 5),
+                                    Flexible(child: Text(current!.filePath)),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text('Image size:', style: Theme.of(context).textTheme.labelLarge), //
+                                    SizedBox(width: 5),
+                                    Text(current!.imageSize.toString()),
+                                  ],
+                                ),
+                                SizedBox(height: 5),
+                                Row(
+                                  children: [
+                                    Text('Tiles:', style: Theme.of(context).textTheme.labelLarge), //
+                                    SizedBox(width: 5),
+                                    Text(
+                                      '${current!.size.toString()} (${current!.size.getNumberOfIndices()} tile${current!.size.getNumberOfIndices() > 1 ? 's' : ''})',
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 15),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: RawImage(image: current!.image, height: 200),
+                                ),
+                                SizedBox(height: 50),
+                              ],
+                            )
+                          : Row(),
                     ),
                   ),
                 ),
@@ -128,7 +185,7 @@ class _GroupEditorState extends State<GroupEditor> {
     );
     if (filePickerResult != null) {
       List<TileGroupFile> newFiles = [];
-      int nextId = _tileGroup.getNextFileId();
+      int nextId = widget.tileGroup.getNextFileId();
       int nextKey = widget.project.getNextKey();
       for (PlatformFile file in filePickerResult.files) {
         if (file.path != null) {
@@ -148,10 +205,44 @@ class _GroupEditorState extends State<GroupEditor> {
         }
       }
       if (newFiles.isNotEmpty) {
+        widget.tileGroup.files.addAll(newFiles);
         setState(() {
-          _tileGroup.files.addAll(newFiles);
+          files.addAll(newFiles);
         });
       }
     }
+  }
+
+  void removeTiles() {
+    for (TileGroupFile file in widget.groupState.selectedFiles) {
+      widget.tileGroup.files.remove(file);
+      if (current == file) {
+        setState(() {
+          current = null;
+        });
+      }
+    }
+    widget.groupState.deselectAll();
+    setState(() {
+      selectedFiles.clear();
+      files.clear();
+      files.addAll(widget.tileGroup.files);
+    });
+  }
+
+  bool isSelected(TileGroupFile groupFile) {
+    return selectedFiles.where((file) => file.id == groupFile.id).isNotEmpty;
+  }
+
+  void selectionAll(GroupState groupState, bool select) {
+    setState(() {
+      current = null;
+      if (select) {
+        selectedFiles.clear();
+        selectedFiles.addAll(groupState.selectedFiles);
+      } else {
+        selectedFiles.clear();
+      }
+    });
   }
 }

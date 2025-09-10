@@ -315,6 +315,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
       projectState.item.unselect();
       splitterState = SplitterState();
       outputState = OutputState();
+      groupState = GroupState();
     });
   }
 
