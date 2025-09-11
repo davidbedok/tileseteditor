@@ -9,7 +9,6 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
-import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 
 class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> with ScrollDetector, KeyboardEvents {
   static const scrollUnit = 50.0;

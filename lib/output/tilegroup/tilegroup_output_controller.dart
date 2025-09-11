@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
-import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
-import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 
 class TileGroupOutputController extends StatefulWidget {
   final TileSetProject project;
