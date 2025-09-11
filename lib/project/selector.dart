@@ -15,7 +15,6 @@ import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/group/group_editor.dart';
 import 'package:tileseteditor/group/group_state.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 import 'package:tileseteditor/project/tilegroup_editor.dart';

@@ -4,6 +4,7 @@ import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 
+// FIXME Rename it TileGroupFile is also a TileSetItem !!
 abstract class TileSetItem {
   static final TileSetItem none = TileSetTile(id: -1, coord: TileCoord(0, 0));
 

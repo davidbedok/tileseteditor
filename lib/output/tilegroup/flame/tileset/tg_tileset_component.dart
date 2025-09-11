@@ -12,7 +12,7 @@ import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.d
 import 'package:tileseteditor/output/tileset/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class TileGroupComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+abstract class TgTileSetComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
   TileSetItem tileSetItem;
   Vector2 originalPosition;
@@ -31,7 +31,7 @@ abstract class TileGroupComponent extends SpriteComponent with HasGameReference<
   TileGroupOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
   TileSetItem getTileSetItem() => tileSetItem;
 
-  TileGroupComponent({
+  TgTileSetComponent({
     required super.position,
     required this.tileSet,
     required this.tileSetItem,

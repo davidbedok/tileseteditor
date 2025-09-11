@@ -3,14 +3,20 @@ import 'package:flame/input.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
+import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/output/tileset_output.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_component.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_group_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_single_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_slice_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_tileset_component.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
@@ -21,7 +27,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   static double cameraButtonDim = 30;
   static double cameraButtonSpace = 5;
 
-  TileGroupComponent? selected;
+  TgTileSetComponent? selected;
   List<TileGroupOutputTileComponent> outputTiles = [];
 
   int _actionKey = -1;
@@ -31,7 +37,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
   TileGroupOutputEditorWorld();
 
-  void select(TileGroupComponent component, {bool force = false}) {
+  void select(TgTileSetComponent component, {bool force = false}) {
     if (force) {
       setSelected(component);
     } else {
@@ -48,16 +54,16 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     }
   }
 
-  void setSelected(TileGroupComponent component) {
+  void setSelected(TgTileSetComponent component) {
     selected = component;
     game.outputState.tileSetItem.select(component.getTileSetItem());
   }
 
-  bool isSelected(TileGroupComponent component) {
+  bool isSelected(TgTileSetComponent component) {
     return selected == component;
   }
 
-  bool canAccept(TileGroupOutputTileComponent topLeftTile, TileGroupComponent component) {
+  bool canAccept(TileGroupOutputTileComponent topLeftTile, TgTileSetComponent component) {
     bool result = true;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
@@ -70,7 +76,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return result;
   }
 
-  void place(TileGroupOutputTileComponent topLeftTile, TileGroupComponent component) {
+  void place(TileGroupOutputTileComponent topLeftTile, TgTileSetComponent component) {
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
@@ -88,7 +94,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     }
   }
 
-  void placeSilent(TileGroupOutputTileComponent topLeftTile, TileGroupComponent component) {
+  void placeSilent(TileGroupOutputTileComponent topLeftTile, TgTileSetComponent component) {
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
         TileGroupOutputTileComponent? tile = getOutputTileComponent(i, j);
@@ -145,13 +151,18 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   @override
   Future<void> onLoad() async {
     TileGroup tileGroup = game.tileGroup;
+    int atlasMaxX = 0; // tileSet.image!.width ~/ tileSet.tileSize.widthPx;
+    int atlasMaxY = 0; // tileSet.image!.height ~/ tileSet.tileSize.heightPx;
 
-    double outputShiftX = 200;
-    initOutputComponents(0, outputShiftX);
+    double outputShiftX = getOutputShiftLeft(tileGroup, atlasMaxX);
+    initOutputComponents(atlasMaxX, outputShiftX);
+    // initTgTileSetComponents(tileSet, atlasMaxX, atlasMaxY);
+    initOtherTgTileSetComponents(-1);
     initButtonsAndCamera();
   }
 
-  double getOutputShiftLeft(TileSet tileSet, int atlasMaxX) {
+  double getOutputShiftLeft(TileGroup tileGroup, int atlasMaxX) {
+    /* FIXME calc shift
     int maxGroupWidth = 0;
     for (TileSetGroup group in tileSet.groups) {
       if (group.size.width > maxGroupWidth) {
@@ -159,46 +170,88 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       }
     }
     double outputShiftX = (atlasMaxX + maxGroupWidth + 1) * tileSet.tileSize.widthPx + 50;
-    return outputShiftX;
+    */
+    return 0; //outputShiftX;
   }
 
-  void initOtherTileGroupComponents(int currentTileSetKey) {
+  void initOtherTgTileSetComponents(int currentTileSetKey) {
     for (TileSet tileSet in game.project.tileSets) {
       if (tileSet.key != currentTileSetKey) {
-        //
+        initOtherTileSetSlices(tileSet);
+        initOtherTileSetGroups(tileSet);
+        initOtherTileSetTiles(tileSet);
       }
     }
   }
 
-  void initTileGroupComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
-    initTileSetRuler(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx, atlasMaxX, atlasMaxY);
-    //
+  void initOtherTileSetSlices(TileSet tileSet) {
+    for (TileSetSlice slice in tileSet.slices) {
+      if (slice.output != null) {
+        TileGroupOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        if (topLeftOutputTile != null) {
+          TgSliceComponent sliceComponent = TgSliceComponent(
+            tileSet: tileSet,
+            slice: slice,
+            originalPosition: topLeftOutputTile.position,
+            position: topLeftOutputTile.position,
+            external: true,
+          );
+          placeSilent(topLeftOutputTile, sliceComponent);
+          add(sliceComponent);
+        }
+      }
+    }
   }
 
-  void initTileSetRuler(int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
-    for (int column = 1; column <= atlasMaxX; column++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$column',
-          position: Vector2(DrawUtils.ruler.width + (column - 1) * tileWidth + 12, 0),
-          size: Vector2(tileWidth.toDouble(), DrawUtils.ruler.height),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
+  void initOtherTileSetGroups(TileSet tileSet) {
+    for (TileSetGroup group in tileSet.groups) {
+      if (group.output != null) {
+        TileGroupOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        if (topLeftOutputTile != null) {
+          TgGroupComponent groupComponent = TgGroupComponent(
+            tileSet: tileSet,
+            group: group,
+            originalPosition: topLeftOutputTile.position,
+            position: topLeftOutputTile.position,
+            external: true,
+          );
+          placeSilent(topLeftOutputTile, groupComponent);
+          add(groupComponent);
+        }
+      }
     }
-    for (int row = 1; row <= atlasMaxY; row++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$row',
-          position: Vector2(0, DrawUtils.ruler.height + (row - 1) * tileHeight + 6),
-          size: Vector2(DrawUtils.ruler.width, tileHeight.toDouble()),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
+  }
+
+  void initOtherTileSetTiles(TileSet tileSet) {
+    int atlasMaxX = tileSet.image!.width ~/ tileSet.tileSize.widthPx;
+    int atlasMaxY = tileSet.image!.height ~/ tileSet.tileSize.heightPx;
+    for (int i = 0; i < atlasMaxX; i++) {
+      for (int j = 0; j < atlasMaxY; j++) {
+        TileCoord coord = TileCoord(i + 1, j + 1);
+        if (tileSet.isFreeByIndex(tileSet.getIndex(coord))) {
+          TileSetTile? usedTileSetTile = tileSet.findTile(coord);
+          TileSetTile tileSetTile =
+              usedTileSetTile ??
+              TileSetTile(
+                id: tileSet.getNextTileId(), //
+                coord: coord,
+              );
+          if (tileSetTile.output != null) {
+            TileGroupOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            if (topLeftOutputTile != null) {
+              TgSingleTileComponent singleTileComponent = TgSingleTileComponent(
+                tileSet: tileSet,
+                tile: tileSetTile,
+                originalPosition: topLeftOutputTile.position,
+                position: topLeftOutputTile.position,
+                external: true,
+              );
+              placeSilent(topLeftOutputTile, singleTileComponent);
+              add(singleTileComponent);
+            }
+          }
+        }
+      }
     }
   }
 

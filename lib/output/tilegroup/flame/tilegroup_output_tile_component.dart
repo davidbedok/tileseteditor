@@ -5,8 +5,8 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_tileset_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 class TileGroupOutputTileComponent extends PositionComponent with HasGameReference<TileGroupOutputEditorGame>, HoverCallbacks {
@@ -16,10 +16,10 @@ class TileGroupOutputTileComponent extends PositionComponent with HasGameReferen
   int atlasX;
   int atlasY;
 
-  TileGroupComponent? _storedTile;
+  TgTileSetComponent? _storedTile;
 
   TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
-  bool canAccept(TileGroupComponent tile) => isFree() || tile == _storedTile;
+  bool canAccept(TgTileSetComponent tile) => isFree() || tile == _storedTile;
   bool isFree() => _storedTile == null;
   bool isUsed() => _storedTile != null;
   Rect getRect() => Rect.fromLTWH(0, 0, tileWidth, tileHeight);
@@ -34,7 +34,7 @@ class TileGroupOutputTileComponent extends PositionComponent with HasGameReferen
     priority = 0;
   }
 
-  void store(TileGroupComponent tile) {
+  void store(TgTileSetComponent tile) {
     _storedTile = tile;
     tile.reservedTiles.add(this);
   }
@@ -80,6 +80,7 @@ class TileGroupOutputTileComponent extends PositionComponent with HasGameReferen
   void drawInfo(dui.Canvas canvas) {
     TileCoord coord = getCoord();
     var textSpan = TextSpan(
+      // FIXME: text: '${game.tileSet.getIndex(coord)} [${coord.toString()}]',
       text: '[${coord.toString()}]',
       style: TextStyle(color: EditorColor.tileText.color, fontWeight: FontWeight.bold),
     );
