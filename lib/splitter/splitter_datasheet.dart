@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterDatasheet extends StatefulWidget {
@@ -18,7 +18,7 @@ class SplitterDatasheet extends StatefulWidget {
 
 class SplitterDatasheetState extends State<SplitterDatasheet> {
   late TileSet tileSet;
-  late TileSetItem tileSetItem;
+  late YateItem tileSetItem;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
     });
   }
 
-  void selectTile(SplitterState state, TileSetItem tileSetItem) {
+  void selectTile(SplitterState state, YateItem tileSetItem) {
     setState(() {
       this.tileSetItem = tileSetItem;
     });

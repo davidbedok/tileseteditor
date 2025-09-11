@@ -1,5 +1,5 @@
 import 'package:flame/components.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/overview/flame/tileset/overview_tileset_component.dart';
 
 class OverviewSliceComponent extends OverviewTileSetComponent {

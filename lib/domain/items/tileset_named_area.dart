@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:flame/game.dart';
 import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 
-abstract class TileSetNamedArea extends TileSetItem {
+abstract class TileSetNamedArea extends YateItem {
   String name;
   TileRectSize size;
 

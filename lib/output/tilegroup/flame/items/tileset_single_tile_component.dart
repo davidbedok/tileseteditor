@@ -1,13 +1,13 @@
 import 'package:flame/components.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_tileset_component.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
+import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
 
-class TgSingleTileComponent extends TgTileSetComponent {
+class TileSetSingleTileComponent extends YateComponent {
   TileSetTile getTile() => tileSetItem as TileSetTile;
 
-  TgSingleTileComponent({
+  TileSetSingleTileComponent({
     required super.position, //
     required super.tileSet,
     required super.originalPosition,
@@ -16,7 +16,7 @@ class TgSingleTileComponent extends TgTileSetComponent {
   }) : super(tileSetItem: tile, areaSize: TileRectSize(1, 1));
 
   @override
-  void placeOutput(TileGroupOutputTileComponent topLeftTile) {
+  void placeOutput(YateOutputTileComponent topLeftTile) {
     tileSetItem.output = topLeftTile.getCoord();
     tileSet.addTile(getTile());
   }

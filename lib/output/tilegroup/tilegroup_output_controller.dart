@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 
 class TileGroupOutputController extends StatefulWidget {
@@ -23,7 +23,7 @@ class TileGroupOutputController extends StatefulWidget {
 }
 
 class TileGroupOutputControllerState extends State<TileGroupOutputController> {
-  late TileSetItem tileSetItem;
+  late YateItem tileSetItem;
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class TileGroupOutputControllerState extends State<TileGroupOutputController> {
     widget.outputState.tileSetItem.unsubscribeSelection(select);
   }
 
-  void select(TileGroupOutputState state, TileSetItem tileSetItem) {
+  void select(TileGroupOutputState state, YateItem tileSetItem) {
     setState(() {
       this.tileSetItem = tileSetItem;
     });
@@ -59,7 +59,7 @@ class TileGroupOutputControllerState extends State<TileGroupOutputController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: tileSetItem != TileSetItem.none && tileSetItem.output != null,
+            visible: tileSetItem != YateItem.none && tileSetItem.output != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
               label: Text('Remove ${tileSetItem.getLabel()}'),

@@ -3,13 +3,13 @@ import 'dart:ui' as dui;
 import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_tileset_component.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
 
-class TgGroupComponent extends TgTileSetComponent {
+class TileSetGroupComponent extends YateComponent {
   TileSetGroup getGroup() => tileSetItem as TileSetGroup;
 
-  TgGroupComponent({
+  TileSetGroupComponent({
     required super.position,
     required super.tileSet, //
     required super.originalPosition,

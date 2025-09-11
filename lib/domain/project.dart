@@ -8,7 +8,7 @@ import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:path/path.dart' as path;
 import 'package:tileseteditor/domain/output/tileset_output.dart';
-import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetProject {

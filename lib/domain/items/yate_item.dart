@@ -2,17 +2,16 @@ import 'dart:ui';
 
 import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 
-// FIXME Rename it TileGroupFile is also a TileSetItem !!
-abstract class TileSetItem {
-  static final TileSetItem none = TileSetTile(id: -1, coord: TileCoord(0, 0));
+abstract class YateItem {
+  static final YateItem none = TileSetTile(id: -1, coord: TileCoord(0, 0));
 
   int id;
   TileCoord? output;
   List<int> tileIndices = [];
 
-  TileSetItem({required this.id});
+  YateItem({required this.id});
 
   Color getColor();
   Color getHoverColor();

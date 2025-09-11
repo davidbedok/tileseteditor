@@ -1,9 +1,9 @@
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 
 class TileInfo {
   TileCoord coord;
-  TileSetItem tileSetItem;
+  YateItem tileSetItem;
 
   TileInfo({required this.tileSetItem, required this.coord});
 

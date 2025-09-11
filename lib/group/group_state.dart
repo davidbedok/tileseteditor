@@ -1,5 +1,5 @@
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
-import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 
 class GroupState {
   List<TileGroupFile> selectedFiles = [];

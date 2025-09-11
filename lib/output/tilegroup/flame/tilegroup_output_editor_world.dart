@@ -7,16 +7,16 @@ import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/output/tileset_output.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_group_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_single_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_slice_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_tileset_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/tileset_group_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/tileset_single_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/tileset_slice_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
@@ -27,8 +27,8 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   static double cameraButtonDim = 30;
   static double cameraButtonSpace = 5;
 
-  TgTileSetComponent? selected;
-  List<TileGroupOutputTileComponent> outputTiles = [];
+  YateComponent? selected;
+  List<YateOutputTileComponent> outputTiles = [];
 
   int _actionKey = -1;
 
@@ -37,7 +37,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
   TileGroupOutputEditorWorld();
 
-  void select(TgTileSetComponent component, {bool force = false}) {
+  void select(YateComponent component, {bool force = false}) {
     if (force) {
       setSelected(component);
     } else {
@@ -54,20 +54,20 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     }
   }
 
-  void setSelected(TgTileSetComponent component) {
+  void setSelected(YateComponent component) {
     selected = component;
     game.outputState.tileSetItem.select(component.getTileSetItem());
   }
 
-  bool isSelected(TgTileSetComponent component) {
+  bool isSelected(YateComponent component) {
     return selected == component;
   }
 
-  bool canAccept(TileGroupOutputTileComponent topLeftTile, TgTileSetComponent component) {
+  bool canAccept(YateOutputTileComponent topLeftTile, YateComponent component) {
     bool result = true;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        TileGroupOutputTileComponent? tile = getOutputTileComponent(i, j);
+        YateOutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile == null || !tile.canAccept(component)) {
           result = false;
         }
@@ -76,12 +76,12 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return result;
   }
 
-  void place(TileGroupOutputTileComponent topLeftTile, TgTileSetComponent component) {
+  void place(YateOutputTileComponent topLeftTile, YateComponent component) {
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        TileGroupOutputTileComponent? tile = getOutputTileComponent(i, j);
+        YateOutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
           numberOfPlacedTiles++;
@@ -94,10 +94,10 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     }
   }
 
-  void placeSilent(TileGroupOutputTileComponent topLeftTile, TgTileSetComponent component) {
+  void placeSilent(YateOutputTileComponent topLeftTile, YateComponent component) {
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        TileGroupOutputTileComponent? tile = getOutputTileComponent(i, j);
+        YateOutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
         }
@@ -108,7 +108,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   bool moveByKey(int atlasX, int atlasY) {
     bool result = false;
     if (selected != null) {
-      TileGroupOutputTileComponent? newTopLeftOutputTile = getOutputTileComponent(atlasX, atlasY);
+      YateOutputTileComponent? newTopLeftOutputTile = getOutputTileComponent(atlasX, atlasY);
       if (newTopLeftOutputTile != null && canAccept(newTopLeftOutputTile, selected!)) {
         selected!.doMove(
           newTopLeftOutputTile.position,
@@ -122,17 +122,17 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return result;
   }
 
-  TileGroupOutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
-    TileGroupOutputTileComponent? result;
+  YateOutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
+    YateOutputTileComponent? result;
     if (atlasX >= 0 && atlasX < game.project.output.size.width && atlasY >= 0 && atlasY < game.project.output.size.height) {
       result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
     }
     return result;
   }
 
-  void removeTileSetItem(TileSetItem tileSetItem) {
+  void removeTileSetItem(YateItem tileSetItem) {
     if (tileSetItem.output != null) {
-      TileGroupOutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
+      YateOutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -140,7 +140,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   }
 
   void removeAllTileSetItem() {
-    for (TileGroupOutputTileComponent outputTile in outputTiles) {
+    for (YateOutputTileComponent outputTile in outputTiles) {
       if (outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -187,9 +187,9 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   void initOtherTileSetSlices(TileSet tileSet) {
     for (TileSetSlice slice in tileSet.slices) {
       if (slice.output != null) {
-        TileGroupOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
-          TgSliceComponent sliceComponent = TgSliceComponent(
+          TileSetSliceComponent sliceComponent = TileSetSliceComponent(
             tileSet: tileSet,
             slice: slice,
             originalPosition: topLeftOutputTile.position,
@@ -206,9 +206,9 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   void initOtherTileSetGroups(TileSet tileSet) {
     for (TileSetGroup group in tileSet.groups) {
       if (group.output != null) {
-        TileGroupOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
-          TgGroupComponent groupComponent = TgGroupComponent(
+          TileSetGroupComponent groupComponent = TileSetGroupComponent(
             tileSet: tileSet,
             group: group,
             originalPosition: topLeftOutputTile.position,
@@ -237,9 +237,9 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
                 coord: coord,
               );
           if (tileSetTile.output != null) {
-            TileGroupOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
-              TgSingleTileComponent singleTileComponent = TgSingleTileComponent(
+              TileSetSingleTileComponent singleTileComponent = TileSetSingleTileComponent(
                 tileSet: tileSet,
                 tile: tileSetTile,
                 originalPosition: topLeftOutputTile.position,
@@ -317,7 +317,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
-        TileGroupOutputTileComponent outputTile = TileGroupOutputTileComponent(
+        YateOutputTileComponent outputTile = YateOutputTileComponent(
           tileWidth: tileWidth.toDouble(),
           tileHeight: tileHeight.toDouble(),
           atlasX: i,

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
 import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
@@ -40,7 +40,7 @@ class TileSetOutputEditorGame extends FlameGame<TileSetOutputEditorWorld> with S
     outputState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(TileSetOutputState outputState, TileSetItem tileSetItem) {
+  void removeTileSetItem(TileSetOutputState outputState, YateItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 

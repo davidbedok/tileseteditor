@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
 import 'package:tileseteditor/output/tileset/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class TgTileSetComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+abstract class YateComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
-  TileSetItem tileSetItem;
+  YateItem tileSetItem;
   Vector2 originalPosition;
   TileRectSize areaSize;
   bool external;
@@ -22,16 +22,16 @@ abstract class TgTileSetComponent extends SpriteComponent with HasGameReference<
   double tileWidth;
   double tileHeight;
 
-  List<TileGroupOutputTileComponent> reservedTiles = [];
+  List<YateOutputTileComponent> reservedTiles = [];
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
-  TileGroupOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
-  TileSetItem getTileSetItem() => tileSetItem;
+  YateOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+  YateItem getTileSetItem() => tileSetItem;
 
-  TgTileSetComponent({
+  YateComponent({
     required super.position,
     required this.tileSet,
     required this.tileSetItem,
@@ -54,19 +54,19 @@ abstract class TgTileSetComponent extends SpriteComponent with HasGameReference<
 
   void release() {
     tileSetItem.output = null;
-    for (TileGroupOutputTileComponent outputTile in reservedTiles) {
+    for (YateOutputTileComponent outputTile in reservedTiles) {
       outputTile.empty();
     }
     reservedTiles.clear();
   }
 
-  void place(TileGroupOutputTileComponent outputTile) {
+  void place(YateOutputTileComponent outputTile) {
     if (reservedTiles.contains(outputTile)) {
       reservedTiles.add(outputTile);
     }
   }
 
-  void placeOutput(TileGroupOutputTileComponent topLeftTile) {
+  void placeOutput(YateOutputTileComponent topLeftTile) {
     tileSetItem.output = topLeftTile.getCoord();
   }
 
@@ -156,7 +156,7 @@ abstract class TgTileSetComponent extends SpriteComponent with HasGameReference<
         return;
       }
 
-      var dropOutputTile = parent!.componentsAtPoint(position).whereType<TileGroupOutputTileComponent>().toList();
+      var dropOutputTile = parent!.componentsAtPoint(position).whereType<YateOutputTileComponent>().toList();
       if (dropOutputTile.isNotEmpty) {
         if (game.world.canAccept(dropOutputTile.first, this)) {
           final dropPosition = dropOutputTile.first.position;

@@ -3,7 +3,7 @@ import 'dart:ui' as dui;
 import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/overview/flame/tileset/overview_tileset_component.dart';
 
 class OverviewGroupComponent extends OverviewTileSetComponent {

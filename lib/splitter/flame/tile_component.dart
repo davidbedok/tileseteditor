@@ -7,9 +7,9 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/splitter/flame/editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterController extends StatefulWidget {
@@ -31,7 +31,7 @@ class TileSetImage {}
 class SplitterControllerState extends State<SplitterController> {
   int numberOfSelectedFreeTiles = 0;
   int numberOfSelectedGarbageTiles = 0;
-  late TileSetItem tileSetItem;
+  late YateItem tileSetItem;
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class SplitterControllerState extends State<SplitterController> {
     super.dispose();
   }
 
-  void selectTile(SplitterState state, TileSetItem tileSetItem) {
+  void selectTile(SplitterState state, YateItem tileSetItem) {
     setState(() {
       numberOfSelectedFreeTiles = state.selectedFreeTiles.length;
       numberOfSelectedGarbageTiles = state.selectedGarbageTiles.length;

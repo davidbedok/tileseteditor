@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_named_area.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetGroup extends TileSetNamedArea implements YateMapper {
@@ -57,8 +57,8 @@ class TileSetGroup extends TileSetNamedArea implements YateMapper {
         TileSetGroup(id: id, name: name, size: TileRectSize(width, height)),
       _ => throw const FormatException('Failed to load TileSetGroup'),
     };
-    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
-    result.output = TileSetItem.outputFromJson(json);
+    result.tileIndices = YateItem.tileIndicesFromJson(json);
+    result.output = YateItem.outputFromJson(json);
     return result;
   }
 

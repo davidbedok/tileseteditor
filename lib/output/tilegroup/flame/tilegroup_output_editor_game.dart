@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
+import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 
 class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> with ScrollDetector, KeyboardEvents {
@@ -40,7 +40,7 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
     outputState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(TileGroupOutputState outputState, TileSetItem tileSetItem) {
+  void removeTileSetItem(TileGroupOutputState outputState, YateItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 
@@ -93,7 +93,7 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
       result = KeyEventResult.handled;
     }
     if (world.selected != null && world.selected!.isPlaced()) {
-      TileGroupOutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
+      YateOutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
       if (topLeftOutputTile != null) {
         if (event is KeyDownEvent || event is KeyRepeatEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {

@@ -9,10 +9,10 @@ import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
 import 'package:tileseteditor/domain/tileset/tileset_garbage.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
@@ -207,7 +207,7 @@ class TileSet extends TileSetProjectItem implements YateMapper {
     }
   }
 
-  void remove(TileSetItem tileSetItem) {
+  void remove(YateItem tileSetItem) {
     if (tileSetItem is TileSetSlice) {
       slices.remove(tileSetItem);
       callEventHandlers(TileSetChangeType.sliceRemoved); // FIXME do not handle events here...
@@ -218,7 +218,7 @@ class TileSet extends TileSetProjectItem implements YateMapper {
   }
 
   TileInfo getTileInfo(TileCoord coord) {
-    TileSetItem result = TileSetTile.freeTile;
+    YateItem result = TileSetTile.freeTile;
     TileSetSlice? slice = findSlice(coord);
     if (slice != null) {
       result = slice;

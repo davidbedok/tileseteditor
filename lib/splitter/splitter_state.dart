@@ -1,25 +1,25 @@
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tile_info.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 
 class SplitterState {
-  TileSetItem tileSetItem = TileSetItem.none;
+  YateItem tileSetItem = YateItem.none;
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
 
-  List<void Function(SplitterState state, TileSetItem tileSetItem)> selectionEventHandlers = [];
+  List<void Function(SplitterState state, YateItem tileSetItem)> selectionEventHandlers = [];
 
   SplitterState();
 
-  void subscribeSelection(void Function(SplitterState state, TileSetItem tileSetItem) eventHandler) {
+  void subscribeSelection(void Function(SplitterState state, YateItem tileSetItem) eventHandler) {
     selectionEventHandlers.add(eventHandler);
   }
 
-  void unsubscribeSelection(void Function(SplitterState state, TileSetItem tileSetItem) eventHandler) {
+  void unsubscribeSelection(void Function(SplitterState state, YateItem tileSetItem) eventHandler) {
     selectionEventHandlers.remove(eventHandler);
   }
 
@@ -36,15 +36,15 @@ class SplitterState {
   }
 
   void unselectTileSetItem() {
-    tileSetItem = TileSetItem.none;
+    tileSetItem = YateItem.none;
     for (var eventHandler in selectionEventHandlers) {
       eventHandler.call(this, tileSetItem);
     }
   }
 
-  void selectTileSetItem(TileSetItem tileSetItem) {
+  void selectTileSetItem(YateItem tileSetItem) {
     if (this.tileSetItem == tileSetItem) {
-      this.tileSetItem = TileSetItem.none;
+      this.tileSetItem = YateItem.none;
     } else {
       this.tileSetItem = tileSetItem;
     }
@@ -68,7 +68,7 @@ class SplitterState {
       }
     } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
       if (tileSetItem == info.tileSetItem) {
-        tileSetItem = TileSetItem.none;
+        tileSetItem = YateItem.none;
       } else {
         tileSetItem = info.tileSetItem;
       }

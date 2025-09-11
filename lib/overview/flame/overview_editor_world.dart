@@ -4,10 +4,10 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/output/tileset_output.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/overview/flame/tileset/overview_group_component.dart';
@@ -126,7 +126,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     return result;
   }
 
-  void removeTileSetItem(TileSetItem tileSetItem) {
+  void removeTileSetItem(YateItem tileSetItem) {
     if (tileSetItem.output != null) {
       OverviewTileComponent? outputTile = getOverviewTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
@@ -14,7 +14,7 @@ import 'package:tileseteditor/utils/draw_utils.dart';
 
 abstract class TileSetComponent extends SpriteComponent with HasGameReference<TileSetOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
-  TileSetItem tileSetItem;
+  YateItem tileSetItem;
   Vector2 originalPosition;
   TileRectSize areaSize;
   bool external;
@@ -29,7 +29,7 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ti
   Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
   TileSetOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
-  TileSetItem getTileSetItem() => tileSetItem;
+  YateItem getTileSetItem() => tileSetItem;
 
   TileSetComponent({
     required super.position,

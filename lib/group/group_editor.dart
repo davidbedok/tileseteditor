@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/group/group_controller.dart';
 import 'package:tileseteditor/group/group_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';

@@ -1,11 +1,12 @@
 import 'package:flame/components.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tileset/tg_tileset_component.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
 
-class TgSliceComponent extends TgTileSetComponent {
-  TileSetSlice getSlice() => tileSetItem as TileSetSlice;
+class TileGroupFileComponent extends YateComponent {
+  TileGroupFile getFile() => tileSetItem as TileGroupFile;
 
-  TgSliceComponent({
+  TileGroupFileComponent({
     required super.position,
     required super.tileSet, //
     required super.originalPosition,

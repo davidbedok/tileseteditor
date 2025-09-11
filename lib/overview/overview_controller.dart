@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/overview/overview_state.dart';
 
 class OverviewController extends StatefulWidget {
@@ -18,7 +18,7 @@ class OverviewController extends StatefulWidget {
 }
 
 class OverviewControllerState extends State<OverviewController> {
-  late TileSetItem tileSetItem;
+  late YateItem tileSetItem;
 
   @override
   void initState() {
@@ -33,7 +33,7 @@ class OverviewControllerState extends State<OverviewController> {
     widget.overviewState.tileSetItem.unsubscribeSelection(select);
   }
 
-  void select(OverviewState state, TileSetItem tileSetItem) {
+  void select(OverviewState state, YateItem tileSetItem) {
     setState(() {
       this.tileSetItem = tileSetItem;
     });
@@ -54,7 +54,7 @@ class OverviewControllerState extends State<OverviewController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: tileSetItem != TileSetItem.none && tileSetItem.output != null,
+            visible: tileSetItem != YateItem.none && tileSetItem.output != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
               label: Text('Remove ${tileSetItem.getLabel()}'),

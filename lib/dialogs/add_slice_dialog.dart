@@ -6,7 +6,7 @@ import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/widgets/slice_widget.dart';
 
 class AddSliceDialog extends StatefulWidget {

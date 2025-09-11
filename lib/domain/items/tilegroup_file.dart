@@ -3,11 +3,11 @@ import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
-class TileGroupFile extends TileSetItem implements YateMapper {
+class TileGroupFile extends YateItem implements YateMapper {
   int key;
   String filePath;
   PixelSize imageSize;
@@ -116,8 +116,8 @@ class TileGroupFile extends TileSetItem implements YateMapper {
         ),
       _ => throw const FormatException('Failed to load TileGroupFile'),
     };
-    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
-    result.output = TileSetItem.outputFromJson(json);
+    result.tileIndices = YateItem.tileIndicesFromJson(json);
+    result.output = YateItem.outputFromJson(json);
     return result;
   }
 }

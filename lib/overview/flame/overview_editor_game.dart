@@ -4,7 +4,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_world.dart';
 import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/overview/overview_state.dart';
@@ -37,7 +37,7 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
     overviewState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(OverviewState state, TileSetItem tileSetItem) {
+  void removeTileSetItem(OverviewState state, YateItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 

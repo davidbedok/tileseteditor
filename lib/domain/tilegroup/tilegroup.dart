@@ -2,7 +2,7 @@ import 'dart:math' as math;
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileGroup extends TileSetProjectItem implements YateMapper {

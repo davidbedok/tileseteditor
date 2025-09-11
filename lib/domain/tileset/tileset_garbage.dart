@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter_randomcolor/flutter_randomcolor.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetGarbage implements YateMapper {
@@ -19,7 +19,7 @@ class TileSetGarbage implements YateMapper {
 
   factory TileSetGarbage.fromJson(Map<String, dynamic> json) {
     TileSetGarbage result = TileSetGarbage();
-    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
+    result.tileIndices = YateItem.tileIndicesFromJson(json);
     return result;
   }
 

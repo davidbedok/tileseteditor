@@ -1,8 +1,8 @@
 import 'package:tileseteditor/domain/output/tile_reference.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetData {

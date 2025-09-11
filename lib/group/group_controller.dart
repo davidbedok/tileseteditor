@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/domain/tilesetitem/tilegroup_file.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/group/group_state.dart';
 
 class GroupController extends StatefulWidget {

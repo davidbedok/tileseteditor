@@ -6,10 +6,10 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/output/tileset_output.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_group.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_slice.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset/group_component.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
@@ -128,7 +128,7 @@ class TileSetOutputEditorWorld extends World with HasGameReference<TileSetOutput
     return result;
   }
 
-  void removeTileSetItem(TileSetItem tileSetItem) {
+  void removeTileSetItem(YateItem tileSetItem) {
     if (tileSetItem.output != null) {
       TileSetOutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {

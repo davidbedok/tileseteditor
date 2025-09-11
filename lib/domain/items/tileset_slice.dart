@@ -5,8 +5,8 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_named_area.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/items/tileset_named_area.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
 class TileSetSlice extends TileSetNamedArea implements YateMapper {
@@ -84,8 +84,8 @@ class TileSetSlice extends TileSetNamedArea implements YateMapper {
         ),
       _ => throw const FormatException('Failed to load TileSetSlice'),
     };
-    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
-    result.output = TileSetItem.outputFromJson(json);
+    result.tileIndices = YateItem.tileIndicesFromJson(json);
+    result.output = YateItem.outputFromJson(json);
     return result;
   }
 

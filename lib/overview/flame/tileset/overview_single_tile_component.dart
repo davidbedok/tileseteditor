@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
+import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/overview/flame/tileset/overview_tileset_component.dart';
 

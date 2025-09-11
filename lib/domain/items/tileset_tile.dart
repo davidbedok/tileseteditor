@@ -4,9 +4,9 @@ import 'package:flame/game.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/domain/items/yate_item.dart';
 
-class TileSetTile extends TileSetItem {
+class TileSetTile extends YateItem {
   static final TileSetTile freeTile = TileSetTile(id: -1, coord: TileCoord(0, 0));
   static final TileSetTile garbageTile = TileSetTile(id: -1, coord: TileCoord(0, 0), garbage: true);
 
@@ -76,8 +76,8 @@ class TileSetTile extends TileSetItem {
         TileSetTile(id: id, coord: TileCoord(left, top)),
       _ => throw const FormatException('Failed to load TileSetTile'),
     };
-    result.tileIndices = TileSetItem.tileIndicesFromJson(json);
-    result.output = TileSetItem.outputFromJson(json);
+    result.tileIndices = YateItem.tileIndicesFromJson(json);
+    result.output = YateItem.outputFromJson(json);
     return result;
   }
 }
