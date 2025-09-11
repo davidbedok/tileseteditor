@@ -6,12 +6,13 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_tile_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
 import 'package:tileseteditor/output/tileset/flame/tile_move_effect.dart';
-import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
-import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class OverviewTileSetComponent extends SpriteComponent with HasGameReference<OverviewEditorGame>, TapCallbacks, HoverCallbacks {
+abstract class TileGroupComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
   TileSetItem tileSetItem;
   Vector2 originalPosition;
@@ -21,16 +22,16 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
   double tileWidth;
   double tileHeight;
 
-  List<OverviewTileComponent> reservedTiles = [];
+  List<TileGroupOutputTileComponent> reservedTiles = [];
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
-  OverviewTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+  TileGroupOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
   TileSetItem getTileSetItem() => tileSetItem;
 
-  OverviewTileSetComponent({
+  TileGroupComponent({
     required super.position,
     required this.tileSet,
     required this.tileSetItem,
@@ -53,19 +54,19 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
 
   void release() {
     tileSetItem.output = null;
-    for (OverviewTileComponent outputTile in reservedTiles) {
+    for (TileGroupOutputTileComponent outputTile in reservedTiles) {
       outputTile.empty();
     }
     reservedTiles.clear();
   }
 
-  void place(OverviewTileComponent outputTile) {
+  void place(TileGroupOutputTileComponent outputTile) {
     if (reservedTiles.contains(outputTile)) {
       reservedTiles.add(outputTile);
     }
   }
 
-  void placeOutput(OverviewTileComponent topLeftTile) {
+  void placeOutput(TileGroupOutputTileComponent topLeftTile) {
     tileSetItem.output = topLeftTile.getCoord();
   }
 
@@ -112,6 +113,70 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
       priority = 100;
     } else {
       priority = 0;
+    }
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    if (game.world.actionKey < 0) {
+      super.onDragStart(event);
+      game.world.setAction(event.pointerId);
+      dragWhereStarted = position.clone();
+
+      isDragging = true;
+      priority = TileSetOutputEditorWorld.movePriority;
+      game.world.select(this, force: true);
+    }
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    if (game.world.actionKey == event.pointerId) {
+      if (!isDragging) {
+        return;
+      }
+      final delta = event.localDelta;
+      position.add(delta);
+    }
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    if (game.world.actionKey == event.pointerId) {
+      super.onDragEnd(event);
+      if (!isDragging) {
+        game.world.setAction(-1);
+        return;
+      }
+      isDragging = false;
+
+      final shortDrag = (position - dragWhereStarted).length < TileSetOutputEditorWorld.dragTolarance;
+      if (shortDrag) {
+        moveToPlace(dragWhereStarted);
+        return;
+      }
+
+      var dropOutputTile = parent!.componentsAtPoint(position).whereType<TileGroupOutputTileComponent>().toList();
+      if (dropOutputTile.isNotEmpty) {
+        if (game.world.canAccept(dropOutputTile.first, this)) {
+          final dropPosition = dropOutputTile.first.position;
+          doMove(
+            dropPosition,
+            speed: 15,
+            onComplete: () {
+              game.world.place(dropOutputTile.first, this);
+              game.world.setAction(-1);
+            },
+          );
+        } else {
+          moveToPlace(dragWhereStarted);
+          return;
+        }
+        game.world.setAction(-1);
+        return;
+      }
+
+      moveToPlace(dragWhereStarted);
     }
   }
 

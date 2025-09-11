@@ -10,6 +10,7 @@ class GroupController extends StatefulWidget {
   final GroupState groupState;
   final void Function() onAddTiles;
   final void Function() onRemoveTiles;
+  final void Function() onOutputPressed;
 
   const GroupController({
     super.key, //
@@ -18,6 +19,7 @@ class GroupController extends StatefulWidget {
     required this.groupState,
     required this.onAddTiles,
     required this.onRemoveTiles,
+    required this.onOutputPressed,
   });
 
   @override
@@ -93,6 +95,13 @@ class GroupControllerState extends State<GroupController> {
               label: Text('Remove $numberOfSelectedFiles file${numberOfSelectedFiles > 1 ? 's' : ''}'),
               onPressed: widget.onRemoveTiles,
             ),
+          ),
+          SizedBox(width: 5),
+          ElevatedButton.icon(
+            icon: Icon(Icons.edit), //
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            label: Text('Output'),
+            onPressed: widget.onOutputPressed,
           ),
         ],
       ),

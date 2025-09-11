@@ -6,13 +6,13 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/flame/output_editor_world.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/flame/tile_move_effect.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class TileSetComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+abstract class TileSetComponent extends SpriteComponent with HasGameReference<TileSetOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
   TileSetItem tileSetItem;
   Vector2 originalPosition;
@@ -22,13 +22,13 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
   double tileWidth;
   double tileHeight;
 
-  List<OutputTileComponent> reservedTiles = [];
+  List<TileSetOutputTileComponent> reservedTiles = [];
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
-  OutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+  TileSetOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
   TileSetItem getTileSetItem() => tileSetItem;
 
   TileSetComponent({
@@ -54,19 +54,19 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
 
   void release() {
     tileSetItem.output = null;
-    for (OutputTileComponent outputTile in reservedTiles) {
+    for (TileSetOutputTileComponent outputTile in reservedTiles) {
       outputTile.empty();
     }
     reservedTiles.clear();
   }
 
-  void place(OutputTileComponent outputTile) {
+  void place(TileSetOutputTileComponent outputTile) {
     if (reservedTiles.contains(outputTile)) {
       reservedTiles.add(outputTile);
     }
   }
 
-  void placeOutput(OutputTileComponent topLeftTile) {
+  void placeOutput(TileSetOutputTileComponent topLeftTile) {
     tileSetItem.output = topLeftTile.getCoord();
   }
 
@@ -124,7 +124,7 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
       dragWhereStarted = position.clone();
 
       isDragging = true;
-      priority = OutputEditorWorld.movePriority;
+      priority = TileSetOutputEditorWorld.movePriority;
       game.world.select(this, force: true);
     }
   }
@@ -150,13 +150,13 @@ abstract class TileSetComponent extends SpriteComponent with HasGameReference<Ou
       }
       isDragging = false;
 
-      final shortDrag = (position - dragWhereStarted).length < OutputEditorWorld.dragTolarance;
+      final shortDrag = (position - dragWhereStarted).length < TileSetOutputEditorWorld.dragTolarance;
       if (shortDrag) {
         moveToPlace(dragWhereStarted);
         return;
       }
 
-      var dropOutputTile = parent!.componentsAtPoint(position).whereType<OutputTileComponent>().toList();
+      var dropOutputTile = parent!.componentsAtPoint(position).whereType<TileSetOutputTileComponent>().toList();
       if (dropOutputTile.isNotEmpty) {
         if (game.world.canAccept(dropOutputTile.first, this)) {
           final dropPosition = dropOutputTile.first.position;

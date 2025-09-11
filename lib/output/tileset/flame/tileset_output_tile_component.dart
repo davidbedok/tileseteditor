@@ -5,11 +5,11 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/tileset_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, HoverCallbacks {
+class TileSetOutputTileComponent extends PositionComponent with HasGameReference<TileSetOutputEditorGame>, HoverCallbacks {
   double tileWidth;
   double tileHeight;
 
@@ -24,7 +24,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
   bool isUsed() => _storedTile != null;
   Rect getRect() => Rect.fromLTWH(0, 0, tileWidth, tileHeight);
 
-  OutputTileComponent({
+  TileSetOutputTileComponent({
     required this.tileWidth, //
     required this.tileHeight,
     required this.atlasX,

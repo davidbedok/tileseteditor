@@ -18,12 +18,14 @@ class GroupEditor extends StatefulWidget {
   final TileSetProject project;
   final TileGroup tileGroup;
   final GroupState groupState;
+  final void Function() onOutputPressed;
 
   const GroupEditor({
     super.key, //
     required this.project,
     required this.tileGroup,
     required this.groupState,
+    required this.onOutputPressed,
   });
 
   @override
@@ -60,6 +62,7 @@ class _GroupEditorState extends State<GroupEditor> {
               project: widget.project, //
               tileGroup: widget.tileGroup,
               groupState: widget.groupState,
+              onOutputPressed: widget.onOutputPressed,
               onAddTiles: addTiles,
               onRemoveTiles: removeTiles,
             ),

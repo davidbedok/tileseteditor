@@ -1,6 +1,6 @@
 import 'package:flame/components.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
-import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/tileset_component.dart';
 
 class SliceComponent extends TileSetComponent {
   TileSetSlice getSlice() => tileSetItem as TileSetSlice;

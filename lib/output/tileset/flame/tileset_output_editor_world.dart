@@ -10,15 +10,15 @@ import 'package:tileseteditor/domain/tilesetitem/tileset_group.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_slice.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
-import 'package:tileseteditor/output/flame/tileset/group_component.dart';
-import 'package:tileseteditor/output/flame/output_editor_game.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
-import 'package:tileseteditor/output/flame/tileset/single_tile_component.dart';
-import 'package:tileseteditor/output/flame/tileset/slice_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/group_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/tileset_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/single_tile_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/slice_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
+class TileSetOutputEditorWorld extends World with HasGameReference<TileSetOutputEditorGame>, HasCollisionDetection {
   static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
@@ -26,14 +26,14 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   static double cameraButtonSpace = 5;
 
   TileSetComponent? selected;
-  List<OutputTileComponent> outputTiles = [];
+  List<TileSetOutputTileComponent> outputTiles = [];
 
   int _actionKey = -1;
 
   void setAction(int actionKey) => _actionKey = actionKey;
   int get actionKey => _actionKey;
 
-  OutputEditorWorld();
+  TileSetOutputEditorWorld();
 
   void select(TileSetComponent component, {bool force = false}) {
     if (force) {
@@ -61,11 +61,11 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     return selected == component;
   }
 
-  bool canAccept(OutputTileComponent topLeftTile, TileSetComponent component) {
+  bool canAccept(TileSetOutputTileComponent topLeftTile, TileSetComponent component) {
     bool result = true;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        OutputTileComponent? tile = getOutputTileComponent(i, j);
+        TileSetOutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile == null || !tile.canAccept(component)) {
           result = false;
         }
@@ -74,12 +74,12 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     return result;
   }
 
-  void place(OutputTileComponent topLeftTile, TileSetComponent component) {
+  void place(TileSetOutputTileComponent topLeftTile, TileSetComponent component) {
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        OutputTileComponent? tile = getOutputTileComponent(i, j);
+        TileSetOutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
           numberOfPlacedTiles++;
@@ -92,10 +92,10 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void placeSilent(OutputTileComponent topLeftTile, TileSetComponent component) {
+  void placeSilent(TileSetOutputTileComponent topLeftTile, TileSetComponent component) {
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        OutputTileComponent? tile = getOutputTileComponent(i, j);
+        TileSetOutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
         }
@@ -106,7 +106,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   bool moveByKey(int atlasX, int atlasY) {
     bool result = false;
     if (selected != null) {
-      OutputTileComponent? newTopLeftOutputTile = getOutputTileComponent(atlasX, atlasY);
+      TileSetOutputTileComponent? newTopLeftOutputTile = getOutputTileComponent(atlasX, atlasY);
       if (newTopLeftOutputTile != null && canAccept(newTopLeftOutputTile, selected!)) {
         selected!.doMove(
           newTopLeftOutputTile.position,
@@ -120,8 +120,8 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     return result;
   }
 
-  OutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
-    OutputTileComponent? result;
+  TileSetOutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
+    TileSetOutputTileComponent? result;
     if (atlasX >= 0 && atlasX < game.project.output.size.width && atlasY >= 0 && atlasY < game.project.output.size.height) {
       result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
     }
@@ -130,7 +130,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void removeTileSetItem(TileSetItem tileSetItem) {
     if (tileSetItem.output != null) {
-      OutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
+      TileSetOutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -138,7 +138,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void removeAllTileSetItem() {
-    for (OutputTileComponent outputTile in outputTiles) {
+    for (TileSetOutputTileComponent outputTile in outputTiles) {
       if (outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -183,7 +183,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   void initOtherTileSetSlices(TileSet tileSet) {
     for (TileSetSlice slice in tileSet.slices) {
       if (slice.output != null) {
-        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        TileSetOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
           SliceComponent sliceComponent = SliceComponent(
             tileSet: tileSet,
@@ -202,7 +202,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   void initOtherTileSetGroups(TileSet tileSet) {
     for (TileSetGroup group in tileSet.groups) {
       if (group.output != null) {
-        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        TileSetOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
           GroupComponent groupComponent = GroupComponent(
             tileSet: tileSet,
@@ -233,7 +233,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
                 coord: coord,
               );
           if (tileSetTile.output != null) {
-            OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            TileSetOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
               SingleTileComponent singleTileComponent = SingleTileComponent(
                 tileSet: tileSet,
@@ -297,7 +297,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         external: false,
       );
       if (slice.output != null) {
-        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        TileSetOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, sliceComponent);
           sliceComponent.position = topLeftOutputTile.position;
@@ -320,7 +320,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         external: false,
       );
       if (group.output != null) {
-        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        TileSetOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, groupComponent);
           groupComponent.position = topLeftOutputTile.position;
@@ -353,7 +353,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
             external: false,
           );
           if (tileSetTile.output != null) {
-            OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            TileSetOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
               placeSilent(topLeftOutputTile, singleTileComponent);
               singleTileComponent.position = topLeftOutputTile.position;
@@ -373,7 +373,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       EdgeInsets.only(right: cameraButtonSpace, top: cameraButtonSpace),
       Anchor.topLeft,
       () {
-        game.camera.moveBy(Vector2(0, -1 * OutputEditorGame.scrollUnit));
+        game.camera.moveBy(Vector2(0, -1 * TileSetOutputEditorGame.scrollUnit));
       },
     );
     final actionCameraDownButton = createButton(
@@ -381,7 +381,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       EdgeInsets.only(right: cameraButtonSpace, bottom: cameraButtonDim + cameraButtonSpace * 2),
       Anchor.bottomLeft,
       () {
-        game.camera.moveBy(Vector2(0, OutputEditorGame.scrollUnit));
+        game.camera.moveBy(Vector2(0, TileSetOutputEditorGame.scrollUnit));
       },
     );
     final actionCameraLeftButton = createButton(
@@ -389,7 +389,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       EdgeInsets.only(left: cameraButtonSpace, bottom: cameraButtonSpace),
       Anchor.topLeft,
       () {
-        game.camera.moveBy(Vector2(-1 * OutputEditorGame.scrollUnit, 0));
+        game.camera.moveBy(Vector2(-1 * TileSetOutputEditorGame.scrollUnit, 0));
       },
     );
     final actionCameraRightButton = createButton(
@@ -397,7 +397,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       EdgeInsets.only(right: cameraButtonDim + cameraButtonSpace * 2, bottom: cameraButtonSpace),
       Anchor.bottomLeft,
       () {
-        game.camera.moveBy(Vector2(OutputEditorGame.scrollUnit, 0));
+        game.camera.moveBy(Vector2(TileSetOutputEditorGame.scrollUnit, 0));
       },
     );
 
@@ -427,7 +427,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
-        OutputTileComponent outputTile = OutputTileComponent(
+        TileSetOutputTileComponent outputTile = TileSetOutputTileComponent(
           tileWidth: tileWidth.toDouble(),
           tileHeight: tileHeight.toDouble(),
           atlasX: i,

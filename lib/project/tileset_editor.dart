@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/output/output_editor.dart';
-import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/output/tileset/tileset_output_editor.dart';
+import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 import 'package:tileseteditor/splitter/splitter_editor.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
@@ -10,7 +10,7 @@ class TileSetEditor extends StatefulWidget {
   final TileSetProject project;
   final TileSet tileSet;
   final SplitterState splitterState;
-  final OutputState outputState;
+  final TileSetOutputState outputState;
 
   const TileSetEditor({
     super.key, //
@@ -30,7 +30,7 @@ class _TileSetEditorState extends State<TileSetEditor> {
   @override
   Widget build(BuildContext context) {
     return outputEditor
-        ? OutputEditor(
+        ? TileSetOutputEditor(
             project: widget.project,
             tileSet: widget.tileSet,
             outputState: widget.outputState,

@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_tile.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/flame/tileset/tileset_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/tileset_component.dart';
 
 class SingleTileComponent extends TileSetComponent {
   TileSetTile getTile() => tileSetItem as TileSetTile;
@@ -16,7 +16,7 @@ class SingleTileComponent extends TileSetComponent {
   }) : super(tileSetItem: tile, areaSize: TileRectSize(1, 1));
 
   @override
-  void placeOutput(OutputTileComponent topLeftTile) {
+  void placeOutput(TileSetOutputTileComponent topLeftTile) {
     tileSetItem.output = topLeftTile.getCoord();
     tileSet.addTile(getTile());
   }

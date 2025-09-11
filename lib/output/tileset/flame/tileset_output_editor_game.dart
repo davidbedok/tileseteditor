@@ -6,11 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tilesetitem/tileset_item.dart';
-import 'package:tileseteditor/output/flame/output_editor_world.dart';
-import 'package:tileseteditor/output/flame/output_tile_component.dart';
-import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset_output_tile_component.dart';
+import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 
-class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector, KeyboardEvents {
+class TileSetOutputEditorGame extends FlameGame<TileSetOutputEditorWorld> with ScrollDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
   static const zoomPerScrollUnit = 0.02;
 
@@ -18,16 +18,16 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   TileSetProject project;
   TileSet tileSet;
 
-  OutputState outputState;
+  TileSetOutputState outputState;
 
-  OutputEditorGame({
+  TileSetOutputEditorGame({
     required this.project, //
     required this.tileSet,
     required double width,
     required double height,
     required this.outputState,
   }) : super(
-         world: OutputEditorWorld(),
+         world: TileSetOutputEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
     outputState.tileSetItem.subscribeRemoval(removeTileSetItem);
@@ -40,11 +40,11 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
     outputState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(OutputState outputState, TileSetItem tileSetItem) {
+  void removeTileSetItem(TileSetOutputState outputState, TileSetItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 
-  void removeAllTileSetItem(OutputState outputState) {
+  void removeAllTileSetItem(TileSetOutputState outputState) {
     world.removeAllTileSetItem();
   }
 
@@ -93,7 +93,7 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
       result = KeyEventResult.handled;
     }
     if (world.selected != null && world.selected!.isPlaced()) {
-      OutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
+      TileSetOutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
       if (topLeftOutputTile != null) {
         if (event is KeyDownEvent || event is KeyRepeatEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
