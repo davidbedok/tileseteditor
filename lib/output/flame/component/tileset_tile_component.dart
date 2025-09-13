@@ -4,10 +4,10 @@ import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/component/yate_component.dart';
 
-class TileSetSingleTileComponent extends YateComponent {
+class TileSetTileComponent extends YateComponent {
   TileSetTile getTile() => item as TileSetTile;
 
-  TileSetSingleTileComponent({
+  TileSetTileComponent({
     required super.position, //
     required super.projectItem,
     required super.originalPosition,

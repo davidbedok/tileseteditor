@@ -4,25 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
-import 'package:tileseteditor/overview/flame/tileset/overview_tileset_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_yate_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class OverviewTileComponent extends PositionComponent with HasGameReference<OverviewEditorGame>, HoverCallbacks {
+class OverviewOutputTileComponent extends PositionComponent with HasGameReference<OverviewEditorGame>, HoverCallbacks {
   double tileWidth;
   double tileHeight;
 
   int atlasX;
   int atlasY;
 
-  OverviewTileSetComponent? _storedTile;
+  OverviewYateComponent? _storedTile;
 
   TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
-  bool canAccept(OverviewTileSetComponent tile) => isFree() || tile == _storedTile;
+  bool canAccept(OverviewYateComponent tile) => isFree() || tile == _storedTile;
   bool isFree() => _storedTile == null;
   bool isUsed() => _storedTile != null;
   Rect getRect() => Rect.fromLTWH(0, 0, tileWidth, tileHeight);
 
-  OverviewTileComponent({
+  OverviewOutputTileComponent({
     required this.tileWidth, //
     required this.tileHeight,
     required this.atlasX,
@@ -32,7 +32,7 @@ class OverviewTileComponent extends PositionComponent with HasGameReference<Over
     priority = 0;
   }
 
-  void store(OverviewTileSetComponent tile) {
+  void store(OverviewYateComponent tile) {
     _storedTile = tile;
     tile.reservedTiles.add(this);
   }

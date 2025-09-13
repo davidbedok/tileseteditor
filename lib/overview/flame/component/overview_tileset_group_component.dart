@@ -4,18 +4,18 @@ import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
-import 'package:tileseteditor/overview/flame/tileset/overview_tileset_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_yate_component.dart';
 
-class OverviewGroupComponent extends OverviewTileSetComponent {
-  TileSetGroup getGroup() => tileSetItem as TileSetGroup;
+class OverviewTileSetGroupComponent extends OverviewYateComponent {
+  TileSetGroup getGroup() => item as TileSetGroup;
 
-  OverviewGroupComponent({
+  OverviewTileSetGroupComponent({
     required super.position,
-    required super.tileSet, //
+    required super.projectItem, //
     required super.originalPosition,
     required super.external,
     required TileSetGroup group,
-  }) : super(tileSetItem: group, areaSize: group.size);
+  }) : super(item: group, areaSize: group.size);
 
   @override
   Future<void> onLoad() async {
@@ -28,9 +28,9 @@ class OverviewGroupComponent extends OverviewTileSetComponent {
       for (int i = 0; i < group.size.width; i++) {
         if (tileIndex < group.tileIndices.length) {
           int index = group.tileIndices[tileIndex];
-          TileCoord tileCoord = tileSet.getTileCoord(index);
+          TileCoord tileCoord = getProjectItemAsTileSet().getTileCoord(index);
           Sprite tmpSprite = Sprite(
-            tileSet.image!,
+            getProjectItemAsTileSet().image!,
             srcPosition: Vector2((tileCoord.left - 1) * tileWidth, (tileCoord.top - 1) * tileHeight),
             srcSize: Vector2(tileWidth, tileHeight),
           );

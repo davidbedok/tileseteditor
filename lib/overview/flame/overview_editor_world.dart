@@ -1,19 +1,22 @@
 import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/output/tileset_output.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
+import 'package:tileseteditor/overview/flame/component/overview_tilegroup_file_component.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
-import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
-import 'package:tileseteditor/overview/flame/tileset/overview_group_component.dart';
-import 'package:tileseteditor/overview/flame/tileset/overview_single_tile_component.dart';
-import 'package:tileseteditor/overview/flame/tileset/overview_slice_component.dart';
-import 'package:tileseteditor/overview/flame/tileset/overview_tileset_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_output_tile_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_tileset_group_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_tileset_tile_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_tileset_slice_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_yate_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame>, HasCollisionDetection {
@@ -23,8 +26,8 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   static double cameraButtonDim = 30;
   static double cameraButtonSpace = 5;
 
-  OverviewTileSetComponent? selected;
-  List<OverviewTileComponent> outputTiles = [];
+  OverviewYateComponent? selected;
+  List<OverviewOutputTileComponent> outputTiles = [];
 
   int _actionKey = -1;
 
@@ -33,7 +36,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
   OverviewEditorWorld();
 
-  void select(OverviewTileSetComponent component, {bool force = false}) {
+  void select(OverviewYateComponent component, {bool force = false}) {
     if (force) {
       setSelected(component);
     } else {
@@ -50,20 +53,20 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     }
   }
 
-  void setSelected(OverviewTileSetComponent component) {
+  void setSelected(OverviewYateComponent component) {
     selected = component;
-    game.overviewState.tileSetItem.select(component.getTileSetItem());
+    game.overviewState.tileSetItem.select(component.getItem());
   }
 
-  bool isSelected(OverviewTileSetComponent component) {
+  bool isSelected(OverviewYateComponent component) {
     return selected == component;
   }
 
-  bool canAccept(OverviewTileComponent topLeftTile, OverviewTileSetComponent component) {
+  bool canAccept(OverviewOutputTileComponent topLeftTile, OverviewYateComponent component) {
     bool result = true;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        OverviewTileComponent? tile = getOverviewTileComponent(i, j);
+        OverviewOutputTileComponent? tile = getOverviewTileComponent(i, j);
         if (tile == null || !tile.canAccept(component)) {
           result = false;
         }
@@ -72,12 +75,12 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     return result;
   }
 
-  void place(OverviewTileComponent topLeftTile, OverviewTileSetComponent component) {
+  void place(OverviewOutputTileComponent topLeftTile, OverviewYateComponent component) {
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        OverviewTileComponent? tile = getOverviewTileComponent(i, j);
+        OverviewOutputTileComponent? tile = getOverviewTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
           numberOfPlacedTiles++;
@@ -86,14 +89,14 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
       component.placeOutput(topLeftTile);
-      game.overviewState.tileSetItem.select(component.getTileSetItem());
+      game.overviewState.tileSetItem.select(component.getItem());
     }
   }
 
-  void placeSilent(OverviewTileComponent topLeftTile, OverviewTileSetComponent component) {
+  void placeSilent(OverviewOutputTileComponent topLeftTile, OverviewYateComponent component) {
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        OverviewTileComponent? tile = getOverviewTileComponent(i, j);
+        OverviewOutputTileComponent? tile = getOverviewTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
         }
@@ -104,7 +107,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   bool moveByKey(int atlasX, int atlasY) {
     bool result = false;
     if (selected != null) {
-      OverviewTileComponent? newTopLeftOutputTile = getOverviewTileComponent(atlasX, atlasY);
+      OverviewOutputTileComponent? newTopLeftOutputTile = getOverviewTileComponent(atlasX, atlasY);
       if (newTopLeftOutputTile != null && canAccept(newTopLeftOutputTile, selected!)) {
         selected!.doMove(
           newTopLeftOutputTile.position,
@@ -118,8 +121,8 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     return result;
   }
 
-  OverviewTileComponent? getOverviewTileComponent(int atlasX, int atlasY) {
-    OverviewTileComponent? result;
+  OverviewOutputTileComponent? getOverviewTileComponent(int atlasX, int atlasY) {
+    OverviewOutputTileComponent? result;
     if (atlasX >= 0 && atlasX < game.project.output.size.width && atlasY >= 0 && atlasY < game.project.output.size.height) {
       result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
     }
@@ -128,7 +131,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
   void removeTileSetItem(YateItem tileSetItem) {
     if (tileSetItem.output != null) {
-      OverviewTileComponent? outputTile = getOverviewTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
+      OverviewOutputTileComponent? outputTile = getOverviewTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -136,7 +139,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   }
 
   void removeAllTileSetItem() {
-    for (OverviewTileComponent outputTile in outputTiles) {
+    for (OverviewOutputTileComponent outputTile in outputTiles) {
       if (outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -147,13 +150,34 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   @override
   Future<void> onLoad() async {
     initOutputComponents(0, 0);
-    initOtherTileSetComponents();
-
+    initTileSetComponents();
+    initTileGroupFileComponents();
     game.camera.viewfinder.anchor = Anchor.topLeft;
     game.camera.viewfinder.position = Vector2(0, 0);
   }
 
-  void initOtherTileSetComponents() {
+  void initTileGroupFileComponents() {
+    for (TileGroup tileGroup in game.project.tileGroups) {
+      for (TileGroupFile file in tileGroup.files) {
+        if (file.output != null) {
+          OverviewOutputTileComponent? topLeftOutputTile = getOverviewTileComponent(file.output!.left - 1, file.output!.top - 1);
+          if (topLeftOutputTile != null) {
+            OverviewTileGroupFileComponent fileComponent = OverviewTileGroupFileComponent(
+              projectItem: tileGroup,
+              file: file,
+              originalPosition: topLeftOutputTile.position,
+              position: topLeftOutputTile.position,
+              external: true,
+            );
+            placeSilent(topLeftOutputTile, fileComponent);
+            add(fileComponent);
+          }
+        }
+      }
+    }
+  }
+
+  void initTileSetComponents() {
     for (TileSet tileSet in game.project.tileSets) {
       initOtherTileSetSlices(tileSet);
       initOtherTileSetGroups(tileSet);
@@ -164,10 +188,10 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   void initOtherTileSetSlices(TileSet tileSet) {
     for (TileSetSlice slice in tileSet.slices) {
       if (slice.output != null) {
-        OverviewTileComponent? topLeftOutputTile = getOverviewTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        OverviewOutputTileComponent? topLeftOutputTile = getOverviewTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
-          OverviewSliceComponent sliceComponent = OverviewSliceComponent(
-            tileSet: tileSet,
+          OverviewTileSetSliceComponent sliceComponent = OverviewTileSetSliceComponent(
+            projectItem: tileSet,
             slice: slice,
             originalPosition: topLeftOutputTile.position,
             position: topLeftOutputTile.position,
@@ -183,10 +207,10 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
   void initOtherTileSetGroups(TileSet tileSet) {
     for (TileSetGroup group in tileSet.groups) {
       if (group.output != null) {
-        OverviewTileComponent? topLeftOutputTile = getOverviewTileComponent(group.output!.left - 1, group.output!.top - 1);
+        OverviewOutputTileComponent? topLeftOutputTile = getOverviewTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
-          OverviewGroupComponent groupComponent = OverviewGroupComponent(
-            tileSet: tileSet,
+          OverviewTileSetGroupComponent groupComponent = OverviewTileSetGroupComponent(
+            projectItem: tileSet,
             group: group,
             originalPosition: topLeftOutputTile.position,
             position: topLeftOutputTile.position,
@@ -215,10 +239,10 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
               );
           ;
           if (tileSetTile.output != null) {
-            OverviewTileComponent? topLeftOutputTile = getOverviewTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            OverviewOutputTileComponent? topLeftOutputTile = getOverviewTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
-              OverviewSingleTileComponent singleTileComponent = OverviewSingleTileComponent(
-                tileSet: tileSet,
+              OverviewTileSetTileComponent singleTileComponent = OverviewTileSetTileComponent(
+                projectItem: tileSet,
                 tile: tileSetTile,
                 originalPosition: topLeftOutputTile.position,
                 position: topLeftOutputTile.position,
@@ -244,7 +268,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
-        OverviewTileComponent outputTile = OverviewTileComponent(
+        OverviewOutputTileComponent outputTile = OverviewOutputTileComponent(
           tileWidth: tileWidth.toDouble(),
           tileHeight: tileHeight.toDouble(),
           atlasX: i,

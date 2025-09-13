@@ -3,17 +3,19 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
+import 'package:tileseteditor/domain/project_item.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
-import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
+import 'package:tileseteditor/overview/flame/component/overview_output_tile_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class OverviewTileSetComponent extends SpriteComponent with HasGameReference<OverviewEditorGame>, TapCallbacks, HoverCallbacks {
-  TileSet tileSet;
-  YateItem tileSetItem;
+abstract class OverviewYateComponent extends SpriteComponent with HasGameReference<OverviewEditorGame>, TapCallbacks, HoverCallbacks {
+  YateProjectItem projectItem;
+  YateItem item;
   Vector2 originalPosition;
   TileRectSize areaSize;
   bool external;
@@ -21,24 +23,27 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
   double tileWidth;
   double tileHeight;
 
-  List<OverviewTileComponent> reservedTiles = [];
+  List<OverviewOutputTileComponent> reservedTiles = [];
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
-  OverviewTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
-  YateItem getTileSetItem() => tileSetItem;
+  OverviewOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+  YateItem getItem() => item;
 
-  OverviewTileSetComponent({
+  TileSet getProjectItemAsTileSet() => projectItem as TileSet;
+  TileGroup getProjectItemAsTileGroup() => projectItem as TileGroup;
+
+  OverviewYateComponent({
     required super.position,
-    required this.tileSet,
-    required this.tileSetItem,
+    required this.projectItem,
+    required this.item,
     required this.originalPosition,
     required this.areaSize,
     required this.external,
-  }) : tileWidth = tileSet.tileSize.widthPx.toDouble(),
-       tileHeight = tileSet.tileSize.heightPx.toDouble() {
+  }) : tileWidth = projectItem.tileSize.widthPx.toDouble(),
+       tileHeight = projectItem.tileSize.heightPx.toDouble() {
     priority = 0;
   }
 
@@ -52,21 +57,21 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
   }
 
   void release() {
-    tileSetItem.output = null;
-    for (OverviewTileComponent outputTile in reservedTiles) {
+    item.output = null;
+    for (OverviewOutputTileComponent outputTile in reservedTiles) {
       outputTile.empty();
     }
     reservedTiles.clear();
   }
 
-  void place(OverviewTileComponent outputTile) {
+  void place(OverviewOutputTileComponent outputTile) {
     if (reservedTiles.contains(outputTile)) {
       reservedTiles.add(outputTile);
     }
   }
 
-  void placeOutput(OverviewTileComponent topLeftTile) {
-    tileSetItem.output = topLeftTile.getCoord();
+  void placeOutput(OverviewOutputTileComponent topLeftTile) {
+    item.output = topLeftTile.getCoord();
   }
 
   void doMove(
@@ -129,11 +134,11 @@ abstract class OverviewTileSetComponent extends SpriteComponent with HasGameRefe
 
   void drawInfo(Canvas canvas) {
     var textSpan = TextSpan(
-      text: '${external ? '${tileSet.name}\n' : ''}${tileSetItem.getLabel()}',
-      style: TextStyle(color: tileSetItem.getTextColor(), fontWeight: FontWeight.bold),
+      text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',
+      style: TextStyle(color: item.getTextColor(), fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 200);
+    textPainter.layout(minWidth: 0, maxWidth: 300);
     textPainter.paint(canvas, Offset(0, external ? -40 : -20));
   }
 }

@@ -16,7 +16,7 @@ import 'package:tileseteditor/output/flame/component/tilegroup_file_component.da
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
 import 'package:tileseteditor/output/flame/component/tileset_group_component.dart';
-import 'package:tileseteditor/output/flame/component/tileset_single_tile_component.dart';
+import 'package:tileseteditor/output/flame/component/tileset_tile_component.dart';
 import 'package:tileseteditor/output/flame/component/tileset_slice_component.dart';
 import 'package:tileseteditor/output/flame/component/yate_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
@@ -156,7 +156,6 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
     int atlasMaxX = 0;
     int atlasMaxY = 0;
-
     if (tileSet != TileSet.none) {
       atlasMaxX = tileSet.image!.width ~/ tileSet.tileSize.widthPx;
       atlasMaxY = tileSet.image!.height ~/ tileSet.tileSize.heightPx;
@@ -165,17 +164,17 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     double outputShiftX = getOutputShiftLeft(tileSet, tileGroup, atlasMaxX);
     initOutputComponents(atlasMaxX, outputShiftX);
     if (tileSet != TileSet.none) {
-      initTileSetComponents(tileSet, atlasMaxX, atlasMaxY);
+      initCurrentTileSetComponents(tileSet, atlasMaxX, atlasMaxY);
     }
     if (tileGroup != TileGroup.none) {
-      initTileGroupFileComponents(tileGroup, atlasMaxX);
+      initCurrentTileGroupComponents(tileGroup, atlasMaxX);
     }
     initOtherTileSetComponents(tileSet.key);
-    initOtherTileGroupFileComponents(tileGroup, atlasMaxX);
+    initOtherTileGroupComponents(tileGroup, atlasMaxX);
     initButtonsAndCamera();
   }
 
-  void initOtherTileGroupFileComponents(TileGroup currentTileGroup, int atlasMaxX) {
+  void initOtherTileGroupComponents(TileGroup currentTileGroup, int atlasMaxX) {
     for (TileGroup tileGroup in game.project.tileGroups) {
       if (tileGroup.id != currentTileGroup.id) {
         for (TileGroupFile file in tileGroup.files) {
@@ -198,7 +197,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initTileGroupFileComponents(TileGroup tileGroup, int atlasMaxX) {
+  void initCurrentTileGroupComponents(TileGroup tileGroup, int atlasMaxX) {
     int tileWidth = tileGroup.tileSize.widthPx;
     int tileHeight = tileGroup.tileSize.heightPx;
     int fileTopIndex = 0;
@@ -309,7 +308,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
           if (tileSetTile.output != null) {
             OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
-              TileSetSingleTileComponent singleTileComponent = TileSetSingleTileComponent(
+              TileSetTileComponent singleTileComponent = TileSetTileComponent(
                 projectItem: tileSet,
                 tile: tileSetTile,
                 originalPosition: topLeftOutputTile.position,
@@ -325,7 +324,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void initTileSetComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
+  void initCurrentTileSetComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
     initTileSetRuler(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx, atlasMaxX, atlasMaxY);
     initTileSetSlices(tileSet);
     initTileSetGroups(tileSet, atlasMaxX);
@@ -419,7 +418,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
                 id: tileSet.getNextTileId(), //
                 coord: coord,
               );
-          TileSetSingleTileComponent singleTileComponent = TileSetSingleTileComponent(
+          TileSetTileComponent singleTileComponent = TileSetTileComponent(
             projectItem: tileSet,
             tile: tileSetTile,
             originalPosition: Vector2(DrawUtils.ruler.width + i * tileWidth, DrawUtils.ruler.height + j * tileHeight),
