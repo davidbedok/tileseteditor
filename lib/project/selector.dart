@@ -16,11 +16,10 @@ import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/group/group_state.dart';
-import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/project/tilegroup_editor.dart';
 import 'package:tileseteditor/project/tileset_editor.dart';
 import 'package:tileseteditor/project/menubar.dart';
-import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 import 'package:tileseteditor/overview/overview_editor.dart';
 import 'package:tileseteditor/overview/overview_state.dart';
 import 'package:tileseteditor/project/project_controller.dart';
@@ -43,10 +42,9 @@ class ProjectSelector extends StatefulWidget {
 class ProjectSelectorState extends State<ProjectSelector> {
   ProjectState projectState = ProjectState();
   SplitterState splitterState = SplitterState();
-  TileSetOutputState outputState = TileSetOutputState();
   OverviewState overviewState = OverviewState();
   GroupState groupState = GroupState();
-  TileGroupOutputState groupOutputState = TileGroupOutputState();
+  OutputState outputState = OutputState();
 
   @override
   void initState() {
@@ -162,7 +160,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                                 if (value != null) {
                                   setState(() {
                                     splitterState = SplitterState();
-                                    outputState = TileSetOutputState();
+                                    outputState = OutputState();
                                     projectState.item.select(value);
                                   });
                                 }
@@ -194,7 +192,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                           child: TileGroupEditor(
                             key: GlobalKey(),
                             groupState: groupState, //
-                            outputState: groupOutputState,
+                            outputState: outputState,
                             project: projectState.project.object,
                             tileGroup: projectState.getItemAsTileGroup(),
                           ),
@@ -317,7 +315,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
       projectState.project.unselect();
       projectState.item.unselect();
       splitterState = SplitterState();
-      outputState = TileSetOutputState();
+      outputState = OutputState();
       groupState = GroupState();
     });
   }

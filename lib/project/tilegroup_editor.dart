@@ -4,13 +4,13 @@ import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/group/group_editor.dart';
 import 'package:tileseteditor/group/group_state.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_editor.dart';
-import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 
 class TileGroupEditor extends StatefulWidget {
   final YateProject project;
   final TileGroup tileGroup;
   final GroupState groupState;
-  final TileGroupOutputState outputState;
+  final OutputState outputState;
 
   const TileGroupEditor({
     super.key, //

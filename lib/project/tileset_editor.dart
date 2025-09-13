@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
+import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/output/tileset/tileset_output_editor.dart';
-import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 import 'package:tileseteditor/splitter/splitter_editor.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
@@ -10,7 +10,7 @@ class TileSetEditor extends StatefulWidget {
   final YateProject project;
   final TileSet tileSet;
   final SplitterState splitterState;
-  final TileSetOutputState outputState;
+  final OutputState outputState;
 
   const TileSetEditor({
     super.key, //

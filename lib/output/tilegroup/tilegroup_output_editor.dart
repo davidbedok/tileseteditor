@@ -5,13 +5,13 @@ import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_controller.dart';
-import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/project/selector.dart';
 
 class TileGroupOutputEditor extends StatelessWidget {
   final YateProject project;
   final TileGroup tileGroup;
-  final TileGroupOutputState outputState;
+  final OutputState outputState;
   final void Function() onSplitterPressed;
 
   const TileGroupOutputEditor({
@@ -51,8 +51,7 @@ class TileGroupOutputEditor extends StatelessWidget {
                         tileGroup: tileGroup,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
-                        tileSetOutputState: null,
-                        tileGroupOutputState: outputState,
+                        outputState: outputState,
                       ),
                     ),
                   ),

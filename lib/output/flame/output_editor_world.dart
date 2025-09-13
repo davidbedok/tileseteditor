@@ -45,13 +45,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       if (selected != null) {
         if (selected == component) {
           selected = null;
-          // FIXME generalize output
-          if (game.tileGroupOutputState != null) {
-            game.tileGroupOutputState!.yateItem.unselect();
-          }
-          if (game.tileSetOutputState != null) {
-            game.tileSetOutputState!.yateItem.unselect();
-          }
+          game.outputState.yateItem.unselect();
         } else {
           setSelected(component);
         }
@@ -63,13 +57,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void setSelected(YateComponent component) {
     selected = component;
-    // FIXME
-    if (game.tileGroupOutputState != null) {
-      game.tileGroupOutputState!.yateItem.select(component.getItem());
-    }
-    if (game.tileSetOutputState != null) {
-      game.tileSetOutputState!.yateItem.select(component.getItem());
-    }
+    game.outputState.yateItem.select(component.getItem());
   }
 
   bool isSelected(YateComponent component) {
@@ -103,13 +91,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
       component.placeOutput(topLeftTile);
-      // FIXME
-      if (game.tileGroupOutputState != null) {
-        game.tileGroupOutputState!.yateItem.select(component.getItem());
-      }
-      if (game.tileSetOutputState != null) {
-        game.tileSetOutputState!.yateItem.select(component.getItem());
-      }
+      game.outputState.yateItem.select(component.getItem());
     }
   }
 
@@ -149,7 +131,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     return result;
   }
 
-  void removeTileSetItem(YateItem tileSetItem) {
+  void removeItem(YateItem tileSetItem) {
     if (tileSetItem.output != null) {
       OutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {
@@ -158,7 +140,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     }
   }
 
-  void removeAllTileSetItem() {
+  void removeAllItems() {
     for (OutputTileComponent outputTile in outputTiles) {
       if (outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();

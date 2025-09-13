@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
-import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 
 class TileSetOutputController extends StatefulWidget {
   final YateProject project;
   final TileSet tileSet;
-  final TileSetOutputState outputState;
+  final OutputState outputState;
   final void Function() onSplitterPressed;
 
   const TileSetOutputController({
@@ -38,7 +38,7 @@ class TileSetOutputControllerState extends State<TileSetOutputController> {
     widget.outputState.yateItem.unsubscribeSelection(select);
   }
 
-  void select(TileSetOutputState state, YateItem tileSetItem) {
+  void select(OutputState state, YateItem tileSetItem) {
     setState(() {
       this.tileSetItem = tileSetItem;
     });

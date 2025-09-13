@@ -9,8 +9,7 @@ import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/flame/output_editor_world.dart';
 import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
-import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 
 class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
@@ -21,8 +20,7 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   TileSet tileSet;
   TileGroup tileGroup;
 
-  TileSetOutputState? tileSetOutputState;
-  TileGroupOutputState? tileGroupOutputState;
+  OutputState outputState;
 
   OutputEditorGame({
     required this.project, //
@@ -30,49 +28,27 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
     required this.tileGroup,
     required double width,
     required double height,
-    required this.tileSetOutputState,
-    required this.tileGroupOutputState,
+    required this.outputState,
   }) : super(
          world: OutputEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
-    // FIXME generalize output..
-    if (tileSetOutputState != null) {
-      tileSetOutputState!.yateItem.subscribeRemoval(removeTileSetItem);
-      tileSetOutputState!.removeAll.subscribe(removeAllTileSetItem);
-    }
-    if (tileGroupOutputState != null) {
-      tileGroupOutputState!.yateItem.subscribeRemoval(removeTileGroupItem);
-      tileGroupOutputState!.removeAll.subscribe(removeAllTileGroupItem);
-    }
+    outputState.yateItem.subscribeRemoval(removeItem);
+    outputState.removeAll.subscribe(removeAllItems);
   }
 
   @override
   void onRemove() {
-    if (tileSetOutputState != null) {
-      tileSetOutputState!.yateItem.unsubscribeRemoval(removeTileSetItem);
-      tileSetOutputState!.removeAll.unsubscribe(removeAllTileSetItem);
-    }
-    if (tileGroupOutputState != null) {
-      tileGroupOutputState!.yateItem.unsubscribeRemoval(removeTileGroupItem);
-      tileGroupOutputState!.removeAll.unsubscribe(removeAllTileGroupItem);
-    }
+    outputState.yateItem.unsubscribeRemoval(removeItem);
+    outputState.removeAll.unsubscribe(removeAllItems);
   }
 
-  void removeTileSetItem(TileSetOutputState outputState, YateItem tileSetItem) {
-    world.removeTileSetItem(tileSetItem);
+  void removeItem(OutputState outputState, YateItem tileSetItem) {
+    world.removeItem(tileSetItem);
   }
 
-  void removeAllTileSetItem(TileSetOutputState outputState) {
-    world.removeAllTileSetItem();
-  }
-
-  void removeTileGroupItem(TileGroupOutputState outputState, YateItem tileSetItem) {
-    world.removeTileSetItem(tileSetItem);
-  }
-
-  void removeAllTileGroupItem(TileGroupOutputState outputState) {
-    world.removeAllTileSetItem();
+  void removeAllItems(OutputState outputState) {
+    world.removeAllItems();
   }
 
   @override
@@ -143,7 +119,7 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
         }
         if (event is KeyDownEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.delete)) {
-            world.removeTileSetItem(world.selected!.getItem());
+            world.removeItem(world.selected!.getItem());
           }
         }
       }
