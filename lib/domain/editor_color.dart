@@ -19,9 +19,11 @@ enum EditorColor {
   tileSetGroup(Color.fromARGB(255, 171, 33, 178)),
   tileSetSlice(Color.fromARGB(255, 247, 224, 19)),
   tileSetTile(Color.fromARGB(255, 0, 0, 0)),
+  tileGroupFile(Color.fromARGB(255, 171, 33, 178)),
   tileFreeHovered(Colors.black),
   tileGroupHovered(Color.fromARGB(255, 171, 33, 178)),
   tileSliceHovered(Color.fromARGB(255, 247, 224, 19)),
+  tileGroupFileHovered(Color.fromARGB(255, 247, 224, 19)),
   tileGarbageHovered(Color.fromARGB(255, 216, 21, 21));
 
   final Color color;

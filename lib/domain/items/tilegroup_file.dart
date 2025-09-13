@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flame/game.dart';
+import 'package:flutter_randomcolor/flutter_randomcolor.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
@@ -14,6 +16,8 @@ class TileGroupFile extends YateItem implements YateMapper {
   TileRectSize size;
 
   Image? image;
+
+  Color color = RandomColor.getColorObject(Options());
 
   TileGroupFile({
     required super.id, //
@@ -32,40 +36,22 @@ class TileGroupFile extends YateItem implements YateMapper {
   }
 
   @override
-  Color getColor() {
-    // TODO: implement getColor
-    throw UnimplementedError();
-  }
+  Color getColor() => color;
 
   @override
-  Color getHoverColor() {
-    // TODO: implement getHoverColor
-    throw UnimplementedError();
-  }
+  Color getHoverColor() => EditorColor.tileGroupFileHovered.color;
 
   @override
-  String getLabel() {
-    // TODO: implement getLabel
-    throw UnimplementedError();
-  }
+  Color getTextColor() => EditorColor.tileGroupFile.color;
 
   @override
-  Vector2 getRealPosition(double tileWidth, double tileHeight) {
-    // TODO: implement getRealPosition
-    throw UnimplementedError();
-  }
+  String getLabel() => filePath;
 
   @override
-  Vector2 getRealSize(double tileWidth, double tileHeight) {
-    // TODO: implement getRealSize
-    throw UnimplementedError();
-  }
+  Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);
 
   @override
-  Color getTextColor() {
-    // TODO: implement getTextColor
-    throw UnimplementedError();
-  }
+  Vector2 getRealSize(double tileWidth, double tileHeight) => Vector2(size.width * tileWidth, size.height * tileHeight);
 
   @override
   Map<String, dynamic> toJson() {

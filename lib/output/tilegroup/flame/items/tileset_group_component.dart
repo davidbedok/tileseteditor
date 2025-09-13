@@ -11,7 +11,7 @@ class TileSetGroupComponent extends YateComponent {
 
   TileSetGroupComponent({
     required super.position,
-    required super.tileSet, //
+    required super.projectItem, //
     required super.originalPosition,
     required super.external,
     required TileSetGroup group,
@@ -28,9 +28,9 @@ class TileSetGroupComponent extends YateComponent {
       for (int i = 0; i < group.size.width; i++) {
         if (tileIndex < group.tileIndices.length) {
           int index = group.tileIndices[tileIndex];
-          TileCoord tileCoord = tileSet.getTileCoord(index);
+          TileCoord tileCoord = getProjectItemAsTileSet().getTileCoord(index);
           Sprite tmpSprite = Sprite(
-            tileSet.image!,
+            getProjectItemAsTileSet().image!,
             srcPosition: Vector2((tileCoord.left - 1) * tileWidth, (tileCoord.top - 1) * tileHeight),
             srcSize: Vector2(tileWidth, tileHeight),
           );

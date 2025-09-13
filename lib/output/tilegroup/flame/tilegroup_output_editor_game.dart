@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
 import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
@@ -16,12 +17,14 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
 
   late double startZoom;
   TileSetProject project;
+  TileSet tileSet;
   TileGroup tileGroup;
 
   TileGroupOutputState outputState;
 
   TileGroupOutputEditorGame({
     required this.project, //
+    required this.tileSet,
     required this.tileGroup,
     required double width,
     required double height,

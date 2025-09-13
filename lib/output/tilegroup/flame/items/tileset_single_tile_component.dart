@@ -9,7 +9,7 @@ class TileSetSingleTileComponent extends YateComponent {
 
   TileSetSingleTileComponent({
     required super.position, //
-    required super.tileSet,
+    required super.projectItem,
     required super.originalPosition,
     required super.external,
     required TileSetTile tile,
@@ -18,14 +18,14 @@ class TileSetSingleTileComponent extends YateComponent {
   @override
   void placeOutput(YateOutputTileComponent topLeftTile) {
     tileSetItem.output = topLeftTile.getCoord();
-    tileSet.addTile(getTile());
+    getProjectItemAsTileSet().addTile(getTile());
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = Sprite(
-      tileSet.image!, //
+      getProjectItemAsTileSet().image!, //
       srcPosition: tileSetItem.getRealPosition(tileWidth, tileHeight),
       srcSize: tileSetItem.getRealSize(tileWidth, tileHeight),
     );

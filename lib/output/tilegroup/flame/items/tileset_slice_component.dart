@@ -7,7 +7,7 @@ class TileSetSliceComponent extends YateComponent {
 
   TileSetSliceComponent({
     required super.position,
-    required super.tileSet, //
+    required super.projectItem, //
     required super.originalPosition,
     required super.external,
     required TileSetSlice slice,
@@ -17,7 +17,7 @@ class TileSetSliceComponent extends YateComponent {
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = Sprite(
-      tileSet.image!, //
+      getProjectItemAsTileSet().image!, //
       srcPosition: tileSetItem.getRealPosition(tileWidth, tileHeight),
       srcSize: tileSetItem.getRealSize(tileWidth, tileHeight),
     );

@@ -3,9 +3,11 @@ import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
-import 'package:tileseteditor/domain/tileset/tileset.dart';
+import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
 import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
@@ -13,7 +15,7 @@ import 'package:tileseteditor/output/tileset/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 abstract class YateComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
-  TileSet tileSet;
+  TileSetProjectItem projectItem;
   YateItem tileSetItem;
   Vector2 originalPosition;
   TileRectSize areaSize;
@@ -31,15 +33,18 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
   YateOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
   YateItem getTileSetItem() => tileSetItem;
 
+  TileSet getProjectItemAsTileSet() => projectItem as TileSet;
+  TileGroup getProjectItemAsTileGroup() => projectItem as TileGroup;
+
   YateComponent({
     required super.position,
-    required this.tileSet,
+    required this.projectItem,
     required this.tileSetItem,
     required this.originalPosition,
     required this.areaSize,
     required this.external,
-  }) : tileWidth = tileSet.tileSize.widthPx.toDouble(),
-       tileHeight = tileSet.tileSize.heightPx.toDouble() {
+  }) : tileWidth = projectItem.tileSize.widthPx.toDouble(),
+       tileHeight = projectItem.tileSize.heightPx.toDouble() {
     priority = 0;
   }
 
@@ -194,11 +199,11 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
 
   void drawInfo(Canvas canvas) {
     var textSpan = TextSpan(
-      text: '${external ? '${tileSet.name}\n' : ''}${tileSetItem.getLabel()}',
+      text: '${external ? '${projectItem.name}\n' : ''}${tileSetItem.getLabel()}',
       style: TextStyle(color: tileSetItem.getTextColor(), fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 200);
+    textPainter.layout(minWidth: 0, maxWidth: 300);
     textPainter.paint(canvas, Offset(0, external ? -40 : -20));
   }
 }

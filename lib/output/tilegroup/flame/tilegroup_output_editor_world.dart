@@ -3,6 +3,7 @@ import 'package:flame/input.dart';
 import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
@@ -11,12 +12,14 @@ import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
+import 'package:tileseteditor/output/tilegroup/flame/items/tilegroup_file_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
 import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/items/tileset_group_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/items/tileset_single_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/items/tileset_slice_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
+import 'package:tileseteditor/output/tileset/flame/tileset/slice_component.dart';
 import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
@@ -150,28 +153,73 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
   @override
   Future<void> onLoad() async {
+    TileSet tileSet = game.tileSet;
     TileGroup tileGroup = game.tileGroup;
-    int atlasMaxX = 0; // tileSet.image!.width ~/ tileSet.tileSize.widthPx;
-    int atlasMaxY = 0; // tileSet.image!.height ~/ tileSet.tileSize.heightPx;
 
-    double outputShiftX = getOutputShiftLeft(tileGroup, atlasMaxX);
+    int atlasMaxX = 0;
+    int atlasMaxY = 0;
+
+    if (tileSet != TileSet.none) {
+      atlasMaxX = tileSet.image!.width ~/ tileSet.tileSize.widthPx;
+      atlasMaxY = tileSet.image!.height ~/ tileSet.tileSize.heightPx;
+    }
+
+    double outputShiftX = getOutputShiftLeft(tileSet, tileGroup, atlasMaxX);
     initOutputComponents(atlasMaxX, outputShiftX);
-    // initTgTileSetComponents(tileSet, atlasMaxX, atlasMaxY);
-    initOtherTgTileSetComponents(-1);
+    if (tileSet != TileSet.none) {
+      initTileSetComponents(tileSet, atlasMaxX, atlasMaxY);
+    }
+    if (tileGroup != TileGroup.none) {
+      initTileGroupFileComponents(tileGroup, atlasMaxX);
+    }
+    initOtherTgTileSetComponents(tileSet.key);
     initButtonsAndCamera();
   }
 
-  double getOutputShiftLeft(TileGroup tileGroup, int atlasMaxX) {
-    /* FIXME calc shift
-    int maxGroupWidth = 0;
-    for (TileSetGroup group in tileSet.groups) {
-      if (group.size.width > maxGroupWidth) {
-        maxGroupWidth = group.size.width;
+  void initTileGroupFileComponents(TileGroup tileGroup, int atlasMaxX) {
+    int tileWidth = tileGroup.tileSize.widthPx;
+    int tileHeight = tileGroup.tileSize.heightPx;
+    int fileTopIndex = 0;
+    for (TileGroupFile file in tileGroup.files) {
+      TileGroupFileComponent fileComponent = TileGroupFileComponent(
+        projectItem: tileGroup,
+        file: file,
+        originalPosition: Vector2(DrawUtils.ruler.width + (atlasMaxX + 1) * tileWidth, DrawUtils.ruler.height + fileTopIndex * tileHeight),
+        position: Vector2(DrawUtils.ruler.width + (atlasMaxX + 1) * tileWidth, DrawUtils.ruler.height + fileTopIndex * tileHeight),
+        external: false,
+      );
+      if (file.output != null) {
+        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(file.output!.left - 1, file.output!.top - 1);
+        if (topLeftOutputTile != null) {
+          placeSilent(topLeftOutputTile, fileComponent);
+          fileComponent.position = topLeftOutputTile.position;
+        }
+      }
+      add(fileComponent);
+      fileTopIndex += file.size.height + 1;
+    }
+  }
+
+  double getOutputShiftLeft(TileSet tileSet, TileGroup tileGroup, int atlasMaxX) {
+    int maxWidth = 0;
+    int tileWidthPx = 0;
+    if (tileSet != TileSet.none) {
+      tileWidthPx = tileSet.tileSize.widthPx;
+      for (TileSetGroup group in tileSet.groups) {
+        if (group.size.width > maxWidth) {
+          maxWidth = group.size.width;
+        }
       }
     }
-    double outputShiftX = (atlasMaxX + maxGroupWidth + 1) * tileSet.tileSize.widthPx + 50;
-    */
-    return 0; //outputShiftX;
+    if (tileGroup != TileGroup.none) {
+      tileWidthPx = tileGroup.tileSize.widthPx;
+      for (TileGroupFile file in tileGroup.files) {
+        if (file.size.width > maxWidth) {
+          maxWidth = file.size.width;
+        }
+      }
+    }
+    return (atlasMaxX + maxWidth + 1) * tileWidthPx + 50;
   }
 
   void initOtherTgTileSetComponents(int currentTileSetKey) {
@@ -190,7 +238,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
         YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
           TileSetSliceComponent sliceComponent = TileSetSliceComponent(
-            tileSet: tileSet,
+            projectItem: tileSet,
             slice: slice,
             originalPosition: topLeftOutputTile.position,
             position: topLeftOutputTile.position,
@@ -209,7 +257,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
         YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
           TileSetGroupComponent groupComponent = TileSetGroupComponent(
-            tileSet: tileSet,
+            projectItem: tileSet,
             group: group,
             originalPosition: topLeftOutputTile.position,
             position: topLeftOutputTile.position,
@@ -240,7 +288,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
             YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
               TileSetSingleTileComponent singleTileComponent = TileSetSingleTileComponent(
-                tileSet: tileSet,
+                projectItem: tileSet,
                 tile: tileSetTile,
                 originalPosition: topLeftOutputTile.position,
                 position: topLeftOutputTile.position,
@@ -250,6 +298,120 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
               add(singleTileComponent);
             }
           }
+        }
+      }
+    }
+  }
+
+  void initTileSetComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
+    initTileSetRuler(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx, atlasMaxX, atlasMaxY);
+    initTileSetSlices(tileSet);
+    initTileSetGroups(tileSet, atlasMaxX);
+    initTileSetTiles(tileSet, atlasMaxX, atlasMaxY);
+  }
+
+  void initTileSetRuler(int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
+    for (int column = 1; column <= atlasMaxX; column++) {
+      add(
+        TextComponent(
+          textRenderer: rulerPaint,
+          text: '$column',
+          position: Vector2(DrawUtils.ruler.width + (column - 1) * tileWidth + 12, 0),
+          size: Vector2(tileWidth.toDouble(), DrawUtils.ruler.height),
+          anchor: Anchor.topLeft,
+          priority: 20,
+        ),
+      );
+    }
+    for (int row = 1; row <= atlasMaxY; row++) {
+      add(
+        TextComponent(
+          textRenderer: rulerPaint,
+          text: '$row',
+          position: Vector2(0, DrawUtils.ruler.height + (row - 1) * tileHeight + 6),
+          size: Vector2(DrawUtils.ruler.width, tileHeight.toDouble()),
+          anchor: Anchor.topLeft,
+          priority: 20,
+        ),
+      );
+    }
+  }
+
+  void initTileSetSlices(TileSet tileSet) {
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
+    for (TileSetSlice slice in tileSet.slices) {
+      TileSetSliceComponent sliceComponent = TileSetSliceComponent(
+        projectItem: tileSet,
+        slice: slice,
+        originalPosition: Vector2(DrawUtils.ruler.width + (slice.coord.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.coord.top - 1) * tileHeight),
+        position: Vector2(DrawUtils.ruler.width + (slice.coord.left - 1) * tileWidth, DrawUtils.ruler.height + (slice.coord.top - 1) * tileHeight),
+        external: false,
+      );
+      if (slice.output != null) {
+        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        if (topLeftOutputTile != null) {
+          placeSilent(topLeftOutputTile, sliceComponent);
+          sliceComponent.position = topLeftOutputTile.position;
+        }
+      }
+      add(sliceComponent);
+    }
+  }
+
+  void initTileSetGroups(TileSet tileSet, int atlasMaxX) {
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
+    int groupTopIndex = 0;
+    for (TileSetGroup group in tileSet.groups) {
+      TileSetGroupComponent groupComponent = TileSetGroupComponent(
+        projectItem: tileSet,
+        group: group,
+        originalPosition: Vector2(DrawUtils.ruler.width + (atlasMaxX + 1) * tileWidth, DrawUtils.ruler.height + groupTopIndex * tileHeight),
+        position: Vector2(DrawUtils.ruler.width + (atlasMaxX + 1) * tileWidth, DrawUtils.ruler.height + groupTopIndex * tileHeight),
+        external: false,
+      );
+      if (group.output != null) {
+        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        if (topLeftOutputTile != null) {
+          placeSilent(topLeftOutputTile, groupComponent);
+          groupComponent.position = topLeftOutputTile.position;
+        }
+      }
+      add(groupComponent);
+      groupTopIndex += group.size.height + 1;
+    }
+  }
+
+  void initTileSetTiles(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
+    int tileWidth = tileSet.tileSize.widthPx;
+    int tileHeight = tileSet.tileSize.heightPx;
+    for (int i = 0; i < atlasMaxX; i++) {
+      for (int j = 0; j < atlasMaxY; j++) {
+        TileCoord coord = TileCoord(i + 1, j + 1);
+        if (tileSet.isFreeByIndex(tileSet.getIndex(coord))) {
+          TileSetTile? usedTileSetTile = tileSet.findTile(coord);
+          TileSetTile tileSetTile =
+              usedTileSetTile ??
+              TileSetTile(
+                id: tileSet.getNextTileId(), //
+                coord: coord,
+              );
+          TileSetSingleTileComponent singleTileComponent = TileSetSingleTileComponent(
+            projectItem: tileSet,
+            tile: tileSetTile,
+            originalPosition: Vector2(DrawUtils.ruler.width + i * tileWidth, DrawUtils.ruler.height + j * tileHeight),
+            position: Vector2(DrawUtils.ruler.width + i * tileWidth, DrawUtils.ruler.height + j * tileHeight),
+            external: false,
+          );
+          if (tileSetTile.output != null) {
+            YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            if (topLeftOutputTile != null) {
+              placeSilent(topLeftOutputTile, singleTileComponent);
+              singleTileComponent.position = topLeftOutputTile.position;
+            }
+          }
+          add(singleTileComponent);
         }
       }
     }

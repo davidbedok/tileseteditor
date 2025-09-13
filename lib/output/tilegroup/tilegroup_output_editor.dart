@@ -2,6 +2,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
+import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_controller.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
@@ -46,6 +47,7 @@ class TileGroupOutputEditor extends StatelessWidget {
                     child: GameWidget(
                       game: TileGroupOutputEditorGame(
                         project: project,
+                        tileSet: TileSet.none,
                         tileGroup: tileGroup,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,

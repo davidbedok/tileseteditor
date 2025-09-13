@@ -1,8 +1,8 @@
 {
-	"version": "1.0",
+    "version": "1.0",
     "name": "Example",
     "description": "This is the example TileSet Project",
-	"creator": "qwaevisz",
+    "creator": "qwaevisz",
     "editor": {
         "name": "tileseteditor",
         "version": "1.0.0",
@@ -289,8 +289,8 @@
                     "width": 3,
                     "height": 3,
                     "output": {
-                        "left": 1,
-                        "top": 6
+                        "left": 15,
+                        "top": 7
                     }
                 },
                 {
@@ -432,8 +432,8 @@
                     "width": 4,
                     "height": 5,
                     "output": {
-                        "left": 9,
-                        "top": 6
+                        "left": 14,
+                        "top": 2
                     }
                 },
                 {
@@ -865,8 +865,8 @@
                     "width": 5,
                     "height": 2,
                     "output": {
-                        "left": 1,
-                        "top": 4
+                        "left": 2,
+                        "top": 6
                     }
                 },
                 {
@@ -1263,8 +1263,8 @@
                     "width": 3,
                     "height": 3,
                     "output": {
-                        "left": 8,
-                        "top": 11
+                        "left": 11,
+                        "top": 10
                     }
                 }
             ],
@@ -1299,7 +1299,10 @@
                         0,
                         1
                     ],
-                    "output": null
+                    "output": {
+                        "left": 12,
+                        "top": 8
+                    }
                 },
                 {
                     "id": 1,
@@ -1315,7 +1318,10 @@
                         0,
                         1
                     ],
-                    "output": null
+                    "output": {
+                        "left": 9,
+                        "top": 5
+                    }
                 },
                 {
                     "id": 2,
@@ -1333,7 +1339,10 @@
                         2,
                         3
                     ],
-                    "output": null
+                    "output": {
+                        "left": 10,
+                        "top": 6
+                    }
                 },
                 {
                     "id": 3,
@@ -1363,7 +1372,10 @@
                     "indices": [
                         0
                     ],
-                    "output": null
+                    "output": {
+                        "left": 2,
+                        "top": 16
+                    }
                 },
                 {
                     "id": 5,
@@ -1378,7 +1390,10 @@
                     "indices": [
                         0
                     ],
-                    "output": null
+                    "output": {
+                        "left": 1,
+                        "top": 16
+                    }
                 },
                 {
                     "id": 6,
@@ -1393,7 +1408,10 @@
                     "indices": [
                         0
                     ],
-                    "output": null
+                    "output": {
+                        "left": 1,
+                        "top": 17
+                    }
                 },
                 {
                     "id": 7,
@@ -1424,7 +1442,10 @@
                         0,
                         1
                     ],
-                    "output": null
+                    "output": {
+                        "left": 4,
+                        "top": 17
+                    }
                 },
                 {
                     "id": 9,
@@ -1447,7 +1468,10 @@
                         7,
                         8
                     ],
-                    "output": null
+                    "output": {
+                        "left": 1,
+                        "top": 18
+                    }
                 },
                 {
                     "id": 10,
@@ -1467,7 +1491,10 @@
                         4,
                         5
                     ],
-                    "output": null
+                    "output": {
+                        "left": 4,
+                        "top": 18
+                    }
                 },
                 {
                     "id": 11,
@@ -1485,7 +1512,10 @@
                         2,
                         3
                     ],
-                    "output": null
+                    "output": {
+                        "left": 8,
+                        "top": 15
+                    }
                 },
                 {
                     "id": 12,
@@ -1709,20 +1739,20 @@
                     "index": 29
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 116
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 117
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 118
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 0,
+                    "index": 119
                 },
                 {
                     "key": -1,
@@ -1811,394 +1841,6 @@
                     "index": 55
                 },
                 {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": 0,
-                    "index": 0
-                },
-                {
-                    "key": 0,
-                    "index": 1
-                },
-                {
-                    "key": 0,
-                    "index": 8
-                },
-                {
-                    "key": 0,
-                    "index": 9
-                },
-                {
-                    "key": 0,
-                    "index": 290
-                },
-                {
-                    "key": 0,
-                    "index": 56
-                },
-                {
-                    "key": 0,
-                    "index": 57
-                },
-                {
-                    "key": 0,
-                    "index": 58
-                },
-                {
-                    "key": 0,
-                    "index": 83
-                },
-                {
-                    "key": 0,
-                    "index": 84
-                },
-                {
-                    "key": 0,
-                    "index": 19
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": 0,
-                    "index": 291
-                },
-                {
-                    "key": 0,
-                    "index": 292
-                },
-                {
-                    "key": 0,
-                    "index": 293
-                },
-                {
-                    "key": 0,
-                    "index": 330
-                },
-                {
-                    "key": 0,
-                    "index": 332
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": 0,
-                    "index": 4
-                },
-                {
-                    "key": 0,
-                    "index": 12
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": 0,
-                    "index": 27
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": 0,
-                    "index": 72
-                },
-                {
-                    "key": 0,
-                    "index": 73
-                },
-                {
-                    "key": 0,
-                    "index": 74
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": 0,
-                    "index": 2
-                },
-                {
-                    "key": 0,
-                    "index": 10
-                },
-                {
-                    "key": 0,
-                    "index": 116
-                },
-                {
-                    "key": 0,
-                    "index": 117
-                },
-                {
-                    "key": 0,
-                    "index": 118
-                },
-                {
-                    "key": 0,
-                    "index": 119
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": 0,
-                    "index": 80
-                },
-                {
-                    "key": 0,
-                    "index": 81
-                },
-                {
-                    "key": 0,
-                    "index": 82
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
                     "key": 0,
                     "index": 124
                 },
@@ -2245,60 +1887,60 @@
                 {
                     "key": -1,
                     "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
                 }
             ],
             [
                 {
-                    "key": 0,
-                    "index": 88
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
                 },
                 {
                     "key": 0,
-                    "index": 89
+                    "index": 56
                 },
                 {
                     "key": 0,
-                    "index": 90
+                    "index": 57
                 },
                 {
                     "key": 0,
-                    "index": 60
+                    "index": 58
                 },
                 {
                     "key": 0,
-                    "index": 61
+                    "index": 83
                 },
                 {
                     "key": 0,
-                    "index": 62
+                    "index": 84
                 },
                 {
-                    "key": 1,
-                    "index": 105
+                    "key": 0,
+                    "index": 19
                 },
                 {
-                    "key": 1,
-                    "index": 106
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
                 },
                 {
                     "key": 0,
@@ -2335,6 +1977,394 @@
                 {
                     "key": -1,
                     "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 4
+                },
+                {
+                    "key": 0,
+                    "index": 12
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 27
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 140
+                },
+                {
+                    "key": 0,
+                    "index": 141
+                },
+                {
+                    "key": 0,
+                    "index": 142
+                },
+                {
+                    "key": 0,
+                    "index": 143
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 0
+                },
+                {
+                    "key": 0,
+                    "index": 1
+                },
+                {
+                    "key": 0,
+                    "index": 8
+                },
+                {
+                    "key": 0,
+                    "index": 9
+                },
+                {
+                    "key": 0,
+                    "index": 290
+                },
+                {
+                    "key": 0,
+                    "index": 2
+                },
+                {
+                    "key": 0,
+                    "index": 10
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 148
+                },
+                {
+                    "key": 0,
+                    "index": 149
+                },
+                {
+                    "key": 0,
+                    "index": 150
+                },
+                {
+                    "key": 0,
+                    "index": 151
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 291
+                },
+                {
+                    "key": 0,
+                    "index": 292
+                },
+                {
+                    "key": 0,
+                    "index": 293
+                },
+                {
+                    "key": 0,
+                    "index": 330
+                },
+                {
+                    "key": 0,
+                    "index": 332
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 72
+                },
+                {
+                    "key": 0,
+                    "index": 73
+                },
+                {
+                    "key": 0,
+                    "index": 74
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 60
+                },
+                {
+                    "key": 0,
+                    "index": 61
+                },
+                {
+                    "key": 0,
+                    "index": 62
+                },
+                {
+                    "key": 1,
+                    "index": 105
+                },
+                {
+                    "key": 1,
+                    "index": 106
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 0,
+                    "index": 80
+                },
+                {
+                    "key": 0,
+                    "index": 81
+                },
+                {
+                    "key": 0,
+                    "index": 82
                 },
                 {
                     "key": -1,
@@ -2403,40 +2433,40 @@
                     "index": 122
                 },
                 {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
                     "key": 0,
-                    "index": 140
+                    "index": 88
                 },
                 {
                     "key": 0,
-                    "index": 141
+                    "index": 89
                 },
                 {
                     "key": 0,
-                    "index": 142
-                },
-                {
-                    "key": 0,
-                    "index": 143
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
+                    "index": 90
                 },
                 {
                     "key": -1,
@@ -2505,24 +2535,24 @@
                     "index": -1
                 },
                 {
-                    "key": 0,
-                    "index": 148
-                },
-                {
-                    "key": 0,
-                    "index": 149
-                },
-                {
-                    "key": 0,
-                    "index": 150
-                },
-                {
-                    "key": 0,
-                    "index": 151
+                    "key": -1,
+                    "index": -1
                 },
                 {
                     "key": -1,
                     "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 402
+                },
+                {
+                    "key": 2,
+                    "index": 403
+                },
+                {
+                    "key": 2,
+                    "index": 404
                 },
                 {
                     "key": -1,
@@ -2603,18 +2633,6 @@
                     "index": 20
                 },
                 {
-                    "key": 2,
-                    "index": 402
-                },
-                {
-                    "key": 2,
-                    "index": 403
-                },
-                {
-                    "key": 2,
-                    "index": 404
-                },
-                {
                     "key": -1,
                     "index": -1
                 },
@@ -2625,6 +2643,18 @@
                 {
                     "key": -1,
                     "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 434
+                },
+                {
+                    "key": 2,
+                    "index": 435
+                },
+                {
+                    "key": 2,
+                    "index": 436
                 },
                 {
                     "key": -1,
@@ -2705,18 +2735,6 @@
                     "index": 36
                 },
                 {
-                    "key": 2,
-                    "index": 434
-                },
-                {
-                    "key": 2,
-                    "index": 435
-                },
-                {
-                    "key": 2,
-                    "index": 436
-                },
-                {
                     "key": -1,
                     "index": -1
                 },
@@ -2727,6 +2745,18 @@
                 {
                     "key": -1,
                     "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 466
+                },
+                {
+                    "key": 2,
+                    "index": 467
+                },
+                {
+                    "key": 2,
+                    "index": 468
                 },
                 {
                     "key": -1,
@@ -2807,16 +2837,16 @@
                     "index": -1
                 },
                 {
-                    "key": 2,
-                    "index": 466
+                    "key": -1,
+                    "index": -1
                 },
                 {
-                    "key": 2,
-                    "index": 467
+                    "key": -1,
+                    "index": -1
                 },
                 {
-                    "key": 2,
-                    "index": 468
+                    "key": -1,
+                    "index": -1
                 },
                 {
                     "key": -1,
