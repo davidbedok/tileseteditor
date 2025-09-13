@@ -2,9 +2,13 @@
 
 A new Flutter project.
 
+![yate](./assets/yate-512.png)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
+
+[Documentation](documentation.md)
 
 A few resources to get you started if this is your first Flutter project:
 
