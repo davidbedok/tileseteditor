@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';

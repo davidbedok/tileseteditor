@@ -237,7 +237,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
                 id: tileSet.getNextTileId(), //
                 coord: coord,
               );
-          ;
+
           if (tileSetTile.output != null) {
             OverviewOutputTileComponent? topLeftOutputTile = getOverviewTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {

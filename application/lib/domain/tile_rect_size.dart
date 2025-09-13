@@ -29,6 +29,6 @@ class TileRectSize {
 
   @override
   String toString() {
-    return '${width} : $height';
+    return '$width : $height';
   }
 }

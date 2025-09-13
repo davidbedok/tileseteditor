@@ -42,9 +42,9 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
     });
   }
 
-  void selectTile(SplitterState state, YateItem tileSetItem) {
+  void selectTile(SplitterState state, YateItem yateItem) {
     setState(() {
-      this.yateItem = tileSetItem;
+      this.yateItem = yateItem;
     });
   }
 

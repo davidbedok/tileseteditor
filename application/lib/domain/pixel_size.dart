@@ -6,6 +6,6 @@ class PixelSize {
 
   @override
   String toString() {
-    return '${widthPx} x $heightPx';
+    return '$widthPx x $heightPx';
   }
 }

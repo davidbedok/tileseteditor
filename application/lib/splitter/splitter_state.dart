@@ -42,14 +42,14 @@ class SplitterState {
     }
   }
 
-  void selectTileSetItem(YateItem tileSetItem) {
-    if (this.yateItem == tileSetItem) {
+  void selectTileSetItem(YateItem yateItem) {
+    if (this.yateItem == yateItem) {
       this.yateItem = YateItem.none;
     } else {
-      this.yateItem = tileSetItem;
+      this.yateItem = yateItem;
     }
     for (var eventHandler in selectionEventHandlers) {
-      eventHandler.call(this, tileSetItem);
+      eventHandler.call(this, yateItem);
     }
   }
 

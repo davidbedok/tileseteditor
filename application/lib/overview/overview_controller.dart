@@ -33,9 +33,9 @@ class OverviewControllerState extends State<OverviewController> {
     widget.outputState.yateItem.unsubscribeSelection(select);
   }
 
-  void select(OutputState state, YateItem tileSetItem) {
+  void select(OutputState state, YateItem yateItem) {
     setState(() {
-      this.yateItem = tileSetItem;
+      this.yateItem = yateItem;
     });
   }
 
