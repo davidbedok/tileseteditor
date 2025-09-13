@@ -158,6 +158,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                                 if (value != null) {
                                   setState(() {
                                     splitterState = SplitterState();
+                                    builderState = BuilderState();
                                     outputState = OutputState();
                                     projectState.item.select(value);
                                   });
