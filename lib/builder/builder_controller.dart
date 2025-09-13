@@ -2,55 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
-import 'package:tileseteditor/group/group_state.dart';
+import 'package:tileseteditor/builder/builder_state.dart';
 
-class GroupController extends StatefulWidget {
+class BuilderController extends StatefulWidget {
   final YateProject project;
   final TileGroup tileGroup;
-  final GroupState groupState;
+  final BuilderState builderState;
   final void Function() onAddTiles;
   final void Function() onRemoveTiles;
   final void Function() onOutputPressed;
 
-  const GroupController({
+  const BuilderController({
     super.key, //
     required this.project,
     required this.tileGroup,
-    required this.groupState,
+    required this.builderState,
     required this.onAddTiles,
     required this.onRemoveTiles,
     required this.onOutputPressed,
   });
 
   @override
-  State<GroupController> createState() => GroupControllerState();
+  State<BuilderController> createState() => BuilderControllerState();
 }
 
-class GroupControllerState extends State<GroupController> {
+class BuilderControllerState extends State<BuilderController> {
   late int numberOfSelectedFiles;
 
   @override
   void initState() {
     super.initState();
-    numberOfSelectedFiles = widget.groupState.selectedFiles.length;
-    widget.groupState.subscribeSelection(select);
-    widget.groupState.subscribeSelectioAll(selectAll);
+    numberOfSelectedFiles = widget.builderState.selectedFiles.length;
+    widget.builderState.subscribeSelection(select);
+    widget.builderState.subscribeSelectioAll(selectAll);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.groupState.unsubscribeSelection(select);
-    widget.groupState.unsubscribeSelectionAll(selectAll);
+    widget.builderState.unsubscribeSelection(select);
+    widget.builderState.unsubscribeSelectionAll(selectAll);
   }
 
-  void select(GroupState state, TileGroupFile groupFile) {
+  void select(BuilderState state, TileGroupFile groupFile) {
     setState(() {
       numberOfSelectedFiles = state.selectedFiles.length;
     });
   }
 
-  void selectAll(GroupState state, bool select) {
+  void selectAll(BuilderState state, bool select) {
     setState(() {
       numberOfSelectedFiles = state.selectedFiles.length;
     });
@@ -65,9 +65,9 @@ class GroupControllerState extends State<GroupController> {
           IconButton(
             icon: Icon(Icons.select_all),
             onPressed: () {
-              widget.groupState.selectAll(widget.tileGroup);
+              widget.builderState.selectAll(widget.tileGroup);
               setState(() {
-                numberOfSelectedFiles = widget.groupState.selectedFiles.length;
+                numberOfSelectedFiles = widget.builderState.selectedFiles.length;
               });
             },
           ),
@@ -75,9 +75,9 @@ class GroupControllerState extends State<GroupController> {
           IconButton(
             icon: Icon(Icons.deselect),
             onPressed: () {
-              widget.groupState.deselectAll();
+              widget.builderState.deselectAll();
               setState(() {
-                numberOfSelectedFiles = widget.groupState.selectedFiles.length;
+                numberOfSelectedFiles = widget.builderState.selectedFiles.length;
               });
             },
           ),

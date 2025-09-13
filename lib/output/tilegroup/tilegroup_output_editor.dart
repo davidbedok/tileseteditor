@@ -12,14 +12,14 @@ class TileGroupOutputEditor extends StatelessWidget {
   final YateProject project;
   final TileGroup tileGroup;
   final OutputState outputState;
-  final void Function() onSplitterPressed;
+  final void Function() onBuilderPressed;
 
   const TileGroupOutputEditor({
     super.key, //
     required this.project,
     required this.tileGroup,
     required this.outputState,
-    required this.onSplitterPressed,
+    required this.onBuilderPressed,
   });
 
   @override
@@ -33,7 +33,7 @@ class TileGroupOutputEditor extends StatelessWidget {
               project: project, //
               tileGroup: tileGroup,
               outputState: outputState,
-              onSplitterPressed: onSplitterPressed,
+              onBuilderPressed: onBuilderPressed,
             ),
             Row(
               children: [

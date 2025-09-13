@@ -16,7 +16,7 @@ class TileGroup extends YateProjectItem implements YateMapper {
   List<TileGroupFile> files = [];
 
   @override
-  String getDropDownPrefix() => 'TileGroup constructor and output editor';
+  String getDropDownPrefix() => 'TileGroup builder and output editor';
 
   @override
   String getDetails() => '${getNumberOfTiles()} tiles in ${files.length} files';

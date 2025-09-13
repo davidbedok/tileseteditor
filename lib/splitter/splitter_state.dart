@@ -7,7 +7,7 @@ import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
 
 class SplitterState {
-  YateItem tileSetItem = YateItem.none;
+  YateItem yateItem = YateItem.none;
   List<TileCoord> selectedFreeTiles = [];
   List<TileCoord> selectedGarbageTiles = [];
 
@@ -30,23 +30,23 @@ class SplitterState {
     } else if (info.tileSetItem == TileSetTile.garbageTile) {
       result = selectedGarbageTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
     } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
-      result = tileSetItem == info.tileSetItem;
+      result = yateItem == info.tileSetItem;
     }
     return result;
   }
 
   void unselectTileSetItem() {
-    tileSetItem = YateItem.none;
+    yateItem = YateItem.none;
     for (var eventHandler in selectionEventHandlers) {
-      eventHandler.call(this, tileSetItem);
+      eventHandler.call(this, yateItem);
     }
   }
 
   void selectTileSetItem(YateItem tileSetItem) {
-    if (this.tileSetItem == tileSetItem) {
-      this.tileSetItem = YateItem.none;
+    if (this.yateItem == tileSetItem) {
+      this.yateItem = YateItem.none;
     } else {
-      this.tileSetItem = tileSetItem;
+      this.yateItem = tileSetItem;
     }
     for (var eventHandler in selectionEventHandlers) {
       eventHandler.call(this, tileSetItem);
@@ -67,14 +67,14 @@ class SplitterState {
         selectedGarbageTiles.add(info.coord);
       }
     } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
-      if (tileSetItem == info.tileSetItem) {
-        tileSetItem = YateItem.none;
+      if (yateItem == info.tileSetItem) {
+        yateItem = YateItem.none;
       } else {
-        tileSetItem = info.tileSetItem;
+        yateItem = info.tileSetItem;
       }
     }
     for (var eventHandler in selectionEventHandlers) {
-      eventHandler.call(this, tileSetItem);
+      eventHandler.call(this, yateItem);
     }
   }
 

@@ -15,7 +15,7 @@ import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/group/group_state.dart';
+import 'package:tileseteditor/builder/builder_state.dart';
 import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/project/tilegroup_editor.dart';
 import 'package:tileseteditor/project/tileset_editor.dart';
@@ -41,7 +41,7 @@ class ProjectSelector extends StatefulWidget {
 class ProjectSelectorState extends State<ProjectSelector> {
   ProjectState projectState = ProjectState();
   SplitterState splitterState = SplitterState();
-  GroupState groupState = GroupState();
+  BuilderState builderState = BuilderState();
   OutputState outputState = OutputState();
 
   @override
@@ -189,7 +189,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                           padding: const EdgeInsets.all(8.0),
                           child: TileGroupEditor(
                             key: GlobalKey(),
-                            groupState: groupState, //
+                            builderState: builderState, //
                             outputState: outputState,
                             project: projectState.project.object,
                             tileGroup: projectState.getItemAsTileGroup(),
@@ -314,7 +314,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
       projectState.item.unselect();
       splitterState = SplitterState();
       outputState = OutputState();
-      groupState = GroupState();
+      builderState = BuilderState();
     });
   }
 

@@ -70,7 +70,7 @@ class SplitterEditor extends StatelessWidget {
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                             child: SplitterDatasheet(
-                              editorState: splitterState, //
+                              splitterState: splitterState, //
                               tileSet: tileSet,
                             ),
                           ),

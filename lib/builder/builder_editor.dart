@@ -5,34 +5,34 @@ import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
-import 'package:tileseteditor/group/group_controller.dart';
-import 'package:tileseteditor/group/group_state.dart';
+import 'package:tileseteditor/builder/builder_controller.dart';
+import 'package:tileseteditor/builder/builder_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 import 'package:tileseteditor/widgets/tile_group_list_widget.dart';
 import 'package:tileseteditor/project/selector.dart';
 import 'package:path/path.dart' as path;
 
-class GroupEditor extends StatefulWidget {
+class BuilderEditor extends StatefulWidget {
   static const double rightSideWidth = 400.0;
 
   final YateProject project;
   final TileGroup tileGroup;
-  final GroupState groupState;
+  final BuilderState builderState;
   final void Function() onOutputPressed;
 
-  const GroupEditor({
+  const BuilderEditor({
     super.key, //
     required this.project,
     required this.tileGroup,
-    required this.groupState,
+    required this.builderState,
     required this.onOutputPressed,
   });
 
   @override
-  State<GroupEditor> createState() => _GroupEditorState();
+  State<BuilderEditor> createState() => _BuilderEditorState();
 }
 
-class _GroupEditorState extends State<GroupEditor> {
+class _BuilderEditorState extends State<BuilderEditor> {
   List<TileGroupFile> files = [];
   List<TileGroupFile> selectedFiles = [];
   TileGroupFile? current;
@@ -41,14 +41,14 @@ class _GroupEditorState extends State<GroupEditor> {
   void initState() {
     super.initState();
     files.addAll(widget.tileGroup.files);
-    selectedFiles.addAll(widget.groupState.selectedFiles);
-    widget.groupState.subscribeSelectioAll(selectionAll);
+    selectedFiles.addAll(widget.builderState.selectedFiles);
+    widget.builderState.subscribeSelectioAll(selectionAll);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.groupState.unsubscribeSelectionAll(selectionAll);
+    widget.builderState.unsubscribeSelectionAll(selectionAll);
   }
 
   @override
@@ -58,10 +58,10 @@ class _GroupEditorState extends State<GroupEditor> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GroupController(
+            BuilderController(
               project: widget.project, //
               tileGroup: widget.tileGroup,
-              groupState: widget.groupState,
+              builderState: widget.builderState,
               onOutputPressed: widget.onOutputPressed,
               onAddTiles: addTiles,
               onRemoveTiles: removeTiles,
@@ -69,7 +69,7 @@ class _GroupEditorState extends State<GroupEditor> {
             Row(
               children: [
                 SizedBox(
-                  width: MediaQuery.of(context).size.width - GroupEditor.rightSideWidth - 40,
+                  width: MediaQuery.of(context).size.width - BuilderEditor.rightSideWidth - 40,
                   height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                   child: Container(
                     decoration: BoxDecoration(
@@ -87,7 +87,7 @@ class _GroupEditorState extends State<GroupEditor> {
                                     groupFile: groupFile, //
                                     selected: isSelected(groupFile),
                                     onClick: () {
-                                      widget.groupState.selectTileGroupFile(groupFile);
+                                      widget.builderState.selectTileGroupFile(groupFile);
                                       setState(() {
                                         if (isSelected(groupFile)) {
                                           selectedFiles.remove(groupFile);
@@ -105,7 +105,7 @@ class _GroupEditorState extends State<GroupEditor> {
                 ),
                 SizedBox(width: 20), //
                 SizedBox(
-                  width: GroupEditor.rightSideWidth,
+                  width: BuilderEditor.rightSideWidth,
                   height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                   child: Container(
                     decoration: BoxDecoration(
@@ -217,7 +217,7 @@ class _GroupEditorState extends State<GroupEditor> {
   }
 
   void removeTiles() {
-    for (TileGroupFile file in widget.groupState.selectedFiles) {
+    for (TileGroupFile file in widget.builderState.selectedFiles) {
       widget.tileGroup.files.remove(file);
       if (current == file) {
         setState(() {
@@ -225,7 +225,7 @@ class _GroupEditorState extends State<GroupEditor> {
         });
       }
     }
-    widget.groupState.deselectAll();
+    widget.builderState.deselectAll();
     setState(() {
       selectedFiles.clear();
       files.clear();
@@ -237,7 +237,7 @@ class _GroupEditorState extends State<GroupEditor> {
     return selectedFiles.where((file) => file.id == groupFile.id).isNotEmpty;
   }
 
-  void selectionAll(GroupState groupState, bool select) {
+  void selectionAll(BuilderState groupState, bool select) {
     setState(() {
       current = null;
       if (select) {

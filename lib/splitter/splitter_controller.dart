@@ -36,7 +36,7 @@ class SplitterControllerState extends State<SplitterController> {
   @override
   void initState() {
     super.initState();
-    tileSetItem = widget.splitterState.tileSetItem;
+    tileSetItem = widget.splitterState.yateItem;
     widget.splitterState.subscribeSelection(selectTile);
   }
 
@@ -136,7 +136,7 @@ class SplitterControllerState extends State<SplitterController> {
               icon: Icon(Icons.delete),
               label: Text('Delete ${tileSetItem.getLabel()}'),
               onPressed: () {
-                widget.tileSet.remove(widget.splitterState.tileSetItem);
+                widget.tileSet.remove(widget.splitterState.yateItem);
                 widget.splitterState.unselectTileSetItem();
               },
             ),

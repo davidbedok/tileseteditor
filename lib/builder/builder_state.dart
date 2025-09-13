@@ -1,28 +1,28 @@
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 
-class GroupState {
+class BuilderState {
   List<TileGroupFile> selectedFiles = [];
 
-  List<void Function(GroupState state, TileGroupFile groupFile)> selectionEventHandlers = [];
+  List<void Function(BuilderState state, TileGroupFile groupFile)> selectionEventHandlers = [];
 
-  List<void Function(GroupState state, bool select)> selectionAllEventHandlers = [];
+  List<void Function(BuilderState state, bool select)> selectionAllEventHandlers = [];
 
-  GroupState();
+  BuilderState();
 
-  void subscribeSelection(void Function(GroupState state, TileGroupFile groupFile) eventHandler) {
+  void subscribeSelection(void Function(BuilderState state, TileGroupFile groupFile) eventHandler) {
     selectionEventHandlers.add(eventHandler);
   }
 
-  void unsubscribeSelection(void Function(GroupState state, TileGroupFile groupFile) eventHandler) {
+  void unsubscribeSelection(void Function(BuilderState state, TileGroupFile groupFile) eventHandler) {
     selectionEventHandlers.remove(eventHandler);
   }
 
-  void subscribeSelectioAll(void Function(GroupState state, bool select) eventHandler) {
+  void subscribeSelectioAll(void Function(BuilderState state, bool select) eventHandler) {
     selectionAllEventHandlers.add(eventHandler);
   }
 
-  void unsubscribeSelectionAll(void Function(GroupState state, bool select) eventHandler) {
+  void unsubscribeSelectionAll(void Function(BuilderState state, bool select) eventHandler) {
     selectionAllEventHandlers.remove(eventHandler);
   }
 

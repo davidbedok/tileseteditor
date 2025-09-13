@@ -8,14 +8,14 @@ class TileGroupOutputController extends StatefulWidget {
   final YateProject project;
   final TileGroup tileGroup;
   final OutputState outputState;
-  final void Function() onSplitterPressed;
+  final void Function() onBuilderPressed;
 
   const TileGroupOutputController({
     super.key, //
     required this.project,
     required this.tileGroup,
     required this.outputState,
-    required this.onSplitterPressed,
+    required this.onBuilderPressed,
   });
 
   @override
@@ -74,9 +74,9 @@ class TileGroupOutputControllerState extends State<TileGroupOutputController> {
           SizedBox(width: 5),
           ElevatedButton.icon(
             icon: Icon(Icons.edit), //
-            label: Text('Constructor'),
+            label: Text('Builder'),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            onPressed: widget.onSplitterPressed,
+            onPressed: widget.onBuilderPressed,
           ),
         ],
       ),

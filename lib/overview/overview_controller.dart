@@ -18,13 +18,13 @@ class OverviewController extends StatefulWidget {
 }
 
 class OverviewControllerState extends State<OverviewController> {
-  late YateItem tileSetItem;
+  late YateItem yateItem;
 
   @override
   void initState() {
     super.initState();
     widget.outputState.yateItem.subscribeSelection(select);
-    tileSetItem = widget.outputState.yateItem.object;
+    yateItem = widget.outputState.yateItem.object;
   }
 
   @override
@@ -35,7 +35,7 @@ class OverviewControllerState extends State<OverviewController> {
 
   void select(OutputState state, YateItem tileSetItem) {
     setState(() {
-      this.tileSetItem = tileSetItem;
+      this.yateItem = tileSetItem;
     });
   }
 
@@ -54,14 +54,14 @@ class OverviewControllerState extends State<OverviewController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: tileSetItem != YateItem.none && tileSetItem.output != null,
+            visible: yateItem != YateItem.none && yateItem.output != null,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
-              label: Text('Remove ${tileSetItem.getLabel()}'),
+              label: Text('Remove ${yateItem.getLabel()}'),
               onPressed: () {
                 widget.outputState.yateItem.remove();
                 setState(() {
-                  tileSetItem.output = null;
+                  yateItem.output = null;
                 });
               },
             ),

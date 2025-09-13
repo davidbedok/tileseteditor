@@ -7,10 +7,10 @@ import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterDatasheet extends StatefulWidget {
-  final SplitterState editorState;
+  final SplitterState splitterState;
   final TileSet tileSet;
 
-  const SplitterDatasheet({super.key, required this.editorState, required this.tileSet});
+  const SplitterDatasheet({super.key, required this.splitterState, required this.tileSet});
 
   @override
   State<SplitterDatasheet> createState() => SplitterDatasheetState();
@@ -18,20 +18,20 @@ class SplitterDatasheet extends StatefulWidget {
 
 class SplitterDatasheetState extends State<SplitterDatasheet> {
   late TileSet tileSet;
-  late YateItem tileSetItem;
+  late YateItem yateItem;
 
   @override
   void initState() {
     super.initState();
     tileSet = widget.tileSet;
-    tileSetItem = widget.editorState.tileSetItem;
-    widget.editorState.subscribeSelection(selectTile);
+    yateItem = widget.splitterState.yateItem;
+    widget.splitterState.subscribeSelection(selectTile);
     widget.tileSet.subscribeOnChanged(changeTileSet);
   }
 
   @override
   void dispose() {
-    widget.editorState.unsubscribeSelection(selectTile);
+    widget.splitterState.unsubscribeSelection(selectTile);
     widget.tileSet.unsubscribeOnChanged(changeTileSet);
     super.dispose();
   }
@@ -44,7 +44,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
 
   void selectTile(SplitterState state, YateItem tileSetItem) {
     setState(() {
-      this.tileSetItem = tileSetItem;
+      this.yateItem = tileSetItem;
     });
   }
 
@@ -93,18 +93,18 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                   focusColor: Theme.of(context).canvasColor,
                 ),
                 child: DropdownButton<TileSetSlice>(
-                  value: tileSetItem is TileSetSlice ? tileSetItem as TileSetSlice : TileSetSlice.none,
+                  value: yateItem is TileSetSlice ? yateItem as TileSetSlice : TileSetSlice.none,
                   style: Theme.of(context).textTheme.bodyMedium,
                   isExpanded: true,
                   items: tileSet.getSlicesWithNone().map((TileSetSlice slice) {
                     return DropdownMenuItem<TileSetSlice>(value: slice, child: Text(slice.toDropDownValue()));
                   }).toList(),
                   onChanged: (TileSetSlice? value) {
-                    if (value != null && tileSetItem.id != value.id) {
+                    if (value != null && yateItem.id != value.id) {
                       setState(() {
-                        tileSetItem = value;
+                        yateItem = value;
                       });
-                      widget.editorState.selectTileSetItem(tileSetItem);
+                      widget.splitterState.selectTileSetItem(yateItem);
                     }
                   },
                 ),
@@ -126,18 +126,18 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                   focusColor: Colors.transparent,
                 ),
                 child: DropdownButton<TileSetGroup>(
-                  value: tileSetItem is TileSetGroup ? tileSetItem as TileSetGroup : TileSetGroup.none,
+                  value: yateItem is TileSetGroup ? yateItem as TileSetGroup : TileSetGroup.none,
                   style: Theme.of(context).textTheme.bodyMedium,
                   isExpanded: true,
                   items: tileSet.getGroupsWithNone().map((TileSetGroup group) {
                     return DropdownMenuItem<TileSetGroup>(value: group, child: Text(group.toDropDownValue()));
                   }).toList(),
                   onChanged: (TileSetGroup? value) {
-                    if (value != null && tileSetItem.id != value.id) {
+                    if (value != null && yateItem.id != value.id) {
                       setState(() {
-                        tileSetItem = value;
+                        yateItem = value;
                       });
-                      widget.editorState.selectTileSetItem(tileSetItem);
+                      widget.splitterState.selectTileSetItem(yateItem);
                     }
                   },
                 ),
