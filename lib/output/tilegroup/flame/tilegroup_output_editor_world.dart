@@ -188,8 +188,32 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     if (tileGroup != TileGroup.none) {
       initTileGroupFileComponents(tileGroup, atlasMaxX);
     }
-    initOtherTgTileSetComponents(tileSet.key);
+    initOtherTileSetComponents(tileSet.key);
+    initOtherTileGroupFileComponents(tileGroup, atlasMaxX);
     initButtonsAndCamera();
+  }
+
+  void initOtherTileGroupFileComponents(TileGroup currentTileGroup, int atlasMaxX) {
+    for (TileGroup tileGroup in game.project.tileGroups) {
+      if (tileGroup.id != currentTileGroup.id) {
+        for (TileGroupFile file in tileGroup.files) {
+          if (file.output != null) {
+            YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(file.output!.left - 1, file.output!.top - 1);
+            if (topLeftOutputTile != null) {
+              TileGroupFileComponent fileComponent = TileGroupFileComponent(
+                projectItem: tileGroup,
+                file: file,
+                originalPosition: topLeftOutputTile.position,
+                position: topLeftOutputTile.position,
+                external: true,
+              );
+              placeSilent(topLeftOutputTile, fileComponent);
+              add(fileComponent);
+            }
+          }
+        }
+      }
+    }
   }
 
   void initTileGroupFileComponents(TileGroup tileGroup, int atlasMaxX) {
@@ -238,7 +262,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return (atlasMaxX + maxWidth + 1) * tileWidthPx + 50;
   }
 
-  void initOtherTgTileSetComponents(int currentTileSetKey) {
+  void initOtherTileSetComponents(int currentTileSetKey) {
     for (TileSet tileSet in game.project.tileSets) {
       if (tileSet.key != currentTileSetKey) {
         initOtherTileSetSlices(tileSet);
