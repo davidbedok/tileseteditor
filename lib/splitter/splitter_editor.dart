@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/selector.dart';
 import 'package:tileseteditor/splitter/splitter_controller.dart';
 import 'package:tileseteditor/splitter/splitter_datasheet.dart';
-import 'package:tileseteditor/splitter/flame/editor_game.dart';
+import 'package:tileseteditor/splitter/flame/splitter_game.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterEditor extends StatelessWidget {
@@ -47,7 +47,7 @@ class SplitterEditor extends StatelessWidget {
                         padding: const EdgeInsets.all(0),
                         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                         child: GameWidget(
-                          game: EditorGame(
+                          game: SplitterGame(
                             tileSet: tileSet,
                             width: MediaQuery.of(context).size.width - 400,
                             height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,

@@ -15,7 +15,6 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
 
   late double startZoom;
   YateProject project;
-
   OutputState outputState;
 
   OverviewEditorGame({

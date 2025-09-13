@@ -2,12 +2,12 @@ import 'package:flame/components.dart';
 import 'package:flame/text.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/splitter/flame/editor_game.dart';
+import 'package:tileseteditor/splitter/flame/splitter_game.dart';
 import 'package:tileseteditor/splitter/flame/tile_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class EditorWorld extends World with HasGameReference<EditorGame>, HasCollisionDetection {
-  EditorWorld();
+class SplitterWorld extends World with HasGameReference<SplitterGame>, HasCollisionDetection {
+  SplitterWorld();
 
   TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
 

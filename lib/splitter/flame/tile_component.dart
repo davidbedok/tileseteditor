@@ -10,10 +10,10 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
-import 'package:tileseteditor/splitter/flame/editor_game.dart';
+import 'package:tileseteditor/splitter/flame/splitter_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class TileComponent extends SpriteComponent with HasGameReference<EditorGame>, TapCallbacks, HoverCallbacks {
+class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
 
   int atlasX;

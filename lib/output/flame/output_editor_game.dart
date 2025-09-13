@@ -19,7 +19,6 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
   YateProject project;
   TileSet tileSet;
   TileGroup tileGroup;
-
   OutputState outputState;
 
   OutputEditorGame({

@@ -3,20 +3,19 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/splitter/flame/editor_world.dart';
+import 'package:tileseteditor/splitter/flame/splitter_world.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
-class EditorGame extends FlameGame<EditorWorld> with ScrollDetector, ScaleDetector {
+class SplitterGame extends FlameGame<SplitterWorld> with ScrollDetector, ScaleDetector {
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
   TileSet tileSet;
-
   SplitterState splitterState;
 
-  EditorGame({required this.tileSet, required double width, required double height, required this.splitterState})
+  SplitterGame({required this.tileSet, required double width, required double height, required this.splitterState})
     : super(
-        world: EditorWorld(),
+        world: SplitterWorld(),
         camera: CameraComponent.withFixedResolution(width: width, height: height),
       );
 
