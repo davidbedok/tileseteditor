@@ -11,8 +11,8 @@ import 'package:tileseteditor/domain/output/tileset_output.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
-class TileSetProject {
-  static final TileSetProject none = TileSetProject(
+class YateProject {
+  static final YateProject none = YateProject(
     version: '1.0',
     name: '', //
     output: TileSetOutput.none,
@@ -29,7 +29,7 @@ class TileSetProject {
 
   String getDirectory() => path.dirname(filePath!);
 
-  TileSetProject({
+  YateProject({
     required this.version, //
     required this.name, //
     this.description,
@@ -37,9 +37,9 @@ class TileSetProject {
     required this.output,
   });
 
-  List<TileSetProjectItem> getProjectItemsDropDown() {
-    List<TileSetProjectItem> result = [];
-    result.add(TileSetProjectItem.none);
+  List<YateProjectItem> getProjectItemsDropDown() {
+    List<YateProjectItem> result = [];
+    result.add(YateProjectItem.none);
     result.addAll(tileSets);
     result.addAll(tileGroups);
     return result;
@@ -120,14 +120,14 @@ class TileSetProject {
     return 'Project $name ($output) in $filePath';
   }
 
-  static TileSetProject clone(TileSetProject project) {
+  static YateProject clone(YateProject project) {
     TileSetOutput output = TileSetOutput(
       fileName: project.output.fileName,
       tileSize: PixelSize(project.output.tileSize.widthPx, project.output.tileSize.heightPx),
       size: TileRectSize(project.output.size.width, project.output.size.height),
     );
     output.data = project.output.data;
-    TileSetProject result = TileSetProject(
+    YateProject result = YateProject(
       version: project.version,
       name: project.name, //
       description: project.description,
@@ -154,8 +154,8 @@ class TileSetProject {
     };
   }
 
-  factory TileSetProject.fromJson(Map<String, dynamic> json) {
-    TileSetProject result = switch (json) {
+  factory YateProject.fromJson(Map<String, dynamic> json) {
+    YateProject result = switch (json) {
       {
         'version': String version, //
         'name': String name, //
@@ -173,7 +173,7 @@ class TileSetProject {
           }, //
         },
       } =>
-        TileSetProject(
+        YateProject(
           version: version,
           name: name,
           description: description,

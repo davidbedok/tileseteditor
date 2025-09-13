@@ -7,7 +7,7 @@ import 'package:tileseteditor/output/tilegroup/tilegroup_output_editor.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 
 class TileGroupEditor extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileGroup tileGroup;
   final GroupState groupState;
   final TileGroupOutputState outputState;

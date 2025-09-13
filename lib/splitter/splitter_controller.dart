@@ -9,7 +9,7 @@ import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterController extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final SplitterState splitterState;
   final void Function() onOutputPressed;

@@ -12,16 +12,16 @@ import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/tilegroup_file_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
-import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/tileset_group_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/tileset_single_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/tileset_slice_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
+import 'package:tileseteditor/output/flame/component/tilegroup_file_component.dart';
+import 'package:tileseteditor/output/flame/output_editor_game.dart';
+import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
+import 'package:tileseteditor/output/flame/component/tileset_group_component.dart';
+import 'package:tileseteditor/output/flame/component/tileset_single_tile_component.dart';
+import 'package:tileseteditor/output/flame/component/tileset_slice_component.dart';
+import 'package:tileseteditor/output/flame/component/yate_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOutputEditorGame>, HasCollisionDetection {
+class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
   static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
@@ -29,14 +29,14 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   static double cameraButtonSpace = 5;
 
   YateComponent? selected;
-  List<YateOutputTileComponent> outputTiles = [];
+  List<OutputTileComponent> outputTiles = [];
 
   int _actionKey = -1;
 
   void setAction(int actionKey) => _actionKey = actionKey;
   int get actionKey => _actionKey;
 
-  TileGroupOutputEditorWorld();
+  OutputEditorWorld();
 
   void select(YateComponent component, {bool force = false}) {
     if (force) {
@@ -65,10 +65,10 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     selected = component;
     // FIXME
     if (game.tileGroupOutputState != null) {
-      game.tileGroupOutputState!.yateItem.select(component.getTileSetItem());
+      game.tileGroupOutputState!.yateItem.select(component.getItem());
     }
     if (game.tileSetOutputState != null) {
-      game.tileSetOutputState!.yateItem.select(component.getTileSetItem());
+      game.tileSetOutputState!.yateItem.select(component.getItem());
     }
   }
 
@@ -76,11 +76,11 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return selected == component;
   }
 
-  bool canAccept(YateOutputTileComponent topLeftTile, YateComponent component) {
+  bool canAccept(OutputTileComponent topLeftTile, YateComponent component) {
     bool result = true;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        YateOutputTileComponent? tile = getOutputTileComponent(i, j);
+        OutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile == null || !tile.canAccept(component)) {
           result = false;
         }
@@ -89,12 +89,12 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return result;
   }
 
-  void place(YateOutputTileComponent topLeftTile, YateComponent component) {
+  void place(OutputTileComponent topLeftTile, YateComponent component) {
     component.release();
     int numberOfPlacedTiles = 0;
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        YateOutputTileComponent? tile = getOutputTileComponent(i, j);
+        OutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
           numberOfPlacedTiles++;
@@ -105,18 +105,18 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       component.placeOutput(topLeftTile);
       // FIXME
       if (game.tileGroupOutputState != null) {
-        game.tileGroupOutputState!.yateItem.select(component.getTileSetItem());
+        game.tileGroupOutputState!.yateItem.select(component.getItem());
       }
       if (game.tileSetOutputState != null) {
-        game.tileSetOutputState!.yateItem.select(component.getTileSetItem());
+        game.tileSetOutputState!.yateItem.select(component.getItem());
       }
     }
   }
 
-  void placeSilent(YateOutputTileComponent topLeftTile, YateComponent component) {
+  void placeSilent(OutputTileComponent topLeftTile, YateComponent component) {
     for (int j = topLeftTile.atlasY; j < topLeftTile.atlasY + component.areaSize.height; j++) {
       for (int i = topLeftTile.atlasX; i < topLeftTile.atlasX + component.areaSize.width; i++) {
-        YateOutputTileComponent? tile = getOutputTileComponent(i, j);
+        OutputTileComponent? tile = getOutputTileComponent(i, j);
         if (tile != null && tile.canAccept(component)) {
           tile.store(component);
         }
@@ -127,7 +127,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   bool moveByKey(int atlasX, int atlasY) {
     bool result = false;
     if (selected != null) {
-      YateOutputTileComponent? newTopLeftOutputTile = getOutputTileComponent(atlasX, atlasY);
+      OutputTileComponent? newTopLeftOutputTile = getOutputTileComponent(atlasX, atlasY);
       if (newTopLeftOutputTile != null && canAccept(newTopLeftOutputTile, selected!)) {
         selected!.doMove(
           newTopLeftOutputTile.position,
@@ -141,8 +141,8 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     return result;
   }
 
-  YateOutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
-    YateOutputTileComponent? result;
+  OutputTileComponent? getOutputTileComponent(int atlasX, int atlasY) {
+    OutputTileComponent? result;
     if (atlasX >= 0 && atlasX < game.project.output.size.width && atlasY >= 0 && atlasY < game.project.output.size.height) {
       result = outputTiles.where((outputTile) => outputTile.atlasX == atlasX && outputTile.atlasY == atlasY).first;
     }
@@ -151,7 +151,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
   void removeTileSetItem(YateItem tileSetItem) {
     if (tileSetItem.output != null) {
-      YateOutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
+      OutputTileComponent? outputTile = getOutputTileComponent(tileSetItem.output!.left - 1, tileSetItem.output!.top - 1);
       if (outputTile != null && outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -159,7 +159,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   }
 
   void removeAllTileSetItem() {
-    for (YateOutputTileComponent outputTile in outputTiles) {
+    for (OutputTileComponent outputTile in outputTiles) {
       if (outputTile.isUsed()) {
         outputTile.removeStoredTileSetItem();
       }
@@ -198,7 +198,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       if (tileGroup.id != currentTileGroup.id) {
         for (TileGroupFile file in tileGroup.files) {
           if (file.output != null) {
-            YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(file.output!.left - 1, file.output!.top - 1);
+            OutputTileComponent? topLeftOutputTile = getOutputTileComponent(file.output!.left - 1, file.output!.top - 1);
             if (topLeftOutputTile != null) {
               TileGroupFileComponent fileComponent = TileGroupFileComponent(
                 projectItem: tileGroup,
@@ -229,7 +229,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
         external: false,
       );
       if (file.output != null) {
-        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(file.output!.left - 1, file.output!.top - 1);
+        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(file.output!.left - 1, file.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, fileComponent);
           fileComponent.position = topLeftOutputTile.position;
@@ -275,7 +275,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   void initOtherTileSetSlices(TileSet tileSet) {
     for (TileSetSlice slice in tileSet.slices) {
       if (slice.output != null) {
-        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
           TileSetSliceComponent sliceComponent = TileSetSliceComponent(
             projectItem: tileSet,
@@ -294,7 +294,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
   void initOtherTileSetGroups(TileSet tileSet) {
     for (TileSetGroup group in tileSet.groups) {
       if (group.output != null) {
-        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
           TileSetGroupComponent groupComponent = TileSetGroupComponent(
             projectItem: tileSet,
@@ -325,7 +325,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
                 coord: coord,
               );
           if (tileSetTile.output != null) {
-            YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
               TileSetSingleTileComponent singleTileComponent = TileSetSingleTileComponent(
                 projectItem: tileSet,
@@ -389,7 +389,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
         external: false,
       );
       if (slice.output != null) {
-        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
+        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(slice.output!.left - 1, slice.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, sliceComponent);
           sliceComponent.position = topLeftOutputTile.position;
@@ -412,7 +412,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
         external: false,
       );
       if (group.output != null) {
-        YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
+        OutputTileComponent? topLeftOutputTile = getOutputTileComponent(group.output!.left - 1, group.output!.top - 1);
         if (topLeftOutputTile != null) {
           placeSilent(topLeftOutputTile, groupComponent);
           groupComponent.position = topLeftOutputTile.position;
@@ -445,7 +445,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
             external: false,
           );
           if (tileSetTile.output != null) {
-            YateOutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
+            OutputTileComponent? topLeftOutputTile = getOutputTileComponent(tileSetTile.output!.left - 1, tileSetTile.output!.top - 1);
             if (topLeftOutputTile != null) {
               placeSilent(topLeftOutputTile, singleTileComponent);
               singleTileComponent.position = topLeftOutputTile.position;
@@ -465,7 +465,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(right: cameraButtonSpace, top: cameraButtonSpace),
       Anchor.topLeft,
       () {
-        game.camera.moveBy(Vector2(0, -1 * TileGroupOutputEditorGame.scrollUnit));
+        game.camera.moveBy(Vector2(0, -1 * OutputEditorGame.scrollUnit));
       },
     );
     final actionCameraDownButton = createButton(
@@ -473,7 +473,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(right: cameraButtonSpace, bottom: cameraButtonDim + cameraButtonSpace * 2),
       Anchor.bottomLeft,
       () {
-        game.camera.moveBy(Vector2(0, TileGroupOutputEditorGame.scrollUnit));
+        game.camera.moveBy(Vector2(0, OutputEditorGame.scrollUnit));
       },
     );
     final actionCameraLeftButton = createButton(
@@ -481,7 +481,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(left: cameraButtonSpace, bottom: cameraButtonSpace),
       Anchor.topLeft,
       () {
-        game.camera.moveBy(Vector2(-1 * TileGroupOutputEditorGame.scrollUnit, 0));
+        game.camera.moveBy(Vector2(-1 * OutputEditorGame.scrollUnit, 0));
       },
     );
     final actionCameraRightButton = createButton(
@@ -489,7 +489,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(right: cameraButtonDim + cameraButtonSpace * 2, bottom: cameraButtonSpace),
       Anchor.bottomLeft,
       () {
-        game.camera.moveBy(Vector2(TileGroupOutputEditorGame.scrollUnit, 0));
+        game.camera.moveBy(Vector2(OutputEditorGame.scrollUnit, 0));
       },
     );
 
@@ -519,7 +519,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
-        YateOutputTileComponent outputTile = YateOutputTileComponent(
+        OutputTileComponent outputTile = OutputTileComponent(
           tileWidth: tileWidth.toDouble(),
           tileHeight: tileHeight.toDouble(),
           atlasX: i,

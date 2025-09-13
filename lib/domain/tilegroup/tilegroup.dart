@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 
-class TileGroup extends TileSetProjectItem implements YateMapper {
+class TileGroup extends YateProjectItem implements YateMapper {
   static final TileGroup none = TileGroup(
     id: -1, //
     name: '-',

@@ -5,12 +5,12 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/event/object_level_event.dart';
 
 class ProjectState {
-  late ObjectLevelEvent<ProjectState, TileSetProject> project;
-  late ObjectLevelEvent<ProjectState, TileSetProjectItem> item;
+  late ObjectLevelEvent<ProjectState, YateProject> project;
+  late ObjectLevelEvent<ProjectState, YateProjectItem> item;
 
   ProjectState() {
-    project = ObjectLevelEvent(state: this, noneObject: TileSetProject.none);
-    item = ObjectLevelEvent(state: this, noneObject: TileSetProjectItem.none);
+    project = ObjectLevelEvent(state: this, noneObject: YateProject.none);
+    item = ObjectLevelEvent(state: this, noneObject: YateProjectItem.none);
   }
 
   TileSet getItemAsTileSet() {

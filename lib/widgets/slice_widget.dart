@@ -9,7 +9,7 @@ import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 class SliceWidget extends StatelessWidget {
   static final double space = 8.0;
 
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final TileSetSlice slice;
   final int numberOfNonFreeTiles;

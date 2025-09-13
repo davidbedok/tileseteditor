@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/group/group_state.dart';
 
 class GroupController extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileGroup tileGroup;
   final GroupState groupState;
   final void Function() onAddTiles;

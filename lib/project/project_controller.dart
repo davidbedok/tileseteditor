@@ -33,8 +33,8 @@ class ProjectController extends StatefulWidget {
 }
 
 class ProjectControllerState extends State<ProjectController> {
-  late TileSetProject project;
-  late TileSetProjectItem item;
+  late YateProject project;
+  late YateProjectItem item;
 
   @override
   void initState() {
@@ -52,13 +52,13 @@ class ProjectControllerState extends State<ProjectController> {
     widget.projectState.item.unsubscribeSelection(selectItem);
   }
 
-  void selectProject(ProjectState state, TileSetProject project) {
+  void selectProject(ProjectState state, YateProject project) {
     setState(() {
       this.project = project;
     });
   }
 
-  void selectItem(ProjectState state, TileSetProjectItem prjectItem) {
+  void selectItem(ProjectState state, YateProjectItem prjectItem) {
     setState(() {
       item = prjectItem;
     });
@@ -79,7 +79,7 @@ class ProjectControllerState extends State<ProjectController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: item == TileSetProjectItem.none,
+            visible: item == YateProjectItem.none,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add), //
               label: Text('Add tileset'),
@@ -94,7 +94,7 @@ class ProjectControllerState extends State<ProjectController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: item == TileSetProjectItem.none,
+            visible: item == YateProjectItem.none,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add), //
               label: Text('Add tilegroup'),

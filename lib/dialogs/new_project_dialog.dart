@@ -17,7 +17,7 @@ class NewProjectDialogState extends State<NewProjectDialog> {
   static final double space = 8.0;
   final _formKey = GlobalKey<FormState>();
 
-  final TileSetProject _project = TileSetProject(
+  final YateProject _project = YateProject(
     version: '1.0',
     name: '',
     output: TileSetOutput(

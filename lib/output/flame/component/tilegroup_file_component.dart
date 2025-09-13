@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
+import 'package:tileseteditor/output/flame/component/yate_component.dart';
 
 class TileGroupFileComponent extends YateComponent {
-  TileGroupFile getFile() => tileSetItem as TileGroupFile;
+  TileGroupFile getFile() => item as TileGroupFile;
 
   TileGroupFileComponent({
     required super.position,
@@ -11,17 +11,17 @@ class TileGroupFileComponent extends YateComponent {
     required super.originalPosition,
     required super.external,
     required TileGroupFile file,
-  }) : super(tileSetItem: file, areaSize: file.size);
+  }) : super(item: file, areaSize: file.size);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = Sprite(
       getFile().image!, //
-      srcPosition: tileSetItem.getRealPosition(tileWidth, tileHeight),
-      srcSize: tileSetItem.getRealSize(tileWidth, tileHeight),
+      srcPosition: item.getRealPosition(tileWidth, tileHeight),
+      srcSize: item.getRealSize(tileWidth, tileHeight),
     );
-    size = tileSetItem.getRealSize(tileWidth, tileHeight);
+    size = item.getRealSize(tileWidth, tileHeight);
     // debugMode = true;
   }
 }

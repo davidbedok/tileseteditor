@@ -8,7 +8,7 @@ import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
 class TileGroupWidget extends StatefulWidget {
   static final double space = 8.0;
 
-  final TileSetProject project;
+  final YateProject project;
   final TileGroup tileGroup;
   final bool edit;
 

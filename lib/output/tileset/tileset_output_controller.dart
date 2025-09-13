@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 
 class TileSetOutputController extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final TileSetOutputState outputState;
   final void Function() onSplitterPressed;

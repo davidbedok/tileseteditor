@@ -4,7 +4,7 @@ import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/project_widget.dart';
 
 class EditProjectDialog extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
 
   const EditProjectDialog({super.key, required this.project});
 

@@ -8,7 +8,7 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/widgets/group_widget.dart';
 
 class AddGroupDialog extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final List<TileCoord> tiles;
 

@@ -40,8 +40,8 @@ class ProjectMenuBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TileSetProject project = projectState.project.object;
-    TileSetProjectItem item = projectState.item.object;
+    YateProject project = projectState.project.object;
+    YateProjectItem item = projectState.item.object;
 
     return MenuBar(
       style: MenuStyle(

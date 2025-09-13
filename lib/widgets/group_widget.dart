@@ -14,7 +14,7 @@ import 'package:tileseteditor/widgets/group_image_widget.dart';
 class GroupWidget extends StatefulWidget {
   static final double space = 8.0;
 
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final TileSetGroup group;
 

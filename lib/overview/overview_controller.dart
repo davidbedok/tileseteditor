@@ -4,7 +4,7 @@ import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/overview/overview_state.dart';
 
 class OverviewController extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final OverviewState overviewState;
 
   const OverviewController({

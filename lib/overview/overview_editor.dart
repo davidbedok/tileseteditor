@@ -7,7 +7,7 @@ import 'package:tileseteditor/overview/overview_state.dart';
 import 'package:tileseteditor/project/selector.dart';
 
 class OverviewEditor extends StatelessWidget {
-  final TileSetProject project;
+  final YateProject project;
   final OverviewState overviewState;
 
   const OverviewEditor({

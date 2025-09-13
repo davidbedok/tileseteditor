@@ -2,8 +2,8 @@ import 'package:tileseteditor/domain/pixel_size.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 
-class TileSetProjectItem {
-  static final TileSetProjectItem none = TileSetProjectItem(
+class YateProjectItem {
+  static final YateProjectItem none = YateProjectItem(
     id: -1, //
     name: '-',
     active: true,
@@ -21,7 +21,7 @@ class TileSetProjectItem {
   bool isTileSet() => this is TileSet;
   bool isTileGroup() => this is TileGroup;
 
-  TileSetProjectItem({
+  YateProjectItem({
     required this.id, //
     required this.name,
     required this.active,

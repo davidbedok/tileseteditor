@@ -1,9 +1,9 @@
 import 'package:flame/components.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
+import 'package:tileseteditor/output/flame/component/yate_component.dart';
 
 class TileSetSliceComponent extends YateComponent {
-  TileSetSlice getSlice() => tileSetItem as TileSetSlice;
+  TileSetSlice getSlice() => item as TileSetSlice;
 
   TileSetSliceComponent({
     required super.position,
@@ -11,17 +11,17 @@ class TileSetSliceComponent extends YateComponent {
     required super.originalPosition,
     required super.external,
     required TileSetSlice slice,
-  }) : super(tileSetItem: slice, areaSize: slice.size);
+  }) : super(item: slice, areaSize: slice.size);
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
     sprite = Sprite(
       getProjectItemAsTileSet().image!, //
-      srcPosition: tileSetItem.getRealPosition(tileWidth, tileHeight),
-      srcSize: tileSetItem.getRealSize(tileWidth, tileHeight),
+      srcPosition: item.getRealPosition(tileWidth, tileHeight),
+      srcSize: item.getRealSize(tileWidth, tileHeight),
     );
-    size = tileSetItem.getRealSize(tileWidth, tileHeight);
+    size = item.getRealSize(tileWidth, tileHeight);
     // debugMode = true;
   }
 }

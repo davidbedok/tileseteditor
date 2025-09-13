@@ -16,7 +16,7 @@ import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
 
-class TileSet extends TileSetProjectItem implements YateMapper {
+class TileSet extends YateProjectItem implements YateMapper {
   static final TileSet none = TileSet(
     id: -1,
     key: -1,
@@ -81,7 +81,7 @@ class TileSet extends TileSetProjectItem implements YateMapper {
     required this.imageSize,
   });
 
-  Future<void> loadImage(TileSetProject project) async {
+  Future<void> loadImage(YateProject project) async {
     image = await ImageUtils.getImage(project.getTileSetPath(this));
   }
 

@@ -8,15 +8,15 @@ import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
-import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tile_move_effect.dart';
+import 'package:tileseteditor/output/flame/output_editor_game.dart';
+import 'package:tileseteditor/output/flame/output_editor_world.dart';
+import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
+import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-abstract class YateComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
-  TileSetProjectItem projectItem;
-  YateItem tileSetItem;
+abstract class YateComponent extends SpriteComponent with HasGameReference<OutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
+  YateProjectItem projectItem;
+  YateItem item;
   Vector2 originalPosition;
   TileRectSize areaSize;
   bool external;
@@ -24,14 +24,14 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
   double tileWidth;
   double tileHeight;
 
-  List<YateOutputTileComponent> reservedTiles = [];
+  List<OutputTileComponent> reservedTiles = [];
   bool isDragging = false;
   Vector2 dragWhereStarted = Vector2(0, 0);
 
   Rect getRect() => Rect.fromLTWH(0, 0, size.x, size.y);
   bool isPlaced() => reservedTiles.isNotEmpty;
-  YateOutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
-  YateItem getTileSetItem() => tileSetItem;
+  OutputTileComponent? getTopLeftOutputTile() => reservedTiles.isNotEmpty ? reservedTiles.first : null;
+  YateItem getItem() => item;
 
   TileSet getProjectItemAsTileSet() => projectItem as TileSet;
   TileGroup getProjectItemAsTileGroup() => projectItem as TileGroup;
@@ -39,7 +39,7 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
   YateComponent({
     required super.position,
     required this.projectItem,
-    required this.tileSetItem,
+    required this.item,
     required this.originalPosition,
     required this.areaSize,
     required this.external,
@@ -58,21 +58,21 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
   }
 
   void release() {
-    tileSetItem.output = null;
-    for (YateOutputTileComponent outputTile in reservedTiles) {
+    item.output = null;
+    for (OutputTileComponent outputTile in reservedTiles) {
       outputTile.empty();
     }
     reservedTiles.clear();
   }
 
-  void place(YateOutputTileComponent outputTile) {
+  void place(OutputTileComponent outputTile) {
     if (reservedTiles.contains(outputTile)) {
       reservedTiles.add(outputTile);
     }
   }
 
-  void placeOutput(YateOutputTileComponent topLeftTile) {
-    tileSetItem.output = topLeftTile.getCoord();
+  void placeOutput(OutputTileComponent topLeftTile) {
+    item.output = topLeftTile.getCoord();
   }
 
   void doMove(
@@ -129,7 +129,7 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
       dragWhereStarted = position.clone();
 
       isDragging = true;
-      priority = TileGroupOutputEditorWorld.movePriority;
+      priority = OutputEditorWorld.movePriority;
       game.world.select(this, force: true);
     }
   }
@@ -155,13 +155,13 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
       }
       isDragging = false;
 
-      final shortDrag = (position - dragWhereStarted).length < TileGroupOutputEditorWorld.dragTolarance;
+      final shortDrag = (position - dragWhereStarted).length < OutputEditorWorld.dragTolarance;
       if (shortDrag) {
         moveToPlace(dragWhereStarted);
         return;
       }
 
-      var dropOutputTile = parent!.componentsAtPoint(position).whereType<YateOutputTileComponent>().toList();
+      var dropOutputTile = parent!.componentsAtPoint(position).whereType<OutputTileComponent>().toList();
       if (dropOutputTile.isNotEmpty) {
         if (game.world.canAccept(dropOutputTile.first, this)) {
           final dropPosition = dropOutputTile.first.position;
@@ -199,8 +199,8 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
 
   void drawInfo(Canvas canvas) {
     var textSpan = TextSpan(
-      text: '${external ? '${projectItem.name}\n' : ''}${tileSetItem.getLabel()}',
-      style: TextStyle(color: tileSetItem.getTextColor(), fontWeight: FontWeight.bold),
+      text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',
+      style: TextStyle(color: item.getTextColor(), fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: 300);

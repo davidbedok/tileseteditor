@@ -14,7 +14,7 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
-  TileSetProject project;
+  YateProject project;
 
   OverviewState overviewState;
 

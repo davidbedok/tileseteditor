@@ -128,7 +128,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                             hoverColor: Colors.transparent, //
                           ),
                           child: DropdownButtonHideUnderline(
-                            child: DropdownButton<TileSetProjectItem>(
+                            child: DropdownButton<YateProjectItem>(
                               value: projectState.item.object,
                               hint: Text('Choose a tileset or a tilegroup..'),
                               style: Theme.of(context).textTheme.bodyMedium,
@@ -137,8 +137,8 @@ class ProjectSelectorState extends State<ProjectSelector> {
                               isExpanded: true,
                               items: projectState.project.isNotDefined()
                                   ? []
-                                  : projectState.project.object.getProjectItemsDropDown().map((TileSetProjectItem projectItem) {
-                                      return DropdownMenuItem<TileSetProjectItem>(
+                                  : projectState.project.object.getProjectItemsDropDown().map((YateProjectItem projectItem) {
+                                      return DropdownMenuItem<YateProjectItem>(
                                         value: projectItem, //
                                         child: projectItem.id >= 0
                                             ? RichText(
@@ -158,7 +158,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                                             : Text('Overview output editor'),
                                       );
                                     }).toList(),
-                              onChanged: (TileSetProjectItem? value) async {
+                              onChanged: (YateProjectItem? value) async {
                                 if (value != null) {
                                   setState(() {
                                     splitterState = SplitterState();
@@ -215,7 +215,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
   }
 
   void newProject() async {
-    TileSetProject? dialogResult = await showDialog<TileSetProject>(
+    YateProject? dialogResult = await showDialog<YateProject>(
       context: context,
       builder: (BuildContext context) {
         return NewProjectDialog();
@@ -241,7 +241,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
       File file = File(filePickerResult.files.single.path!);
       if (file.existsSync()) {
         String content = await file.readAsString();
-        TileSetProject loadedProject = TileSetProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
+        YateProject loadedProject = YateProject.fromJson(jsonDecode(content) as Map<String, dynamic>);
         loadedProject.filePath = filePickerResult.files.single.path!;
         await loadedProject.loadAllImages();
         setState(() {
@@ -268,7 +268,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
 
   void saveAsProject() async {
     if (projectState.project.isDefined()) {
-      TileSetProject savedProject = projectState.project.object;
+      YateProject savedProject = projectState.project.object;
       savedProject.filePath = await FilePicker.platform.saveFile(
         dialogTitle: 'Save Tile Set Project',
         allowedExtensions: ['yate.json'],
@@ -294,10 +294,10 @@ class ProjectSelectorState extends State<ProjectSelector> {
 
   void editProject() async {
     if (projectState.project.isDefined()) {
-      TileSetProject? dialogResult = await showDialog<TileSetProject>(
+      YateProject? dialogResult = await showDialog<YateProject>(
         context: context,
         builder: (BuildContext context) {
-          return EditProjectDialog(project: TileSetProject.clone(projectState.project.object));
+          return EditProjectDialog(project: YateProject.clone(projectState.project.object));
         },
       );
       if (dialogResult != null) {

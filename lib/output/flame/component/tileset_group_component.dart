@@ -4,10 +4,10 @@ import 'package:flame/components.dart';
 import 'package:flame/image_composition.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
+import 'package:tileseteditor/output/flame/component/yate_component.dart';
 
 class TileSetGroupComponent extends YateComponent {
-  TileSetGroup getGroup() => tileSetItem as TileSetGroup;
+  TileSetGroup getGroup() => item as TileSetGroup;
 
   TileSetGroupComponent({
     required super.position,
@@ -15,7 +15,7 @@ class TileSetGroupComponent extends YateComponent {
     required super.originalPosition,
     required super.external,
     required TileSetGroup group,
-  }) : super(tileSetItem: group, areaSize: group.size);
+  }) : super(item: group, areaSize: group.size);
 
   @override
   Future<void> onLoad() async {

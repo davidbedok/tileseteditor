@@ -5,26 +5,26 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
-import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
+import 'package:tileseteditor/output/flame/output_editor_game.dart';
+import 'package:tileseteditor/output/flame/component/yate_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
-class YateOutputTileComponent extends PositionComponent with HasGameReference<TileGroupOutputEditorGame>, HoverCallbacks {
+class OutputTileComponent extends PositionComponent with HasGameReference<OutputEditorGame>, HoverCallbacks {
   double tileWidth;
   double tileHeight;
 
   int atlasX;
   int atlasY;
 
-  YateComponent? _storedTile;
+  YateComponent? _stored;
 
   TileCoord getCoord() => TileCoord(atlasX + 1, atlasY + 1);
-  bool canAccept(YateComponent tile) => isFree() || tile == _storedTile;
-  bool isFree() => _storedTile == null;
-  bool isUsed() => _storedTile != null;
+  bool canAccept(YateComponent tile) => isFree() || tile == _stored;
+  bool isFree() => _stored == null;
+  bool isUsed() => _stored != null;
   Rect getRect() => Rect.fromLTWH(0, 0, tileWidth, tileHeight);
 
-  YateOutputTileComponent({
+  OutputTileComponent({
     required this.tileWidth, //
     required this.tileHeight,
     required this.atlasX,
@@ -34,18 +34,18 @@ class YateOutputTileComponent extends PositionComponent with HasGameReference<Ti
     priority = 0;
   }
 
-  void store(YateComponent tile) {
-    _storedTile = tile;
-    tile.reservedTiles.add(this);
+  void store(YateComponent component) {
+    _stored = component;
+    component.reservedTiles.add(this);
   }
 
   void empty() {
-    _storedTile = null;
+    _stored = null;
   }
 
   void removeStoredTileSetItem() {
-    if (_storedTile != null) {
-      _storedTile!.removeFromOutput();
+    if (_stored != null) {
+      _stored!.removeFromOutput();
     }
     empty();
   }

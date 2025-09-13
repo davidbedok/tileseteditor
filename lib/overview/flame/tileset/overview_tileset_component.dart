@@ -6,7 +6,7 @@ import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tile_move_effect.dart';
+import 'package:tileseteditor/output/flame/tile_move_effect.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/overview/flame/overview_tile_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';

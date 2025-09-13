@@ -7,24 +7,24 @@ import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
-import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
+import 'package:tileseteditor/output/flame/output_editor_world.dart';
+import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 
-class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> with ScrollDetector, KeyboardEvents {
+class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
   static const zoomPerScrollUnit = 0.02;
 
   late double startZoom;
-  TileSetProject project;
+  YateProject project;
   TileSet tileSet;
   TileGroup tileGroup;
 
   TileSetOutputState? tileSetOutputState;
   TileGroupOutputState? tileGroupOutputState;
 
-  TileGroupOutputEditorGame({
+  OutputEditorGame({
     required this.project, //
     required this.tileSet,
     required this.tileGroup,
@@ -33,7 +33,7 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
     required this.tileSetOutputState,
     required this.tileGroupOutputState,
   }) : super(
-         world: TileGroupOutputEditorWorld(),
+         world: OutputEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
     // FIXME generalize output..
@@ -120,7 +120,7 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
       result = KeyEventResult.handled;
     }
     if (world.selected != null && world.selected!.isPlaced()) {
-      YateOutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
+      OutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();
       if (topLeftOutputTile != null) {
         if (event is KeyDownEvent || event is KeyRepeatEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
@@ -143,7 +143,7 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
         }
         if (event is KeyDownEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.delete)) {
-            world.removeTileSetItem(world.selected!.getTileSetItem());
+            world.removeTileSetItem(world.selected!.getItem());
           }
         }
       }

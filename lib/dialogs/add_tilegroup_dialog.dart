@@ -6,7 +6,7 @@ import 'package:tileseteditor/widgets/app_dialog_widget.dart';
 import 'package:tileseteditor/widgets/tilegroup_widget.dart';
 
 class AddTileGroupDialog extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
 
   const AddTileGroupDialog({super.key, required this.project});
 

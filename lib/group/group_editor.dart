@@ -15,7 +15,7 @@ import 'package:path/path.dart' as path;
 class GroupEditor extends StatefulWidget {
   static const double rightSideWidth = 400.0;
 
-  final TileSetProject project;
+  final YateProject project;
   final TileGroup tileGroup;
   final GroupState groupState;
   final void Function() onOutputPressed;

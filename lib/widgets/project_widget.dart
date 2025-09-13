@@ -9,7 +9,7 @@ import 'package:tileseteditor/widgets/app_dialog_tile_size_field.dart';
 class ProjectWidget extends StatelessWidget {
   static final double space = 8.0;
 
-  final TileSetProject project;
+  final YateProject project;
   final bool edit;
 
   const ProjectWidget({super.key, required this.project, required this.edit});

@@ -10,7 +10,7 @@ import 'package:path/path.dart' as path;
 class TileSetWidget extends StatefulWidget {
   static final double space = 8.0;
 
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final bool edit;
 

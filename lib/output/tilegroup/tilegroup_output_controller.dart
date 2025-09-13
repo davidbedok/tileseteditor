@@ -5,7 +5,7 @@ import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 
 class TileGroupOutputController extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileGroup tileGroup;
   final TileGroupOutputState outputState;
   final void Function() onSplitterPressed;
@@ -74,7 +74,7 @@ class TileGroupOutputControllerState extends State<TileGroupOutputController> {
           SizedBox(width: 5),
           ElevatedButton.icon(
             icon: Icon(Icons.edit), //
-            label: Text('Splitter'),
+            label: Text('Constructor'),
             style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
             onPressed: widget.onSplitterPressed,
           ),

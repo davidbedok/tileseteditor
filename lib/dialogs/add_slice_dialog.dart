@@ -10,7 +10,7 @@ import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/widgets/slice_widget.dart';
 
 class AddSliceDialog extends StatefulWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileSet tileSet;
   final List<TileCoord> tiles;
 

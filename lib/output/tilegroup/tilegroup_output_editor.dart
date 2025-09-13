@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
-import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
+import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_controller.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
 import 'package:tileseteditor/project/selector.dart';
 
 class TileGroupOutputEditor extends StatelessWidget {
-  final TileSetProject project;
+  final YateProject project;
   final TileGroup tileGroup;
   final TileGroupOutputState outputState;
   final void Function() onSplitterPressed;
@@ -45,7 +45,7 @@ class TileGroupOutputEditor extends StatelessWidget {
                     padding: const EdgeInsets.all(0),
                     decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: GameWidget(
-                      game: TileGroupOutputEditorGame(
+                      game: OutputEditorGame(
                         project: project,
                         tileSet: TileSet.none,
                         tileGroup: tileGroup,

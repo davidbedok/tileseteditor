@@ -27,7 +27,7 @@ class TileGroupFile extends YateItem implements YateMapper {
     required this.size,
   });
 
-  Future<void> loadImage(TileSetProject project) async {
+  Future<void> loadImage(YateProject project) async {
     image = await ImageUtils.getImage(project.getTileGroupFilePath(this));
   }
 
