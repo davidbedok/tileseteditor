@@ -1,8 +1,9 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
-import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
 import 'package:tileseteditor/output/tileset/tileset_output_controller.dart';
 import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 import 'package:tileseteditor/project/selector.dart';
@@ -44,12 +45,14 @@ class TileSetOutputEditor extends StatelessWidget {
                     padding: const EdgeInsets.all(0),
                     decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                     child: GameWidget(
-                      game: TileSetOutputEditorGame(
+                      game: TileGroupOutputEditorGame(
                         project: project,
                         tileSet: tileSet,
+                        tileGroup: TileGroup.none,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
-                        outputState: outputState,
+                        tileSetOutputState: outputState,
+                        tileGroupOutputState: null,
                       ),
                     ),
                   ),

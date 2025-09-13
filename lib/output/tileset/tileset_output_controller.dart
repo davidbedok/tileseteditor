@@ -28,14 +28,14 @@ class TileSetOutputControllerState extends State<TileSetOutputController> {
   @override
   void initState() {
     super.initState();
-    tileSetItem = widget.outputState.tileSetItem.object;
-    widget.outputState.tileSetItem.subscribeSelection(select);
+    tileSetItem = widget.outputState.yateItem.object;
+    widget.outputState.yateItem.subscribeSelection(select);
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.outputState.tileSetItem.unsubscribeSelection(select);
+    widget.outputState.yateItem.unsubscribeSelection(select);
   }
 
   void select(TileSetOutputState state, YateItem tileSetItem) {
@@ -53,7 +53,7 @@ class TileSetOutputControllerState extends State<TileSetOutputController> {
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () {
-              widget.outputState.tileSetItem.unselect();
+              widget.outputState.yateItem.unselect();
               widget.outputState.removeAll.invoke();
             },
           ),
@@ -64,7 +64,7 @@ class TileSetOutputControllerState extends State<TileSetOutputController> {
               icon: Icon(Icons.add_circle_outline),
               label: Text('Remove ${tileSetItem.getLabel()}'),
               onPressed: () {
-                widget.outputState.tileSetItem.remove();
+                widget.outputState.yateItem.remove();
                 setState(() {
                   tileSetItem.output = null;
                 });

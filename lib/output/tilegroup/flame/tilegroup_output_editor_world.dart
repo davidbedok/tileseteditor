@@ -19,8 +19,6 @@ import 'package:tileseteditor/output/tilegroup/flame/items/tileset_group_compone
 import 'package:tileseteditor/output/tilegroup/flame/items/tileset_single_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/items/tileset_slice_component.dart';
 import 'package:tileseteditor/output/tilegroup/flame/items/yate_component.dart';
-import 'package:tileseteditor/output/tileset/flame/tileset/slice_component.dart';
-import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOutputEditorGame>, HasCollisionDetection {
@@ -47,7 +45,13 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       if (selected != null) {
         if (selected == component) {
           selected = null;
-          game.outputState.tileSetItem.unselect();
+          // FIXME generalize output
+          if (game.tileGroupOutputState != null) {
+            game.tileGroupOutputState!.yateItem.unselect();
+          }
+          if (game.tileSetOutputState != null) {
+            game.tileSetOutputState!.yateItem.unselect();
+          }
         } else {
           setSelected(component);
         }
@@ -59,7 +63,13 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
 
   void setSelected(YateComponent component) {
     selected = component;
-    game.outputState.tileSetItem.select(component.getTileSetItem());
+    // FIXME
+    if (game.tileGroupOutputState != null) {
+      game.tileGroupOutputState!.yateItem.select(component.getTileSetItem());
+    }
+    if (game.tileSetOutputState != null) {
+      game.tileSetOutputState!.yateItem.select(component.getTileSetItem());
+    }
   }
 
   bool isSelected(YateComponent component) {
@@ -93,7 +103,13 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
       component.placeOutput(topLeftTile);
-      game.outputState.tileSetItem.select(component.getTileSetItem());
+      // FIXME
+      if (game.tileGroupOutputState != null) {
+        game.tileGroupOutputState!.yateItem.select(component.getTileSetItem());
+      }
+      if (game.tileSetOutputState != null) {
+        game.tileSetOutputState!.yateItem.select(component.getTileSetItem());
+      }
     }
   }
 
@@ -425,7 +441,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(right: cameraButtonSpace, top: cameraButtonSpace),
       Anchor.topLeft,
       () {
-        game.camera.moveBy(Vector2(0, -1 * TileSetOutputEditorGame.scrollUnit));
+        game.camera.moveBy(Vector2(0, -1 * TileGroupOutputEditorGame.scrollUnit));
       },
     );
     final actionCameraDownButton = createButton(
@@ -433,7 +449,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(right: cameraButtonSpace, bottom: cameraButtonDim + cameraButtonSpace * 2),
       Anchor.bottomLeft,
       () {
-        game.camera.moveBy(Vector2(0, TileSetOutputEditorGame.scrollUnit));
+        game.camera.moveBy(Vector2(0, TileGroupOutputEditorGame.scrollUnit));
       },
     );
     final actionCameraLeftButton = createButton(
@@ -441,7 +457,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(left: cameraButtonSpace, bottom: cameraButtonSpace),
       Anchor.topLeft,
       () {
-        game.camera.moveBy(Vector2(-1 * TileSetOutputEditorGame.scrollUnit, 0));
+        game.camera.moveBy(Vector2(-1 * TileGroupOutputEditorGame.scrollUnit, 0));
       },
     );
     final actionCameraRightButton = createButton(
@@ -449,7 +465,7 @@ class TileGroupOutputEditorWorld extends World with HasGameReference<TileGroupOu
       EdgeInsets.only(right: cameraButtonDim + cameraButtonSpace * 2, bottom: cameraButtonSpace),
       Anchor.bottomLeft,
       () {
-        game.camera.moveBy(Vector2(TileSetOutputEditorGame.scrollUnit, 0));
+        game.camera.moveBy(Vector2(TileGroupOutputEditorGame.scrollUnit, 0));
       },
     );
 

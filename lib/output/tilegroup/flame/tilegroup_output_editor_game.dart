@@ -10,6 +10,7 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
 import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
 import 'package:tileseteditor/output/tilegroup/tilegroup_output_state.dart';
+import 'package:tileseteditor/output/tileset/tileset_output_state.dart';
 
 class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> with ScrollDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
@@ -20,7 +21,8 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
   TileSet tileSet;
   TileGroup tileGroup;
 
-  TileGroupOutputState outputState;
+  TileSetOutputState? tileSetOutputState;
+  TileGroupOutputState? tileGroupOutputState;
 
   TileGroupOutputEditorGame({
     required this.project, //
@@ -28,26 +30,48 @@ class TileGroupOutputEditorGame extends FlameGame<TileGroupOutputEditorWorld> wi
     required this.tileGroup,
     required double width,
     required double height,
-    required this.outputState,
+    required this.tileSetOutputState,
+    required this.tileGroupOutputState,
   }) : super(
          world: TileGroupOutputEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
-    outputState.tileSetItem.subscribeRemoval(removeTileSetItem);
-    outputState.removeAll.subscribe(removeAllTileSetItem);
+    // FIXME generalize output..
+    if (tileSetOutputState != null) {
+      tileSetOutputState!.yateItem.subscribeRemoval(removeTileSetItem);
+      tileSetOutputState!.removeAll.subscribe(removeAllTileSetItem);
+    }
+    if (tileGroupOutputState != null) {
+      tileGroupOutputState!.yateItem.subscribeRemoval(removeTileGroupItem);
+      tileGroupOutputState!.removeAll.subscribe(removeAllTileGroupItem);
+    }
   }
 
   @override
   void onRemove() {
-    outputState.tileSetItem.unsubscribeRemoval(removeTileSetItem);
-    outputState.removeAll.unsubscribe(removeAllTileSetItem);
+    if (tileSetOutputState != null) {
+      tileSetOutputState!.yateItem.unsubscribeRemoval(removeTileSetItem);
+      tileSetOutputState!.removeAll.unsubscribe(removeAllTileSetItem);
+    }
+    if (tileGroupOutputState != null) {
+      tileGroupOutputState!.yateItem.unsubscribeRemoval(removeTileGroupItem);
+      tileGroupOutputState!.removeAll.unsubscribe(removeAllTileGroupItem);
+    }
   }
 
-  void removeTileSetItem(TileGroupOutputState outputState, YateItem tileSetItem) {
+  void removeTileSetItem(TileSetOutputState outputState, YateItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 
-  void removeAllTileSetItem(TileGroupOutputState outputState) {
+  void removeAllTileSetItem(TileSetOutputState outputState) {
+    world.removeAllTileSetItem();
+  }
+
+  void removeTileGroupItem(TileGroupOutputState outputState, YateItem tileSetItem) {
+    world.removeTileSetItem(tileSetItem);
+  }
+
+  void removeAllTileGroupItem(TileGroupOutputState outputState) {
     world.removeAllTileSetItem();
   }
 

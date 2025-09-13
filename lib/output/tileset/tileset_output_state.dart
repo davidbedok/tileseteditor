@@ -3,11 +3,11 @@ import 'package:tileseteditor/event/custom_event.dart';
 import 'package:tileseteditor/event/object_level_event.dart';
 
 class TileSetOutputState {
-  late ObjectLevelEvent<TileSetOutputState, YateItem> tileSetItem;
+  late ObjectLevelEvent<TileSetOutputState, YateItem> yateItem;
   late CustomEvent<TileSetOutputState> removeAll;
 
   TileSetOutputState() {
-    tileSetItem = ObjectLevelEvent(state: this, noneObject: YateItem.none);
+    yateItem = ObjectLevelEvent(state: this, noneObject: YateItem.none);
     removeAll = CustomEvent(state: this);
   }
 }

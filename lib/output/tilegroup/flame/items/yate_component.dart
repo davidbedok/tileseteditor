@@ -9,9 +9,9 @@ import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_game.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tilegroup_output_editor_world.dart';
 import 'package:tileseteditor/output/tilegroup/flame/yate_output_tile_component.dart';
-import 'package:tileseteditor/output/tileset/flame/tileset_output_editor_world.dart';
-import 'package:tileseteditor/output/tileset/flame/tile_move_effect.dart';
+import 'package:tileseteditor/output/tilegroup/flame/tile_move_effect.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 abstract class YateComponent extends SpriteComponent with HasGameReference<TileGroupOutputEditorGame>, DragCallbacks, TapCallbacks, HoverCallbacks {
@@ -129,7 +129,7 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
       dragWhereStarted = position.clone();
 
       isDragging = true;
-      priority = TileSetOutputEditorWorld.movePriority;
+      priority = TileGroupOutputEditorWorld.movePriority;
       game.world.select(this, force: true);
     }
   }
@@ -155,7 +155,7 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<TileG
       }
       isDragging = false;
 
-      final shortDrag = (position - dragWhereStarted).length < TileSetOutputEditorWorld.dragTolarance;
+      final shortDrag = (position - dragWhereStarted).length < TileGroupOutputEditorWorld.dragTolarance;
       if (shortDrag) {
         moveToPlace(dragWhereStarted);
         return;
