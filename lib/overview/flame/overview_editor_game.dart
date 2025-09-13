@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
+import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_world.dart';
 import 'package:tileseteditor/overview/flame/component/overview_output_tile_component.dart';
-import 'package:tileseteditor/overview/overview_state.dart';
 
 class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetector, ScaleDetector, KeyboardEvents {
   static const scrollUnit = 50.0;
@@ -16,32 +16,32 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
   late double startZoom;
   YateProject project;
 
-  OverviewState overviewState;
+  OutputState outputState;
 
   OverviewEditorGame({
     required this.project, //
     required double width,
     required double height,
-    required this.overviewState,
+    required this.outputState,
   }) : super(
          world: OverviewEditorWorld(),
          camera: CameraComponent.withFixedResolution(width: width, height: height),
        ) {
-    overviewState.tileSetItem.subscribeRemoval(removeTileSetItem);
-    overviewState.removeAll.subscribe(removeAllTileSetItem);
+    outputState.yateItem.subscribeRemoval(removeTileSetItem);
+    outputState.removeAll.subscribe(removeAllTileSetItem);
   }
 
   @override
   void onRemove() {
-    overviewState.tileSetItem.unsubscribeRemoval(removeTileSetItem);
-    overviewState.removeAll.unsubscribe(removeAllTileSetItem);
+    outputState.yateItem.unsubscribeRemoval(removeTileSetItem);
+    outputState.removeAll.unsubscribe(removeAllTileSetItem);
   }
 
-  void removeTileSetItem(OverviewState state, YateItem tileSetItem) {
+  void removeTileSetItem(OutputState state, YateItem tileSetItem) {
     world.removeTileSetItem(tileSetItem);
   }
 
-  void removeAllTileSetItem(OverviewState state) {
+  void removeAllTileSetItem(OutputState state) {
     world.removeAllTileSetItem();
   }
 

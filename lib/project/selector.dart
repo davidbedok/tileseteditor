@@ -21,7 +21,6 @@ import 'package:tileseteditor/project/tilegroup_editor.dart';
 import 'package:tileseteditor/project/tileset_editor.dart';
 import 'package:tileseteditor/project/menubar.dart';
 import 'package:tileseteditor/overview/overview_editor.dart';
-import 'package:tileseteditor/overview/overview_state.dart';
 import 'package:tileseteditor/project/project_controller.dart';
 import 'package:tileseteditor/project/project_state.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
@@ -42,7 +41,6 @@ class ProjectSelector extends StatefulWidget {
 class ProjectSelectorState extends State<ProjectSelector> {
   ProjectState projectState = ProjectState();
   SplitterState splitterState = SplitterState();
-  OverviewState overviewState = OverviewState();
   GroupState groupState = GroupState();
   OutputState outputState = OutputState();
 
@@ -201,7 +199,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                           padding: const EdgeInsets.all(8.0),
                           child: OverviewEditor(
                             key: GlobalKey(),
-                            overviewState: overviewState, //
+                            outputState: outputState, //
                             project: projectState.project.object,
                           ),
                         )

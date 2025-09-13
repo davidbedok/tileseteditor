@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
-import 'package:tileseteditor/overview/overview_state.dart';
+import 'package:tileseteditor/output/output_state.dart';
 
 class OverviewController extends StatefulWidget {
   final YateProject project;
-  final OverviewState overviewState;
+  final OutputState outputState;
 
   const OverviewController({
     super.key, //
     required this.project,
-    required this.overviewState,
+    required this.outputState,
   });
 
   @override
@@ -23,17 +23,17 @@ class OverviewControllerState extends State<OverviewController> {
   @override
   void initState() {
     super.initState();
-    widget.overviewState.tileSetItem.subscribeSelection(select);
-    tileSetItem = widget.overviewState.tileSetItem.object;
+    widget.outputState.yateItem.subscribeSelection(select);
+    tileSetItem = widget.outputState.yateItem.object;
   }
 
   @override
   void dispose() {
     super.dispose();
-    widget.overviewState.tileSetItem.unsubscribeSelection(select);
+    widget.outputState.yateItem.unsubscribeSelection(select);
   }
 
-  void select(OverviewState state, YateItem tileSetItem) {
+  void select(OutputState state, YateItem tileSetItem) {
     setState(() {
       this.tileSetItem = tileSetItem;
     });
@@ -48,8 +48,8 @@ class OverviewControllerState extends State<OverviewController> {
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () {
-              widget.overviewState.tileSetItem.unselect();
-              widget.overviewState.removeAll.invoke();
+              widget.outputState.yateItem.unselect();
+              widget.outputState.removeAll.invoke();
             },
           ),
           SizedBox(width: 5),
@@ -59,7 +59,7 @@ class OverviewControllerState extends State<OverviewController> {
               icon: Icon(Icons.add_circle_outline),
               label: Text('Remove ${tileSetItem.getLabel()}'),
               onPressed: () {
-                widget.overviewState.tileSetItem.remove();
+                widget.outputState.yateItem.remove();
                 setState(() {
                   tileSetItem.output = null;
                 });

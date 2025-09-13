@@ -43,7 +43,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
       if (selected != null) {
         if (selected == component) {
           selected = null;
-          game.overviewState.tileSetItem.unselect();
+          game.outputState.yateItem.unselect();
         } else {
           setSelected(component);
         }
@@ -55,7 +55,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
   void setSelected(OverviewYateComponent component) {
     selected = component;
-    game.overviewState.tileSetItem.select(component.getItem());
+    game.outputState.yateItem.select(component.getItem());
   }
 
   bool isSelected(OverviewYateComponent component) {
@@ -89,7 +89,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     }
     if (numberOfPlacedTiles == component.areaSize.width * component.areaSize.height) {
       component.placeOutput(topLeftTile);
-      game.overviewState.tileSetItem.select(component.getItem());
+      game.outputState.yateItem.select(component.getItem());
     }
   }
 

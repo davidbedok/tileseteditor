@@ -1,19 +1,19 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/project.dart';
+import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
 import 'package:tileseteditor/overview/overview_controller.dart';
-import 'package:tileseteditor/overview/overview_state.dart';
 import 'package:tileseteditor/project/selector.dart';
 
 class OverviewEditor extends StatelessWidget {
   final YateProject project;
-  final OverviewState overviewState;
+  final OutputState outputState;
 
   const OverviewEditor({
     super.key, //
     required this.project,
-    required this.overviewState,
+    required this.outputState,
   });
 
   @override
@@ -25,7 +25,7 @@ class OverviewEditor extends StatelessWidget {
           children: [
             OverviewController(
               project: project, //
-              overviewState: overviewState,
+              outputState: outputState,
             ),
             Row(
               children: [
@@ -41,7 +41,7 @@ class OverviewEditor extends StatelessWidget {
                         project: project,
                         width: MediaQuery.of(context).size.width - 100,
                         height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
-                        overviewState: overviewState,
+                        outputState: outputState,
                       ),
                     ),
                   ),
