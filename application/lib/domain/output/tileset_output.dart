@@ -1,5 +1,6 @@
 import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/pixel_size.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/output/tileset_data.dart';
 
@@ -38,12 +39,12 @@ class TileSetOutput {
     return data.getMaxOutputTop(minHeight, tileSets);
   }
 
-  Map<String, dynamic> toJson(List<TileSet> tileSets) {
+  Map<String, dynamic> toJson(List<TileSet> tileSets, List<TileGroup> tileGroups) {
     return {
       'file': fileName,
       'tile': {'width': tileSize.widthPx, 'height': tileSize.heightPx},
       'size': {'width': size.width, 'height': size.height},
-      'data': TileSetData.init(size.width, size.height, tileSets).toJson(),
+      'data': TileSetData.init(size.width, size.height, tileSets, tileGroups).toJson(),
     };
   }
 

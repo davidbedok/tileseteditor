@@ -1,7 +1,3 @@
-import subprocess
-import json
-import os
-import shutil
 import argparse
 import textwrap
 import sys
@@ -9,33 +5,23 @@ import yate.utils
 import yate.mode
 
 parser = argparse.ArgumentParser(
-                    prog='Yet Another TileSet Editor CLI',
+                    prog='yatecli',
                     formatter_class=argparse.RawDescriptionHelpFormatter,
-                    description=textwrap.dedent('''\
-                    %(prog)s is a utility for splitting or building TileSet images (*.png), based on the YATE project file (*.tsp.json).
-                    YATE TileSet Project file (*.tsp.json) should refer to the source TileSet images (*.png)
-                    TileSet Editor: https://yetanothertileseteditor.qwaevisz.hu/
-                    '''),
-                    epilog=f'example: {sys.argv[0]} --mode split --project demo.tsp.json --target output'
+                    description=yate.utils.cliDescription(),
+                    epilog=f'example: {sys.argv[0]} --mode build --empty .\empty\empty_32x32.png --project example.yasp.json --target output'
 )
 
 parser.add_argument('-m', '--mode', help = 'Choose one of the supported option ()', type = yate.mode.Mode, choices=list(yate.mode.Mode), required = True, dest = 'mode')
 parser.add_argument('-p', '--project', help = 'TileSet Project file (*.tsp.json)', required = True, dest = 'projectFile')
 parser.add_argument('-t', '--target', help = 'Target directory for the output tile images (*.png)', required = True, dest = 'outputDirectory')
 parser.add_argument('-e', '--empty', help = 'Location of the empty tile (*.png)', dest = 'emptyTilePath', default = None)
+parser.add_argument('-s', '--silent', help = 'Silent mode (do not print out detailed steps)', dest = 'silent', action=argparse.BooleanOptionalAction, default = False)
 
 args = parser.parse_args()
 
-print('Welcome to Yet Another TileSet Editor CLI');
-print(f'Mode: {args.mode} Project: {args.projectFile} Output: {args.outputDirectory}')
+if not args.silent:
+    print(yate.utils.welcome(args.mode, args.projectFile, args.outputDirectory, args.emptyTilePath))
 
-yate.utils.initTargetFolder(args.outputDirectory)
-
-project = yate.utils.openTileSetProject(args.projectFile)
-if ( project == None ):
-    print(f'YATE TileSet Project file cannot be found: {args.projectFile}')
-    exit()
-
-print(f'YATE TileSet Project found: {project["name"]} (YATE version: {project["editor"]["version"]})')
-
-yate.utils.process(args.mode, args.projectFile, args.outputDirectory, args.emptyTilePath, project)
+yate.utils.initTargetFolder(args.silent, args.mode, args.outputDirectory)
+project = yate.utils.openProject(args.silent, args.mode, args.projectFile)
+yate.utils.process(args.silent, args.mode, args.projectFile, args.outputDirectory, args.emptyTilePath, project)

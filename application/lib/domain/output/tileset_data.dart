@@ -1,4 +1,6 @@
+import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/output/tile_reference.dart';
+import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
@@ -81,7 +83,7 @@ class TileSetData {
   }
 
   // FIXME generalize
-  factory TileSetData.init(int width, int height, List<TileSet> tileSets) {
+  factory TileSetData.init(int width, int height, List<TileSet> tileSets, List<TileGroup> tileGroups) {
     TileSetData result = TileSetData(width, height);
     for (TileSet tileSet in tileSets) {
       for (TileSetSlice slice in tileSet.slices) {
@@ -121,6 +123,23 @@ class TileSetData {
         }
       }
     }
+
+    for (TileGroup tileGroup in tileGroups) {
+      for (TileGroupFile file in tileGroup.files) {
+        if (file.output != null && file.tileIndices.length == file.size.height * file.size.width) {
+          int tileIndex = 0;
+          for (int j = 0; j < file.size.height; j++) {
+            for (int i = 0; i < file.size.width; i++) {
+              result.tiles[file.output!.top - 1 + j][file.output!.left - 1 + i] = TileReference(
+                key: file.key, //
+                index: file.tileIndices[tileIndex++],
+              );
+            }
+          }
+        }
+      }
+    }
+
     return result;
   }
 

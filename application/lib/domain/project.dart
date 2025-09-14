@@ -150,7 +150,7 @@ class YateProject {
       'editor': {'name': packageInfo.appName, 'version': packageInfo.version, 'build': packageInfo.buildNumber},
       'tilesets': YateMapper.itemsToJson(tileSets),
       'tilegroups': YateMapper.itemsToJson(tileGroups),
-      'output': output.toJson(tileSets),
+      'output': output.toJson(tileSets, tileGroups),
     };
   }
 
