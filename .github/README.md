@@ -1,6 +1,6 @@
 # Yet Another TileSet Editor
 
-![yate](./assets/yate-512.png){width=128}
+![yate](./assets/yate-64.png)
 
 ## Introduction
 
