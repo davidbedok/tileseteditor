@@ -25,11 +25,11 @@ Yet Another TileSet Editor (YATE) is an open-source project for creating tileset
 
 | Name | Description | Example |
 | --- | --- | --- |
-| **Tile** | The smallest building block of a tile. Its typical size is 16x16 or 32x32 pixels. | ![Tile](./assets/tile.png) |
-| **Tile image** | A separate shape or building block that must always be treated as a whole during editing. Its smallest size equals to the size of the Tile (e.g. 32x32), but it could be multiples of that (e.g. 64x32 or 96x128). | ![Tile image](./assets/tile-image.png) |
-| **TileSet image** | A tileset image is a single image file containing a collection of smaller, reusable graphic elements, or "tiles," that are used to construct larger scenes in games or maps, such as platforms, terrain, or scenery. | ![TileSet](./assets/tileset.png) |
-| **TileSet's Slice** | A designated contiguous area within a tileset. | ![Slice](./assets/tileset-slice.png) |
-| **TileSet's Group** | A group of several tiles that are far apart and must then be treated together. | ![Group](./assets/tileset-group.png)  |
+| **Tile** | The smallest building block of a **TileSet**. Its typical size is 16x16 or 32x32 pixels. | ![Tile](./assets/tile.png) |
+| **Tile image** | A separate shape or building block that must always be treated as a whole during editing. Its smallest size equals to the size of the **Tile** (e.g. 32x32), but it could be multiples of that (e.g. 32x64 or 128x96). | ![Tile image](./assets/tile-image.png) |
+| **TileSet image** | An image file containing a collection of smaller, reusable graphic elements, or "tiles," that are used to construct larger scenes in games or maps, such as platforms, terrain, or scenery. | ![TileSet](./assets/tileset.png) |
+| **TileSet's Slice** | A designated contiguous area within a **TileSet image**. This area can only be moved as a whole, similar to a **Tile image**. | ![Slice](./assets/tileset-slice.png) |
+| **TileSet's Group** | A group of several **Tiles** that are far apart within a **TileSet image**, and must then be treated together, similar to a **Tile image**. | ![Group](./assets/tileset-group.png)  |
 | **TileGroup** | A group of **Tile images** that belong together based on some property for easier handling. | - |
 
 ### YATE Project
@@ -40,11 +40,17 @@ Input sources can be the followings:
 - Any number of TileSet images
 - Any number of Tile images which are grouped into any number of TileGroups
 
+Typical use case, that a game has it's own tile images, grouped into several categories (terrain, building, characters, etc.). In YATE simply define any number of TileGroups and put all the related images into these logical buckets.
+Another use-case, that a game is using one or more open-source TileSet images (e.g. from [OpenGameArt.org](https://opengameart.org/)), and the developers want to reuse those, but not in the original arrangement (they don't need all the tiles or they don't want to use multiple tileset images runtime).
+The two use-case can be mixed together.
+
 The ultimate goal at the end of the editing process to create a new TileSet image. This output or target TileSet can be composed of the following building blocks:
 - A Tile image selected from any of the input TileGroups
 - An individual Tile selected from any of the input TileSet image
 - A pre-defined Slice (set of connected tiles) selected from any of the input TileSet image
 - A pre-defined Group (set of related tiles) selected from any of the input TileSet image
+
+In YATE there is no auto-arrangement of tiles. The user must define the coordinates (using drag&drop and similar handy options) for all the building blocks. This is quite important in a project, where the coordinates are hard coded, or the tileset will be used in [Tiled](https://www.mapeditor.org/) (or similar tool) to build a TileMap. The team can extend the used tileset image, or improve the graphics of any of tiles, without the risk of breaking the existing TileMaps. 
 
 ## Technology
 
