@@ -27,8 +27,7 @@ Yet Another TileSet Editor (YATE) is an open-source project for creating tileset
 | --- | --- | --- |
 | **Tile** | The smallest building block of a tile. Its typical size is 16x16 or 32x32 pixels. | ![Tile](./assets/tile.png) |
 | **Tile image** | A separate shape or building block that must always be treated as a whole during editing. Its smallest size equals to the size of the Tile (e.g. 32x32), but it could be multiples of that (e.g. 64x32 or 96x128). | ![Tile image](./assets/tile-image.png) |
-| **TileSet image** | 
-A tileset image is a single image file containing a collection of smaller, reusable graphic elements, or "tiles," that are used to construct larger scenes in games or maps, such as platforms, terrain, or scenery. | ![TileSet](./assets/tileset.png) |
+| **TileSet image** | A tileset image is a single image file containing a collection of smaller, reusable graphic elements, or "tiles," that are used to construct larger scenes in games or maps, such as platforms, terrain, or scenery. | ![TileSet](./assets/tileset.png) |
 | **TileSet's Slice** | A designated contiguous area within a tileset. | ![Slice](./assets/tileset-slice.png) |
 | **TileSet's Group** | A group of several tiles that are far apart and must then be treated together. | ![Group](./assets/tileset-group.png)  |
 | **TileGroup** | A group of **Tile images** that belong together based on some property for easier handling. | - |
