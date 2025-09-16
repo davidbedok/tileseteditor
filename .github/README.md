@@ -23,6 +23,8 @@ Yet Another TileSet Editor (YATE) is an open-source project for creating tileset
 
 ![yate](./assets/yate-overview.png)
 
+| Name | Description | Example |
+| --- | --- | --- |
 | **Tile** | The smallest building block of a tile. Its typical size is 16x16 or 32x32 pixels. | ![Tile](./assets/tile.png) |
 | **Tile image** | A separate shape or building block that must always be treated as a whole during editing. Its smallest size equals to the size of the Tile (e.g. 32x32), but it could be multiples of that (e.g. 64x32 or 96x128). | ![Tile image](./assets/tile-image.png) |
 | **TileSet image** | 
