@@ -1,6 +1,4 @@
-# Yet Another TileSet Editor
-
-![yate](./assets/yate-32.png)
+# ![yate](./assets/yate-32.png) Yet Another TileSet Editor
 
 ## Introduction
 
@@ -41,7 +39,9 @@ Input sources can be the followings:
 - Any number of Tile images which are grouped into any number of TileGroups
 
 Typical use case, that a game has it's own tile images, grouped into several categories (terrain, building, characters, etc.). In YATE simply define any number of TileGroups and put all the related images into these logical buckets.
+
 Another use-case, that a game is using one or more open-source TileSet images (e.g. from [OpenGameArt.org](https://opengameart.org/)), and the developers want to reuse those, but not in the original arrangement (they don't need all the tiles or they don't want to use multiple tileset images runtime).
+
 The two use-case can be mixed together.
 
 The ultimate goal at the end of the editing process to create a new TileSet image. This output or target TileSet can be composed of the following building blocks:
@@ -50,7 +50,7 @@ The ultimate goal at the end of the editing process to create a new TileSet imag
 - A pre-defined Slice (set of connected tiles) selected from any of the input TileSet image
 - A pre-defined Group (set of related tiles) selected from any of the input TileSet image
 
-In YATE there is no auto-arrangement of tiles. The user must define the coordinates (using drag&drop and similar handy options) for all the building blocks. This is quite important in a project, where the coordinates are hard coded, or the tileset will be used in [Tiled](https://www.mapeditor.org/) (or similar tool) to build a TileMap. The team can extend the used tileset image, or improve the graphics of any of tiles, without the risk of breaking the existing TileMaps. 
+In YATE there is no auto-arrangement of tiles. The user must define the coordinates (using drag&drop and similar handy options) for all the building blocks. This is quite important in a project, where the coordinates are hard coded, or the tileset will be used in [Tiled](https://www.mapeditor.org/) (or similar tool) to build a TileMap. The team can extend the used tileset image, or improve the graphics of any of the tiles, without the risk of breaking the existing TileMaps. 
 
 ## Technology
 
@@ -75,6 +75,7 @@ Yet Another TileSet Editor is free and open-source for anybody.
 You can use and extend it for your own indie game idea.
 
 If you like it, consider to buy me a coffee.
+
 [![yate](./assets/buy-me-a-coffee-150.png)](https://buymeacoffee.com/qwaevisz)
 
 ## Links
