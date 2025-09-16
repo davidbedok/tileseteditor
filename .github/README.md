@@ -63,7 +63,54 @@ All used and integrated software components are **open-source** and **cross-plat
 
 ## Installation
 
-Later..
+Make sure that all the tools which are listed in [Prerequisites](#prerequisites) are available in your environment. After that just go to the release page and download the YATE binary of your OS. 
+
+Currently Yet Another TileSet Editor supports the following systems:
+- Windows 7/10/11
+- MacOS Intel (x86_64)
+- MacOS Silicon (ARM64)
+
+<a id="prerequisites"></a>
+### Prerequisites
+
+If you are using Windows OS, please install [Microsoft Visual C++ Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170), as it requires for the desktop editor.
+
+Yet Another TileSet Editor CLI is written in [Python](https://www.python.org/), so prior to use it you must install it from [here](https://www.python.org/downloads/). Do not forget to put it into your path.
+
+**Windows**:
+```
+> py --version
+Python 3.13.3
+```
+
+**MacOS**:
+```
+> python --version
+Python 3.13.5
+```
+
+Yet Another TileSet Editor CLI is using [ImageMagick](https://imagemagick.org/) commands under the hood, so you must make it available for this script. You should find binaries for various OS [here](https://imagemagick.org/script/download.php). Do not forget to put it into your path.
+
+**Windows**:
+```
+> magick --version
+Version: ImageMagick 7.1.1-47 Q16-HDRI x64 82572af:20250329 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/script/license.php
+Features: Channel-masks(64-bit) Cipher DPC HDRI Modules OpenCL OpenMP(2.0)
+Delegates (built-in): bzlib cairo flif freetype gslib heic jng jp2 jpeg jxl lcms lqr lzma openexr pangocairo png ps raqm raw rsvg tiff webp xml zip zlib
+Compiler: Visual Studio 2022 (194334808)
+```
+**MacOS**:
+```
+% magick --version
+Version: ImageMagick 7.1.2-3 Q16-HDRI aarch64 23340 https://imagemagick.org
+Copyright: (C) 1999 ImageMagick Studio LLC
+License: https://imagemagick.org/script/license.php
+Features: Cipher DPC HDRI Modules OpenMP 
+Delegates (built-in): bzlib fontconfig freetype heic jng jp2 jpeg jxl lcms lqr ltdl lzma openexr png raw tiff webp xml zlib zstd
+Compiler: clang (17.0.0)
+```
 
 ## Documentation
 
@@ -73,6 +120,9 @@ Later..
 
 Yet Another TileSet Editor is free and open-source for anybody.
 You can use and extend it for your own indie game idea.
+
+**Web**: [https://yate.qwaevisz.com](https://yate.qwaevisz.com)
+**E-mail**: <yate@qwaevisz.hu>
 
 If you like it, consider to buy me a coffee.
 
