@@ -197,7 +197,7 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<Outpu
     }
   }
 
-  void drawInfo(Canvas canvas) {
+  void drawInfo2(Canvas canvas) {
     var textSpan = TextSpan(
       text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',
       style: TextStyle(color: item.getTextColor(), fontWeight: FontWeight.bold),
@@ -205,5 +205,22 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<Outpu
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: 300);
     textPainter.paint(canvas, Offset(0, external ? -40 : -20));
+  }
+
+  void drawInfo(Canvas canvas) {
+    var textSpan = TextSpan(
+      text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',
+      style: TextStyle(color: item.getTextColor(), fontWeight: FontWeight.bold),
+    );
+    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.center, textDirection: TextDirection.ltr);
+
+    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+    double textPadding = 10;
+    double textWidth = textPainter.size.width + textPadding * 2;
+    double shiftX = size.x / 2 - textWidth / 2;
+    canvas.drawRect(Rect.fromLTWH(shiftX, textPainter.size.height * -1, textWidth, textPainter.size.height), DrawUtils.getFillPaint(Colors.white, alpha: 150));
+
+    textPainter.paint(canvas, Offset(shiftX + textPadding, textPainter.size.height * -1));
   }
 }

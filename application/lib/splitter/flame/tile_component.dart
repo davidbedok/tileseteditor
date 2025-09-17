@@ -12,7 +12,6 @@ import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/splitter/flame/splitter_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
-import 'package:tileseteditor/widgets/tileset_widget.dart';
 
 class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
@@ -157,7 +156,7 @@ class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>,
     double shiftX = (textWidth - tileWidth) / 2 * -1;
     canvas.drawRect(Rect.fromLTWH(shiftX, textPainter.size.height * -1, textWidth, textPainter.size.height), DrawUtils.getFillPaint(Colors.white, alpha: 150));
 
-    textPainter.paint(canvas, Offset(shiftX + textPadding, -20));
+    textPainter.paint(canvas, Offset(shiftX + textPadding, textPainter.size.height * -1));
   }
 
   void drawCoord(TileInfo info, dui.Canvas canvas) {
