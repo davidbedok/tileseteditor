@@ -14,16 +14,16 @@ class TileSetTile extends YateItem {
   bool garbage = false;
 
   @override
-  String getLabel() => 'Tile ${coord.left}:${coord.top}';
+  String getLabel() => 'Tile';
 
   @override
-  Color getColor() => EditorColor.tileFreeHovered.color; // FIXME check this
+  Color getColor() => EditorColor.tile.color;
 
   @override
-  Color getHoverColor() => garbage ? EditorColor.tileGarbageHovered.color : EditorColor.tileFreeHovered.color;
+  Color getHoverColor() => garbage ? EditorColor.garbageHovered.color : EditorColor.tileHovered.color;
 
   @override
-  Color getTextColor() => EditorColor.tileSetTile.color;
+  Color getTextColor() => EditorColor.tile.color;
 
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((coord.left - 1) * tileWidth, (coord.top - 1) * tileHeight);

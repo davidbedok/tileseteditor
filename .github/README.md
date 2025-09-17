@@ -122,6 +122,7 @@ Yet Another TileSet Editor is free and open-source for anybody.
 You can use and extend it for your own indie game idea.
 
 **Web**: [https://yate.qwaevisz.com](https://yate.qwaevisz.com)
+
 **E-mail**: <yate@qwaevisz.hu>
 
 If you like it, consider to buy me a coffee.

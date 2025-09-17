@@ -104,7 +104,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                       setState(() {
                         yateItem = value;
                       });
-                      widget.splitterState.selectTileSetItem(yateItem);
+                      widget.splitterState.selectItem(yateItem);
                     }
                   },
                 ),
@@ -137,7 +137,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
                       setState(() {
                         yateItem = value;
                       });
-                      widget.splitterState.selectTileSetItem(yateItem);
+                      widget.splitterState.selectItem(yateItem);
                     }
                   },
                 ),

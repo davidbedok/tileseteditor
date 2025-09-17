@@ -16,11 +16,11 @@ class DrawUtils {
       ..style = PaintingStyle.fill;
   }
 
-  static Paint getLinePaint(Color color, double strokeWidth) {
+  static Paint getLinePaint(Color color, double strokeWidth, {StrokeCap strokeCap = StrokeCap.round}) {
     return Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
+      ..strokeCap = strokeCap
       ..strokeWidth = strokeWidth;
   }
 }

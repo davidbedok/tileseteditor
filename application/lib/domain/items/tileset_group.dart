@@ -11,10 +11,10 @@ class TileSetGroup extends TileSetNamedArea implements YateMapper {
   static final TileSetGroup none = TileSetGroup(id: -1, name: '-', size: TileRectSize(0, 0));
 
   @override
-  Color getHoverColor() => EditorColor.tileGroupHovered.color;
+  Color getHoverColor() => EditorColor.groupHovered.color;
 
   @override
-  Color getTextColor() => EditorColor.tileSetGroup.color;
+  Color getTextColor() => EditorColor.group.color;
 
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/dialogs/add_group_dialog.dart';
 import 'package:tileseteditor/dialogs/add_slice_dialog.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/project.dart';
@@ -83,6 +84,7 @@ class SplitterControllerState extends State<SplitterController> {
           ElevatedButton.icon(
             icon: Icon(Icons.add_circle_outline),
             label: const Text('Slice'),
+            style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: EditorColor.slice.color),
             onPressed: numberOfSelectedFreeTiles > 1
                 ? () {
                     addSlice(context, widget.splitterState);
@@ -93,6 +95,8 @@ class SplitterControllerState extends State<SplitterController> {
           ElevatedButton.icon(
             icon: Icon(Icons.add_circle_outline),
             label: numberOfSelectedFreeTiles > 1 ? Text('Group of $numberOfSelectedFreeTiles tiles') : const Text('Group'),
+            style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: EditorColor.group.color),
+
             onPressed: numberOfSelectedFreeTiles > 1
                 ? () {
                     addGroup(context, widget.splitterState);
@@ -137,7 +141,7 @@ class SplitterControllerState extends State<SplitterController> {
               label: Text('Delete ${tileSetItem.getLabel()}'),
               onPressed: () {
                 widget.tileSet.remove(widget.splitterState.yateItem);
-                widget.splitterState.unselectTileSetItem();
+                widget.splitterState.unselectItem();
               },
             ),
           ),
@@ -163,6 +167,7 @@ class SplitterControllerState extends State<SplitterController> {
     if (dialogResult != null) {
       widget.tileSet.addSlice(dialogResult);
       editorState.selectedFreeTiles.clear();
+      editorState.selectItem(dialogResult);
       setState(() {
         numberOfSelectedFreeTiles = 0;
       });

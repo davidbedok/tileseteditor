@@ -12,6 +12,7 @@ import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
 import 'package:tileseteditor/splitter/flame/splitter_game.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
+import 'package:tileseteditor/widgets/tileset_widget.dart';
 
 class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>, TapCallbacks, HoverCallbacks {
   TileSet tileSet;
@@ -69,31 +70,71 @@ class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>,
   void render(Canvas canvas) {
     super.render(canvas);
     TileInfo info = getInfo();
-    if (info.tileSetItem == TileSetTile.freeTile) {
+    Color hoverColor = EditorColor.tile.color;
+    if (info.item == TileSetTile.freeTile) {
       if (isSelected()) {
-        canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(EditorColor.free.color, 2.0));
+        canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(EditorColor.tile.color, 2.0));
       }
-    } else if (info.tileSetItem == TileSetTile.garbageTile) {
+    } else if (info.item == TileSetTile.garbageTile) {
+      hoverColor = EditorColor.garbage.color;
       if (isSelected()) {
         drawGarbage(canvas, EditorColor.garbageSelected.color);
       } else {
         drawGarbage(canvas, EditorColor.garbage.color);
       }
-    } else if (info.tileSetItem is TileSetSlice) {
-      canvas.drawRect(getRect(0), DrawUtils.getFillPaint(info.tileSetItem.getColor(), alpha: 100));
+    } else if (info.item is TileSetSlice) {
+      canvas.drawRect(getRect(0), DrawUtils.getFillPaint(info.item.getColor(), alpha: 100));
+      hoverColor = EditorColor.slice.color;
       if (isSelected()) {
-        canvas.drawOval(getRect(4), DrawUtils.getFillPaint(info.tileSetItem.getColor(), alpha: 150));
+        drawSelectedSlice(info, canvas);
       }
-    } else if (info.tileSetItem is TileSetGroup) {
-      canvas.drawRect(getRect(1), DrawUtils.getBorderPaint(info.tileSetItem.getColor(), 2.0));
+    } else if (info.item is TileSetGroup) {
+      canvas.drawRect(getRect(0), DrawUtils.getFillPaint(info.item.getColor(), alpha: 100));
+      hoverColor = EditorColor.group.color;
       if (isSelected()) {
-        canvas.drawOval(getRect(4), DrawUtils.getFillPaint(info.tileSetItem.getColor(), alpha: 150));
+        canvas.drawRect(getRect(2), DrawUtils.getBorderPaint(EditorColor.group.color, 3.0));
       }
     }
     if (isHovered) {
-      canvas.drawRect(getRect(0), DrawUtils.getBorderPaint(EditorColor.hovered.color, 2.0));
-      drawInfo(info, canvas);
+      canvas.drawRect(getRect(0), DrawUtils.getBorderPaint(hoverColor, 2.0));
+      if (info.item is TileSetSlice || info.item is TileSetGroup) {
+        drawInfo(info, canvas, hoverColor);
+      }
       drawCoord(info, canvas);
+    }
+  }
+
+  void drawSelectedSlice(TileInfo info, dui.Canvas canvas) {
+    TileSetSlice slice = info.item as TileSetSlice;
+    double lineWidth = 4;
+    double halfLw = lineWidth / 2;
+    if (slice.coord.left == atlasX + 1) {
+      canvas.drawLine(
+        Offset(halfLw, halfLw),
+        Offset(halfLw, tileHeight - halfLw),
+        DrawUtils.getLinePaint(EditorColor.slice.color, lineWidth, strokeCap: StrokeCap.square),
+      );
+    }
+    if (slice.coord.top == atlasY + 1) {
+      canvas.drawLine(
+        Offset(halfLw, halfLw),
+        Offset(tileWidth - halfLw, halfLw),
+        DrawUtils.getLinePaint(EditorColor.slice.color, lineWidth, strokeCap: StrokeCap.square),
+      );
+    }
+    if (slice.coord.left + slice.size.width - 1 == atlasX + 1) {
+      canvas.drawLine(
+        Offset(tileWidth - halfLw, halfLw),
+        Offset(tileWidth - halfLw, tileHeight - halfLw),
+        DrawUtils.getLinePaint(EditorColor.slice.color, lineWidth, strokeCap: StrokeCap.square),
+      );
+    }
+    if (slice.coord.top + slice.size.height - 1 == atlasY + 1) {
+      canvas.drawLine(
+        Offset(halfLw, tileHeight - halfLw),
+        Offset(tileWidth - halfLw, tileHeight - halfLw),
+        DrawUtils.getLinePaint(EditorColor.slice.color, lineWidth, strokeCap: StrokeCap.square),
+      );
     }
   }
 
@@ -102,14 +143,21 @@ class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>,
     canvas.drawLine(Offset(4, tileHeight - 4), Offset(tileWidth - 4, 4), DrawUtils.getLinePaint(color, 2));
   }
 
-  void drawInfo(TileInfo info, dui.Canvas canvas) {
+  void drawInfo(TileInfo info, dui.Canvas canvas, Color color) {
     var textSpan = TextSpan(
-      text: info.tileSetItem.getLabel(),
-      style: TextStyle(color: info.tileSetItem.getHoverColor(), fontWeight: FontWeight.bold),
+      text: info.item.getLabel(),
+      style: TextStyle(color: color, fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 200);
-    textPainter.paint(canvas, Offset(0, -20));
+
+    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+    double textPadding = 10;
+    double textWidth = textPainter.size.width + textPadding * 2;
+    double shiftX = (textWidth - tileWidth) / 2 * -1;
+    canvas.drawRect(Rect.fromLTWH(shiftX, textPainter.size.height * -1, textWidth, textPainter.size.height), DrawUtils.getFillPaint(Colors.white, alpha: 150));
+
+    textPainter.paint(canvas, Offset(shiftX + textPadding, -20));
   }
 
   void drawCoord(TileInfo info, dui.Canvas canvas) {
@@ -118,7 +166,13 @@ class TileComponent extends SpriteComponent with HasGameReference<SplitterGame>,
       style: TextStyle(color: EditorColor.coordText.color, fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 100);
-    textPainter.paint(canvas, Offset(0, height));
+    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+    double textPadding = 10;
+    double textWidth = textPainter.size.width + textPadding * 2;
+    double shiftX = (textWidth - tileWidth) / 2 * -1;
+    canvas.drawRect(Rect.fromLTWH(shiftX, height, textWidth, textPainter.size.height), DrawUtils.getFillPaint(Colors.white, alpha: 150));
+
+    textPainter.paint(canvas, Offset(shiftX + textPadding, height));
   }
 }

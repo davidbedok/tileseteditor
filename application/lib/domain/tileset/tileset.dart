@@ -132,7 +132,7 @@ class TileSet extends YateProjectItem implements YateMapper {
   }
 
   bool isFreeByCoord(TileCoord coord) {
-    return getTileInfo(coord).tileSetItem == TileSetTile.freeTile;
+    return getTileInfo(coord).item == TileSetTile.freeTile;
   }
 
   bool isFreeByIndex(int index) {
@@ -232,7 +232,7 @@ class TileSet extends YateProjectItem implements YateMapper {
         }
       }
     }
-    return TileInfo(coord: coord, tileSetItem: result);
+    return TileInfo(coord: coord, item: result);
   }
 
   TileSetSlice? findSlice(TileCoord coord) {

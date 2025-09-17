@@ -82,7 +82,7 @@ class OutputTileComponent extends PositionComponent with HasGameReference<Output
     var textSpan = TextSpan(
       // FIXME: text: '${game.tileSet.getIndex(coord)} [${coord.toString()}]',
       text: '[${coord.toString()}]',
-      style: TextStyle(color: EditorColor.tileText.color, fontWeight: FontWeight.bold),
+      style: TextStyle(color: EditorColor.text.color, fontWeight: FontWeight.bold),
     );
     final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
     textPainter.layout(minWidth: 0, maxWidth: 200);

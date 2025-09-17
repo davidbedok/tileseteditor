@@ -20,10 +20,10 @@ class TileSetSlice extends TileSetNamedArea implements YateMapper {
   TileCoord coord;
 
   @override
-  Color getHoverColor() => EditorColor.tileSliceHovered.color;
+  Color getHoverColor() => EditorColor.sliceText.color;
 
   @override
-  Color getTextColor() => EditorColor.tileSetSlice.color;
+  Color getTextColor() => EditorColor.slice.color;
 
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((coord.left - 1) * tileWidth, (coord.top - 1) * tileHeight);

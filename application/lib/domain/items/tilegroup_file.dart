@@ -39,10 +39,10 @@ class TileGroupFile extends YateItem implements YateMapper {
   Color getColor() => color;
 
   @override
-  Color getHoverColor() => EditorColor.tileGroupFileHovered.color;
+  Color getHoverColor() => EditorColor.fileHovered.color;
 
   @override
-  Color getTextColor() => EditorColor.tileGroupFile.color;
+  Color getTextColor() => EditorColor.file.color;
 
   @override
   String getLabel() => filePath;

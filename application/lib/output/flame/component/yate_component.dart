@@ -192,7 +192,7 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<Outpu
       canvas.drawRect(getRect(), DrawUtils.getFillPaint(external ? EditorColor.selectedExternalFill.color : EditorColor.selectedFill.color, alpha: 100));
     }
     if (isHovered) {
-      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(external ? EditorColor.hoverExternalBorder.color : EditorColor.hoverBorder.color, 2.0));
+      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(external ? EditorColor.externalTile.color : EditorColor.tile.color, 2.0));
       drawInfo(canvas);
     }
   }

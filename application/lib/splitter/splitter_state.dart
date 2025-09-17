@@ -25,24 +25,24 @@ class SplitterState {
 
   bool isSelected(TileInfo info) {
     bool result = false;
-    if (info.tileSetItem == TileSetTile.freeTile) {
+    if (info.item == TileSetTile.freeTile) {
       result = selectedFreeTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
-    } else if (info.tileSetItem == TileSetTile.garbageTile) {
+    } else if (info.item == TileSetTile.garbageTile) {
       result = selectedGarbageTiles.where((c) => c.left == info.coord.left && c.top == info.coord.top).isNotEmpty;
-    } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
-      result = yateItem == info.tileSetItem;
+    } else if (info.item is TileSetSlice || info.item is TileSetGroup) {
+      result = yateItem == info.item;
     }
     return result;
   }
 
-  void unselectTileSetItem() {
+  void unselectItem() {
     yateItem = YateItem.none;
     for (var eventHandler in selectionEventHandlers) {
       eventHandler.call(this, yateItem);
     }
   }
 
-  void selectTileSetItem(YateItem yateItem) {
+  void selectItem(YateItem yateItem) {
     if (this.yateItem == yateItem) {
       this.yateItem = YateItem.none;
     } else {
@@ -54,23 +54,23 @@ class SplitterState {
   }
 
   void selectTile(TileInfo info) {
-    if (info.tileSetItem == TileSetTile.freeTile) {
+    if (info.item == TileSetTile.freeTile) {
       if (selectedFreeTiles.contains(info.coord)) {
         selectedFreeTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
       } else {
         selectedFreeTiles.add(info.coord);
       }
-    } else if (info.tileSetItem == TileSetTile.garbageTile) {
+    } else if (info.item == TileSetTile.garbageTile) {
       if (selectedGarbageTiles.contains(info.coord)) {
         selectedGarbageTiles.removeWhere((c) => c.left == info.coord.left && c.top == info.coord.top);
       } else {
         selectedGarbageTiles.add(info.coord);
       }
-    } else if (info.tileSetItem is TileSetSlice || info.tileSetItem is TileSetGroup) {
-      if (yateItem == info.tileSetItem) {
+    } else if (info.item is TileSetSlice || info.item is TileSetGroup) {
+      if (yateItem == info.item) {
         yateItem = YateItem.none;
       } else {
-        yateItem = info.tileSetItem;
+        yateItem = info.item;
       }
     }
     for (var eventHandler in selectionEventHandlers) {
