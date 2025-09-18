@@ -67,10 +67,26 @@ class OverviewOutputTileComponent extends PositionComponent with HasGameReferenc
   @override
   void render(Canvas canvas) {
     super.render(canvas);
-    canvas.drawRect(getRect(), DrawUtils.getBorderPaint(EditorColor.tile.color, 1.0));
-
+    canvas.drawRect(getRect(), DrawUtils.getBorderPaint(EditorColor.grid.color, 1.0));
     if (isHovered) {
-      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(EditorColor.tileHovered.color, 2.0));
+      drawCoord(canvas);
     }
+  }
+
+  void drawCoord(Canvas canvas) {
+    TileCoord coord = getCoord();
+    var textSpan = TextSpan(
+      text: '[${coord.toString()}]',
+      style: TextStyle(color: EditorColor.coordText.color, fontWeight: FontWeight.bold),
+    );
+    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
+    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+    double textPadding = 10;
+    double textWidth = textPainter.size.width + textPadding * 2;
+    double shiftX = (textWidth - tileWidth) / 2 * -1;
+    canvas.drawRect(Rect.fromLTWH(shiftX, height, textWidth, textPainter.size.height), DrawUtils.getFillPaint(Colors.white, alpha: 150));
+
+    textPainter.paint(canvas, Offset(shiftX + textPadding, height));
   }
 }

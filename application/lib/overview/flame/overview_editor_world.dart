@@ -1,6 +1,4 @@
 import 'package:flame/components.dart';
-import 'package:flame/text.dart';
-import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/domain/tile_coord.dart';
 import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
@@ -20,7 +18,6 @@ import 'package:tileseteditor/overview/flame/component/overview_yate_component.d
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame>, HasCollisionDetection {
-  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
   static double cameraButtonDim = 30;
@@ -264,7 +261,7 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
     int outputWidth = output.size.width;
     int outputHeight = output.size.height;
 
-    initOutputRuler(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX);
+    addAll(DrawUtils.getRulerComponents(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX));
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
@@ -278,33 +275,6 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
         add(outputTile);
         outputTiles.add(outputTile);
       }
-    }
-  }
-
-  void initOutputRuler(int outputWidth, int outputHeight, int outputTileWidth, int outputTileHeight, double outputShiftX) {
-    for (int column = 1; column <= outputWidth; column++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$column',
-          position: Vector2(outputShiftX + DrawUtils.ruler.width + (column - 1) * outputTileWidth + 12, 0),
-          size: Vector2(outputTileWidth.toDouble(), DrawUtils.ruler.height),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
-    }
-    for (int row = 1; row <= outputHeight; row++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$row',
-          position: Vector2(outputShiftX, DrawUtils.ruler.height + (row - 1) * outputTileHeight + 6),
-          size: Vector2(DrawUtils.ruler.width, outputTileHeight.toDouble()),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
     }
   }
 }

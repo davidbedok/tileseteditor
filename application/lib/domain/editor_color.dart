@@ -7,28 +7,29 @@ enum EditorColor {
   buttonNormal(Colors.grey),
   buttonDown(Colors.lightGreen),
 
-  externalTile(Color.fromARGB(255, 37, 151, 62)),
-
   selectedFill(Color.fromARGB(255, 27, 138, 222)),
+  externalTile(Color.fromARGB(255, 37, 151, 62)),
   selectedExternalFill(Color.fromARGB(255, 112, 228, 30)),
 
-  tile(Color.fromARGB(255, 29, 16, 215)),
-  tileHovered(Color.fromARGB(255, 29, 16, 215)),
-
-  garbage(Colors.red),
+  garbage(Color.fromARGB(255, 216, 21, 21)),
+  garbageHovered(Color.fromARGB(255, 216, 21, 21)), // same as garbage
   garbageSelected(Colors.green),
-  garbageHovered(Color.fromARGB(255, 216, 21, 21)),
 
-  group(Color.fromARGB(255, 75, 160, 183)),
-  groupHovered(Color.fromARGB(255, 75, 160, 183)), // same as group
+  tile(Color.fromARGB(255, 29, 16, 215)),
+  tileHovered(Color.fromARGB(255, 29, 16, 215)), // same as tile
 
   slice(Color.fromARGB(255, 57, 170, 74)),
   sliceText(Color.fromARGB(255, 57, 170, 74)), // same as slice
 
-  file(Color.fromARGB(255, 171, 33, 178)),
-  fileHovered(Color.fromARGB(255, 247, 224, 19)),
+  group(Color.fromARGB(255, 75, 160, 183)),
+  groupHovered(Color.fromARGB(255, 75, 160, 183)), // same as group
 
-  ruler(Colors.black);
+  file(Color.fromARGB(255, 171, 33, 178)),
+  fileHovered(Color.fromARGB(255, 171, 33, 178)), // same as file
+
+  ruler(Colors.black),
+  grid(Color.fromARGB(161, 150, 142, 142)),
+  gridHovered(Color.fromARGB(64, 150, 142, 142));
 
   final Color color;
 

@@ -197,16 +197,6 @@ abstract class YateComponent extends SpriteComponent with HasGameReference<Outpu
     }
   }
 
-  void drawInfo2(Canvas canvas) {
-    var textSpan = TextSpan(
-      text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',
-      style: TextStyle(color: item.getTextColor(), fontWeight: FontWeight.bold),
-    );
-    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 300);
-    textPainter.paint(canvas, Offset(0, external ? -40 : -20));
-  }
-
   void drawInfo(Canvas canvas) {
     var textSpan = TextSpan(
       text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',

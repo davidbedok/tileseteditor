@@ -11,10 +11,12 @@ class TileSetOutput {
     size: TileRectSize(0, 0),
   );
 
-  static const int minOutputWidth = 12;
+  static const int minOutputWidth = 2;
   static const int maxOutputWidth = 50;
-  static const int minOutputHeight = 24;
+  static const int minOutputHeight = 2;
   static const int maxOutputHeight = 100;
+  static const int defaultOutputWidth = 12;
+  static const int defaultOutputHeight = 24;
 
   String fileName;
   PixelSize tileSize;

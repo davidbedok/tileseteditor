@@ -93,10 +93,6 @@ class TileSet extends YateProjectItem implements YateMapper {
       group.output = null;
     }
     tiles.clear();
-    /*
-    for (TileSetTile tile in tiles) {
-      tile.output = null;
-    }*/
   }
 
   // FIXME do we need it here?

@@ -20,7 +20,7 @@ class SplitterWorld extends World with HasGameReference<SplitterGame>, HasCollis
     int atlasMaxX = tileSet.image!.width ~/ tileWidth;
     int atlasMaxY = tileSet.image!.height ~/ tileHeight;
 
-    initRuler(tileWidth, tileHeight, atlasMaxX, atlasMaxY);
+    addAll(DrawUtils.getRulerComponents(atlasMaxX, atlasMaxY, tileWidth, tileHeight, 0));
 
     for (int i = 0; i < atlasMaxX; i++) {
       for (int j = 0; j < atlasMaxY; j++) {
@@ -37,32 +37,5 @@ class SplitterWorld extends World with HasGameReference<SplitterGame>, HasCollis
 
     game.camera.viewfinder.anchor = Anchor.topLeft;
     game.camera.viewfinder.position = Vector2(0, 0);
-  }
-
-  void initRuler(int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
-    for (int column = 1; column <= atlasMaxX; column++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$column',
-          position: Vector2(DrawUtils.ruler.width + (column - 1) * tileWidth + 12, 0),
-          size: Vector2(tileWidth.toDouble(), DrawUtils.ruler.height),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
-    }
-    for (int row = 1; row <= atlasMaxY; row++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$row',
-          position: Vector2(0, DrawUtils.ruler.height + (row - 1) * tileHeight + 6),
-          size: Vector2(DrawUtils.ruler.width, tileHeight.toDouble()),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
-    }
   }
 }

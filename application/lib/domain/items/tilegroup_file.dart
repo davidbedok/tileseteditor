@@ -8,6 +8,7 @@ import 'package:tileseteditor/domain/tile_rect_size.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/yate_mapper.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
+import 'package:path/path.dart' as path;
 
 class TileGroupFile extends YateItem implements YateMapper {
   int key;
@@ -45,7 +46,9 @@ class TileGroupFile extends YateItem implements YateMapper {
   Color getTextColor() => EditorColor.file.color;
 
   @override
-  String getLabel() => filePath;
+  String getLabel() {
+    return path.basename(filePath);
+  }
 
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);

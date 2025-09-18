@@ -159,7 +159,6 @@ class YateProject {
       {
         'version': String version, //
         'name': String name, //
-        'description': String description, //
         'creator': String creator,
         'output': {
           'file': String fileName, //
@@ -176,7 +175,7 @@ class YateProject {
         YateProject(
           version: version,
           name: name,
-          description: description,
+          description: json['description'],
           creator: creator,
           output: TileSetOutput(
             fileName: fileName, //

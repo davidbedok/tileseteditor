@@ -1,6 +1,5 @@
 import 'package:flame/components.dart';
 import 'package:flame/input.dart';
-import 'package:flame/text.dart';
 import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
@@ -22,7 +21,6 @@ import 'package:tileseteditor/output/flame/component/yate_component.dart';
 import 'package:tileseteditor/utils/draw_utils.dart';
 
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
-  static TextPaint rulerPaint = TextPaint(style: TextStyle(fontSize: 15.0, color: EditorColor.ruler.color));
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
   static double cameraButtonDim = 30;
@@ -325,37 +323,10 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
   }
 
   void initCurrentTileSetComponents(TileSet tileSet, int atlasMaxX, int atlasMaxY) {
-    initTileSetRuler(tileSet.tileSize.widthPx, tileSet.tileSize.heightPx, atlasMaxX, atlasMaxY);
+    addAll(DrawUtils.getRulerComponents(atlasMaxX, atlasMaxY, tileSet.tileSize.widthPx, tileSet.tileSize.heightPx, 0));
     initTileSetSlices(tileSet);
     initTileSetGroups(tileSet, atlasMaxX);
     initTileSetTiles(tileSet, atlasMaxX, atlasMaxY);
-  }
-
-  void initTileSetRuler(int tileWidth, int tileHeight, int atlasMaxX, int atlasMaxY) {
-    for (int column = 1; column <= atlasMaxX; column++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$column',
-          position: Vector2(DrawUtils.ruler.width + (column - 1) * tileWidth + 12, 0),
-          size: Vector2(tileWidth.toDouble(), DrawUtils.ruler.height),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
-    }
-    for (int row = 1; row <= atlasMaxY; row++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$row',
-          position: Vector2(0, DrawUtils.ruler.height + (row - 1) * tileHeight + 6),
-          size: Vector2(DrawUtils.ruler.width, tileHeight.toDouble()),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
-    }
   }
 
   void initTileSetSlices(TileSet tileSet) {
@@ -496,7 +467,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     int outputWidth = output.size.width;
     int outputHeight = output.size.height;
 
-    initOutputRuler(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX);
+    addAll(DrawUtils.getRulerComponents(outputWidth, outputHeight, tileWidth, tileHeight, outputShiftX));
 
     for (int i = 0; i < outputWidth; i++) {
       for (int j = 0; j < outputHeight; j++) {
@@ -510,33 +481,6 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
         add(outputTile);
         outputTiles.add(outputTile);
       }
-    }
-  }
-
-  void initOutputRuler(int outputWidth, int outputHeight, int outputTileWidth, int outputTileHeight, double outputShiftX) {
-    for (int column = 1; column <= outputWidth; column++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$column',
-          position: Vector2(outputShiftX + DrawUtils.ruler.width + (column - 1) * outputTileWidth + 12, 0),
-          size: Vector2(outputTileWidth.toDouble(), DrawUtils.ruler.height),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
-    }
-    for (int row = 1; row <= outputHeight; row++) {
-      add(
-        TextComponent(
-          textRenderer: rulerPaint,
-          text: '$row',
-          position: Vector2(outputShiftX, DrawUtils.ruler.height + (row - 1) * outputTileHeight + 6),
-          size: Vector2(DrawUtils.ruler.width, outputTileHeight.toDouble()),
-          anchor: Anchor.topLeft,
-          priority: 20,
-        ),
-      );
     }
   }
 }

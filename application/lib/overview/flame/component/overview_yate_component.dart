@@ -124,10 +124,10 @@ abstract class OverviewYateComponent extends SpriteComponent with HasGameReferen
   void render(Canvas canvas) {
     super.render(canvas);
     if (game.world.isSelected(this)) {
-      canvas.drawRect(getRect(), DrawUtils.getFillPaint(external ? EditorColor.selectedExternalFill.color : EditorColor.selectedFill.color, alpha: 100));
+      canvas.drawRect(getRect(), DrawUtils.getFillPaint(EditorColor.selectedFill.color, alpha: 100));
     }
     if (isHovered) {
-      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(external ? EditorColor.externalTile.color : EditorColor.tile.color, 2.0));
+      canvas.drawRect(getRect(), DrawUtils.getBorderPaint(EditorColor.tile.color, 2.0));
       drawInfo(canvas);
     }
   }
@@ -137,8 +137,15 @@ abstract class OverviewYateComponent extends SpriteComponent with HasGameReferen
       text: '${external ? '${projectItem.name}\n' : ''}${item.getLabel()}',
       style: TextStyle(color: item.getTextColor(), fontWeight: FontWeight.bold),
     );
-    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.left, textDirection: TextDirection.ltr);
-    textPainter.layout(minWidth: 0, maxWidth: 300);
-    textPainter.paint(canvas, Offset(0, external ? -40 : -20));
+    final textPainter = TextPainter(text: textSpan, textAlign: TextAlign.center, textDirection: TextDirection.ltr);
+
+    textPainter.layout(minWidth: 0, maxWidth: double.infinity);
+
+    double textPadding = 10;
+    double textWidth = textPainter.size.width + textPadding * 2;
+    double shiftX = size.x / 2 - textWidth / 2;
+    canvas.drawRect(Rect.fromLTWH(shiftX, textPainter.size.height * -1, textWidth, textPainter.size.height), DrawUtils.getFillPaint(Colors.white, alpha: 150));
+
+    textPainter.paint(canvas, Offset(shiftX + textPadding, textPainter.size.height * -1));
   }
 }
