@@ -17,6 +17,9 @@ class TileSetTile extends YateItem {
   String getLabel() => 'Tile';
 
   @override
+  String getType() => 'tileset\'s tile';
+
+  @override
   Color getColor() => EditorColor.tile.color;
 
   @override

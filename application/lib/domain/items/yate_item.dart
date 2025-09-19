@@ -17,6 +17,7 @@ abstract class YateItem {
   Color getHoverColor();
   Color getTextColor();
   String getLabel();
+  String getType();
   Vector2 getRealSize(double tileWidth, double tileHeight);
   Vector2 getRealPosition(double tileWidth, double tileHeight);
 

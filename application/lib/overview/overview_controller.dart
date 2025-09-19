@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/utils/dialog_utils.dart';
 
 class OverviewController extends StatefulWidget {
   final YateProject project;
@@ -47,22 +48,30 @@ class OverviewControllerState extends State<OverviewController> {
         children: [
           IconButton(
             icon: Icon(Icons.delete_forever),
-            onPressed: () {
-              widget.outputState.yateItem.unselect();
-              widget.outputState.removeAll.invoke();
+            onPressed: () async {
+              if (await DialogUtils.confirmationDialog(context, 'Warning', 'Are you sure you want to clear the output tileset (remove all elements)?')) {
+                widget.outputState.yateItem.unselect();
+                widget.outputState.removeAll.invoke();
+              }
             },
           ),
           SizedBox(width: 5),
           Visibility(
             visible: yateItem != YateItem.none && yateItem.output != null,
             child: ElevatedButton.icon(
-              icon: Icon(Icons.add_circle_outline),
+              icon: Icon(Icons.delete),
               label: Text('Remove ${yateItem.getLabel()}'),
-              onPressed: () {
-                widget.outputState.yateItem.remove();
-                setState(() {
-                  yateItem.output = null;
-                });
+              onPressed: () async {
+                if (await DialogUtils.confirmationDialog(
+                  context,
+                  'Warning',
+                  'Are you sure you want to remove this ${yateItem.getType()} (${yateItem.getLabel()})?',
+                )) {
+                  widget.outputState.yateItem.remove();
+                  setState(() {
+                    yateItem.output = null;
+                  });
+                }
               },
             ),
           ),

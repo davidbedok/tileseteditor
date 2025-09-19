@@ -33,6 +33,12 @@ class OverviewEditorWorld extends World with HasGameReference<OverviewEditorGame
 
   OverviewEditorWorld();
 
+  void unselect() {
+    if (selected != null) {
+      select(selected!);
+    }
+  }
+
   void select(OverviewYateComponent component, {bool force = false}) {
     if (force) {
       setSelected(component);

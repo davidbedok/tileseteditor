@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProjectMenuBar extends StatelessWidget {
+  final PackageInfo packageInfo;
   final ProjectState projectState;
   final void Function() onNewProject;
   final void Function() onOpenProject;
@@ -24,6 +26,7 @@ class ProjectMenuBar extends StatelessWidget {
 
   const ProjectMenuBar({
     super.key,
+    required this.packageInfo,
     required this.projectState,
     required this.onNewProject,
     required this.onOpenProject,
@@ -152,7 +155,7 @@ class ProjectMenuBar extends StatelessWidget {
                   builder: (BuildContext context) {
                     return AboutDialog(
                       applicationName: 'Yet Another TileSet Editor',
-                      applicationVersion: '1.0.0',
+                      applicationVersion: 'v${packageInfo.version} (build ${packageInfo.buildNumber})',
                       applicationIcon: Image(image: AssetImage('assets/images/yate-512.png'), width: 70, height: 70),
                       children: [
                         Row(
@@ -166,7 +169,7 @@ class ProjectMenuBar extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween, //
                           children: [
                             Text('Release date', style: Theme.of(context).textTheme.labelLarge), //
-                            Text('2025.09.13'),
+                            Text('${packageInfo.updateTime}'),
                           ],
                         ),
                         Row(

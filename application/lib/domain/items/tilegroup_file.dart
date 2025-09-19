@@ -51,6 +51,9 @@ class TileGroupFile extends YateItem implements YateMapper {
   }
 
   @override
+  String getType() => 'tilegroup\'s file';
+
+  @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);
 
   @override

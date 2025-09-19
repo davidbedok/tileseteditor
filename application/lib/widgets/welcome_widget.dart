@@ -1,12 +1,16 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/widgets/information_box.dart';
 
 class WelcomeWidget extends StatelessWidget {
+  final PackageInfo packageInfo;
   final void Function() onNewProject;
   final void Function() onOpenProject;
 
   const WelcomeWidget({
     super.key, //
+    required this.packageInfo,
     required this.onNewProject,
     required this.onOpenProject,
   });
@@ -29,7 +33,8 @@ class WelcomeWidget extends StatelessWidget {
                   color: const Color.fromARGB(217, 80, 62, 155), //
                   fontSize: 50,
                 ),
-              ), //
+              ),
+
               SizedBox(height: 20),
               RichText(
                 text: TextSpan(
@@ -62,6 +67,32 @@ class WelcomeWidget extends StatelessWidget {
                   ],
                 ),
               ),
+              SizedBox(height: 20),
+              SizedBox(
+                width: 450,
+                child: InformationBox(
+                  texts: [
+                    TextSpan(
+                      text:
+                          " Yet Another TileSet Editor is an open-source project for creating tileset images from standalone tiles and from existing tilesets. This desktop application is primary for creating and editing YATE Project files, and you need the ",
+                    ),
+                    TextSpan(
+                      text: 'yatecli.py',
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                    TextSpan(text: " (python script) in order to generate the output tileset image."),
+                  ],
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'v${packageInfo.version} (build ${packageInfo.buildNumber})',
+                style: TextStyle(
+                  color: const Color.fromARGB(217, 80, 62, 155), //
+                  fontSize: 12,
+                ),
+                textAlign: TextAlign.right,
+              ), //
             ],
           ),
         ),

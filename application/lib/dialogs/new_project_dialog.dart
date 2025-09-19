@@ -21,7 +21,7 @@ class NewProjectDialogState extends State<NewProjectDialog> {
     version: '1.0',
     name: '',
     output: TileSetOutput(
-      fileName: '', //
+      fileName: 'output.png', //
       tileSize: PixelSize(32, 32),
       size: TileRectSize(TileSetOutput.defaultOutputWidth, TileSetOutput.defaultOutputHeight),
     ),

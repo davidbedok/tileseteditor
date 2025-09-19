@@ -28,6 +28,9 @@ class TileSetSlice extends TileSetNamedArea implements YateMapper {
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2((coord.left - 1) * tileWidth, (coord.top - 1) * tileHeight);
 
+  @override
+  String getType() => 'tileset\'s slice';
+
   TileSetSlice({
     required super.id, //
     required super.name,

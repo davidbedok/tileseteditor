@@ -101,6 +101,8 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
         if (event is KeyDownEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.delete)) {
             world.removeTileSetItem(world.selected!.getItem());
+          } else if (keysPressed.contains(LogicalKeyboardKey.escape)) {
+            world.unselect();
           }
         }
       }

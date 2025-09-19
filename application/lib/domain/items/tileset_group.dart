@@ -19,6 +19,9 @@ class TileSetGroup extends TileSetNamedArea implements YateMapper {
   @override
   Vector2 getRealPosition(double tileWidth, double tileHeight) => Vector2(0, 0);
 
+  @override
+  String getType() => 'tileset\'s group';
+
   TileSetGroup({
     required super.id, //
     required super.name,

@@ -65,6 +65,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
               children: <Widget>[
                 Expanded(
                   child: ProjectMenuBar(
+                    packageInfo: widget.packageInfo,
                     projectState: projectState,
                     onNewProject: newProject,
                     onOpenProject: openProject,
@@ -88,6 +89,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                   padding: const EdgeInsets.all(8.0),
                   child: projectState.project.isNotDefined()
                       ? WelcomeWidget(
+                          packageInfo: widget.packageInfo,
                           onNewProject: newProject, //
                           onOpenProject: openProject,
                         )
