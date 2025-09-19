@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/widgets/fixed_information_box.dart';
 import 'package:tileseteditor/widgets/information_box.dart';
 
 class WelcomeWidget extends StatelessWidget {
@@ -70,7 +71,7 @@ class WelcomeWidget extends StatelessWidget {
               SizedBox(height: 20),
               SizedBox(
                 width: 450,
-                child: InformationBox(
+                child: FixedInformationBox(
                   texts: [
                     TextSpan(
                       text:

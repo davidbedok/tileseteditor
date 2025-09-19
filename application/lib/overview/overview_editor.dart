@@ -1,5 +1,6 @@
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/output/output_state.dart';
 import 'package:tileseteditor/overview/flame/overview_editor_game.dart';
@@ -70,7 +71,7 @@ class OverviewEditor extends StatelessWidget {
                               ), //
                               TextSpan(
                                 text:
-                                    ' the final TileSet appears as the generated image will look like. You can move the image by pressing any of the mouse button or using the arrow keys, if nothing is selected. Also use your mouse wheel to zoom in or out.',
+                                    ' the final TileSet appears as the generated image will look like. You can move the image by dragging the mouse or using the arrow keys, if nothing is selected. Also use your mouse wheel to zoom in or out.',
                               ), //
                               TextSpan(
                                 text:
@@ -85,6 +86,15 @@ class OverviewEditor extends StatelessWidget {
                               WidgetSpan(child: Icon(Icons.delete_outline)),
                               TextSpan(text: ' button or hit the DEL key.'), //
                               TextSpan(text: '\n\nTip: Using the WASD keys you can always move the image, even if one of the piece is selected.'),
+                              TextSpan(text: '\n\nSupported elements:\n'), //
+                              WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.tile.color, size: 15)),
+                              TextSpan(text: ' Input TileSet\'s Tile\n'), //
+                              WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.slice.color, size: 15)),
+                              TextSpan(text: ' Input TileSet\'s Slice\n'), //
+                              WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.group.color, size: 15)),
+                              TextSpan(text: ' Input TileSet\'s Group\n'), //
+                              WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.file.color, size: 15)),
+                              TextSpan(text: ' Input TileGroup\'s File\n'), //
                             ],
                           ),
                         ), //

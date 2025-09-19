@@ -63,17 +63,18 @@ class AppDialogWidget extends StatelessWidget {
                                 },
                                 child: const Text('Close'),
                               ),
-                              Visibility(
-                                visible: enabled,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState!.validate()) {
-                                      onAction.call();
-                                    }
-                                  },
-                                  child: Text(actionButton),
+                              if (enabled)
+                                Visibility(
+                                  visible: enabled,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        onAction.call();
+                                      }
+                                    },
+                                    child: Text(actionButton),
+                                  ),
                                 ),
-                              ),
                             ],
                           ),
                         ],

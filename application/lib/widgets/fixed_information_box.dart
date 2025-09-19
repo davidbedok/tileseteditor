@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-class InformationBox extends StatelessWidget {
+class FixedInformationBox extends StatelessWidget {
+  final bool infoIcon;
   final List<InlineSpan> texts;
 
-  const InformationBox({
+  const FixedInformationBox({
     super.key, //
     required this.texts,
+    this.infoIcon = true,
   });
 
   @override
@@ -19,20 +21,16 @@ class InformationBox extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
-        child: ListView(
-          children: [
-            RichText(
-              textAlign: TextAlign.justify,
-              text: TextSpan(
-                style: Theme.of(context).textTheme.bodyMedium,
-                children: [
-                  WidgetSpan(child: Icon(Icons.info_outline, size: 14, color: const Color.fromARGB(255, 64, 97, 123))),
-                  TextSpan(text: " "),
-                  for (InlineSpan span in texts) span,
-                ],
-              ),
-            ),
-          ],
+        child: RichText(
+          textAlign: TextAlign.justify,
+          text: TextSpan(
+            style: Theme.of(context).textTheme.bodyMedium,
+            children: [
+              if (infoIcon) WidgetSpan(child: Icon(Icons.info_outline, size: 14, color: const Color.fromARGB(255, 64, 97, 123))),
+              if (infoIcon) TextSpan(text: " "),
+              for (InlineSpan span in texts) span,
+            ],
+          ),
         ),
       ),
     );

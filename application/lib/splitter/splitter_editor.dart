@@ -9,6 +9,8 @@ import 'package:tileseteditor/splitter/flame/splitter_game.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
 
 class SplitterEditor extends StatelessWidget {
+  static const double sideWidth = 300;
+
   final YateProject project;
   final TileSet tileSet;
   final SplitterState splitterState;
@@ -40,7 +42,7 @@ class SplitterEditor extends StatelessWidget {
                 Column(
                   children: [
                     SizedBox(
-                      width: MediaQuery.of(context).size.width - 400,
+                      width: MediaQuery.of(context).size.width - sideWidth - 30,
                       height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                       child: Container(
                         margin: const EdgeInsets.all(0),
@@ -49,7 +51,7 @@ class SplitterEditor extends StatelessWidget {
                         child: GameWidget(
                           game: SplitterGame(
                             tileSet: tileSet,
-                            width: MediaQuery.of(context).size.width - 400,
+                            width: MediaQuery.of(context).size.width - sideWidth - 30,
                             height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                             splitterState: splitterState,
                           ),
@@ -58,12 +60,13 @@ class SplitterEditor extends StatelessWidget {
                     ), //
                   ],
                 ),
+                SizedBox(width: 10),
                 Column(
                   children: [
                     Row(
                       children: [
                         SizedBox(
-                          width: 300,
+                          width: sideWidth,
                           height: MediaQuery.of(context).size.height - ProjectSelector.topHeight,
                           child: Container(
                             margin: const EdgeInsets.all(0),

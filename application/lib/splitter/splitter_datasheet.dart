@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tileseteditor/domain/editor_color.dart';
 import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/tileset/tileset_change_type.dart';
 import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
+import 'package:tileseteditor/widgets/fixed_information_box.dart';
 
 class SplitterDatasheet extends StatefulWidget {
   final SplitterState splitterState;
@@ -144,6 +146,33 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
               ),
             ),
             SizedBox(width: 5),
+          ],
+        ),
+        FixedInformationBox(
+          texts: [
+            TextSpan(text: 'In '), //
+            TextSpan(
+              text: 'TileSet splitter',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ), //
+            TextSpan(
+              text:
+                  ' you can mark contiguous areas, group related and drop unused tiles within an existing input TileSet image. YATE never modifies the original image, all recorded metadata is saved in the project descriptor.',
+            ), //
+            TextSpan(text: '\n\nSupported tileset elements:\n'), //
+            WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.tile.color, size: 15)),
+            TextSpan(text: ' Tile: individual building block\n'), //
+            WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.slice.color, size: 15)),
+            TextSpan(text: ' Slice: multi-tile rectangle shape\n'), //
+            WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.group.color, size: 15)),
+            TextSpan(text: ' Group: set of related tiles\n'), //
+            WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.garbage.color, size: 15)),
+            TextSpan(text: ' Garbage: unnecessary or unused tile\n'), //
+
+            TextSpan(
+              text:
+                  '\n\nTip: Using the arrow or the WASD keys or by dragging the mouse you can always move the image freely. Also use your mouse wheel to zoom in or out, according to your need.',
+            ),
           ],
         ),
       ],

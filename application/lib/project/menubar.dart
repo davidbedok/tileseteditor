@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:tileseteditor/dialogs/documentation_dialog.dart';
 import 'package:tileseteditor/domain/project_item.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/project/project_state.dart';
@@ -136,10 +137,15 @@ class ProjectMenuBar extends StatelessWidget {
           style: ButtonStyle(padding: WidgetStatePropertyAll(EdgeInsets.only(left: 5, right: 5))),
           menuChildren: <Widget>[
             MenuItemButton(
-              onPressed: () {
-                //
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return DocumentationDialog();
+                  },
+                );
               },
-              child: MenuAcceleratorLabel('&Documentation'),
+              child: MenuAcceleratorLabel('&User guide'),
             ),
             MenuItemButton(
               onPressed: () {
