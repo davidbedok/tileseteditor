@@ -1,4 +1,12 @@
+Add slice popup - information box
+Add group popup - information box
+
+Integrate yatecli commands
+    - Overview output editor --> Output and CLI swich buttons 
+    - CLI:
+        - yatecli commands
+        - maybe imagemagick commands.. (later)
+
 Version control support:
     - key --> use shortify hash instead of numbers..
 
-Create icon

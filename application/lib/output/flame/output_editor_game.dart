@@ -119,6 +119,8 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
         if (event is KeyDownEvent) {
           if (keysPressed.contains(LogicalKeyboardKey.delete)) {
             world.removeItem(world.selected!.getItem());
+          } else if (keysPressed.contains(LogicalKeyboardKey.escape)) {
+            world.unselect();
           }
         }
       }

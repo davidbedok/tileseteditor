@@ -37,6 +37,12 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   OutputEditorWorld();
 
+  void unselect() {
+    if (selected != null) {
+      select(selected!);
+    }
+  }
+
   void select(YateComponent component, {bool force = false}) {
     if (force) {
       setSelected(component);
