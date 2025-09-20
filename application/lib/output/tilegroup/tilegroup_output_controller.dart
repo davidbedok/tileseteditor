@@ -3,6 +3,7 @@ import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/utils/dialog_utils.dart';
 
 class TileGroupOutputController extends StatefulWidget {
   final YateProject project;
@@ -50,11 +51,20 @@ class TileGroupOutputControllerState extends State<TileGroupOutputController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
+          ElevatedButton.icon(
+            icon: Icon(Icons.edit), //
+            label: Text('Builder'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            onPressed: widget.onBuilderPressed,
+          ),
+          SizedBox(width: 5),
           IconButton(
             icon: Icon(Icons.delete_forever),
-            onPressed: () {
-              widget.outputState.yateItem.unselect();
-              widget.outputState.removeAll.invoke();
+            onPressed: () async {
+              if (await DialogUtils.confirmationDialog(context, 'Remove all elements', 'Are you sure you want to clear the output tileset?')) {
+                widget.outputState.yateItem.unselect();
+                widget.outputState.removeAll.invoke();
+              }
             },
           ),
           SizedBox(width: 5),
@@ -63,20 +73,19 @@ class TileGroupOutputControllerState extends State<TileGroupOutputController> {
             child: ElevatedButton.icon(
               icon: Icon(Icons.add_circle_outline),
               label: Text('Remove ${tileSetItem.getLabel()}'),
-              onPressed: () {
-                widget.outputState.yateItem.remove();
-                setState(() {
-                  tileSetItem.output = null;
-                });
+              onPressed: () async {
+                if (await DialogUtils.confirmationDialog(
+                  context,
+                  'Remove ${tileSetItem.getLabel()}',
+                  'Are you sure you want to remove this ${tileSetItem.getType()} from output tileset?',
+                )) {
+                  widget.outputState.yateItem.remove();
+                  setState(() {
+                    tileSetItem.output = null;
+                  });
+                }
               },
             ),
-          ),
-          SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.edit), //
-            label: Text('Builder'),
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            onPressed: widget.onBuilderPressed,
           ),
         ],
       ),

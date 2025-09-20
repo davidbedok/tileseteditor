@@ -8,6 +8,7 @@ import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';
+import 'package:tileseteditor/utils/dialog_utils.dart';
 
 class SplitterController extends StatefulWidget {
   final YateProject project;
@@ -61,6 +62,13 @@ class SplitterControllerState extends State<SplitterController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
+          ElevatedButton.icon(
+            icon: Icon(Icons.edit), //
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            label: Text('Output'),
+            onPressed: widget.onOutputPressed,
+          ),
+          SizedBox(width: 5),
           IconButton(
             icon: Icon(Icons.select_all),
             onPressed: () {
@@ -96,12 +104,30 @@ class SplitterControllerState extends State<SplitterController> {
             icon: Icon(Icons.add_circle_outline),
             label: numberOfSelectedFreeTiles > 1 ? Text('Group of $numberOfSelectedFreeTiles tiles') : const Text('Group'),
             style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: EditorColor.group.color),
-
             onPressed: numberOfSelectedFreeTiles > 1
                 ? () {
                     addGroup(context, widget.splitterState);
                   }
                 : null,
+          ),
+          SizedBox(width: 5),
+          Visibility(
+            visible: tileSetItem is TileSetSlice || tileSetItem is TileSetGroup,
+            child: ElevatedButton.icon(
+              icon: Icon(Icons.remove_circle_outline),
+              label: Text('${tileSetItem.getLabel()}'),
+              style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 203, 82, 82)),
+              onPressed: () async {
+                if (await DialogUtils.confirmationDialog(
+                  context,
+                  'Disassemble ${tileSetItem.getLabel()}',
+                  'Are you sure you want to disassemble this ${tileSetItem.getType()}?',
+                )) {
+                  widget.tileSet.remove(widget.splitterState.yateItem);
+                  widget.splitterState.unselectItem();
+                }
+              },
+            ),
           ),
           SizedBox(width: 5),
           Visibility(
@@ -132,25 +158,6 @@ class SplitterControllerState extends State<SplitterController> {
                 });
               },
             ),
-          ),
-          SizedBox(width: 5),
-          Visibility(
-            visible: tileSetItem is TileSetSlice || tileSetItem is TileSetGroup,
-            child: ElevatedButton.icon(
-              icon: Icon(Icons.delete),
-              label: Text('Delete ${tileSetItem.getLabel()}'),
-              onPressed: () {
-                widget.tileSet.remove(widget.splitterState.yateItem);
-                widget.splitterState.unselectItem();
-              },
-            ),
-          ),
-          SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.edit), //
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            label: Text('Output'),
-            onPressed: widget.onOutputPressed,
           ),
         ],
       ),

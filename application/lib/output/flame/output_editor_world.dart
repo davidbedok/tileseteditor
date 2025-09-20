@@ -11,6 +11,7 @@ import 'package:tileseteditor/domain/items/tileset_group.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/domain/items/tileset_slice.dart';
 import 'package:tileseteditor/domain/items/tileset_tile.dart';
+import 'package:tileseteditor/output/flame/component/navigation_button_component.dart';
 import 'package:tileseteditor/output/flame/component/tilegroup_file_component.dart';
 import 'package:tileseteditor/output/flame/output_editor_game.dart';
 import 'package:tileseteditor/output/flame/component/output_tile_component.dart';
@@ -23,8 +24,8 @@ import 'package:tileseteditor/utils/draw_utils.dart';
 class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, HasCollisionDetection {
   static const int movePriority = 1000;
   static const double dragTolarance = 5;
-  static double cameraButtonDim = 30;
-  static double cameraButtonSpace = 5;
+  static double cameraButtonDim = 20;
+  static double cameraButtonSpace = 1;
 
   YateComponent? selected;
   List<OutputTileComponent> outputTiles = [];
@@ -411,8 +412,9 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
 
   void initButtonsAndCamera() {
     double upDownButtonHeight = (game.size.y - cameraButtonDim - cameraButtonSpace * 2) / 2 - cameraButtonSpace;
-    double leftRightButtonWidth = (game.size.x - cameraButtonDim - cameraButtonSpace * 2) / 2 - cameraButtonSpace;
+    double leftRightButtonWidth = (game.size.x - cameraButtonSpace * 2) / 2 - cameraButtonSpace;
     final actionCameraUpButton = createButton(
+      '⇡',
       Rect.fromLTWH(0, 0, cameraButtonDim, upDownButtonHeight), //
       EdgeInsets.only(right: cameraButtonSpace, top: cameraButtonSpace),
       Anchor.topLeft,
@@ -421,6 +423,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       },
     );
     final actionCameraDownButton = createButton(
+      '⇣',
       Rect.fromLTWH(0, 0, cameraButtonDim, upDownButtonHeight), //
       EdgeInsets.only(right: cameraButtonSpace, bottom: cameraButtonDim + cameraButtonSpace * 2),
       Anchor.bottomLeft,
@@ -429,6 +432,7 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       },
     );
     final actionCameraLeftButton = createButton(
+      '⇠',
       Rect.fromLTWH(0, 0, leftRightButtonWidth, cameraButtonDim), //
       EdgeInsets.only(left: cameraButtonSpace, bottom: cameraButtonSpace),
       Anchor.topLeft,
@@ -437,8 +441,9 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
       },
     );
     final actionCameraRightButton = createButton(
+      '⇢',
       Rect.fromLTWH(0, 0, leftRightButtonWidth, cameraButtonDim), //
-      EdgeInsets.only(right: cameraButtonDim + cameraButtonSpace * 2, bottom: cameraButtonSpace),
+      EdgeInsets.only(right: cameraButtonSpace * 2, bottom: cameraButtonSpace),
       Anchor.bottomLeft,
       () {
         game.camera.moveBy(Vector2(OutputEditorGame.scrollUnit, 0));
@@ -450,10 +455,10 @@ class OutputEditorWorld extends World with HasGameReference<OutputEditorGame>, H
     game.camera.viewfinder.position = Vector2(0, 0);
   }
 
-  HudButtonComponent createButton(Rect buttonRect, EdgeInsets margin, Anchor anchor, dynamic Function() onPressed) {
+  HudButtonComponent createButton(String label, Rect buttonRect, EdgeInsets margin, Anchor anchor, dynamic Function() onPressed) {
     return HudButtonComponent(
-      button: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getFillPaint(EditorColor.buttonNormal.color)),
-      buttonDown: RectangleComponent.fromRect(buttonRect, paint: DrawUtils.getFillPaint(EditorColor.buttonDown.color)),
+      button: NavigationButtonComponent.fromRect(label, buttonRect, paint: DrawUtils.getFillPaint(EditorColor.buttonNormal.color)),
+      buttonDown: NavigationButtonComponent.fromRect(label, buttonRect, paint: DrawUtils.getFillPaint(EditorColor.buttonDown.color)),
       margin: margin,
       anchor: anchor,
       onPressed: onPressed,

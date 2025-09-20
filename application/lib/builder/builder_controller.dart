@@ -3,6 +3,7 @@ import 'package:tileseteditor/domain/tilegroup/tilegroup.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/builder/builder_state.dart';
+import 'package:tileseteditor/utils/dialog_utils.dart';
 
 class BuilderController extends StatefulWidget {
   final YateProject project;
@@ -62,6 +63,13 @@ class BuilderControllerState extends State<BuilderController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
+          ElevatedButton.icon(
+            icon: Icon(Icons.edit), //
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            label: Text('Output'),
+            onPressed: widget.onOutputPressed,
+          ),
+          SizedBox(width: 5),
           IconButton(
             icon: Icon(Icons.select_all),
             onPressed: () {
@@ -93,15 +101,16 @@ class BuilderControllerState extends State<BuilderController> {
             child: ElevatedButton.icon(
               icon: Icon(Icons.delete), //
               label: Text('Remove $numberOfSelectedFiles file${numberOfSelectedFiles > 1 ? 's' : ''}'),
-              onPressed: widget.onRemoveTiles,
+              onPressed: () async {
+                if (await DialogUtils.confirmationDialog(
+                  context,
+                  'Remove $numberOfSelectedFiles file${numberOfSelectedFiles > 1 ? 's' : ''}',
+                  'Are you sure you want to remove the selected file(s) from this tilegroup?',
+                )) {
+                  widget.onRemoveTiles.call();
+                }
+              },
             ),
-          ),
-          SizedBox(width: 5),
-          ElevatedButton.icon(
-            icon: Icon(Icons.edit), //
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-            label: Text('Output'),
-            onPressed: widget.onOutputPressed,
           ),
         ],
       ),

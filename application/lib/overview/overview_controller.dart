@@ -49,7 +49,7 @@ class OverviewControllerState extends State<OverviewController> {
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () async {
-              if (await DialogUtils.confirmationDialog(context, 'Warning', 'Are you sure you want to clear the output tileset (remove all elements)?')) {
+              if (await DialogUtils.confirmationDialog(context, 'Remove all elements', 'Are you sure you want to clear the output tileset?')) {
                 widget.outputState.yateItem.unselect();
                 widget.outputState.removeAll.invoke();
               }
@@ -64,8 +64,8 @@ class OverviewControllerState extends State<OverviewController> {
               onPressed: () async {
                 if (await DialogUtils.confirmationDialog(
                   context,
-                  'Warning',
-                  'Are you sure you want to remove this ${yateItem.getType()} (${yateItem.getLabel()})?',
+                  'Remove ${yateItem.getLabel()}',
+                  'Are you sure you want to remove this ${yateItem.getType()}?',
                 )) {
                   widget.outputState.yateItem.remove();
                   setState(() {

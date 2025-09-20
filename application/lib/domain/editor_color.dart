@@ -4,8 +4,8 @@ enum EditorColor {
   coordText(Colors.black),
   text(Color.fromARGB(255, 14, 110, 199)),
 
-  buttonNormal(Colors.grey),
-  buttonDown(Colors.lightGreen),
+  buttonNormal(Color.fromARGB(255, 225, 219, 202)),
+  buttonDown(Color.fromARGB(255, 232, 188, 56)),
 
   selectedFill(Color.fromARGB(255, 27, 138, 222)),
   externalTile(Color.fromARGB(255, 37, 151, 62)),
