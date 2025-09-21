@@ -9,6 +9,7 @@ import 'package:tileseteditor/utils/tile_utils.dart';
 import 'package:tileseteditor/widgets/app_dialog_named_area_size_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_number_field.dart';
 import 'package:tileseteditor/widgets/app_dialog_text_field.dart';
+import 'package:tileseteditor/widgets/fixed_information_box.dart';
 import 'package:tileseteditor/widgets/group_image_widget.dart';
 
 class GroupWidget extends StatefulWidget {
@@ -38,76 +39,104 @@ class _GroupWidgetState extends State<GroupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    return Column(
       children: [
-        SizedBox(
-          width: (groupWidth * 32 - 30) < 250 ? groupWidth * 32 + 30 : 250,
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10.0),
-                decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: groupWidth,
-                  padding: EdgeInsets.zero,
-                  crossAxisSpacing: 0,
-                  childAspectRatio: 1,
-                  mainAxisSpacing: 0,
-                  addSemanticIndexes: true,
-                  children: [for (var image in cropTiles(widget.tileSet, tileIndices, selectedTiles)) image],
-                ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FixedInformationBox(
+            texts: [
+              TextSpan(text: " You are about to define a new "),
+              TextSpan(
+                text: 'group',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
+              TextSpan(text: " within the "),
+              TextSpan(
+                text: widget.tileSet.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              TextSpan(text: " tileset. A group is made up of independent tiles that are connected to each other, but may be located far from each other.\n"),
+              TextSpan(
+                text:
+                    "A rectangle needs to be built from the elements of the group so that it will be easier to place it on the output tileset later. Try not to make the width and height of the rectangle extreme (e.g. group 12 tiles instead of 11 to define a 3x4 rectangle).\n",
+              ),
+              TextSpan(text: "Tiles within a group can be rearranged as desired. Select any two tiles and swap their positions within the group."),
             ],
           ),
         ),
-        SizedBox(
-          width: 500,
-          child: Column(
-            children: [
-              AppDialogNumberField(name: 'ID', initialValue: widget.group.id, disabled: true),
-              SizedBox(height: GroupWidget.space),
-              AppDialogTextField(
-                name: 'Group name',
-                hint: 'Enter the name of this group',
-                initialValue: widget.group.name,
-                validationMessage: 'Please enter the name of the Group.',
-                onChanged: (String value) {
-                  widget.group.name = value;
-                },
+        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            SizedBox(
+              width: (groupWidth * 32 - 30) < 250 ? groupWidth * 32 + 30 : 250,
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(border: BoxBorder.all(color: Colors.black, strokeAlign: 1.0)),
+                    child: GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: groupWidth,
+                      padding: EdgeInsets.zero,
+                      crossAxisSpacing: 0,
+                      childAspectRatio: 1,
+                      mainAxisSpacing: 0,
+                      addSemanticIndexes: true,
+                      children: [for (var image in cropTiles(widget.tileSet, tileIndices, selectedTiles)) image],
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(height: GroupWidget.space),
-              AppDialogNamedAreaSizeField(
-                name: 'Size (width x height)',
-                edit: true,
-                numberOfTiles: tileIndices.length,
-                initialValue: widget.group.size,
-                validationMessage: 'Please define Width of the Group',
-                onChanged: (TileRectSize size) {
-                  widget.group.size = size;
-                  setState(() {
-                    groupWidth = size.width;
-                  });
-                },
+            ),
+            SizedBox(
+              width: 500,
+              child: Column(
+                children: [
+                  AppDialogNumberField(name: 'ID', initialValue: widget.group.id, disabled: true),
+                  SizedBox(height: GroupWidget.space),
+                  AppDialogTextField(
+                    name: 'Group name',
+                    hint: 'Enter the name of this group',
+                    initialValue: widget.group.name,
+                    validationMessage: 'Please enter the name of the Group.',
+                    onChanged: (String value) {
+                      widget.group.name = value;
+                    },
+                  ),
+                  SizedBox(height: GroupWidget.space),
+                  AppDialogNamedAreaSizeField(
+                    name: 'Size (width x height)',
+                    edit: true,
+                    numberOfTiles: tileIndices.length,
+                    initialValue: widget.group.size,
+                    validationMessage: 'Please define Width of the Group',
+                    onChanged: (TileRectSize size) {
+                      widget.group.size = size;
+                      setState(() {
+                        groupWidth = size.width;
+                      });
+                    },
+                  ),
+                  SizedBox(height: GroupWidget.space),
+                  AppDialogTextField(key: GlobalKey(), name: 'Tiles (indices)', initialValue: tileIndices.join(','), disabled: true),
+                  SizedBox(height: GroupWidget.space),
+                  ElevatedButton(
+                    onPressed: selectedTiles.length > 1
+                        ? () {
+                            setState(() {
+                              TileUtils.swapTiles(tileIndices, selectedTiles[0], selectedTiles[1]);
+                              widget.group.tileIndices = tileIndices;
+                              selectedTiles.clear();
+                            });
+                          }
+                        : null,
+                    child: Text('Swap selected tiles'),
+                  ),
+                ],
               ),
-              SizedBox(height: GroupWidget.space),
-              AppDialogTextField(key: GlobalKey(), name: 'Tiles (indices)', initialValue: tileIndices.join(','), disabled: true),
-              SizedBox(height: GroupWidget.space),
-              ElevatedButton(
-                onPressed: selectedTiles.length > 1
-                    ? () {
-                        setState(() {
-                          TileUtils.swapTiles(tileIndices, selectedTiles[0], selectedTiles[1]);
-                          widget.group.tileIndices = tileIndices;
-                          selectedTiles.clear();
-                        });
-                      }
-                    : null,
-                child: Text('Swap selected tiles'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );

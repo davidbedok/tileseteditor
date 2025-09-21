@@ -171,7 +171,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
 
             TextSpan(
               text:
-                  '\n\nTip: Using the arrow or the WASD keys or by dragging the mouse you can always move the image freely. Also use your mouse wheel to zoom in or out, according to your need.',
+                  '\nTip: Using the arrow or the WASD keys or by dragging the mouse you can always move the image freely. Also use your mouse wheel to zoom in or out, according to your need.',
             ),
           ],
         ),

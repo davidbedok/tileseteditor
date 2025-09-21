@@ -24,7 +24,7 @@ class AppDialogNamedAreaSizeField extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(name, style: Theme.of(context).textTheme.bodyMedium)),
+        Flexible(child: Text(name, style: Theme.of(context).textTheme.labelLarge)),
         Expanded(
           child: Container(
             decoration: BoxDecoration(

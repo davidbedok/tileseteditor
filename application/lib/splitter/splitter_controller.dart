@@ -115,7 +115,7 @@ class SplitterControllerState extends State<SplitterController> {
             visible: tileSetItem is TileSetSlice || tileSetItem is TileSetGroup,
             child: ElevatedButton.icon(
               icon: Icon(Icons.remove_circle_outline),
-              label: Text('${tileSetItem.getLabel()}'),
+              label: Text(tileSetItem.getLabel()),
               style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: const Color.fromARGB(255, 203, 82, 82)),
               onPressed: () async {
                 if (await DialogUtils.confirmationDialog(

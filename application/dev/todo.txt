@@ -1,6 +1,3 @@
-Add slice popup - information box
-Add group popup - information box
-
 Integrate yatecli commands
     - Overview output editor --> Output and CLI swich buttons 
     - CLI:

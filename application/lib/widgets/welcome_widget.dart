@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/widgets/fixed_information_box.dart';
-import 'package:tileseteditor/widgets/information_box.dart';
 
 class WelcomeWidget extends StatelessWidget {
   final PackageInfo packageInfo;
