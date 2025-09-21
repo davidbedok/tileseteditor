@@ -7,11 +7,13 @@ import 'package:tileseteditor/utils/dialog_utils.dart';
 class OverviewController extends StatefulWidget {
   final YateProject project;
   final OutputState outputState;
+  final void Function() onGeneratePressed;
 
   const OverviewController({
     super.key, //
     required this.project,
     required this.outputState,
+    required this.onGeneratePressed,
   });
 
   @override
@@ -46,6 +48,13 @@ class OverviewControllerState extends State<OverviewController> {
       padding: const EdgeInsets.all(8.0),
       child: Row(
         children: [
+          ElevatedButton.icon(
+            icon: Icon(Icons.build), //
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
+            label: Text('Generate'),
+            onPressed: widget.onGeneratePressed,
+          ),
+          SizedBox(width: 5),
           IconButton(
             icon: Icon(Icons.delete_forever),
             onPressed: () async {

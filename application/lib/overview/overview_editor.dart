@@ -13,11 +13,13 @@ class OverviewEditor extends StatelessWidget {
 
   final YateProject project;
   final OutputState outputState;
+  final void Function() onGeneratePressed;
 
   const OverviewEditor({
     super.key, //
     required this.project,
     required this.outputState,
+    required this.onGeneratePressed,
   });
 
   @override
@@ -30,6 +32,7 @@ class OverviewEditor extends StatelessWidget {
             OverviewController(
               project: project, //
               outputState: outputState,
+              onGeneratePressed: onGeneratePressed,
             ),
             Row(
               children: [

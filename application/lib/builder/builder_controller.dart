@@ -64,7 +64,7 @@ class BuilderControllerState extends State<BuilderController> {
       child: Row(
         children: [
           ElevatedButton.icon(
-            icon: Icon(Icons.edit), //
+            icon: Icon(Icons.space_dashboard_outlined), //
             style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
             label: Text('Output'),
             onPressed: widget.onOutputPressed,

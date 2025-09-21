@@ -17,6 +17,7 @@ import 'package:tileseteditor/domain/tileset/tileset.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/builder/builder_state.dart';
 import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/project/project_editor.dart';
 import 'package:tileseteditor/project/tilegroup_editor.dart';
 import 'package:tileseteditor/project/tileset_editor.dart';
 import 'package:tileseteditor/project/menubar.dart';
@@ -200,7 +201,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                         )
                       : Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: OverviewEditor(
+                          child: ProjectEditor(
                             key: GlobalKey(),
                             outputState: outputState, //
                             project: projectState.project.object,
