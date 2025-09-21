@@ -21,7 +21,6 @@ import 'package:tileseteditor/project/project_editor.dart';
 import 'package:tileseteditor/project/tilegroup_editor.dart';
 import 'package:tileseteditor/project/tileset_editor.dart';
 import 'package:tileseteditor/project/menubar.dart';
-import 'package:tileseteditor/overview/overview_editor.dart';
 import 'package:tileseteditor/project/project_controller.dart';
 import 'package:tileseteditor/project/project_state.dart';
 import 'package:tileseteditor/splitter/splitter_state.dart';

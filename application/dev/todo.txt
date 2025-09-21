@@ -1,8 +1,4 @@
-Integrate yatecli commands
-    - Overview output editor --> Output and CLI swich buttons 
-    - CLI:
-        - yatecli commands
-        - maybe imagemagick commands.. (later)
+TileGroup builder: add infobox on the right side
 
 Version control support:
     - key --> use shortify hash instead of numbers..
