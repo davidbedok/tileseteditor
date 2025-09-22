@@ -1,5 +1,0 @@
-TileGroup builder: add infobox on the right side
-
-Version control support:
-    - key --> use shortify hash instead of numbers..
-

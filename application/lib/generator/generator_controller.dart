@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/domain/items/yate_item.dart';
 import 'package:tileseteditor/output/output_state.dart';
+import 'package:tileseteditor/widgets/about_widget.dart';
 
 class GeneratorController extends StatefulWidget {
+  final PackageInfo packageInfo;
   final YateProject project;
   final OutputState outputState;
   final void Function() onOverviewPressed;
 
   const GeneratorController({
     super.key, //
+    required this.packageInfo,
     required this.project,
     required this.outputState,
     required this.onOverviewPressed,
@@ -55,9 +59,14 @@ class GeneratorControllerState extends State<GeneratorController> {
           ),
           SizedBox(width: 5),
           IconButton(
-            icon: Icon(Icons.select_all),
-            onPressed: () {
-              //
+            icon: Icon(Icons.info_outline),
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AboutWidget(packageInfo: widget.packageInfo);
+                },
+              );
             },
           ),
           SizedBox(width: 5),

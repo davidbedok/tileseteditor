@@ -168,7 +168,6 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
             TextSpan(text: ' Group: set of related tiles\n'), //
             WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.garbage.color, size: 15)),
             TextSpan(text: ' Garbage: unnecessary or unused tile\n'), //
-
             TextSpan(
               text:
                   '\nTip: Using the arrow or the WASD keys or by dragging the mouse you can always move the image freely. Also use your mouse wheel to zoom in or out, according to your need.',

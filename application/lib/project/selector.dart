@@ -202,6 +202,7 @@ class ProjectSelectorState extends State<ProjectSelector> {
                           padding: const EdgeInsets.all(8.0),
                           child: ProjectEditor(
                             key: GlobalKey(),
+                            packageInfo: widget.packageInfo,
                             outputState: outputState, //
                             project: projectState.project.object,
                           ),

@@ -79,10 +79,10 @@ class ProjectControllerState extends State<ProjectController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: item == YateProjectItem.none,
+            visible: project.filePath != null && item == YateProjectItem.none,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add), //
-              label: Text('Add tileset'),
+              label: Text('Add TileSet'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(117, 110, 190, 84),
                 foregroundColor: const Color.fromARGB(255, 229, 224, 224),
@@ -94,10 +94,10 @@ class ProjectControllerState extends State<ProjectController> {
           ),
           SizedBox(width: 5),
           Visibility(
-            visible: item == YateProjectItem.none,
+            visible: project.filePath != null && item == YateProjectItem.none,
             child: ElevatedButton.icon(
               icon: Icon(Icons.add), //
-              label: Text('Add tilegroup'),
+              label: Text('Add TileGroup'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(117, 110, 190, 84),
                 foregroundColor: const Color.fromARGB(255, 229, 224, 224),

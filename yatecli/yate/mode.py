@@ -5,7 +5,7 @@ class Mode(enum.Enum):
     tiles = 'tiles'
     split = 'split'
     build = 'build'
-    magic = 'magic'
+    generate = 'generate'
 
     def __str__(self):
         return self.value

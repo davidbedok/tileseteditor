@@ -24,11 +24,11 @@ def cliDescription() -> str:
     Yet Another TileSet Editor CLI is a utility for splitting or building TileSet images (*.png), based on the YATE project file (*.yate.json). This project file should refer to the source TileSet images (*.png) and TileGroup's tiles.
     Yet Another TileSet Editor: https://yetanothertileseteditor.qwaevisz.hu/
     Modes:
-        clean : Clean the target directory
-        tiles : clean + Generate output-size tiles from active tilesets and tilegroups 
-        split : tiles + Split active tilesets into slices, groups and tiles
-        build : tiles + Build the output tileset from active tilesets and tilegroups
-        magic : Build only (tiles mode must be run before this)
+        clean    : Clean the target directory
+        tiles    : clean + Generate output-size tiles from active tilesets and tilegroups 
+        split    : tiles + Split active tilesets into slices, groups and tiles
+        build    : tiles + Build the output tileset from active tilesets and tilegroups
+        generate : Build only (tiles mode must be run before this)
     ''')
 
 def printKeyValue(key:str, value:str, length:int = 13) -> str:
@@ -48,7 +48,7 @@ def welcome(mode: Mode, projectFile: str, outputDirectory: str, emptyTilePath: s
     return result
 
 def initTargetFolder( silent: bool, mode: Mode, outputDirectory: str ):
-    if mode != Mode.magic:
+    if mode != Mode.generate:
         if os.path.isdir(outputDirectory):
             shutil.rmtree(outputDirectory)
         os.mkdir(outputDirectory)
@@ -129,7 +129,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                     slicesDirectory = f'{outputDirectory}\\{targetSlicesDirectory}\\{tileSetUnid}'
                     groupsDirectory = f'{outputDirectory}\\{targetGroupsDirectory}\\{tileSetUnid}'
                     keyReferenceMap[key] = { 'directory': tilesDirectory, 'file': tileSetFileName, 'tiles': maxTiles}
-                    if mode != Mode.magic:
+                    if mode != Mode.generate:
                         os.mkdir(tilesDirectory)
                         os.mkdir(slicesDirectory)
                         os.mkdir(groupsDirectory)
@@ -167,7 +167,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                     tileHeight = int(tile['height'])
 
                     tilesRootDirectory = f'{outputDirectory}\\{targetTilesDirectory}\\{tileGroupUnid}'
-                    if mode != Mode.magic:
+                    if mode != Mode.generate:
                         os.mkdir(tilesRootDirectory)
                     
                     for tilegroupfile in tilegroup['files']:
@@ -188,7 +188,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                         
                         tilesDirectory = f'{tilesRootDirectory}\\{tileGroupFileUnid}'
                         keyReferenceMap[key] = { 'directory': tilesDirectory, 'file': tileGroupFileName, 'tiles': maxTiles}
-                        if mode != Mode.magic:
+                        if mode != Mode.generate:
                             os.mkdir(tilesDirectory)
                             
                             # magick input/magecity.png -crop 32x32 output/magecity32x32/magecity.png
@@ -212,7 +212,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                 print(f'{str(key).ljust(4)} --> dir:{keyReferenceMap[key]["directory"].ljust(50)} | file:{keyReferenceMap[key]["file"]} (tiles: {keyReferenceMap[key]["tiles"]})')
             print('\n')
 
-        if mode == Mode.build or mode == Mode.magic:
+        if mode == Mode.build or mode == Mode.generate:
             output = json['output']
             tileSetName = output['file']
             tile = output['tile']

@@ -8,6 +8,7 @@ import 'package:tileseteditor/domain/items/tilegroup_file.dart';
 import 'package:tileseteditor/builder/builder_controller.dart';
 import 'package:tileseteditor/builder/builder_state.dart';
 import 'package:tileseteditor/utils/image_utils.dart';
+import 'package:tileseteditor/widgets/fixed_information_box.dart';
 import 'package:tileseteditor/widgets/tile_group_list_widget.dart';
 import 'package:tileseteditor/project/selector.dart';
 import 'package:path/path.dart' as path;
@@ -114,59 +115,81 @@ class _BuilderEditorState extends State<BuilderEditor> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: current != null
-                          ? ListView(
-                              children: [
-                                Row(
+                      child: ListView(
+                        children: [
+                          FixedInformationBox(
+                            texts: [
+                              TextSpan(text: 'In '), //
+                              TextSpan(
+                                text: 'TileGroup builder',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ), //
+                              TextSpan(
+                                text:
+                                    ' you can add any number of individual tile images (*.png) into the \'${widget.tileGroup.name}\' TileGroup, just use the ',
+                              ),
+                              WidgetSpan(child: Icon(Icons.add_box_outlined, size: 20)),
+                              TextSpan(text: ' button. The selected images can be removed from the group with the help of the '), //
+                              WidgetSpan(child: Icon(Icons.delete, size: 20)),
+                              TextSpan(text: ' button.'), //
+                            ],
+                          ),
+                          current != null
+                              ? Column(
                                   children: [
-                                    Text('ID:', style: Theme.of(context).textTheme.labelLarge), //
-                                    SizedBox(width: 5),
-                                    Text('${current!.id}'),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Text('Unique key:', style: Theme.of(context).textTheme.labelLarge), //
-                                    SizedBox(width: 5),
-                                    Text('${current!.key}'),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Text('Path:', style: Theme.of(context).textTheme.labelLarge), //
-                                    SizedBox(width: 5),
-                                    Flexible(child: Text(current!.filePath)),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Text('Image size:', style: Theme.of(context).textTheme.labelLarge), //
-                                    SizedBox(width: 5),
-                                    Text(current!.imageSize.toString()),
-                                  ],
-                                ),
-                                SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Text('Tiles:', style: Theme.of(context).textTheme.labelLarge), //
-                                    SizedBox(width: 5),
-                                    Text(
-                                      '${current!.size.toString()} (${current!.size.getNumberOfIndices()} tile${current!.size.getNumberOfIndices() > 1 ? 's' : ''})',
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Text('ID:', style: Theme.of(context).textTheme.labelLarge), //
+                                        SizedBox(width: 5),
+                                        Text('${current!.id}'),
+                                      ],
                                     ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Text('Unique key:', style: Theme.of(context).textTheme.labelLarge), //
+                                        SizedBox(width: 5),
+                                        Text('${current!.key}'),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Text('Path:', style: Theme.of(context).textTheme.labelLarge), //
+                                        SizedBox(width: 5),
+                                        Flexible(child: Text(current!.filePath)),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Text('Image size:', style: Theme.of(context).textTheme.labelLarge), //
+                                        SizedBox(width: 5),
+                                        Text(current!.imageSize.toString()),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        Text('Tiles:', style: Theme.of(context).textTheme.labelLarge), //
+                                        SizedBox(width: 5),
+                                        Text(
+                                          '${current!.size.toString()} (${current!.size.getNumberOfIndices()} tile${current!.size.getNumberOfIndices() > 1 ? 's' : ''})',
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5),
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: RawImage(image: current!.image, height: 200),
+                                    ),
+                                    SizedBox(height: 50),
                                   ],
-                                ),
-                                SizedBox(height: 15),
-                                Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: RawImage(image: current!.image, height: 200),
-                                ),
-                                SizedBox(height: 50),
-                              ],
-                            )
-                          : Row(),
+                                )
+                              : Column(),
+                        ],
+                      ),
                     ),
                   ),
                 ),

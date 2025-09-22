@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/domain/project.dart';
 import 'package:tileseteditor/generator/generator_controller.dart';
 import 'package:tileseteditor/output/output_state.dart';
@@ -10,12 +11,14 @@ import 'package:tileseteditor/widgets/information_box.dart';
 class GeneratorEditor extends StatelessWidget {
   static const double sideWidth = 250;
 
+  final PackageInfo packageInfo;
   final YateProject project;
   final OutputState outputState;
   final void Function() onOverviewPressed;
 
   const GeneratorEditor({
     super.key, //
+    required this.packageInfo,
     required this.project,
     required this.outputState,
     required this.onOverviewPressed,
@@ -29,6 +32,7 @@ class GeneratorEditor extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             GeneratorController(
+              packageInfo: packageInfo,
               project: project, //
               outputState: outputState,
               onOverviewPressed: onOverviewPressed,
@@ -60,7 +64,7 @@ class GeneratorEditor extends StatelessWidget {
                                     text:
                                         'This command will build the ${project.output.fileName} and put into the target directory. Defining an empty tile image is mandatory.\n',
                                   ),
-                                  TextSpan(text: 'Building the project is automatically execute clean, split and generate subcommands.'), //
+                                  TextSpan(text: 'Building the project executes automatically the clean, split and generate subcommands.'), //
                                 ],
                               ),
                               CliBox(
@@ -73,7 +77,7 @@ class GeneratorEditor extends StatelessWidget {
                                 infoIcon: false,
                                 texts: [
                                   TextSpan(
-                                    text: 'Tile generation\n',
+                                    text: 'Creating tiles\n',
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ), //
                                   TextSpan(
@@ -113,7 +117,7 @@ class GeneratorEditor extends StatelessWidget {
                                 texts: [
                                   TextSpan(text: 'Subcommand: '),
                                   TextSpan(
-                                    text: 'Project splitter\n',
+                                    text: 'Split elements\n',
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ), //
                                   TextSpan(
@@ -129,7 +133,7 @@ class GeneratorEditor extends StatelessWidget {
                                 texts: [
                                   TextSpan(text: 'Subcommand: '),
                                   TextSpan(
-                                    text: 'Output generation\n',
+                                    text: 'Generate output\n',
                                     style: TextStyle(fontWeight: FontWeight.bold),
                                   ), //
                                   TextSpan(
@@ -140,7 +144,7 @@ class GeneratorEditor extends StatelessWidget {
                               ),
                               CliBox(
                                 texts: [
-                                  'python yatecli.py --mode magic --empty .\\empty\\empty_${project.output.tileSize.widthPx}x${project.output.tileSize.heightPx}.png --project ${project.filePath} --target output',
+                                  'python yatecli.py --mode generate --empty .\\empty\\empty_${project.output.tileSize.widthPx}x${project.output.tileSize.heightPx}.png --project ${project.filePath} --target output',
                                 ],
                               ),
                             ],

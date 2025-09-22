@@ -91,7 +91,7 @@ class BuilderControllerState extends State<BuilderController> {
           ),
           SizedBox(width: 5),
           ElevatedButton.icon(
-            icon: Icon(Icons.add), //
+            icon: Icon(Icons.add_box_outlined), //
             label: Text('Add tiles (*.png)'),
             onPressed: widget.onAddTiles,
           ),
