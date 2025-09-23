@@ -54,6 +54,18 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
     camera.viewfinder.zoom = camera.viewfinder.zoom.clamp(0.05, 3.0);
   }
 
+  void zoomIn() {
+    camera.viewfinder.zoom += 10 * zoomPerScrollUnit;
+    clampZoom();
+  }
+
+  void zoomOut() {
+    if (camera.viewfinder.zoom - 10 * zoomPerScrollUnit > 0) {
+      camera.viewfinder.zoom -= 10 * zoomPerScrollUnit;
+      clampZoom();
+    }
+  }
+
   @override
   void onScroll(PointerScrollInfo info) {
     camera.viewfinder.zoom += info.scrollDelta.global.y.sign * zoomPerScrollUnit;
@@ -74,6 +86,12 @@ class OverviewEditorGame extends FlameGame<OverviewEditorWorld> with ScrollDetec
       result = KeyEventResult.handled;
     } else if (keysPressed.contains(LogicalKeyboardKey.keyS)) {
       camera.moveBy(Vector2(0, scrollUnit * 2));
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyQ)) {
+      zoomOut();
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyE)) {
+      zoomIn();
       result = KeyEventResult.handled;
     }
     if (world.selected != null && world.selected!.isPlaced()) {

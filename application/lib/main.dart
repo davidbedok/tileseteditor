@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tileseteditor/project/selector.dart';
@@ -7,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
-  WindowOptions windowOptions = WindowOptions(minimumSize: Size(1024, 768));
+  WindowOptions windowOptions = WindowOptions(size: Size(1024, 768), minimumSize: Size(1024, 768));
 
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
 

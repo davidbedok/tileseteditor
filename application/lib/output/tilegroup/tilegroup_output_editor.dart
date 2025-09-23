@@ -93,7 +93,7 @@ class TileGroupOutputEditor extends StatelessWidget {
                               TextSpan(text: ' From other source\n'), //
                               TextSpan(
                                 text:
-                                    '\nTip: Using the WASD keys you can always move the image, even if one of the piece is selected. The arrow keys have multiple uses: you can move the selected element by one unit, or move the entire image if none of the elements are selected.',
+                                    '\nTip: Using the WASD keys you can always move the image, even if one of the piece is selected. The arrow keys have multiple uses: you can move the selected element by one unit, or move the entire image if none of the elements are selected. For zooming you can use the QE keys or the mouse wheel, according to your need.',
                               ),
                             ],
                           ),

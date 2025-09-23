@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:package_info_plus/package_info_plus.dart';
@@ -93,7 +94,17 @@ class YateProject {
   }
 
   String buildFilePath(String filePath) {
-    return path.join(getDirectory(), filePath);
+    return path.join(getDirectory(), convertPathIfNeededOnPlatform(filePath));
+  }
+
+  String convertPathIfNeededOnPlatform(String filePath) {
+    String result = filePath;
+    if ( Platform.isMacOS ) {
+      result = filePath.replaceAll(RegExp(r'\\'), '/');
+    } else if ( Platform.isWindows ) {
+      result = filePath.replaceAll(RegExp(r'/'), '\\');
+    }
+    return result;
   }
 
   Future<void> loadAllImages() async {

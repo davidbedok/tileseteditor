@@ -93,6 +93,12 @@ class OutputEditorGame extends FlameGame<OutputEditorWorld> with ScrollDetector,
     } else if (keysPressed.contains(LogicalKeyboardKey.keyS)) {
       camera.moveBy(Vector2(0, scrollUnit * 2));
       result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyQ)) {
+      zoomOut();
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyE)) {
+      zoomIn();
+      result = KeyEventResult.handled;
     }
     if (world.selected != null && world.selected!.isPlaced()) {
       OutputTileComponent? topLeftOutputTile = world.selected!.getTopLeftOutputTile();

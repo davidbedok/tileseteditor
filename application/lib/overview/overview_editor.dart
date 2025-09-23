@@ -88,7 +88,7 @@ class OverviewEditor extends StatelessWidget {
                               TextSpan(text: '\nYou can also remove any of the selected item from the output tileset by clicking the '),
                               WidgetSpan(child: Icon(Icons.delete_outline)),
                               TextSpan(text: ' button or hit the DEL key.'), //
-                              TextSpan(text: '\n\nTip: Using the WASD keys you can always move the image, even if one of the piece is selected.'),
+                              TextSpan(text: '\n\nTip: Using the WASD keys you can always move the image, even if one of the piece is selected. For zooming you can use the QE keys or the mouse wheel, according to your need.'),
                               TextSpan(text: '\n\nSupported elements:\n'), //
                               WidgetSpan(child: Icon(Icons.square_rounded, color: EditorColor.tile.color, size: 15)),
                               TextSpan(text: ' Input TileSet\'s Tile\n'), //

@@ -84,6 +84,12 @@ class SplitterGame extends FlameGame<SplitterWorld> with ScrollDetector, ScaleDe
     } else if (keysPressed.contains(LogicalKeyboardKey.keyS) || keysPressed.contains(LogicalKeyboardKey.arrowDown)) {
       camera.moveBy(Vector2(0, scrollUnit * 2));
       result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyQ)) {
+      zoomOut();
+      result = KeyEventResult.handled;
+    } else if (keysPressed.contains(LogicalKeyboardKey.keyE)) {
+      zoomIn();
+      result = KeyEventResult.handled;
     }
     return result;
   }

@@ -170,7 +170,7 @@ class SplitterDatasheetState extends State<SplitterDatasheet> {
             TextSpan(text: ' Garbage: unnecessary or unused tile\n'), //
             TextSpan(
               text:
-                  '\nTip: Using the arrow or the WASD keys or by dragging the mouse you can always move the image freely. Also use your mouse wheel to zoom in or out, according to your need.',
+                  '\nTip: Using the arrow or the WASD keys or by dragging the mouse you can always move the image freely. Also use your mouse wheel or the QE keys to zoom in or out, according to your need.',
             ),
           ],
         ),

@@ -2,7 +2,7 @@ name: tileseteditor
 description: "Yet Another TileSet Editor by qwaevisz"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.1+1000
+version: 1.0.2+1042
 
 environment:
   sdk: ^3.8.1
