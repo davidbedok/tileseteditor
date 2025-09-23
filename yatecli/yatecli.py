@@ -8,7 +8,7 @@ parser = argparse.ArgumentParser(
                     prog='yatecli',
                     formatter_class=argparse.RawDescriptionHelpFormatter,
                     description=yate.utils.cliDescription(),
-                    epilog=f'example: {sys.argv[0]} --mode build --empty .\empty\empty_32x32.png --project example.yasp.json --target output'
+                    epilog=f'example: {sys.argv[0]} --mode build --empty .\\empty\\empty_32x32.png --project example.yasp.json --target output'
 )
 
 parser.add_argument('-m', '--mode', help = 'Choose one of the supported option ()', type = yate.mode.Mode, choices=list(yate.mode.Mode), required = True, dest = 'mode')
