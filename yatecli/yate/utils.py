@@ -52,9 +52,9 @@ def initTargetFolder( silent: bool, mode: Mode, outputDirectory: str ):
         if os.path.isdir(outputDirectory):
             shutil.rmtree(outputDirectory)
         os.mkdir(outputDirectory)
-        os.mkdir(outputDirectory + '\\' + targetTilesDirectory)
-        os.mkdir(outputDirectory + '\\' + targetSlicesDirectory)
-        os.mkdir(outputDirectory + '\\' + targetGroupsDirectory)
+        os.mkdir(outputDirectory + '/' + targetTilesDirectory)
+        os.mkdir(outputDirectory + '/' + targetSlicesDirectory)
+        os.mkdir(outputDirectory + '/' + targetGroupsDirectory)
         if not silent:
             print(f'Target folder ({outputDirectory}) cleaned.')
     else:
@@ -125,9 +125,9 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                     if not silent:
                         print(f'[{tileSetName}] open tileset image from: {tileSetFilePath}')
                     
-                    tilesDirectory = f'{outputDirectory}\\{targetTilesDirectory}\\{tileSetUnid}'
-                    slicesDirectory = f'{outputDirectory}\\{targetSlicesDirectory}\\{tileSetUnid}'
-                    groupsDirectory = f'{outputDirectory}\\{targetGroupsDirectory}\\{tileSetUnid}'
+                    tilesDirectory = f'{outputDirectory}/{targetTilesDirectory}/{tileSetUnid}'
+                    slicesDirectory = f'{outputDirectory}/{targetSlicesDirectory}/{tileSetUnid}'
+                    groupsDirectory = f'{outputDirectory}/{targetGroupsDirectory}/{tileSetUnid}'
                     keyReferenceMap[key] = { 'directory': tilesDirectory, 'file': tileSetFileName, 'tiles': maxTiles}
                     if mode != Mode.generate:
                         os.mkdir(tilesDirectory)
@@ -135,7 +135,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                         os.mkdir(groupsDirectory)
 
                         # magick input/magecity.png -crop 32x32 output/magecity32x32/magecity.png
-                        subprocess.run(["magick", tileSetFilePath, "-crop", f'{tileWidth}x{tileHeight}', f'{tilesDirectory}\\{tileSetFileName}.png'])
+                        subprocess.run(["magick", tileSetFilePath, "-crop", f'{tileWidth}x{tileHeight}', f'{tilesDirectory}/{tileSetFileName}.png'])
                         if not silent:
                             print(f'[{tileSetName}] {maxTiles} tiles were created into: {tilesDirectory}')
 
@@ -166,7 +166,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                     tileWidth = int(tile['width'])
                     tileHeight = int(tile['height'])
 
-                    tilesRootDirectory = f'{outputDirectory}\\{targetTilesDirectory}\\{tileGroupUnid}'
+                    tilesRootDirectory = f'{outputDirectory}/{targetTilesDirectory}/{tileGroupUnid}'
                     if mode != Mode.generate:
                         os.mkdir(tilesRootDirectory)
                     
@@ -186,13 +186,13 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
                         if not silent:
                             print(f'[{tileGroupName}] open image from: {tileGroupFilePath}')
                         
-                        tilesDirectory = f'{tilesRootDirectory}\\{tileGroupFileUnid}'
+                        tilesDirectory = f'{tilesRootDirectory}/{tileGroupFileUnid}'
                         keyReferenceMap[key] = { 'directory': tilesDirectory, 'file': tileGroupFileName, 'tiles': maxTiles}
                         if mode != Mode.generate:
                             os.mkdir(tilesDirectory)
                             
                             # magick input/magecity.png -crop 32x32 output/magecity32x32/magecity.png
-                            subprocess.run(["magick", tileGroupFilePath, "-crop", f'{tileWidth}x{tileHeight}', f'{tilesDirectory}\\{tileGroupFileName}.png'])
+                            subprocess.run(["magick", tileGroupFilePath, "-crop", f'{tileWidth}x{tileHeight}', f'{tilesDirectory}/{tileGroupFileName}.png'])
                             if not silent:
                                 print(f'[{tileGroupName}] {maxTiles} tiles were created into: {tilesDirectory}')
                         else:
@@ -222,7 +222,7 @@ def process( silent: bool, mode: Mode, projectFile: str, outputDirectory: str, e
             outputWidth = int(size['width'])
             outputHeight = int(size['height'])
             print(f'Building {outputWidth}x{outputHeight} output from {tileWidth}x{tileHeight} tiles')
-            outputFile = f'{outputDirectory}\\{tileSetName}'
+            outputFile = f'{outputDirectory}/{tileSetName}'
             buildOutput(output['data'], keyReferenceMap, emptyTilePath, tileWidth, tileHeight, outputWidth, outputHeight, outputFile)
 
 def buildSlices( json, tileSetFileName: str, tilesDirectory: str, slicesDirectory: str, tileWidth: int, tileHeight:int, tileSetFilePath: str):
@@ -234,7 +234,7 @@ def buildSlices( json, tileSetFileName: str, tilesDirectory: str, slicesDirector
         width = slice['width'] * tileWidth
         height = slice['height'] * tileHeight
         
-        sliceFile = f'{slicesDirectory}\\{name}.png'
+        sliceFile = f'{slicesDirectory}/{name}.png'
         print(f'Create \'{name}\' Slice image (id: {id}) into: {sliceFile}')
 
         # magick input/magecity.png -crop 96x64+96+128 +repage input/slice.png
@@ -248,13 +248,13 @@ def buildGroups( json, tileSetFileName: str, tilesDirectory: str, groupsDirector
         name = group['name']
         width = group['width']
         
-        groupFile = f'{groupsDirectory}\\{name}.png'
+        groupFile = f'{groupsDirectory}/{name}.png'
         print(f'Create \'{name}\' Group image (id: {id}) into: {groupFile}')
 
         # magick montage -mode concatenate -background none -geometry 32x32+0+0 -tile 3x input/group/floor-0.png input/group/floor-1.png input/group/floor-2.png input/group/floor-3.png input/group/floor-4.png input/group/floor-5.png output/floor.png
         commandData = ["magick", "montage", "-mode", "concatenate", "-background", "none", "-geometry", f'{tileWidth}x{tileHeight}+0+0', "-tile", f'{width}x']
         for tileIndex in group['indices']:
-            commandData.append(f'{tilesDirectory}\\{tileSetFileName}-{tileIndex}.png')
+            commandData.append(f'{tilesDirectory}/{tileSetFileName}-{tileIndex}.png')
         commandData.append(groupFile)
         subprocess.run(commandData)
         deletedIndices = removeTilesByIndices(group['indices'], tilesDirectory, tileSetFileName)
@@ -278,7 +278,7 @@ def removeTilesByIndices( indices, tilesDirectory: str, tileSetFileName: str):
     return result
 
 def removeTileByIndex( index: int, tilesDirectory: str, tileSetFileName: str):
-    file = f'{tilesDirectory}\\{tileSetFileName}-{index}.png'
+    file = f'{tilesDirectory}/{tileSetFileName}-{index}.png'
     os.remove(file)
     return index
 
@@ -286,7 +286,7 @@ def removeUnusedTilesByIndices( maxIndex: int, usedIndices: list[int], tilesDire
     result = []
     for index in range(0, maxIndex):
         if index not in usedIndices:
-            file = f'{tilesDirectory}\\{tileSetFileName}-{index}.png'
+            file = f'{tilesDirectory}/{tileSetFileName}-{index}.png'
             tileFilePath = pathlib.Path(file)
             if tileFilePath.exists():
                 os.remove(file)
@@ -310,7 +310,7 @@ def buildOutput( json, keyReferenceMap: map, emptyTilePath: str, tileWidth: int,
                 if key in keyReferenceMap:
                     keyRefValue = keyReferenceMap[key] # FIXME can be tilegroup too
                     tileFileName = f'{keyRefValue["file"]}-{index}' if keyRefValue["tiles"] > 1 else f'{keyRefValue["file"]}'
-                    tiles.append(f'{keyRefValue["directory"]}\\{tileFileName}.png')
+                    tiles.append(f'{keyRefValue["directory"]}/{tileFileName}.png')
                 else:
                     print(f'[Error] Unknown key in reference: {key}')
                     print(f'[Error] Maybe not all the used tileset/tilegroup is active.')
