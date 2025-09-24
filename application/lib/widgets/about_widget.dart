@@ -76,9 +76,9 @@ class AboutWidget extends StatelessWidget {
             Icon(Icons.language_outlined), //
             SizedBox(width: 10),
             InkWell(
-              child: Text('https://yate.qwaevisz.com', style: TextStyle(color: const Color.fromARGB(255, 24, 103, 168))),
+              child: Text('https://yate.qwaevisz.hu', style: TextStyle(color: const Color.fromARGB(255, 24, 103, 168))),
               onTap: () async {
-                if (!await launchUrl(Uri.parse('https://yate.qwaevisz.com'))) {
+                if (!await launchUrl(Uri.parse('https://yate.qwaevisz.hu'))) {
                   throw Exception('Could not launch');
                 }
               },
