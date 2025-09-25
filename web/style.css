@@ -1,4 +1,3 @@
-/* Alap stílus */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -7,6 +6,7 @@ body {
   color: #333;
   background-color: #f9f9f9;
   transition: background-color 0.3s, color 0.3s;
+  text-align: justify;
 }
 
 header {
@@ -79,7 +79,6 @@ img.screenshot {
   margin-top: 1rem;
 }
 
-/* Dark Mode */
 body.dark {
   background-color: #1e1e1e;
   color: #f0f0f0;
@@ -102,9 +101,51 @@ main h1 {
   margin: 0;
   font-size: 3.1rem;
   color: rgb(25, 66, 148);
+  font-weight: bold;
 }
 
-/* Reszponzív menü mobilhoz */
+main table {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+main table th {
+  text-align: center;
+}
+
+main table td {
+  border: 1px solid gray;
+  padding: 3px 10px 3px 10px;
+}
+
+main table td.subject {
+  font-weight: bold;
+  color: rgb(59, 59, 29);
+}
+
+main table td.center {
+  text-align: center;
+}
+
+main pre {
+  background-color: rgb(236, 239, 242);
+  border-radius: 5px;
+  border: 1px solid gray;
+  padding: 5px 10px 5px 10px;
+}
+
+main .github {
+  text-align: right;
+  width: 100%;
+  font-size: small;
+}
+
+main .github a {
+  text-decoration: none;
+}
+
 @media (max-width: 700px) {
   nav {
     display: none;

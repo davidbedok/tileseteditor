@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yet Another TileSet Editor</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <div class="header-container">
+            <h1>YATE</h1>
+            <button class="menu-toggle" aria-label="Menü megnyitása">☰</button>
+            <nav>
+                <a href="#project">Project</a>
+                <a href="#download">Download</a>
+                <a href="#screenshots">Screenshots</a>
+                <a href="#documentation">Documentation</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button id="darkModeToggle">🌙</button>
+        </div>
+    </header>
+
+    <main>
+
+        <h1 class="title">
+            <img src="images/yate-512.png" width="40" />
+            Yet Another TileSet Editor
+        </h1>
+        <hr/>
+        <div class="github">Find the project on <a href="https://github.com/davidbedok/tileseteditor/">GitHub</a></div>
+
+        <section id="project">
+            <h2>Introduction</h2>
+            <p>
+                Yet Another TileSet Editor (YATE) is a free and open-source project for creating tileset images from standalone
+                tiles and from existing tilesets.
+            </p>
+            <i>Key features:</i>
+            <ul>
+                <li><strong>Scriptable tileset generation</strong> (easy to integrate into your CICD)</li>
+                <li><strong>Reproducible output</strong> (there is no auto tile arrangement, the user can define where to put the tiles)</li>
+                <li><strong>Version control support</strong> (multiple team members can work on the same project to have a common tileset for your entire game)</li>
+                <li><strong><a href="https://www.mapeditor.org/">Tiled</a> compatibility</strong> (the generated tileset can be used for TileMap creation in Tiled)</li>
+                <li><strong>Handy and easy-to-use object definition</strong> (define slices and group of tiles within an existing tileset in order to always move the related tiles together)</li>
+                <li><strong>Trustfulness</strong> (each real image manipulation, including cropping, splitting and montage are performed via <a href="https://imagemagick.org/">ImageMagick</a> commands)</li>
+            </ul>
+            <i>Main components:</i>
+            <ul>
+                <li><strong>YATE Project files</strong> (*.yate.json): standard json document which refers all the source tiles and tilesets, and describes all the details for generating a new tileset image</li>
+                <li><strong>Yet Another TileSet Editor</strong>: cross platform desktop application for managing YATE Project files (*.yate.json)</li>
+                <li><strong>YATE CLI</strong>: Command line interface which loads the YATE Project file and generates the output using ImageMagick commands.</li>
+            </ul>
+            <i>Overview:</i>
+            <img src="images/yate-overview.png" width="100%" />
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="subject">Tile</td>
+                        <td>The smallest building block of a TileSet. Its typical size is 16x16 or 32x32 pixels.</td>
+                        <td class="center"><img src="images/tile.png" /></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">Tile image</td>
+                        <td>A separate shape or building block that must always be treated as a whole during editing. Its smallest size equals to the size of the Tile (e.g. 32x32), but it could be multiples of that (e.g. 32x64 or 128x96).</td>
+                        <td class="center"><img src="images/tile-image.png" /></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">TileSet image</td>
+                        <td>An image file containing a collection of smaller, reusable graphic elements, or "tiles," that are used to construct larger scenes in games or maps, such as platforms, terrain, or scenery.</td>
+                        <td class="center"><img src="images/tileset.png" /></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">TileSet's Slice</td>
+                        <td>A designated contiguous area within a TileSet image. This area can only be moved as a whole, similar to a Tile image.</td>
+                        <td class="center"><img src="images/tileset-slice.png" /></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">TileSet's Group</td>
+                        <td>A group of several Tiles that are far apart within a TileSet image, and must then be treated together, similar to a Tile image.</td>
+                        <td class="center"><img src="images/tileset-group.png" /></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">TileGroup</td>
+                        <td>A group of Tile images that belong together based on some property for easier handling.</td>
+                        <td class="center">-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="download">
+            <h2>Download</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Component</th>
+                        <th>OS / Platform</th>
+                        <th>Version</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="subject"><img src="images/yate-32.png" width="15" />&nbsp;Yet Another TileSet Editor</td>
+                        <td>Windows</td>
+                        <td class="center">v1.0.2</td>
+                        <td class="center"><a href="downloads/yet-another-tileset-editor-winos-v1.0.2.zip">download</a></td>
+                    </tr>
+                    <tr>
+                        <td class="subject"><img src="images/yate-32.png" width="15" />&nbsp;Yet Another TileSet Editor (macos)</td>
+                        <td>MacOS Intel (x86_64) & Silicon (ARM64)</td>
+                        <td class="center">v1.0.2</td>
+                        <td class="center"><a href="downloads/yet-another-tileset-editor-macos-v1.0.2.dmg">download</a></td>
+                    </tr>
+                    <tr>
+                        <td class="subject"><img src="images/yate-32.png" width="15" />&nbsp;YATE CLI</td>
+                        <td>Python</td>
+                        <td class="center">v1.0.2</td>
+                        <td class="center"><a href="downloads/yate-cli-v1.0.2.zip">download</a></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">Example YATE projects</td>
+                        <td>*.yate.json</td>
+                        <td>&nbsp;</td>
+                        <td class="center"><a href="downloads/example-yate-projects.zip">download</a></td>
+                    </tr>
+                    <tr>
+                        <td class="subject">Empty tiles</td>
+                        <td>*.png</td>
+                        <td>&nbsp;</td>
+                        <td class="center"><a href="downloads/empty-tiles.zip">download</a></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p>You can find the prerequisites and the detailed install steps in the <a href="#installation">installation</a> section.</p>
+        </section>
+
+        <section id="screenshots">
+            <h2>Screenshots</h2>
+            Lorem ipsum..
+        </section>
+
+        <section id="documentation">
+            <h2>YATE Project</h2>
+            <p>A YATE Project is a standard JSON document, which describes all the required steps to generate the output tileset from the input sources.</p>
+            <p>Input sources can be the followings:</p>
+            <ul>
+                <li>Any number of TileSet images</li>
+                <li>Any number of Tile images which are grouped into any number of TileGroups</li>
+            </ul>
+            <p>Typical use case, that a game has it's own tile images, grouped into several categories (terrain, building, characters, etc.). In YATE simply define any number of TileGroups and put all the related images into these logical buckets.</p>
+            <p>Another use-case, that a game is using one or more open-source TileSet images (e.g. from OpenGameArt.org), and the developers want to reuse those, but not in the original arrangement (they don't need all the tiles or they don't want to use multiple tileset images runtime).</p>
+            <p>The two use-case can be mixed together.</p>
+            <p>The ultimate goal at the end of the editing process to create a new TileSet image. This output or target TileSet can be composed of the following building blocks:</p>
+            <ul>
+                <li>A Tile image selected from any of the input TileGroups</li>
+                <li>An individual Tile selected from any of the input TileSet image</li>
+                <li>A pre-defined Slice (set of connected tiles) selected from any of the input TileSet image</li>
+                <li>A pre-defined Group (set of related tiles) selected from any of the input TileSet image</li>
+            </ul>
+            <p>In YATE there is no auto-arrangement of tiles. The user must define the coordinates (using drag&drop and similar handy options) for all the building blocks. This is quite important in a project, where the coordinates are hard coded, or the tileset will be used in Tiled (or similar tool) to build a TileMap. The team can extend the used tileset image, or improve the graphics of any of the tiles, without the risk of breaking the existing TileMaps.</p>
+        </section>
+
+        <section id="technology">
+            <h2>Technology</h2>
+            <ul>
+                <li><a href="https://www.json.org/json-en.html">JavaScript Object Notation</a> (JSON): The YATE Project file is open to further modifications or extensions</li>
+                <li><a href="https://flutter.dev/">Flutter</a>: Yet Another TileSet Editor program is written in <a href="https://dart.dev/">Dart</a>, using Google's Flutter cross-platform framework.</li>
+                <li><a href="https://www.python.org/">Python</a>: YATE CLI is written in python, open for customization and provides seamless integration with a CICD flow</li>
+                <li><a href="https://imagemagick.org/">ImageMagick</a>: image manipulation is based on the widely used software suite</li>
+            </ul>
+            <p>All used and integrated software components are open-source and cross-platform.</p>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            <p>Make sure that all the tools which are listed in Prerequisites are available in your environment. After that just go to the release page and download the YATE binary of your OS.</p>
+
+            <p>Currently Yet Another TileSet Editor supports the following systems:</p>
+            <ul>
+                <li>Windows 7/10/11</li>
+                <li>MacOS Intel (x86_64)</li>
+                <li>MacOS Silicon (ARM64)</li>
+            </ul>
+
+            <h3>Prerequisites</h3>
+            <p>If you are using Windows OS, please install <a href="https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170">Microsoft Visual C++ Redistributable</a>, as it requires for the desktop editor.</p>
+            <p>Yet Another TileSet Editor CLI is written in <a href="https://www.python.org/">Python</a>, so prior to use it you must install it from <a href="https://www.python.org/downloads/">here</a>. Do not forget to put it into your path.</p>
+            <strong>Verify Python version:</strong>
+<pre>> py --version
+Python 3.13.3</pre>
+            <strong>Install pyhton packages if required:</strong>
+<pre>> pip install pyfiglet</pre>
+            <p>Yet Another TileSet Editor CLI is using <a href="https://imagemagick.org/">ImageMagick</a> commands under the hood, so you must make it available for this script. You should find binaries for various OS <a href="https://imagemagick.org/script/download.php">here</a>. Do not forget to put it into your path.</p>
+            <strong>Verify ImageMagick version:</strong><br/>
+            Windows:
+<pre>> magick --version
+Version: ImageMagick 7.1.1-47 Q16-HDRI x64 82572af:20250329 https://imagemagick.org</pre>
+            Macintosh (Silicon):
+<pre>> magick --version
+Version: ImageMagick 7.1.2-3 Q16-HDRI aarch64 23340 https://imagemagick.org</pre>
+        </section>
+
+        <section id="contact">
+            <h2>Support</h2>
+            <p>Yet Another TileSet Editor is free and open-source for anybody. You can use and extend it for your own indie game idea.</p>
+            <span><strong>Web</strong>:</span><a href="https://yate.qwaevisz.com">https://yate.qwaevisz.com</a><br/>
+            <span><strong>E-mail</strong>:</span><a href="yate@qwaevisz.hu">yate@qwaevisz.hu</a><br/>
+            <br/>
+            If you like it, consider to buy me a coffee.<br/>
+            <a href="https://www.buymeacoffee.com/qwaevisz" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+        </section>
+    </main>
+
+    <footer>
+        © 2025 TilesetEditor — Licenc: MIT
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
