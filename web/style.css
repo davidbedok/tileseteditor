@@ -1,3 +1,36 @@
+    :root{--gap:12px;--thumb-h:120px;--bg:rgba(0,0,0,0.75)}
+    
+    .gallery{display:flex;flex-wrap:wrap;gap:var(--gap)}
+    .thumb{flex:0 0 calc(24% - var(--gap));box-sizing:border-box;cursor:pointer;overflow:hidden;border-radius:8px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);display:flex;flex-direction:column;align-items:center}
+    .thumb img{display:block;width:100%;height:var(--thumb-h);object-fit:cover;transition:transform .25s ease;border-bottom:1px solid #ddd}
+    .thumb figcaption{padding:6px 8px;font-size:0.9rem;color:#333;text-align:center}
+    .thumb:focus{outline:3px solid Highlight;outline-offset:3px}
+    .thumb:hover img{transform:scale(1.05)}
+
+    @media (max-width:900px){.thumb{flex:0 0 calc(33.333% - var(--gap))}}
+    @media (max-width:600px){.thumb{flex:0 0 calc(50% - var(--gap))}}
+
+    .lightbox{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px;background:var(--bg);z-index:1000}
+    .lightbox.open{display:flex}
+    .lightbox .panel{max-width:calc(100% - 40px);max-height:calc(100% - 40px);position:relative;text-align:center}
+    .lightbox img{max-width:100%;max-height:100%;display:block;margin:0 auto;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,0.5)}
+
+    .close-btn, .nav-btn{position:absolute;top:8px;background:rgba(255,255,255,0.85);border:0;padding:8px;border-radius:6px;cursor:pointer}
+    .close-btn{right:8px}
+    .nav-btn{top:50%;transform:translateY(-50%);padding:12px}
+    .nav-prev{left:-60px}
+    .nav-next{right:-60px}
+    @media (max-width:800px){.nav-prev{left:8px}.nav-next{right:8px}}
+
+    .caption{margin-top:12px;color:#eee;text-align:center;font-size:1rem}
+
+figure {
+      margin-inline-start: 2px;
+    margin-inline-end: 2px;
+        margin-block-start: 0;
+    margin-block-end: 0;
+}
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -145,6 +178,11 @@ main .github {
 main .github a {
   text-decoration: none;
 }
+
+main div .screenshot {
+  border: 1px solid gray;
+}
+
 
 @media (max-width: 700px) {
   nav {

@@ -5,8 +5,8 @@
     "creator": "qwaevisz",
     "editor": {
         "name": "tileseteditor",
-        "version": "1.0.0",
-        "build": "1"
+        "version": "1.0.2",
+        "build": "1042"
     },
     "tilesets": [
         {
@@ -990,6 +990,41 @@
                         "left": 1,
                         "top": 3
                     }
+                },
+                {
+                    "id": 1,
+                    "name": "bed",
+                    "indices": [
+                        14,
+                        30,
+                        46
+                    ],
+                    "left": 15,
+                    "top": 1,
+                    "width": 1,
+                    "height": 3,
+                    "output": {
+                        "left": 10,
+                        "top": 2
+                    }
+                },
+                {
+                    "id": 2,
+                    "name": "barriers",
+                    "indices": [
+                        129,
+                        130,
+                        145,
+                        146
+                    ],
+                    "left": 2,
+                    "top": 9,
+                    "width": 2,
+                    "height": 2,
+                    "output": {
+                        "left": 10,
+                        "top": 6
+                    }
                 }
             ],
             "groups": [],
@@ -1033,7 +1068,10 @@
                     "top": 3,
                     "width": 3,
                     "height": 3,
-                    "output": null
+                    "output": {
+                        "left": 5,
+                        "top": 10
+                    }
                 },
                 {
                     "id": 1,
@@ -1116,7 +1154,10 @@
                     "top": 31,
                     "width": 4,
                     "height": 3,
-                    "output": null
+                    "output": {
+                        "left": 9,
+                        "top": 9
+                    }
                 },
                 {
                     "id": 5,
@@ -1155,6 +1196,55 @@
                     "left": 19,
                     "top": 13,
                     "width": 3,
+                    "height": 3,
+                    "output": {
+                        "left": 1,
+                        "top": 11
+                    }
+                },
+                {
+                    "id": 7,
+                    "name": "floor1",
+                    "indices": [
+                        233,
+                        234,
+                        235,
+                        265,
+                        266,
+                        267,
+                        297,
+                        298,
+                        299
+                    ],
+                    "left": 10,
+                    "top": 8,
+                    "width": 3,
+                    "height": 3,
+                    "output": {
+                        "left": 1,
+                        "top": 8
+                    }
+                },
+                {
+                    "id": 8,
+                    "name": "rug1",
+                    "indices": [
+                        976,
+                        977,
+                        978,
+                        979,
+                        1008,
+                        1009,
+                        1010,
+                        1011,
+                        1040,
+                        1041,
+                        1042,
+                        1043
+                    ],
+                    "left": 17,
+                    "top": 31,
+                    "width": 4,
                     "height": 3,
                     "output": null
                 }
@@ -1596,8 +1686,8 @@
                     "index": -1
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 14
                 },
                 {
                     "key": -1,
@@ -1698,8 +1788,8 @@
                     "index": -1
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 30
                 },
                 {
                     "key": -1,
@@ -1800,8 +1890,8 @@
                     "index": -1
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 46
                 },
                 {
                     "key": -1,
@@ -2004,12 +2094,12 @@
                     "index": -1
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 129
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 130
                 },
                 {
                     "key": -1,
@@ -2106,12 +2196,12 @@
                     "index": -1
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 145
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 1,
+                    "index": 146
                 },
                 {
                     "key": -1,
@@ -2172,16 +2262,16 @@
             ],
             [
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 2,
+                    "index": 233
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 2,
+                    "index": 234
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 2,
+                    "index": 235
                 },
                 {
                     "key": -1,
@@ -2274,6 +2364,74 @@
             ],
             [
                 {
+                    "key": 2,
+                    "index": 265
+                },
+                {
+                    "key": 2,
+                    "index": 266
+                },
+                {
+                    "key": 2,
+                    "index": 267
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 980
+                },
+                {
+                    "key": 2,
+                    "index": 981
+                },
+                {
+                    "key": 2,
+                    "index": 982
+                },
+                {
+                    "key": 2,
+                    "index": 983
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
                     "key": -1,
                     "index": -1
                 },
@@ -2300,6 +2458,244 @@
                 {
                     "key": -1,
                     "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": 2,
+                    "index": 297
+                },
+                {
+                    "key": 2,
+                    "index": 298
+                },
+                {
+                    "key": 2,
+                    "index": 299
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 64
+                },
+                {
+                    "key": 2,
+                    "index": 65
+                },
+                {
+                    "key": 2,
+                    "index": 66
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 1012
+                },
+                {
+                    "key": 2,
+                    "index": 1013
+                },
+                {
+                    "key": 2,
+                    "index": 1014
+                },
+                {
+                    "key": 2,
+                    "index": 1015
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": 2,
+                    "index": 402
+                },
+                {
+                    "key": 2,
+                    "index": 403
+                },
+                {
+                    "key": 2,
+                    "index": 404
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 96
+                },
+                {
+                    "key": 2,
+                    "index": 97
+                },
+                {
+                    "key": 2,
+                    "index": 98
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 1044
+                },
+                {
+                    "key": 2,
+                    "index": 1045
+                },
+                {
+                    "key": 2,
+                    "index": 1046
+                },
+                {
+                    "key": 2,
+                    "index": 1047
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                }
+            ],
+            [
+                {
+                    "key": 2,
+                    "index": 434
+                },
+                {
+                    "key": 2,
+                    "index": 435
+                },
+                {
+                    "key": 2,
+                    "index": 436
+                },
+                {
+                    "key": -1,
+                    "index": -1
+                },
+                {
+                    "key": 2,
+                    "index": 128
+                },
+                {
+                    "key": 2,
+                    "index": 129
+                },
+                {
+                    "key": 2,
+                    "index": 130
                 },
                 {
                     "key": -1,
@@ -2376,322 +2772,16 @@
             ],
             [
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 2,
+                    "index": 466
                 },
                 {
-                    "key": -1,
-                    "index": -1
+                    "key": 2,
+                    "index": 467
                 },
                 {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                }
-            ],
-            [
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
-                },
-                {
-                    "key": -1,
-                    "index": -1
+                    "key": 2,
+                    "index": 468
                 },
                 {
                     "key": -1,

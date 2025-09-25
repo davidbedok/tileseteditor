@@ -131,10 +131,10 @@
                         <td class="center"><a href="downloads/yate-cli-v1.0.2.zip">download</a></td>
                     </tr>
                     <tr>
-                        <td class="subject">Example YATE projects</td>
+                        <td class="subject">Sample YATE projects</td>
                         <td>*.yate.json</td>
                         <td>&nbsp;</td>
-                        <td class="center"><a href="downloads/example-yate-projects.zip">download</a></td>
+                        <td class="center"><a href="downloads/sample-projects.zip">download</a></td>
                     </tr>
                     <tr>
                         <td class="subject">Empty tiles</td>
@@ -149,7 +149,95 @@
 
         <section id="screenshots">
             <h2>Screenshots</h2>
-            Lorem ipsum..
+            
+            <div class="gallery" id="gallery">
+                <figure class="thumb" data-index="0" data-full="images/screenshots/create_new_projects.jpg" data-caption="Create new project">
+                <img src="images/screenshots/create_new_projects.jpg" alt="Create new project">
+                <figcaption>Create new project</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="1" data-full="images/screenshots/add_new_tileset.jpg" data-caption="Add new TileSet">
+                <img src="images/screenshots/add_new_tileset.jpg" alt="Add new TileSet">
+                <figcaption>Add new TileSet</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="2" data-full="images/screenshots/tileset_splitter.jpg" data-caption="TileSet Splitter">
+                <img src="images/screenshots/tileset_splitter.jpg" alt="TileSet Splitter">
+                <figcaption>TileSet Splitter</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="3" data-full="images/screenshots/add_tree_slice.jpg" data-caption="Define Tree Slice">
+                <img src="images/screenshots/add_tree_slice.jpg" alt="Define new Slice">
+                <figcaption>Define new Slice</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="5" data-full="images/screenshots/add_pine_trees.jpg" data-caption="Define Pine Trees">
+                <img src="images/screenshots/add_pine_trees.jpg" alt="Define Pine Trees">
+                <figcaption>Define Pine Trees</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="6" data-full="images/screenshots/add_objects_group.jpg" data-caption="Define Object Group">
+                <img src="images/screenshots/add_objects_group.jpg" alt="Define Object Group">
+                <figcaption>Define Object Group</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="7" data-full="images/screenshots/tileset_output_editor.jpg" data-caption="TileSet Output Editor">
+                <img src="images/screenshots/tileset_output_editor.jpg" alt="TileSet Output Editor">
+                <figcaption>TileSet Output Editor</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="8" data-full="images/screenshots/add_new_tilegroup.jpg" data-caption="Add new TileGroup">
+                <img src="images/screenshots/add_new_tilegroup.jpg" alt="Add new TileGroup">
+                <figcaption>Add new TileGroup</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="9" data-full="images/screenshots/slates_output_editor.jpg" data-caption="Output Editor">
+                <img src="images/screenshots/slates_output_editor.jpg" alt="Output Editor">
+                <figcaption>Output Editor</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="10" data-full="images/screenshots/tilegroup_builder.jpg" data-caption="TileGroup Builder">
+                <img src="images/screenshots/tilegroup_builder.jpg" alt="TileGroup Builder">
+                <figcaption>TileGroup Builder</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="11" data-full="images/screenshots/tilegroup_output_editor.jpg" data-caption="TileGroup Output Editor">
+                <img src="images/screenshots/tilegroup_output_editor.jpg" alt="TileGroup Output Editor">
+                <figcaption>TileGroup Output Editor</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="12" data-full="images/screenshots/overview_output_editor.jpg" data-caption="Overview Output Editor">
+                <img src="images/screenshots/overview_output_editor.jpg" alt="Overview Output Editor">
+                <figcaption>Overview Output Editor</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="13" data-full="images/screenshots/generate.jpg" data-caption="Generate">
+                <img src="images/screenshots/generate.jpg" alt="Generate">
+                <figcaption>Generate</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="14" data-full="images/screenshots/yatecli-build.jpg" data-caption="YATE CLI Build">
+                <img src="images/screenshots/yatecli-build.jpg" alt="YATE CLI Build">
+                <figcaption>YATE CLI Build</figcaption>
+                </figure>
+
+                <figure class="thumb" data-index="14" data-full="images/dungeons.png" data-caption="Output TileSet">
+                <img src="images/dungeons.png" alt="Output TileSet">
+                <figcaption>Output TileSet</figcaption>
+                </figure>
+            </div>
+
+            <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+                <div class="panel" id="panel">
+                <button class="close-btn" id="closeBtn" aria-label="Bezár">✕</button>
+                <button class="nav-btn nav-prev" id="prevBtn" aria-label="Előző">◀</button>
+                <button class="nav-btn nav-next" id="nextBtn" aria-label="Következő">▶</button>
+                <img id="lightboxImg" src="" alt="" />
+                <div class="caption" id="caption"></div>
+                </div>
+            </div>
+
+
         </section>
 
         <section id="documentation">

@@ -121,7 +121,7 @@ Compiler: clang (17.0.0)
 Yet Another TileSet Editor is free and open-source for anybody.
 You can use and extend it for your own indie game idea.
 
-**Web**: [https://yate.qwaevisz.com](https://yate.qwaevisz.com)
+**Web**: [https://yate.qwaevisz.hu](https://yate.qwaevisz.hu)
 
 **E-mail**: <yate@qwaevisz.hu>
 
