@@ -1,4 +1,4 @@
-package com.example.tileseteditor
+package hu.qwaevisz.tileseteditor
 
 import io.flutter.embedding.android.FlutterActivity
 
