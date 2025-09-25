@@ -1,0 +1,22 @@
+Install details:
+https://medium.com/@fluttergems/packaging-and-distributing-flutter-desktop-apps-the-missing-guide-part-1-macos-b36438269285
+
+Check signature
+
+> cd build/macos/Build/Products/Release 
+> codesign -dv --verbose=4 tileseteditor.app
+
+Find identity
+> security find-identity -p codesigning
+"Apple Development: qwaevisz@gmail.com (XYZ)
+
+Manual sign
+> codesign --deep --force --verbose --sign "XYZ" tileseteditor.app
+
+Create *.dmg
+> brew install create-dmg
+
+Replace XYZ.
+
+> cd installers/macos
+> ./create-dmg.sh
